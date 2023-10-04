@@ -155,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.of(context).pop();
                 showModalBottomSheet(
                     backgroundColor: white,
+                    isDismissible: false,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(20),

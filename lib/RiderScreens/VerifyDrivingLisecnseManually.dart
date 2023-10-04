@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:Deliver_Rider/widgets/TextFormField_Widget.dart';
 import 'package:Deliver_Rider/widgets/customDialogForImage.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../Constants/Colors.dart';
 import '../Constants/back-arrow-with-container.dart';
 import '../Constants/buttonContainer.dart';
+import 'package:google_maps_webservice_ex/places.dart';
 import '../Constants/camera-icon.dart';
 import '../utilities/showToast.dart';
 import 'DrivingLicensePictureVerification.dart';
@@ -32,7 +32,7 @@ class _VerifyDrivingLicenseManuallyState
     extends State<VerifyDrivingLicenseManually> {
   late TextEditingController licenseController;
   late TextEditingController addressController;
-  late TextEditingController CNICController;
+  // late TextEditingController CNICController;
 
   final GlobalKey<FormState> _key = GlobalKey();
 
@@ -42,7 +42,7 @@ class _VerifyDrivingLicenseManuallyState
     super.initState();
     licenseController = TextEditingController();
     addressController = TextEditingController();
-    CNICController = TextEditingController();
+    // CNICController = TextEditingController();
   }
 
   @override
@@ -50,7 +50,7 @@ class _VerifyDrivingLicenseManuallyState
     // TODO: implement dispose
     super.dispose();
     addressController.dispose();
-    CNICController.dispose();
+    // CNICController.dispose();
     licenseController.dispose();
   }
 
@@ -177,7 +177,7 @@ class _VerifyDrivingLicenseManuallyState
                           height: 20.h,
                         ),
                         Text(
-                          'Driving License Input',
+                          'Rider Onboarding',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.syne(
                             fontWeight: FontWeight.w700,
@@ -259,63 +259,130 @@ class _VerifyDrivingLicenseManuallyState
                         SizedBox(
                           height: 30.h,
                         ),
-                        SizedBox(
-                          width: 300.w,
-                          child: TextFormFieldWidget(
-                            controller: addressController,
-                            textInputType: TextInputType.name,
-                            enterTextStyle: enterTextStyle,
-                            cursorColor: orange,
-                            hintText: 'Address',
-                            border: border,
-                            hintStyle: hintStyle,
-                            focusedBorder: focusedBorder,
-                            obscureText: null,
-                            contentPadding: contentPadding,
-                            enableBorder: enableBorder,
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return 'make sure you\'ve entered the same address';
-                              }
-                              return null;
-                            },
-                            length: -1,
-                          ),
+                        Stack(
+                          children: [
+                            SizedBox(
+                              width: 300.w,
+                              child: TextFormFieldWidget(
+                                controller: addressController,
+                                textInputType: TextInputType.text,
+                                enterTextStyle: enterTextStyle,
+                                cursorColor: orange,
+                                hintText: 'Address',
+                                border: border,
+                                hintStyle: hintStyle,
+                                focusedBorder: focusedBorder,
+                                obscureText: null,
+                                contentPadding: contentPadding,
+                                enableBorder: enableBorder,
+                                onChanged: (value) {
+                                  searchAddressPlaces(value!);
+                                },
+                                validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'make sure you\'ve entered the same address';
+                                  }
+                                  return null;
+                                },
+                                length: -1,
+                              ),
+                            ),
+                            if (addressPredictions.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 40),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: white,
+                                    borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                  width: MediaQuery.of(context).size.width * 0.8,
+                                  height: MediaQuery.of(context).size.height * 0.2,
+                                  child: ListView.separated(
+                                    itemCount: addressPredictions.length,
+                                    itemBuilder: (context, index) {
+                                      final prediction =
+                                      addressPredictions[index];
+                                      return ListTile(
+                                        title: Text(prediction.name),
+                                        subtitle: Text(
+                                            prediction.formattedAddress ??
+                                                ''),
+                                        onTap: () {
+                                          addressController.text =
+                                          prediction.formattedAddress!;
+                                          final double lat = prediction
+                                              .geometry!.location.lat;
+                                          final double lng = prediction
+                                              .geometry!.location.lng;
+                                          const double zoomLevel = 15.0;
+                                          onAddressLocationSelected(
+                                              LatLng(lat, lng), zoomLevel);
+                                          addressLat = lat.toString();
+                                          addressLng = lng.toString();
+                                          setState(() {
+                                            addressPredictions.clear();
+                                            FocusManager
+                                                .instance.primaryFocus
+                                                ?.unfocus();
+                                            print("pickupLat: $addressLat");
+                                            print("pickupLng $addressLng");
+                                            print(
+                                                "pickupLocation: ${prediction.formattedAddress}");
+                                          });
+                                          // Move the map camera to the selected location
+                                          mapController?.animateCamera(
+                                              CameraUpdate.newLatLng(
+                                                  selectedLocation!));
+                                        },
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return const Divider(
+                                        color: Colors.black,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                         SizedBox(
                           height: 30.h,
                         ),
-                        SizedBox(
-                          width: 300.w,
-                          child: TextFormFieldWidget(
-                            controller: CNICController,
-                            textInputType: TextInputType.number,
-                            enterTextStyle: enterTextStyle,
-                            cursorColor: orange,
-                            hintText: 'National identification number',
-                            border: border,
-                            hintStyle: hintStyle,
-                            focusedBorder: focusedBorder,
-                            obscureText: null,
-                            contentPadding: contentPadding,
-                            enableBorder: enableBorder,
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return 'make sure you\'ve entered the same NIN';
-                              }
-                              return null;
-                            },
-                            length: 11,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
+                           // SizedBox(
+                           //   width: 300.w,
+                           //   child: TextFormFieldWidget(
+                           //     controller: CNICController,
+                           //     textInputType: TextInputType.number,
+                           //     enterTextStyle: enterTextStyle,
+                           //     cursorColor: orange,
+                           //     hintText: 'National identification number',
+                           //     border: border,
+                           //     hintStyle: hintStyle,
+                           //     focusedBorder: focusedBorder,
+                           //     obscureText: null,
+                           //     contentPadding: contentPadding,
+                           //     enableBorder: enableBorder,
+                           //     validator: (val) {
+                           //       if (val!.isEmpty) {
+                           //         return 'make sure you\'ve entered the same NIN';
+                           //       }
+                           //       return null;
+                           //     },
+                           //     length: 11,
+                           //   ),
+                           // ),
+                        // SizedBox(
+                        //   height: 30.h,
+                        // ),
                         SizedBox(
                           width: 300.w,
                           child: TextFormFieldWidget(
                             controller: licenseController,
-                            textInputType: TextInputType.number,
+                            textInputType: TextInputType.text,
                             enterTextStyle: enterTextStyle,
                             cursorColor: orange,
                             hintText: 'Driving license number',
@@ -365,7 +432,7 @@ class _VerifyDrivingLicenseManuallyState
         Map licenseMap = {
           "email": widget.email,
           "address": addressController.text,
-          "national_identification_no": CNICController.text,
+          // "national_identification_no": CNICController.text,
           "driving_license_no": licenseController.text,
           "profile_pic": base64img,
         };
@@ -385,4 +452,37 @@ class _VerifyDrivingLicenseManuallyState
           'Provide mandatory fields to proceed', FToast().init(context));
     }
   }
+
+  final places = GoogleMapsPlaces(apiKey: 'AIzaSyAk-CA4yYf-txNZvvwmCshykjpLiASEkcw');
+  List<PlacesSearchResult> addressPredictions = [];
+  LatLng? selectedLocation;
+  LatLng? currentLocation;
+  MarkerId? selectedMarker;
+  GoogleMapController? mapController;
+  String? addressLat;
+  String? addressLng;
+
+  Future<void> searchAddressPlaces(String input) async {
+    if (input.isNotEmpty) {
+      final response = await places.searchByText(input);
+
+      if (response.isOkay) {
+        setState(() {
+          addressPredictions = response.results;
+        });
+      }
+    }
+  }
+
+  void onAddressLocationSelected(LatLng location, double zoomLevel) {
+    setState(() {
+      selectedLocation = location;
+      currentLocation = null; // Clear current location
+      selectedMarker = const MarkerId('selectedLocation');
+    });
+
+    mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(selectedLocation!, zoomLevel));
+  }
+
 }

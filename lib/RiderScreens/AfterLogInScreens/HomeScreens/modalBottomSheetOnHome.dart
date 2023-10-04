@@ -342,6 +342,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             ),
           ),
           isScrollControlled: true,
+          isDismissible: false,
           context: context,
           builder: (context) => ModalBottomSheetStartRide(
             bookingModel: widget.customersModel,

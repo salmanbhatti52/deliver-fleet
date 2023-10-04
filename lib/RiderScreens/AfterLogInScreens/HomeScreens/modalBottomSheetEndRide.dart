@@ -93,7 +93,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
             top: Radius.circular(20),
           ),
         ),
-        height: MediaQuery.sizeOf(context).height * 0.56,
+        height: MediaQuery.sizeOf(context).height * 0.57,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(

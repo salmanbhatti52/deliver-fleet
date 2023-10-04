@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "698660214068",
+    "project_id": "deliverappgfl-fleet",
+    "storage_bucket": "deliverappgfl-fleet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698660214068:android:58ed9a32a05ca62d0ac161",
+        "android_client_info": {
+          "package_name": "com.example.rider_deliver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcJ-WhBUIW6YFlbSFPKnpllfsIyxYRGk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

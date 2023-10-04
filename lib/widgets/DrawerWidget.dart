@@ -12,7 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Constants/buttonConatinerWithBorder.dart';
 import '../Constants/buttonContainer.dart';
+import '../FleetScreens/BottomNavBarFleet.dart';
 import '../FleetScreens/OnboardingFleetScreen.dart';
+import '../RiderScreens/BottomNavBar.dart';
 import '../RiderScreens/DrawerScreens/AwardScreens/AwardsScreen.dart';
 import '../RiderScreens/DrawerScreens/Banking/BankingScreen.dart';
 import '../RiderScreens/DrawerScreens/NotificationScreen.dart';
@@ -305,10 +307,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               'switching to fleet', FToast().init(context),
                               seconds: 1);
                           Navigator.of(context).push(
+                            // MaterialPageRoute(
+                            //   builder: (context) => const OnboardingFleetScreen(
+                            //     fleet: 'Fleet',
+                            //   ),
+                            // ),
                             MaterialPageRoute(
-                              builder: (context) => const OnboardingFleetScreen(
-                                fleet: 'Fleet',
-                              ),
+                              builder: (context) => const BottomNavBarFleet(),
                             ),
                           );
                         },
@@ -440,8 +445,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                                 ChooseAppScreen(),
                                           ),
                                           (route) => false);
-                                      await sharedPreferences.setString(
-                                          'isLogin', 'false');
+                                      // await sharedPreferences.setString(
+                                      //     'isLogin', 'false');
+                                        SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                                        await sharedPref.clear();
+                                        setState(() {});
                                     },
                                     child: buttonContainer(
                                         context, 'YES, LOG ME OUT'),

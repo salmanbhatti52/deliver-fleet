@@ -19,6 +19,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final int length;
   final String? Function(String? value)? validator;
   String? Function(String? value)? onSaved;
+  String? Function(String? value)? onChanged;
   bool? obscureText;
   final Widget? suffixIcon;
   bool? readOnly;
@@ -36,6 +37,7 @@ class TextFormFieldWidget extends StatelessWidget {
       required this.hintStyle,
       required this.focusedBorder,
       this.onSaved,
+      this.onChanged,
       this.validator,
       this.onTap,
       this.autofillHints,
@@ -51,6 +53,7 @@ class TextFormFieldWidget extends StatelessWidget {
     return TextFormField(
       onSaved: onSaved,
       onTap: onTap,
+      onChanged: onChanged,
       readOnly: readOnly ?? false,
       validator: validator,
       inputFormatters: [

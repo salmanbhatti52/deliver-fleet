@@ -27,7 +27,7 @@ Widget googleButton(context) {
             ],
           ),
           Text(
-            'Sign Up with Google',
+            'Login with Google',
             textAlign: TextAlign.center,
             style: GoogleFonts.syne(
               fontSize: 16,

@@ -1,6 +1,7 @@
 import 'package:Deliver_Rider/Constants/Colors.dart';
 import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
 import 'package:Deliver_Rider/Constants/details-button.dart';
+import 'package:Deliver_Rider/RiderScreens/AfterLogInScreens/RidesScreens/InProgressScreenDetails.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,6 +56,8 @@ class _InProgressScreenState extends State<InProgressScreen> {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
 
+    print("UserID ${userID}");
+
     Map data = {
       "users_fleet_id": userID.toString(),
     };
@@ -94,7 +97,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
                 itemCount: inProgressRidesList!.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
-                physics: const BouncingScrollPhysics(),
+                // physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   final listItem = inProgressRidesList![index];
                   DateTime time =
@@ -125,9 +128,10 @@ class _InProgressScreenState extends State<InProgressScreen> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 14.w, vertical: 14.h),
                             width: double.infinity,
-                            height: details && selectedIndex == index
-                                ? 185.h
-                                : 110.h,
+                            height:
+                            // details && selectedIndex == index
+                            //     ? 185.h :
+                            110.h,
                             decoration: BoxDecoration(
                               color: lightWhite,
                               borderRadius: BorderRadius.circular(20),
@@ -247,64 +251,64 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                     ),
                                   ],
                                 ),
-                                selectedIndex == index
-                                    ? Expanded(
-                                        child: Visibility(
-                                          visible: details,
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 30.h,
-                                              ),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                      'assets/images/location.svg'),
-                                                  SizedBox(
-                                                    width: 7.h,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Pickup',
-                                                        style:
-                                                            GoogleFonts.inter(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: grey,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 290.w,
-                                                        child: Text(
-                                                          '${listItem.bookings!.pickup_address}',
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              GoogleFonts.inter(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: black,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    : const SizedBox(),
+                                // selectedIndex == index
+                                //     ? Expanded(
+                                //         child: Visibility(
+                                //           visible: details,
+                                //           child: Column(
+                                //             children: [
+                                //               SizedBox(
+                                //                 height: 30.h,
+                                //               ),
+                                //               Row(
+                                //                 crossAxisAlignment:
+                                //                     CrossAxisAlignment.start,
+                                //                 children: [
+                                //                   SvgPicture.asset(
+                                //                       'assets/images/location.svg'),
+                                //                   SizedBox(
+                                //                     width: 7.h,
+                                //                   ),
+                                //                   Column(
+                                //                     crossAxisAlignment:
+                                //                         CrossAxisAlignment
+                                //                             .start,
+                                //                     children: [
+                                //                       Text(
+                                //                         'Pickup',
+                                //                         style:
+                                //                             GoogleFonts.inter(
+                                //                           fontSize: 14,
+                                //                           fontWeight:
+                                //                               FontWeight.w400,
+                                //                           color: grey,
+                                //                         ),
+                                //                       ),
+                                //                       SizedBox(
+                                //                         width: 290.w,
+                                //                         child: Text(
+                                //                           '${listItem.bookings!.pickup_address}',
+                                //                           maxLines: 2,
+                                //                           overflow: TextOverflow
+                                //                               .ellipsis,
+                                //                           style:
+                                //                               GoogleFonts.inter(
+                                //                             fontSize: 16,
+                                //                             fontWeight:
+                                //                                 FontWeight.w500,
+                                //                             color: black,
+                                //                           ),
+                                //                         ),
+                                //                       ),
+                                //                     ],
+                                //                   ),
+                                //                 ],
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ),
+                                //       )
+                                //     : const SizedBox(),
                               ],
                             ),
                           ),
@@ -316,6 +320,19 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                   selectedIndex = index;
                                   details = !details;
                                 });
+                                // Navigator.pushReplacement(context,
+                                //     MaterialPageRoute(builder: (context) => InProgressDetails(inProgressRidesList: listItem, inProgressRidesList2: inProgressRidesList,)));
+                                showModalBottomSheet(
+                                    backgroundColor: white,
+                                    // isDismissible: false,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (context) => InProgressDetails(inProgressRidesList: listItem, inProgressRidesList2: inProgressRidesList,));
                               },
                               child: details && selectedIndex == index
                                   ? detailsButtonOpen(context)

@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Constants/Colors.dart';
 import '../Constants/back-arrow-with-container.dart';
@@ -20,6 +21,10 @@ import '../LogInScreen.dart';
 import '../models/API models/API response.dart';
 import '../services/API_services.dart';
 import '../utilities/showToast.dart';
+import 'RideDetailsAfterLogIn.dart';
+
+int? fleetId;
+String? parentId;
 
 class DrivingLicensePictureVerification extends StatefulWidget {
   final Map licenseMap;
@@ -43,6 +48,12 @@ class _DrivingLicensePictureVerificationState
   late FlutterGifController gifController;
 
   ApiServices get service => GetIt.I<ApiServices>();
+
+  sharedPrefs() async {
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    fleetId = sharedPref.getInt('userID');
+    parentId = sharedPref.getString('userEmail');
+  }
 
   @override
   void initState() {
@@ -335,8 +346,10 @@ class _DrivingLicensePictureVerificationState
         showToastSuccess(verifyResponse!.message, FToast().init(context));
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => LogInScreen(
+              builder: (context) => RideDetailsAfterLogInScreen(
                 userType: 'Rider',
+                userFleetId: fleetId.toString(),
+                parentID: parentId.toString(),
               ),
             ),
             (route) => false);

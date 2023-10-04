@@ -140,7 +140,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => RegisterScreen(
+                    builder: (context) => LogInScreen(
                       userType: widget.rider,
                       deviceID: identifier.toString(),
                     ),
@@ -155,43 +155,43 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             SizedBox(
               height: 30.h,
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 20.0.h),
-              child: GestureDetector(
-                onTap: () {
-                  _deviceDetails();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => LogInScreen(
-                        userType: widget.rider,
-                        deviceID: identifier.toString(),
-                      ),
-                    ),
-                  );
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Have an account already? ',
-                    style: GoogleFonts.syne(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
-                      color: grey,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Login',
-                        style: GoogleFonts.syne(
-                          decoration: TextDecoration.underline,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: orange,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(bottom: 20.0.h),
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       _deviceDetails();
+            //       Navigator.of(context).push(
+            //         MaterialPageRoute(
+            //           builder: (context) => LogInScreen(
+            //             userType: widget.rider,
+            //             deviceID: identifier.toString(),
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //     child: RichText(
+            //       text: TextSpan(
+            //         text: 'Have an account already? ',
+            //         style: GoogleFonts.syne(
+            //           fontSize: 13,
+            //           fontWeight: FontWeight.w400,
+            //           color: grey,
+            //         ),
+            //         children: [
+            //           TextSpan(
+            //             text: 'Login',
+            //             style: GoogleFonts.syne(
+            //               decoration: TextDecoration.underline,
+            //               fontSize: 14,
+            //               fontWeight: FontWeight.w500,
+            //               color: orange,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

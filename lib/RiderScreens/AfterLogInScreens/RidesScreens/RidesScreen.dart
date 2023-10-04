@@ -247,10 +247,10 @@ class _RidesScreenState extends State<RidesScreen>
                   child: TabBarView(
                     physics: const NeverScrollableScrollPhysics(),
                     controller: tabController,
-                    children: const [
+                    children:  [
                       InProgressScreen(),
-                      CompletedRidesScreen(),
-                      CencelledRidesScreen(),
+                      const CompletedRidesScreen(),
+                      const CencelledRidesScreen(),
                     ],
                   ),
                 ),

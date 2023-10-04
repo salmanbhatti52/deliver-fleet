@@ -126,15 +126,15 @@ class _VerifyYourselfState extends State<VerifyYourself> {
     if (emailResponse!.status!.toLowerCase() == 'success') {
       showToastSuccess(
           emailResponse!.message!.toString(), FToast().init(context));
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => EmailVerificationScreen(
-            email: widget.email,
-            userType: widget.appMode,
-            deviceID: widget.deviceID ?? '',
-          ),
-        ),
-      );
+      // Navigator.of(context).push(
+      //   MaterialPageRoute(
+      //     builder: (context) => EmailVerificationScreen(
+      //       email: widget.email,
+      //       userType: widget.appMode,
+      //       deviceID: widget.deviceID ?? '',
+      //     ),
+      //   ),
+      // );
     } else {
       showToastError(emailResponse!.status, FToast().init(context));
     }

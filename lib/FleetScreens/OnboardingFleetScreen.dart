@@ -129,7 +129,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => RegisterScreen(
+                    builder: (context) => LogInScreen(
                       userType: widget.fleet,
                       deviceID: identifier.toString(),
                     ),
@@ -145,44 +145,44 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
             SizedBox(
               height: 30.h,
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 20.0.h),
-              child: GestureDetector(
-                onTap: () {
-                  print('rider to fleet user tyep:  ' + widget.fleet);
-                  // _deviceDetails();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => LogInScreen(
-                        userType: widget.fleet,
-                        deviceID: identifier.toString(),
-                      ),
-                    ),
-                  );
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Have an account already? ',
-                    style: GoogleFonts.syne(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
-                      color: grey,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Login',
-                        style: GoogleFonts.syne(
-                          decoration: TextDecoration.underline,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: orange,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(bottom: 20.0.h),
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       print('rider to fleet user tyep:  ' + widget.fleet);
+            //       // _deviceDetails();
+            //       Navigator.of(context).push(
+            //         MaterialPageRoute(
+            //           builder: (context) => LogInScreen(
+            //             userType: widget.fleet,
+            //             deviceID: identifier.toString(),
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //     child: RichText(
+            //       text: TextSpan(
+            //         text: 'Have an account already? ',
+            //         style: GoogleFonts.syne(
+            //           fontSize: 13,
+            //           fontWeight: FontWeight.w400,
+            //           color: grey,
+            //         ),
+            //         children: [
+            //           TextSpan(
+            //             text: 'Login',
+            //             style: GoogleFonts.syne(
+            //               decoration: TextDecoration.underline,
+            //               fontSize: 14,
+            //               fontWeight: FontWeight.w500,
+            //               color: orange,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

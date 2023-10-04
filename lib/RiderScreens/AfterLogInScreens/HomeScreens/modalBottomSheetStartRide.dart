@@ -126,7 +126,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   Widget build(BuildContext context) {
     for (int i = 0; i < widget.bookingDestinations.length; i++) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 20.h),
+        padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 10.h),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
@@ -658,6 +658,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
           Navigator.of(context).pop();
           showModalBottomSheet(
             backgroundColor: white,
+            isDismissible: false,
             isScrollControlled: true,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(

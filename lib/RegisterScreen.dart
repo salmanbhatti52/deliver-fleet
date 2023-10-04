@@ -15,17 +15,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Constants/Colors.dart';
 import 'Constants/buttonContainer.dart';
+import 'FleetScreens/BottomNavBarFleet.dart';
 import 'LogInScreen.dart';
+import 'RiderScreens/VerifyDrivingLisecnseManually.dart';
 import 'models/API models/API response.dart';
 
 class RegisterScreen extends StatefulWidget {
   final String userType;
   final String deviceID;
+  final String phoneNumber;
   const RegisterScreen(
-      {super.key, required this.userType, required this.deviceID});
+      {super.key, required this.userType, required this.phoneNumber, required this.deviceID});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -36,10 +40,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
   late TextEditingController emailController;
-  late TextEditingController passwordController;
-  late TextEditingController confirmPasswordController;
-  late TextEditingController phoneNumberController;
+  // late TextEditingController passwordController;
+  // late TextEditingController confirmPasswordController;
+  // late TextEditingController phoneNumberController;
   late TextEditingController fleetCodeController;
+  late TextEditingController nINController;
 
   bool passwordHidden = false;
   bool newPasswordHidden = false;
@@ -95,9 +100,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     emailController = TextEditingController();
-    passwordController = TextEditingController();
-    confirmPasswordController = TextEditingController();
-    phoneNumberController = TextEditingController();
+    nINController = TextEditingController();
+    // passwordController = TextEditingController();
+    // confirmPasswordController = TextEditingController();
+    // phoneNumberController = TextEditingController();
     fleetCodeController = TextEditingController();
   }
 
@@ -108,9 +114,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     lastNameController.dispose();
     firstNameController.dispose();
     emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    phoneNumberController.dispose();
+    // passwordController.dispose();
+    // confirmPasswordController.dispose();
+    // phoneNumberController.dispose();
+    nINController.dispose();
     fleetCodeController.dispose();
   }
 
@@ -150,7 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 20.h,
                               ),
                               Text(
-                                'REGISTER',
+                                'Create Profile',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.inter(
                                   fontSize: 30,
@@ -212,82 +219,82 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   length: -1,
                                 ),
                               ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
-                                width: 296.w,
-                                child: TextFormFieldWidget(
-                                  validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return 'phone number cannot be empty';
-                                    }
-                                    return null;
-                                  },
-                                  controller: phoneNumberController,
-                                  textInputType: TextInputType.number,
-                                  enterTextStyle: enterTextStyle,
-                                  cursorColor: orange,
-                                  hintText: '123 456 789',
-                                  border: border,
-                                  hintStyle: hintStyle,
-                                  focusedBorder: focusedBorder,
-                                  obscureText: null,
-                                  contentPadding: contentPadding,
-                                  enableBorder: enableBorder,
-                                  prefixIcon: GestureDetector(
-                                    onTap: () async {
-                                      final code = await countryPicker
-                                          .showPicker(context: context);
-                                      setState(() {
-                                        countryCode = code;
-                                      });
-                                    },
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 20),
-                                          child: Container(
-                                            child: countryCode != null
-                                                ? Image.asset(
-                                                    countryCode!.flagUri,
-                                                    package: countryCode!
-                                                        .flagImagePackage,
-                                                    width: 25,
-                                                    height: 20,
-                                                  )
-                                                : Image.asset(
-                                                    'assets/images/flag-icon.png',
-                                                    width: 20,
-                                                    height: 20,
-                                                    color: orange,
-                                                    fit: BoxFit.scaleDown,
-                                                  ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            countryCode?.dialCode ?? "+234",
-                                            textAlign: TextAlign.center,
-                                            style: hintStyle,
-                                          ),
-                                        ),
-                                        SizedBox(width: 10.w),
-                                        Text(
-                                          '|',
-                                          style: hintStyle,
-                                        ),
-                                        SizedBox(width: 10.w),
-                                      ],
-                                    ),
-                                  ),
-                                  length: 15,
-                                ),
-                              ),
+                              // SizedBox(
+                              //   height: 20.h,
+                              // ),
+                              // SizedBox(
+                              //   width: 296.w,
+                              //   child: TextFormFieldWidget(
+                              //     validator: (val) {
+                              //       if (val!.isEmpty) {
+                              //         return 'phone number cannot be empty';
+                              //       }
+                              //       return null;
+                              //     },
+                              //     controller: phoneNumberController,
+                              //     textInputType: TextInputType.number,
+                              //     enterTextStyle: enterTextStyle,
+                              //     cursorColor: orange,
+                              //     hintText: '123 456 789',
+                              //     border: border,
+                              //     hintStyle: hintStyle,
+                              //     focusedBorder: focusedBorder,
+                              //     obscureText: null,
+                              //     contentPadding: contentPadding,
+                              //     enableBorder: enableBorder,
+                              //     prefixIcon: GestureDetector(
+                              //       onTap: () async {
+                              //         final code = await countryPicker
+                              //             .showPicker(context: context);
+                              //         setState(() {
+                              //           countryCode = code;
+                              //         });
+                              //       },
+                              //       child: Row(
+                              //         mainAxisSize: MainAxisSize.min,
+                              //         children: [
+                              //           Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 20),
+                              //             child: Container(
+                              //               child: countryCode != null
+                              //                   ? Image.asset(
+                              //                       countryCode!.flagUri,
+                              //                       package: countryCode!
+                              //                           .flagImagePackage,
+                              //                       width: 25,
+                              //                       height: 20,
+                              //                     )
+                              //                   : Image.asset(
+                              //                       'assets/images/flag-icon.png',
+                              //                       width: 20,
+                              //                       height: 20,
+                              //                       color: orange,
+                              //                       fit: BoxFit.scaleDown,
+                              //                     ),
+                              //             ),
+                              //           ),
+                              //           Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 10),
+                              //             child: Text(
+                              //               countryCode?.dialCode ?? "+234",
+                              //               textAlign: TextAlign.center,
+                              //               style: hintStyle,
+                              //             ),
+                              //           ),
+                              //           SizedBox(width: 10.w),
+                              //           Text(
+                              //             '|',
+                              //             style: hintStyle,
+                              //           ),
+                              //           SizedBox(width: 10.w),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //     length: 15,
+                              //   ),
+                              // ),
                               SizedBox(
                                 height: 20.h,
                               ),
@@ -322,88 +329,114 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 child: TextFormFieldWidget(
                                   validator: (val) {
                                     if (val!.isEmpty) {
-                                      return 'password cannot be empty';
+                                      return 'NIN cannot be empty';
                                     }
                                     return null;
                                   },
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        passwordHidden = !passwordHidden;
-                                      });
-                                    },
-                                    child: passwordHidden
-                                        ? SvgPicture.asset(
-                                            'assets/images/pass-hide-icon.svg',
-                                            fit: BoxFit.scaleDown,
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/pass-icon.svg',
-                                            // colorFilter:
-                                            // ColorFilter.mode(orange, BlendMode.srcIn),
-                                            fit: BoxFit.scaleDown,
-                                          ),
-                                  ),
-                                  controller: passwordController,
-                                  textInputType: TextInputType.visiblePassword,
+                                  controller: nINController,
+                                  textInputType: TextInputType.text,
                                   enterTextStyle: enterTextStyle,
                                   cursorColor: orange,
-                                  hintText: 'Password',
+                                  hintText: 'National Identification Number',
                                   border: border,
                                   hintStyle: hintStyle,
                                   focusedBorder: focusedBorder,
-                                  obscureText: passwordHidden,
                                   contentPadding: contentPadding,
+                                  obscureText: null,
                                   enableBorder: enableBorder,
                                   length: -1,
                                 ),
                               ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
-                                width: 296.w,
-                                child: TextFormFieldWidget(
-                                  validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return 'password cannot be empty';
-                                    } else if (passwordController.text != val) {
-                                      return 'enter correct password';
-                                    }
-                                    return null;
-                                  },
-                                  controller: confirmPasswordController,
-                                  textInputType: TextInputType.visiblePassword,
-                                  enterTextStyle: enterTextStyle,
-                                  cursorColor: orange,
-                                  hintText: 'Confirm Password',
-                                  border: border,
-                                  hintStyle: hintStyle,
-                                  focusedBorder: focusedBorder,
-                                  obscureText: newPasswordHidden,
-                                  contentPadding: contentPadding,
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        newPasswordHidden = !newPasswordHidden;
-                                      });
-                                    },
-                                    child: newPasswordHidden
-                                        ? SvgPicture.asset(
-                                            'assets/images/pass-hide-icon.svg',
-                                            fit: BoxFit.scaleDown,
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/pass-icon.svg',
-                                            // colorFilter:
-                                            // ColorFilter.mode(orange, BlendMode.srcIn),
-                                            fit: BoxFit.scaleDown,
-                                          ),
-                                  ),
-                                  enableBorder: enableBorder,
-                                  length: -1,
-                                ),
-                              ),
+                              // SizedBox(
+                              //   height: 20.h,
+                              // ),
+                              // SizedBox(
+                              //   width: 296.w,
+                              //   child: TextFormFieldWidget(
+                              //     validator: (val) {
+                              //       if (val!.isEmpty) {
+                              //         return 'password cannot be empty';
+                              //       }
+                              //       return null;
+                              //     },
+                              //     suffixIcon: GestureDetector(
+                              //       onTap: () {
+                              //         setState(() {
+                              //           passwordHidden = !passwordHidden;
+                              //         });
+                              //       },
+                              //       child: passwordHidden
+                              //           ? SvgPicture.asset(
+                              //               'assets/images/pass-hide-icon.svg',
+                              //               fit: BoxFit.scaleDown,
+                              //             )
+                              //           : SvgPicture.asset(
+                              //               'assets/images/pass-icon.svg',
+                              //               // colorFilter:
+                              //               // ColorFilter.mode(orange, BlendMode.srcIn),
+                              //               fit: BoxFit.scaleDown,
+                              //             ),
+                              //     ),
+                              //     controller: passwordController,
+                              //     textInputType: TextInputType.visiblePassword,
+                              //     enterTextStyle: enterTextStyle,
+                              //     cursorColor: orange,
+                              //     hintText: 'Password',
+                              //     border: border,
+                              //     hintStyle: hintStyle,
+                              //     focusedBorder: focusedBorder,
+                              //     obscureText: passwordHidden,
+                              //     contentPadding: contentPadding,
+                              //     enableBorder: enableBorder,
+                              //     length: -1,
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: 20.h,
+                              // ),
+                              // SizedBox(
+                              //   width: 296.w,
+                              //   child: TextFormFieldWidget(
+                              //     validator: (val) {
+                              //       if (val!.isEmpty) {
+                              //         return 'password cannot be empty';
+                              //       } else if (passwordController.text != val) {
+                              //         return 'enter correct password';
+                              //       }
+                              //       return null;
+                              //     },
+                              //     controller: confirmPasswordController,
+                              //     textInputType: TextInputType.visiblePassword,
+                              //     enterTextStyle: enterTextStyle,
+                              //     cursorColor: orange,
+                              //     hintText: 'Confirm Password',
+                              //     border: border,
+                              //     hintStyle: hintStyle,
+                              //     focusedBorder: focusedBorder,
+                              //     obscureText: newPasswordHidden,
+                              //     contentPadding: contentPadding,
+                              //     suffixIcon: GestureDetector(
+                              //       onTap: () {
+                              //         setState(() {
+                              //           newPasswordHidden = !newPasswordHidden;
+                              //         });
+                              //       },
+                              //       child: newPasswordHidden
+                              //           ? SvgPicture.asset(
+                              //               'assets/images/pass-hide-icon.svg',
+                              //               fit: BoxFit.scaleDown,
+                              //             )
+                              //           : SvgPicture.asset(
+                              //               'assets/images/pass-icon.svg',
+                              //               // colorFilter:
+                              //               // ColorFilter.mode(orange, BlendMode.srcIn),
+                              //               fit: BoxFit.scaleDown,
+                              //             ),
+                              //     ),
+                              //     enableBorder: enableBorder,
+                              //     length: -1,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -424,6 +457,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 textInputType: TextInputType.text,
                                 enterTextStyle: enterTextStyle,
                                 cursorColor: orange,
+                                // hintText: 'National identification number',
                                 hintText: 'Fleet Code',
                                 border: border,
                                 hintStyle: hintStyle,
@@ -551,65 +585,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ),
                                     )
                                   : registerMethod(context),
-                              child: buttonContainer(context, 'REGISTER'),
+                              child: buttonContainer(context, 'Save'),
                             ),
                       SizedBox(
                         height: 15.h,
-                      ),
-                      Text(
-                        'OR',
-                        style: GoogleFonts.syne(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: grey,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: facebookButton(context),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      GestureDetector(
-                        onTap: null,
-                        child: googleButton(context),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 20.0.h, top: 20.h),
-                        child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => LogInScreen(
-                                userType: widget.userType,
-                              ),
-                            ),
-                          ),
-                          child: RichText(
-                            text: TextSpan(
-                              text: 'Have an account already? ',
-                              style: GoogleFonts.syne(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400,
-                                color: grey,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: 'Login',
-                                  style: GoogleFonts.syne(
-                                    decoration: TextDecoration.underline,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: orange,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -634,10 +613,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         "one_signal_id": widget.deviceID,
         "first_name": firstNameController.text,
         "last_name": lastNameController.text,
-        "phone": phoneNumberController.text,
+        "phone": widget.phoneNumber,
         "email": emailController.text,
-        "password": passwordController.text,
-        "confirm_password": confirmPasswordController.text,
+        "national_identification_no": nINController.text,
+        // "password": passwordController.text,
+        // "confirm_password": confirmPasswordController.text,
         "parent_id": fleetCodeController.text,
         "account_type": "SignupWithApp"
       };
@@ -650,15 +630,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
         showToastSuccess(
             _signupResponse!.message!.toString(), FToast().init(context),
             seconds: 1);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => VerifyYourself(
-              email: emailController.text,
-              appMode: widget.userType,
-              deviceID: widget.deviceID,
+        if(widget.userType == "Rider"){
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => VerifyDrivingLicenseManually(
+                email: emailController.text,
+                userType: widget.userType,
+                // deviceID: widget.deviceID,
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => BottomNavBarFleet(),
+              ),
+                  (Route<dynamic> route) => false);
+        }
       } else {
         print('device id for android while registering:  ' +
             _signupResponse!.message!.toString());

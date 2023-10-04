@@ -510,8 +510,13 @@ class _RideDetailsAfterLogInSecondScreenState
         "cost": '',
         "manufacture_year": manufacturingYearController.text,
       });
+      print('vehicle_license_expiry_date ${expDateOfVehicleController.text}');
+      print('vehicle_insurance_expiry_date ${expDateOfInsuranceController.text}');
+      print('rwc_expiry_date ${expDateOfRoadWorthinessController.text}');
+      print('manufacture_year ${manufacturingYearController.text}');
       addVehicleResponse = await service.addVehicleAPI(widget.addBikeData);
       if (addVehicleResponse!.status!.toLowerCase() == 'success') {
+        print("status ${addVehicleResponse!.status!.toLowerCase()}");
         showToastSuccess(
             'Your bike is added successfully', FToast().init(context));
         Navigator.of(context).push(

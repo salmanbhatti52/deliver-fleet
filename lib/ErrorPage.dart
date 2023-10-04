@@ -72,7 +72,7 @@ class _ErrorPageState extends State<ErrorPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 20.0, top: 40),
+                padding: const EdgeInsets.only(bottom: 18.0, top: 40),
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
                   child: buttonContainer(context, 'GO BACK'),

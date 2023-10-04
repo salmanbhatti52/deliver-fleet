@@ -19,44 +19,71 @@ class _CustomSplashState extends State<CustomSplash> {
   late SharedPreferences sharedPreferences;
   String isLogin = 'false';
   String userType = '';
+  int userID = -1;
 
   @override
   void initState() {
     super.initState();
-    init();
+    // init();
+    sharedPrefs();
   }
 
-  init() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    isLogin = (sharedPreferences.getString('isLogin')) ?? 'false';
-    userType = (sharedPreferences.getString('userType')) ?? 'false';
-
+  sharedPrefs() async {
     Future.delayed(
-      const Duration(seconds: 6),
-      () async {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            //pushReplacement = replacing the route so that
-            //splash screen won't show on back button press
-            //navigation to Home page.
-            // builder: (context) {
-            //   return isLogin == "true"
-            //       ? const BottomNavigationBarScreens()
-            //       : const OnBoardingScreens();
-            // },
-            builder: (context) {
-              return isLogin == 'true' || userType == 'Rider'
-                  ? const BottomNavBar()
-                  : isLogin == 'true' || userType == 'Fleet'
-                      ? BottomNavBarFleet()
-                      : ChooseAppScreen();
-            },
-          ),
-        );
-      },
-    );
+        const Duration(seconds: 6),
+            () async {
+          SharedPreferences sharedPref = await SharedPreferences.getInstance();
+          userID = (sharedPref.getInt('userID') ?? -1);
+          userType = (sharedPref.getString('userType') ?? "");
+          print("userId value is = $userID");
+          print("userType ${userType}");
+
+          if (userID != null && userType == "Rider") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const  BottomNavBar()));
+            print("current session starts with userId = $userID");
+          } else if(userID != null && userType == "Fleet") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const BottomNavBarFleet()));
+            print("userId value is = $userID");
+          } else {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const  ChooseAppScreen()));
+          }
+        });
   }
+
+  // init() async {
+  //   sharedPreferences = await SharedPreferences.getInstance();
+  //   isLogin = (sharedPreferences.getString('isLogin')) ?? 'false';
+  //   userType = (sharedPreferences.getString('userType')) ?? 'false';
+  //
+  //   Future.delayed(
+  //     const Duration(seconds: 6),
+  //     () async {
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           //pushReplacement = replacing the route so that
+  //           //splash screen won't show on back button press
+  //           //navigation to Home page.
+  //           // builder: (context) {
+  //           //   return isLogin == "true"
+  //           //       ? const BottomNavigationBarScreens()
+  //           //       : const OnBoardingScreens();
+  //           // },
+  //           builder: (context) {
+  //             return isLogin == 'true' && userType == 'Rider'
+  //                 ? const BottomNavBar()
+  //                 : isLogin == 'true' && userType == 'Fleet'
+  //                     ? BottomNavBarFleet()
+  //                     : ChooseAppScreen();
+  //           },
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

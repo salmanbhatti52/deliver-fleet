@@ -21,7 +21,7 @@ Widget facebookButton(
         children: [
           SvgPicture.asset('assets/images/facebook-button.svg'),
           Text(
-            'Sign Up with Facebook',
+            'Login with Facebook',
             textAlign: TextAlign.center,
             style: GoogleFonts.syne(
               fontSize: 16,
