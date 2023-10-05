@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:Deliver_Rider/LogInScreen.dart';
 import 'package:Deliver_Rider/RegisterScreen.dart';
@@ -233,7 +234,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             'Your account is not approved yet.',
             FToast().init(context),
             seconds: 3);
-      }  else if(checkPhoneNumberModel.status == "error" && checkPhoneNumberModel.message == "Your account is not approved yet.") {
+      }  else if(checkPhoneNumberModel.status == "error" && checkPhoneNumberModel.message == "Phone number does not exist.") {
         print("3");
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(

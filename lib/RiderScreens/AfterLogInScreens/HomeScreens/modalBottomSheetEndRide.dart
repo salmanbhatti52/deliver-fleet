@@ -256,7 +256,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    height: 35.h,
+                    height: 36.h,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -390,7 +390,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                             child: AutoSizeText(
                               widget.bookingDestinations[i].destin_address!,
                               minFontSize: 12,
-                              maxLines: 3,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.inter(
                                 fontSize: 14,

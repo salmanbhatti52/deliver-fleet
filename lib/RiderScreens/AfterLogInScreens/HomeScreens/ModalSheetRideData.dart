@@ -101,7 +101,7 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                     ],
                   ),
                   SizedBox(
-                    height: 4.h,
+                    height: 3.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,7 +125,7 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                     ],
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 9.h,
                   ),
                   Row(
                     children: [
@@ -204,7 +204,7 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                               widget
                                   .bookingDestinationsList![i].destin_address!,
                               minFontSize: 12,
-                              maxLines: 3,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
@@ -218,7 +218,7 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                     ],
                   ),
                   SizedBox(
-                    height: 18.h,
+                    height: 13.h,
                   ),
                   Expanded(
                     child: Row(

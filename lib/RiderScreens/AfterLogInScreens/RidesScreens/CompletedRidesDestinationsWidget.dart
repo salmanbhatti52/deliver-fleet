@@ -60,14 +60,19 @@ class _CompletedRidesDestinationsWidgetState
                       color: grey,
                     ),
                   ),
-                  Text(
-                    widget.destination,
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: black,
+                  Container(
+                    width: 300.h,
+                    child: Text(
+                      widget.destination,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: black,
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ],

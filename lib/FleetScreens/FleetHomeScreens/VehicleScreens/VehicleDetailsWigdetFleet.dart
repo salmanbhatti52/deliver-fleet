@@ -69,7 +69,7 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
         ? spinKitRotatingCircle
         : Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            height: 255.h,
+            height: 260.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: white,

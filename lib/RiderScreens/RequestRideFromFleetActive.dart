@@ -74,11 +74,13 @@ class _RequestRideFromFleetActiveState
     } else {
       showToastError(
           getAvailableBikesResponse!.message, FToast().init(context));
+      setState(() {
+        isPageLoading = false;
+      });
     }
 
     selectedVehicleID = getAvailableBikesList![0].users_fleet_vehicles_id!;
     bikeID = getAvailableBikesList![0].vehicles!.vehicles_id!;
-
     setState(() {
       isPageLoading = false;
     });

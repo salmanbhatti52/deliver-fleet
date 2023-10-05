@@ -295,7 +295,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    height: 35.h,
+                    height: 36.h,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -384,7 +384,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                         width: 290.w,
                         child: AutoSizeText(
                           widget.bookingModel.pickup_address!,
-                          maxLines: 3,
+                          maxLines: 2,
                           minFontSize: 12,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.inter(
@@ -429,7 +429,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                             child: AutoSizeText(
                               widget.bookingDestinations[i].destin_address!,
                               minFontSize: 12,
-                              maxLines: 3,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.inter(
                                 fontSize: 14,

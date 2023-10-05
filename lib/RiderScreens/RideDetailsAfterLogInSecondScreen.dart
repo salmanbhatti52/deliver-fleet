@@ -1,4 +1,5 @@
 import 'package:Deliver_Rider/FleetScreens/BottomNavBarFleet.dart';
+import 'package:Deliver_Rider/LogInScreen.dart';
 import 'package:Deliver_Rider/widgets/TextFormField_Widget.dart';
 import 'package:Deliver_Rider/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class _RideDetailsAfterLogInSecondScreenState
     expDateOfVehicleController = TextEditingController();
     expDateOfInsuranceController = TextEditingController();
     expDateOfRoadWorthinessController = TextEditingController();
+    print("bikeData ${widget.addBikeData}");
     // costController = TextEditingController();
     manufacturingYearController = TextEditingController();
   }
@@ -511,26 +513,30 @@ class _RideDetailsAfterLogInSecondScreenState
         "manufacture_year": manufacturingYearController.text,
       });
       print('vehicle_license_expiry_date ${expDateOfVehicleController.text}');
+      print("bikedata ${widget.addBikeData}");
       print('vehicle_insurance_expiry_date ${expDateOfInsuranceController.text}');
       print('rwc_expiry_date ${expDateOfRoadWorthinessController.text}');
       print('manufacture_year ${manufacturingYearController.text}');
       addVehicleResponse = await service.addVehicleAPI(widget.addBikeData);
+      print("addVehicleResponse!.status!.toLowerCase() ${addVehicleResponse!.status!.toLowerCase()}");
       if (addVehicleResponse!.status!.toLowerCase() == 'success') {
         print("status ${addVehicleResponse!.status!.toLowerCase()}");
         showToastSuccess(
             'Your bike is added successfully', FToast().init(context));
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => widget.userType == 'Rider'
+        //         ? const BottomNavBar()
+        //         : const BottomNavBarFleet(),
+        //   ),
+        // );
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => widget.userType == 'Rider'
-                ? const BottomNavBar()
-                : const BottomNavBarFleet(),
+            builder: (context) =>  LogInScreen(userType: widget.userType),
           ),
         );
       } else {
-        print('error   ' +
-            addVehicleResponse!.status.toString() +
-            '  ' +
-            addVehicleResponse!.message.toString());
+        print('error   ' + addVehicleResponse!.status.toString() + '  ' + addVehicleResponse!.message.toString());
         showToastError(addVehicleResponse!.status, FToast().init(context));
       }
     }
