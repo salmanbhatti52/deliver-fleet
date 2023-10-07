@@ -641,9 +641,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           );
         } else {
+          showToastSuccess(
+              "You have registered Successfully, PLease Wait Admin Approve Your Account Soon...", FToast().init(context),
+              seconds: 1);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => BottomNavBarFleet(),
+                builder: (context) => LogInScreen(userType: widget.userType,),
               ),
                   (Route<dynamic> route) => false);
         }

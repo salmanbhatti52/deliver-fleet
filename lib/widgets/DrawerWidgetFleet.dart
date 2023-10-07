@@ -16,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../FleetScreens/DrawerSceensFleet/InviteRiders.dart';
+import '../RiderScreens/BottomNavBar.dart';
 import '../RiderScreens/DrawerScreens/NotificationScreen.dart';
 import '../RiderScreens/DrawerScreens/Settings/SettingsScreen.dart';
 import '../models/API models/API response.dart';
@@ -237,7 +238,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                                       .data!.driving_license_no ==
                                   '' ||
                               getUserProfileResponse!
-                                      .data!.driving_license_no!.isEmpty &&
+                                      .data!.driving_license_no!.isEmpty && getUserProfileResponse!
+                                  .data!.address!.isEmpty &&
                                   getUserProfileResponse!.data!.user_type ==
                                       'Fleet') {
                             Navigator.of(context).push(
@@ -250,8 +252,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                           } else {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      OnboardingScreen(rider: 'Rider')),
+                                  builder: (context) => const BottomNavBar(),
+                              ),
                             );
                           }
                           showToastSuccess(

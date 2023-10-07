@@ -20,13 +20,14 @@ class CheckPhoneNumberModel {
   });
 
   factory CheckPhoneNumberModel.fromJson(Map<String, dynamic> json) => CheckPhoneNumberModel(
-    status: json["status"],
+    status:   json["status"],
     message : json["message"] != null ? json["message"] : null,
-    data:json["data"] != null ? Data.fromJson(json["data"]) : null,
+    data:     json["data"] != null ? Data.fromJson(json["data"]) : null,
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
+    "message" : message,
     "data": data!.toJson(),
   };
 }
@@ -70,8 +71,8 @@ class Data {
   dynamic phoneVerified;
   dynamic forgotPwdOtp;
   dynamic forgotPwdOtpCreatedAt;
-  DateTime? dateAdded;
-  DateTime? dateModified;
+  String? dateAdded;
+  String? dateModified;
   String? status;
 
   Data({
@@ -157,8 +158,8 @@ class Data {
     phoneVerified: json["phone_verified"],
     forgotPwdOtp: json["forgot_pwd_otp"],
     forgotPwdOtpCreatedAt: json["forgot_pwd_otp_created_at"],
-    dateAdded: DateTime.parse(json["date_added"]),
-    dateModified: DateTime.parse(json["date_modified"]),
+    dateAdded: json["date_added"],
+    dateModified: json["date_modified"],
     status: json["status"],
   );
 
@@ -201,8 +202,8 @@ class Data {
     "phone_verified": phoneVerified,
     "forgot_pwd_otp": forgotPwdOtp,
     "forgot_pwd_otp_created_at": forgotPwdOtpCreatedAt,
-    "date_added": dateAdded!.toIso8601String(),
-    "date_modified": dateModified!.toIso8601String(),
+    "date_added": dateAdded,
+    "date_modified": dateModified,
     "status": status,
   };
 }

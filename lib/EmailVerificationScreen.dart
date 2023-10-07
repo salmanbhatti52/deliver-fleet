@@ -26,6 +26,8 @@ import 'Constants/back-arrow-with-container.dart';
 import 'Constants/buttonContainer.dart';
 import 'FleetScreens/BottomNavBarFleet.dart';
 import 'RiderScreens/BottomNavBar.dart';
+import 'RiderScreens/DrivingLicensePictureVerification.dart';
+import 'RiderScreens/RideDetailsAfterLogIn.dart';
 import 'RiderScreens/VerifyDrivingLisecnseManually.dart';
 import 'models/API models/API response.dart';
 import 'models/API models/CheckPhoneNumberModel.dart';
@@ -116,7 +118,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
 
   checkNumber() async {
-    try {
+    // try {
       String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
       print("contactNumber: ${widget.phoneNumber}");
       final response = await http.post(
@@ -136,34 +138,44 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       print("response: $responseString");
       print("statusCode: ${response.statusCode}");
       if (response.statusCode == 200) {
+        print("hello1");
         checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
-        print("status ${checkPhoneNumberModel.status}");
-        print("message ${checkPhoneNumberModel.message}");
-        print('checkNumberModel status: ${checkPhoneNumberModel.status}');
-        SharedPreferences sharedPref = await SharedPreferences.getInstance();
-        await sharedPref.setInt('userID', checkPhoneNumberModel.data!.usersFleetId!.toInt());
-        await sharedPref.setString('userEmail', checkPhoneNumberModel.data!.email.toString());
-        await sharedPref.setString('userLatitude', widget.latitude.toString());
-        await sharedPref.setString('userLongitude', widget.longitude.toString());
-        await sharedPref.setString('deviceIDInfo', checkPhoneNumberModel.data!.oneSignalId.toString());
-        await sharedPref.setString('userType', checkPhoneNumberModel.data!.userType.toString());
-        await sharedPref.setString('parentID', checkPhoneNumberModel.data!.parentId.toString());
-        await sharedPref.setString('isLogIn', 'true');
-        print("sharedPref userId: ${checkPhoneNumberModel.data!.usersFleetId.toString()}");
-        print("sharedPref email: ${checkPhoneNumberModel.data!.email}");
-        print("sharedPref lat: ${widget.latitude.toString()}");
-        print("sharedPref long: ${widget.longitude.toString()}");
-        print("sharedPref info: ${checkPhoneNumberModel.data!.oneSignalId.toString()}");
-        print("sharedPref type: ${checkPhoneNumberModel.data!.userType}");
-        print("sharedPref parentId: ${checkPhoneNumberModel.data!.parentId}");
-        // print("sharedPref isLogin: ${""}");
         setState(() {});
+        print("hello2");
+        // if (checkPhoneNumberModel.data != null) {
+        //   SharedPreferences sharedPref = await SharedPreferences.getInstance();
+        //   await sharedPref.setInt('userID', checkPhoneNumberModel.data?.usersFleetId?.toInt() ?? 0);
+        //   await sharedPref.setString('userEmail', checkPhoneNumberModel.data?.email ?? "");
+        //   await sharedPref.setString('userLatitude', widget.latitude.toString());
+        //   await sharedPref.setString('userLongitude', widget.longitude.toString());
+        //   await sharedPref.setString('deviceIDInfo', checkPhoneNumberModel.data?.oneSignalId ?? "");
+        //   await sharedPref.setString('userType', checkPhoneNumberModel.data?.userType ?? "");
+        //   await sharedPref.setString('parentID', checkPhoneNumberModel.data?.parentId.toString() ?? "");
+        //   print("sharedPref userId: ${checkPhoneNumberModel.data?.usersFleetId?.toString() ?? ""}");
+        //   print("sharedPref email: ${checkPhoneNumberModel.data?.email ?? ""}");
+        //   print("sharedPref lat: ${widget.latitude.toString()}");
+        //   print("sharedPref long: ${widget.longitude.toString()}");
+        //   print("sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
+        //   print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
+        //   print("sharedPref parentId: ${checkPhoneNumberModel.data?.parentId ?? ""}");
+        //   setState(() {
+        //     isVerifying = false;
+        //   });
+        // } else {
+        //   print("checkPhoneNumberModel.data is null");
+        //   setState(() {
+        //     isVerifying = false;
+        //   });
+        // }
       }
-    } catch (e) {
-      print('Something went wrong = ${e.toString()}');
-      return null;
-    }
+    // } catch (e) {
+    //   print('Something went wrong = ${e.toString()}');
+    //   return null;
+    // }
   }
+
+  bool isButtonDisabled = false;
+  Timer? buttonTimer;
 
   Future<void> verifyOTPCode() async {
     print("verificationId: $verifyId");
@@ -172,6 +184,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       smsCode: otpController.text,
     );
     await auth.signInWithCredential(credential).then((value) async {
+      if (buttonTimer != null && buttonTimer!.isActive) {
+        buttonTimer!.cancel();
+      }
       print('User Login In Successful ${value.user}');
       await checkNumber();
       setState(() {
@@ -193,16 +208,40 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         await sharedPreferences.setString(
             'userType', checkPhoneNumberModel.data!.userType.toString());
         await sharedPreferences.setString('isLogIn', 'true');
-
-
+           print("sharedPref lat: ${widget.latitude.toString()}");
+          print("sharedPref long: ${widget.longitude.toString()}");
+          print("sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
+          print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
+          fleetId = sharedPreferences.getInt('userID');
+          parentId = sharedPreferences.getString('userEmail');
+          print("fleetId $fleetId");
+          print("parentId $parentId");
+          print("badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
         if(widget.userType == "Rider"){
           print("object");
-          if (checkPhoneNumberModel.data!.usersFleetId!.toInt() != null) {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => BottomNavBar(),
-                ),
-                    (Route<dynamic> route) => false);
+          if (checkPhoneNumberModel.data?.usersFleetId!.toInt() != null) {
+            if(checkPhoneNumberModel.data?.badgeVerified == "No"){
+              print("object111");
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => RideDetailsAfterLogInScreen(
+                      userType: 'Rider',
+                      userFleetId: fleetId.toString(),
+                      parentID: parentId.toString(),
+                    ),
+                  ),
+                      (route) => false);
+              showToastSuccess(
+                  'Badge Are Not Verified. PLese add Vehicle to verify badge',
+                  FToast().init(context),
+                  seconds: 3);
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => BottomNavBar(),
+                  ),
+                      (Route<dynamic> route) => false);
+            }
           } else {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -241,6 +280,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               builder: (context) => RegisterScreen(userType: widget.userType, phoneNumber: widget.phoneNumber.toString(), deviceID: widget.deviceID.toString()),
             ),
                 (Route<dynamic> route) => false);
+      }   else if(checkPhoneNumberModel.status == "error" && checkPhoneNumberModel.message == "Your account is in Deleted state.") {
+        Navigator.pop(context);
+        showToastSuccess(
+            'Your account is in Deleted state.',
+            FToast().init(context),
+            seconds: 3);
       }
       setState(() {
         isVerifying = false;
@@ -566,18 +611,19 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 20.0.h),
-                        child: GestureDetector(
-                          onTap: (){
-                            verifyOTPCode();
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(
-                            //     builder: (context) => RegisterScreen(
-                            //       email: widget.email,
-                                  // userType: widget.userType,
-                                  // deviceID: widget.deviceID ?? '',
-                                // ),
-                              // ),
-                            // );
+                        child: isButtonDisabled ? apiButton(context) : GestureDetector(
+                          onTap: () {
+                            if (!isButtonDisabled) {
+                              setState(() {
+                                isButtonDisabled = true;
+                              });
+                              buttonTimer = Timer(Duration(seconds: 5), () async {
+                                setState(() {
+                                  isButtonDisabled = false;
+                                });
+                                await verifyOTPCode();
+                              });
+                            }
                           },
                           // => isVerifying
                           //     ? apiButton(context)

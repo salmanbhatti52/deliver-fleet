@@ -25,6 +25,7 @@ import 'RideDetailsAfterLogIn.dart';
 
 int? fleetId;
 String? parentId;
+int? userID;
 
 class DrivingLicensePictureVerification extends StatefulWidget {
   final Map licenseMap;
@@ -343,16 +344,29 @@ class _DrivingLicensePictureVerificationState
 
       verifyResponse = await service.verifyDrivingLicenseAPI(widget.licenseMap);
       if (verifyResponse!.status!.toLowerCase() == 'success') {
-        showToastSuccess(verifyResponse!.message, FToast().init(context));
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => RideDetailsAfterLogInScreen(
-                userType: 'Rider',
-                userFleetId: fleetId.toString(),
-                parentID: parentId.toString(),
+        SharedPreferences sharedPref = await SharedPreferences.getInstance();
+        userID = (sharedPref.getInt('userID') ?? null);
+        print("userId value is = $userID");
+        if(userID != null ){
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => RideDetailsAfterLogInScreen(
+                  userType: 'Rider',
+                  userFleetId: fleetId.toString(),
+                  parentID: parentId.toString(),
+                ),
               ),
-            ),
-            (route) => false);
+                  (route) => false);
+        } else {
+          showToastSuccess(verifyResponse!.message, FToast().init(context));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => LogInScreen(
+                  userType: 'Rider',
+                ),
+              ),
+                  (route) => false);
+        }
       } else {
         showToastError(verifyResponse!.message, FToast().init(context));
       }
