@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Constants/Colors.dart';
+import '../../../models/API models/API response.dart';
+import '../../../models/API models/GetAllSystemDataModel.dart';
+import '../../../services/API_services.dart';
 
 class CompletedRidesDestinationsWidget extends StatefulWidget {
   final String destination;
@@ -24,6 +28,52 @@ class CompletedRidesDestinationsWidget extends StatefulWidget {
 
 class _CompletedRidesDestinationsWidgetState
     extends State<CompletedRidesDestinationsWidget> {
+
+  ApiServices get service => GetIt.I<ApiServices>();
+
+  late APIResponse<List<GetAllSystemDataModel>> _getAllSystemDataResponse;
+  List<GetAllSystemDataModel>? _getSystemDataList;
+
+  String currency = '';
+  String distance = '';
+  bool isLoading = false;
+
+  init() async {
+    _getAllSystemDataResponse = await service.getALlSystemDataAPI();
+    _getSystemDataList = [];
+
+    if (_getAllSystemDataResponse.status!.toLowerCase() == 'success') {
+      if (_getAllSystemDataResponse.data != null) {
+        _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
+        for (GetAllSystemDataModel model in _getSystemDataList!) {
+          if (model.type == 'system_currency') {
+            setState(() {
+              currency = model.description!;
+            });
+          } else if (model.type == 'distance_unit') {
+            setState(() {
+              distance = model.description!;
+            });
+          }
+        }
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    init();
+    setState(() {
+      isLoading = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -61,7 +111,7 @@ class _CompletedRidesDestinationsWidgetState
                     ),
                   ),
                   Container(
-                    width: 300.h,
+                    width: 298.h,
                     child: Text(
                       widget.destination,
                       overflow: TextOverflow.ellipsis,
@@ -128,17 +178,27 @@ class _CompletedRidesDestinationsWidgetState
                 ),
                 Column(
                   children: [
-                    SvgPicture.asset(
-                      'assets/images/dollar-circle.svg',
-                      colorFilter:
-                          const ColorFilter.mode(grey, BlendMode.srcIn),
+                    // SvgPicture.asset(
+                    //   'assets/images/dollar-circle.svg',
+                    //   colorFilter:
+                    //       const ColorFilter.mode(grey, BlendMode.srcIn),
+                    // ),
+                    Text(
+                      '$currency ',
+                      // ${widget.inProgressRidesList2![i].bookings?.total_charges}',
+                      // '$currency ${widget.inProgressRidesList2![i].bookings?.bookings_destinations?[i].destin_discounted_charges!}',
+                      style: GoogleFonts.inter(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: grey,
+                      ),
                     ),
                     SizedBox(
                       height: 6.h,
                     ),
                     Expanded(
                       child: Text(
-                        '\$${widget.fare}',
+                        '$currency ${widget.fare}',
                         style: GoogleFonts.inter(
                           fontSize: 15,
                           fontWeight: FontWeight.w400,

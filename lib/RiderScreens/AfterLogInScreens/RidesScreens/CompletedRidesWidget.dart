@@ -325,11 +325,8 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                                     .destin_distance!,
                                 time: widget.completedRidesModel.bookings!
                                     .bookings_destinations![0]!.destin_time!,
-                                fare: widget
-                                    .completedRidesModel
-                                    .bookings!
-                                    .bookings_destinations![0]!
-                                    .destin_discounted_charges!,
+                                fare: widget.completedRidesModel.bookings!.total_charges.toString(),
+                                // fare: widget.completedRidesModel.bookings!.bookings_destinations![0]!.destin_discounted_charges!,
                               ),
                             ),
                           ],

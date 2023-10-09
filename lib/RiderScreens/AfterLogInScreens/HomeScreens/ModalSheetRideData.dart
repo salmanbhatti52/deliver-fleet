@@ -15,9 +15,10 @@ import '../../../services/API_services.dart';
 class ModalSheetRideData extends StatefulWidget {
   final String pickupAddress;
   List<BookingDestinations>? bookingDestinationsList;
+  final BookingModel customersModel;
 
   ModalSheetRideData(
-      {super.key, this.bookingDestinationsList, required this.pickupAddress});
+      {super.key, this.bookingDestinationsList, required this.customersModel, required this.pickupAddress});
 
   @override
   State<ModalSheetRideData> createState() => _ModalSheetRideDataState();
@@ -288,9 +289,10 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                             child: Column(
                               children: [
                                 Text(
-                                  '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
+                                  '$currency ${widget.customersModel.total_charges}',
+                                  // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
                                   style: GoogleFonts.inter(
-                                    fontSize: 28,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w700,
                                     color: black,
                                   ),

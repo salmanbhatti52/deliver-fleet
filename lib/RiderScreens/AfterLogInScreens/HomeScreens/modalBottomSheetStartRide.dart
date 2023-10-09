@@ -514,9 +514,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                           child: Column(
                             children: [
                               Text(
-                                '$currency ${widget.bookingDestinations[i].destin_discounted_charges!}',
+                                '$currency ${widget.bookingModel.total_charges}',
+                                // '$currency ${widget.bookingDestinations[i].destin_discounted_charges!}',
                                 style: GoogleFonts.inter(
-                                  fontSize: 28,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w700,
                                   color: black,
                                 ),

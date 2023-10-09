@@ -2,6 +2,7 @@ import 'package:Deliver_Rider/Constants/Colors.dart';
 import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
 import 'package:Deliver_Rider/models/API%20models/GetAllUserToUsreChatModel.dart';
 import 'package:Deliver_Rider/utilities/showToast.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -17,10 +18,16 @@ import '../../../../services/API_services.dart';
 class UserToUserChat extends StatefulWidget {
   final String riderID;
   final String clientID;
+  final String? name;
+  final String? image;
+  final String? address;
   const UserToUserChat({
     super.key,
     required this.riderID,
     required this.clientID,
+    this.name,
+    this.image,
+    this.address,
   });
 
   @override
@@ -105,7 +112,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
           ),
         ),
         title: Text(
-          'Chat With Client',
+          'Call and Chat',
           style: GoogleFonts.syne(
             fontWeight: FontWeight.w700,
             color: black,
@@ -135,14 +142,123 @@ class _UserToUserChatState extends State<UserToUserChat> {
                 padding: EdgeInsets.symmetric(horizontal: 22.w),
                 child: Column(
                   children: [
+                    Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      height: MediaQuery.sizeOf(context).height * 0.1,
+                      color: Colors.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Container(
+                                      width: MediaQuery.sizeOf(context).width * 0.15,
+                                      height: MediaQuery.sizeOf(context).height * 0.07,
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                      ),
+                                      child: FadeInImage(
+                                        placeholder: const AssetImage(
+                                          "assets/images/user-profile.png",
+                                        ),
+                                        image: NetworkImage(
+                                          'https://deliver.eigix.net/public/${widget.image}',
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 8,
+                                    right: 0,
+                                    child: SvgPicture.asset(
+                                      'assets/images/online-status-icon.svg',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: MediaQuery.sizeOf(context).width * 0.03),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    color: Colors.transparent,
+                                    width: MediaQuery.sizeOf(context).width * 0.55,
+                                    child: Text(
+                                      "${widget.name}",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontFamily: 'Syne-SemiBold',
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.005),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/images/orange-location-icon.svg',
+                                      ),
+                                      SizedBox(width: MediaQuery.sizeOf(context).width * 0.01),
+                                      Container(
+                                        color: Colors.transparent,
+                                        width: MediaQuery.sizeOf(context).width * 0.5,
+                                        child: AutoSizeText(
+                                          "${widget.address}",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            color: grey,
+                                            fontSize: 12,
+                                            fontFamily: 'Inter-Regular',
+                                          ),
+                                          minFontSize: 12,
+                                          maxFontSize: 12,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => CallScreen(
+                                  //       name: widget.name,
+                                  //       image: widget.image,
+                                  //     ),
+                                  //   ),
+                                  // );
+                                },
+                                child: SvgPicture.asset(
+                                  'assets/images/call-icon.svg',
+                                ),
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            thickness: 1,
+                            color: grey,
+                          ),
+                        ],
+                      ),
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: getAllUserToUserChatList.length,
                         itemBuilder: (context, index) {
-                          bool isClient = getAllUserToUserChatList[index]
-                                  .receiver_data!
-                                  .users_fleet_id !=
-                              -1;
+                          bool isClient = getAllUserToUserChatList[index].receiver_data!.users_fleet_id != -1;
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 12),

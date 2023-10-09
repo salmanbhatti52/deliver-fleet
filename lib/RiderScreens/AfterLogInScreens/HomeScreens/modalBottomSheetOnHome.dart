@@ -21,9 +21,11 @@ class ModalBottomSheetOnHome extends StatefulWidget {
   final String userID;
   List<BookingDestinations>? bookingDestinationsList;
   final BookingModel customersModel;
+  final CustomersModel? customerDetails;
   ModalBottomSheetOnHome(
       {super.key,
       required this.userID,
+        this.customerDetails,
       this.bookingDestinationsList,
       required this.customersModel});
 
@@ -230,6 +232,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
               child: ModalSheetRideData(
                 bookingDestinationsList: widget.bookingDestinationsList,
                 pickupAddress: widget.customersModel.pickup_address!,
+                customersModel: widget.customersModel,
               )),
           Padding(
             padding: EdgeInsets.only(top: 14.h),
@@ -407,12 +410,15 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
     startUserToUserChatResponse =
         await service.startUserToUserChatAPI(startChatData);
     if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
-      showToastSuccess('Start has been started!', FToast().init(context),
+      showToastSuccess('Chat has been started!', FToast().init(context),
           seconds: 1);
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
             riderID: widget.userID.toString(),
+            image: widget.customerDetails?.profile_pic,
+            name:"${widget.customerDetails?.first_name} ${widget.customerDetails?.last_name}",
+            address: widget.customersModel.pickup_address,
             clientID: widget.customersModel.users_customers!.users_customers_id
                 .toString(),
           ),
@@ -427,8 +433,10 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
             riderID: widget.userID.toString(),
-            clientID: widget.customersModel.users_customers!.users_customers_id
-                .toString(),
+            image: widget.customerDetails?.profile_pic,
+            name:"${widget.customerDetails?.first_name} ${widget.customerDetails?.last_name}",
+            address: widget.customersModel.pickup_address,
+            clientID: widget.customersModel.users_customers!.users_customers_id.toString(),
           ),
         ),
       );

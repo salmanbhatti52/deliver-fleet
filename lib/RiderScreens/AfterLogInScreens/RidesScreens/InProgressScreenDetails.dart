@@ -473,9 +473,10 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                     child: Column(
                       children: [
                         Text(
-                          '$currency ${widget.inProgressRidesList2![i].bookings?.bookings_destinations?[i].destin_discounted_charges!}',
+                          '$currency ${widget.inProgressRidesList2![i].bookings?.total_charges}',
+                          // '$currency ${widget.inProgressRidesList2![i].bookings?.bookings_destinations?[i].destin_discounted_charges!}',
                           style: GoogleFonts.inter(
-                            fontSize: 28,
+                            fontSize: 20,
                             fontWeight: FontWeight.w700,
                             color: black,
                           ),
