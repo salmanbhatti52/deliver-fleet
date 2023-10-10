@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,12 +14,20 @@ import '../../../Constants/PageLoadingKits.dart';
 import '../../../models/API models/API response.dart';
 import '../../../models/API models/GetAllSystemDataModel.dart';
 import '../../../models/API models/InProgressRidesModel.dart';
+import '../../../models/API models/ShowBookingsModel.dart';
 import '../../../services/API_services.dart';
+import '../../../utilities/showToast.dart';
+import '../HomeScreens/UserToUserChat/UserToUserChat.dart';
 
 class InProgressDetails extends StatefulWidget {
   final InProgressRidesModel? inProgressRidesList;
+  final String userID;
   final List<InProgressRidesModel>? inProgressRidesList2;
-  const InProgressDetails({Key? key, this.inProgressRidesList, this.inProgressRidesList2}) : super(key: key);
+  const InProgressDetails({Key? key,
+    this.inProgressRidesList,
+    this.inProgressRidesList2,
+    required this.userID,
+  }) : super(key: key);
 
   @override
   State<InProgressDetails> createState() => _InProgressDetailsState();
@@ -80,6 +89,60 @@ class _InProgressDetailsState extends State<InProgressDetails> {
     await launchUrl(launchUri);
   }
 
+  bool isChatStarting = false;
+  APIResponse<APIResponse>? startUserToUserChatResponse;
+
+  startUserToUserChatMethod(BuildContext context) async {
+    setState(() {
+      isChatStarting = true;
+    });
+    Map startChatData = {
+      "request_type": " startChat",
+      "users_type": "Rider",
+      "other_users_type": "Customers",
+      "users_id": widget.userID,
+      "other_users_id": widget.inProgressRidesList2?[0].bookings?.users_customers?.users_customers_id.toString(),
+    };
+    print('object start suer to uer chat data:  ' + startChatData.toString());
+    startUserToUserChatResponse =
+    await service.startUserToUserChatAPI(startChatData);
+    if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
+      showToastSuccess('Chat has been started!', FToast().init(context),
+          seconds: 1);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UserToUserChat(
+            phone: widget.inProgressRidesList2?[0].bookings?.users_customers?.phone,
+            riderID: widget.userID.toString(),
+            image: widget.inProgressRidesList2?[0].bookings?.users_customers?.profile_pic,
+            name:"${widget.inProgressRidesList2?[0].bookings?.users_customers?.first_name} ${widget.inProgressRidesList2?[0].bookings?.users_customers?.last_name}",
+            address: widget.inProgressRidesList?.bookings?.pickup_address,
+            clientID: widget.inProgressRidesList!.bookings!.users_customers!.users_customers_id.toString(),
+          ),
+        ),
+      );
+    } else {
+      print(' error starting chat:  ' +
+          startUserToUserChatResponse!.message!.toString());
+      // showToastError('error occurred,try again', FToast().init(context),
+      //     seconds: 2);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UserToUserChat(
+            phone: widget.inProgressRidesList2?[0].bookings?.users_customers?.phone,
+            riderID: widget.userID.toString(),
+            image: widget.inProgressRidesList2?[0].bookings?.users_customers?.profile_pic,
+            name:"${widget.inProgressRidesList2?[0].bookings?.users_customers?.first_name} ${widget.inProgressRidesList2?[0].bookings?.users_customers?.last_name}",
+            address: widget.inProgressRidesList?.bookings?.pickup_address,
+            clientID: widget.inProgressRidesList!.bookings!.users_customers!.users_customers_id.toString(),
+          ),
+        ),
+      );
+    }
+    setState(() {
+      isChatStarting = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -180,73 +243,76 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: 34.w,
-                          height: 34.h,
-                          child: SvgPicture.asset(
-                            'assets/images/msg-map-icon.svg',
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Text(
-                          'Chat',
-                          style: GoogleFonts.syne(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: grey,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _makePhoneCall(
-                            widget.inProgressRidesList!.bookings!.users_customers!.phone!);
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 34.w,
-                            height: 34.h,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: orange,
-                            ),
-                            child: SvgPicture.asset(
-                              'assets/images/call.svg',
-                              width: 30,
-                              height: 30,
-                              colorFilter: const ColorFilter.mode(
-                                  white, BlendMode.srcIn),
-                              fit: BoxFit.scaleDown,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 12.w,
-                          ),
-                          Text(
-                            'Call',
-                            style: GoogleFonts.syne(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: grey,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     // GestureDetector(
+                //     //   onTap: () => startUserToUserChatMethod(context),
+                //     //   child: Column(
+                //     //     children: [
+                //     //       SizedBox(
+                //     //         width: 34.w,
+                //     //         height: 34.h,
+                //     //         child: SvgPicture.asset(
+                //     //           'assets/images/msg-map-icon.svg',
+                //     //           fit: BoxFit.scaleDown,
+                //     //         ),
+                //     //       ),
+                //     //       SizedBox(
+                //     //         height: 5.h,
+                //     //       ),
+                //     //       Text(
+                //     //         'Chat',
+                //     //         style: GoogleFonts.syne(
+                //     //           fontSize: 12,
+                //     //           fontWeight: FontWeight.w400,
+                //     //           color: grey,
+                //     //         ),
+                //     //       )
+                //     //     ],
+                //     //   ),
+                //     // ),
+                //     SizedBox(
+                //       width: 10.w,
+                //     ),
+                //     GestureDetector(
+                //       onTap: () {
+                //         _makePhoneCall(
+                //             widget.inProgressRidesList!.bookings!.users_customers!.phone!);
+                //       },
+                //       child: Column(
+                //         children: [
+                //           Container(
+                //             width: 34.w,
+                //             height: 34.h,
+                //             decoration: const BoxDecoration(
+                //               shape: BoxShape.circle,
+                //               color: orange,
+                //             ),
+                //             child: SvgPicture.asset(
+                //               'assets/images/call.svg',
+                //               width: 30,
+                //               height: 30,
+                //               colorFilter: const ColorFilter.mode(
+                //                   white, BlendMode.srcIn),
+                //               fit: BoxFit.scaleDown,
+                //             ),
+                //           ),
+                //           SizedBox(
+                //             width: 12.w,
+                //           ),
+                //           Text(
+                //             'Call',
+                //             style: GoogleFonts.syne(
+                //               fontSize: 12,
+                //               fontWeight: FontWeight.w400,
+                //               color: grey,
+                //             ),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
             SizedBox(

@@ -332,7 +332,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                     ),
                                     isScrollControlled: true,
                                     context: context,
-                                    builder: (context) => InProgressDetails(inProgressRidesList: listItem, inProgressRidesList2: inProgressRidesList,));
+                                    builder: (context) => InProgressDetails(userID : userID.toString(), inProgressRidesList: listItem, inProgressRidesList2: inProgressRidesList,));
                               },
                               child: details && selectedIndex == index
                                   ? detailsButtonOpen(context)

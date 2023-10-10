@@ -16,14 +16,17 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../Constants/Colors.dart';
 import '../../../models/API models/GetAllSystemDataModel.dart';
 import '../../../services/API_services.dart';
+import 'UserToUserChat/UserToUserChat.dart';
 import 'modalBottomSheetEndRide.dart';
 
 class ModalBottomSheetStartRide extends StatefulWidget {
+  final String userID;
   final BookingModel bookingModel;
   final List<BookingDestinations> bookingDestinations;
 
   const ModalBottomSheetStartRide({
     super.key,
+    required this.userID,
     required this.bookingModel,
     required this.bookingDestinations,
   });
@@ -223,28 +226,31 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                       ),
                       Row(
                         children: [
-                          Column(
-                            children: [
-                              SizedBox(
-                                width: 34.w,
-                                height: 34.h,
-                                child: SvgPicture.asset(
-                                  'assets/images/msg-map-icon.svg',
-                                  fit: BoxFit.scaleDown,
+                          GestureDetector(
+                            onTap: () => startUserToUserChatMethod(context),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  width: 34.w,
+                                  height: 34.h,
+                                  child: SvgPicture.asset(
+                                    'assets/images/msg-map-icon.svg',
+                                    fit: BoxFit.scaleDown,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 5.h,
-                              ),
-                              Text(
-                                'Chat',
-                                style: GoogleFonts.syne(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: grey,
+                                SizedBox(
+                                  height: 5.h,
                                 ),
-                              )
-                            ],
+                                Text(
+                                  'Chat',
+                                  style: GoogleFonts.syne(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           SizedBox(
                             width: 10.w,
@@ -629,6 +635,62 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     return SizedBox();
   }
 
+  bool isChatStarting = false;
+  APIResponse<APIResponse>? startUserToUserChatResponse;
+
+  startUserToUserChatMethod(BuildContext context) async {
+    setState(() {
+      isChatStarting = true;
+    });
+    Map startChatData = {
+      "request_type": " startChat",
+      "users_type": "Rider",
+      "other_users_type": "Customers",
+      "users_id": widget.userID,
+      "other_users_id": widget.bookingModel.users_customers!.users_customers_id.toString(),
+    };
+    print('object start suer to uer chat data:  ' + startChatData.toString());
+    startUserToUserChatResponse =
+    await service.startUserToUserChatAPI(startChatData);
+    if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
+      showToastSuccess('Chat has been started!', FToast().init(context),
+          seconds: 1);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UserToUserChat(
+            phone: widget.bookingModel.users_customers!.phone!,
+            riderID: widget.userID.toString(),
+            image: widget.bookingModel.users_customers!.profile_pic!,
+            name:"${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
+            address: widget.bookingModel.pickup_address,
+            clientID: widget.bookingModel.users_customers!.users_customers_id
+                .toString(),
+          ),
+        ),
+      );
+    } else {
+      print(' error starting chat:  ' +
+          startUserToUserChatResponse!.message!.toString());
+      // showToastError('error occurred,try again', FToast().init(context),
+      //     seconds: 2);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UserToUserChat(
+            phone: widget.bookingModel.users_customers!.phone!,
+            riderID: widget.userID.toString(),
+            image: widget.bookingModel.users_customers!.profile_pic!,
+            name:"${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
+            address: widget.bookingModel.pickup_address,
+            clientID: widget.bookingModel.users_customers!.users_customers_id.toString(),
+          ),
+        ),
+      );
+    }
+    setState(() {
+      isChatStarting = false;
+    });
+  }
+
   ApiServices get service => GetIt.I<ApiServices>();
 
   APIResponse<ShowBookingsModel>? startRideResponse;
@@ -669,6 +731,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
             context: context,
             builder: (context) => ModalBottomSheetEndRide(
               bookingModel: widget.bookingModel,
+              userID: widget.userID,
               bookingDestinations: widget.bookingDestinations,
             ),
           );

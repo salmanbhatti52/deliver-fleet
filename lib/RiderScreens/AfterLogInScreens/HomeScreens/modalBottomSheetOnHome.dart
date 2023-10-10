@@ -348,6 +348,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
           isDismissible: false,
           context: context,
           builder: (context) => ModalBottomSheetStartRide(
+            userID: widget.userID,
             bookingModel: widget.customersModel,
             bookingDestinations: widget.bookingDestinationsList!,
           ),
@@ -415,9 +416,10 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
+            phone: widget.customersModel.users_customers!.phone!,
             riderID: widget.userID.toString(),
-            image: widget.customerDetails?.profile_pic,
-            name:"${widget.customerDetails?.first_name} ${widget.customerDetails?.last_name}",
+            image: widget.customersModel.users_customers!.profile_pic!,
+            name:"${widget.customersModel.users_customers!.first_name!} ${widget.customersModel.users_customers!.last_name!}",
             address: widget.customersModel.pickup_address,
             clientID: widget.customersModel.users_customers!.users_customers_id
                 .toString(),
@@ -432,9 +434,10 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
+            phone: widget.customersModel.users_customers!.phone!,
             riderID: widget.userID.toString(),
-            image: widget.customerDetails?.profile_pic,
-            name:"${widget.customerDetails?.first_name} ${widget.customerDetails?.last_name}",
+            image: widget.customersModel.users_customers!.profile_pic!,
+            name:"${widget.customersModel.users_customers!.first_name!} ${widget.customersModel.users_customers!.last_name!}",
             address: widget.customersModel.pickup_address,
             clientID: widget.customersModel.users_customers!.users_customers_id.toString(),
           ),

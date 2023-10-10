@@ -10,6 +10,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../Constants/back-arrow-with-container.dart';
 import '../../../../models/API models/API response.dart';
@@ -20,10 +23,12 @@ class UserToUserChat extends StatefulWidget {
   final String clientID;
   final String? name;
   final String? image;
+  final String? phone;
   final String? address;
   const UserToUserChat({
     super.key,
     required this.riderID,
+    required this.phone,
     required this.clientID,
     this.name,
     this.image,
@@ -91,6 +96,14 @@ class _UserToUserChatState extends State<UserToUserChat> {
     });
   }
 
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
   @override
   void dispose() {
     // getMessageTimer?.cancel();
@@ -156,9 +169,12 @@ class _UserToUserChatState extends State<UserToUserChat> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
                                     child: Container(
-                                      width: MediaQuery.sizeOf(context).width * 0.15,
-                                      height: MediaQuery.sizeOf(context).height * 0.07,
-                                      decoration: BoxDecoration(
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.15,
+                                      height:
+                                          MediaQuery.sizeOf(context).height *
+                                              0.07,
+                                      decoration: const BoxDecoration(
                                         color: Colors.transparent,
                                       ),
                                       child: FadeInImage(
@@ -172,27 +188,30 @@ class _UserToUserChatState extends State<UserToUserChat> {
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    top: 8,
-                                    right: 0,
-                                    child: SvgPicture.asset(
-                                      'assets/images/online-status-icon.svg',
-                                    ),
-                                  ),
+                                  // Positioned(
+                                  //   top: 8,
+                                  //   right: 0,
+                                  //   child: SvgPicture.asset(
+                                  //     'assets/images/online-status-icon.svg',
+                                  //   ),
+                                  // ),
                                 ],
                               ),
-                              SizedBox(width: MediaQuery.sizeOf(context).width * 0.03),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.03),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
                                     color: Colors.transparent,
-                                    width: MediaQuery.sizeOf(context).width * 0.55,
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 0.55,
                                     child: Text(
                                       "${widget.name}",
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
                                         fontFamily: 'Syne-SemiBold',
@@ -200,20 +219,28 @@ class _UserToUserChatState extends State<UserToUserChat> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  SizedBox(height: MediaQuery.sizeOf(context).height * 0.005),
+                                  SizedBox(
+                                      height:
+                                          MediaQuery.sizeOf(context).height *
+                                              0.005),
                                   Row(
                                     children: [
                                       SvgPicture.asset(
-                                        'assets/images/orange-location-icon.svg',
+                                        'assets/images/location.svg',
                                       ),
-                                      SizedBox(width: MediaQuery.sizeOf(context).width * 0.01),
+                                      SizedBox(
+                                          width:
+                                              MediaQuery.sizeOf(context).width *
+                                                  0.01),
                                       Container(
                                         color: Colors.transparent,
-                                        width: MediaQuery.sizeOf(context).width * 0.5,
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                0.5,
                                         child: AutoSizeText(
                                           "${widget.address}",
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: grey,
                                             fontSize: 12,
                                             fontFamily: 'Inter-Regular',
@@ -231,23 +258,28 @@ class _UserToUserChatState extends State<UserToUserChat> {
                               const Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => CallScreen(
-                                  //       name: widget.name,
-                                  //       image: widget.image,
-                                  //     ),
-                                  //   ),
-                                  // );
+                                  _makePhoneCall(widget.phone.toString());
                                 },
-                                child: SvgPicture.asset(
-                                  'assets/images/call-icon.svg',
+                                child: Container(
+                                  width: 34.w,
+                                  height: 34.h,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: orange,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    'assets/images/call.svg',
+                                    width: 30,
+                                    height: 30,
+                                    colorFilter: const ColorFilter.mode(
+                                        white, BlendMode.srcIn),
+                                    fit: BoxFit.scaleDown,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                          Divider(
+                          const Divider(
                             thickness: 1,
                             color: grey,
                           ),
@@ -257,144 +289,476 @@ class _UserToUserChatState extends State<UserToUserChat> {
                     Expanded(
                       child: ListView.builder(
                         itemCount: getAllUserToUserChatList.length,
+                        reverse: true,
                         itemBuilder: (context, index) {
-                          bool isClient = getAllUserToUserChatList[index].receiver_data!.users_fleet_id != -1;
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 12),
-                            margin:
-                                const EdgeInsets.only(bottom: 10, right: 40),
-                            child: Align(
-                              alignment: isClient &&
-                                      getAllUserToUserChatList[index]
-                                              .receiver_type!
-                                              .toLowerCase() ==
-                                          'Customers'
-                                  ? Alignment.topLeft
-                                  : Alignment.topRight,
-                              child: Container(
-                                // height: double.parse(
-                                //     '${messagesList![index].message!.length}'),
-                                width: double.infinity,
-
-                                decoration: const BoxDecoration(
-                                  color: lightGrey,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(15),
-                                    bottomRight: Radius.circular(15),
-                                    topRight: Radius.circular(15),
-                                  ),
-                                ),
-                                alignment: isClient &&
-                                        getAllUserToUserChatList[index]
-                                                .receiver_type!
-                                                .toLowerCase() ==
-                                            'Customers'
-                                    ? Alignment.topLeft
-                                    : Alignment.topRight,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  // crossAxisAlignment:
-                                  //     CrossAxisAlignment.start,
+                          int reverseIndex = getAllUserToUserChatList.length - 1 - index;
+                          String inputTime = "${getAllUserToUserChatList[reverseIndex].send_time}";
+                          DateFormat inputFormat = DateFormat("H:mm:ss");
+                          DateFormat outputFormat = DateFormat("h:mm a");
+                          DateTime dateTime = inputFormat.parse(inputTime);
+                          String formattedTime = outputFormat.format(dateTime);
+                          return getAllUserToUserChatList[reverseIndex].sender_type == 'Rider'
+                              ? Column(
                                   children: [
-                                    Align(
-                                      alignment: isClient &&
-                                              getAllUserToUserChatList[index]
-                                                      .receiver_type!
-                                                      .toLowerCase() ==
-                                                  'Customers'
-                                          ? Alignment.topLeft
-                                          : Alignment.topRight,
-                                      child: Text(
-                                        getAllUserToUserChatList[index]
-                                            .message!,
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines:
-                                            getAllUserToUserChatList[index]
-                                                .message!
-                                                .length,
-                                        textAlign: TextAlign.start,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: black,
-                                        ).copyWith(
-                                            overflow: TextOverflow.ellipsis),
+                                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.015),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 84),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                            ),
+                                            child: Container(
+                                              color: orange,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                      color: Colors.transparent,
+                                                      width: MediaQuery.sizeOf(context).width * 0.6,
+                                                      child: Text(
+                                                        "${getAllUserToUserChatList[reverseIndex].message}",
+                                                        textAlign: TextAlign.left,
+                                                        style: const TextStyle(
+                                                          color: white,
+                                                          fontSize: 12,
+                                                          fontFamily:
+                                                              'Inter-Regular',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          'assets/images/chat-timer-grey.svg',
+                                                          color: Colors.white,
+                                                        ),
+                                                        SizedBox(
+                                                            width: MediaQuery.sizeOf(context).width * 0.01),
+                                                        Text(
+                                                          formattedTime,
+                                                          textAlign: TextAlign.left,
+                                                          style: const TextStyle(
+                                                            color: white,
+                                                            fontSize: 8,
+                                                            fontFamily:
+                                                                'Inter-Regular',
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.sizeOf(context).height * 0.015),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        SvgPicture.asset(
-                                          'assets/images/chat-timer-grey.svg',
-                                          colorFilter: const ColorFilter.mode(
-                                              grey, BlendMode.srcIn),
-                                          width: 10,
-                                          height: 10,
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(100),
+                                          child: Container(
+                                            width: 25.6,
+                                            height: 25.5,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.transparent,
+                                            ),
+                                            child: FadeInImage(
+                                              placeholder: const AssetImage(
+                                                "assets/images/user-profile.png",
+                                              ),
+                                              image: NetworkImage(
+                                                'https://deliver.eigix.net/public/${widget.image}',
+                                              ),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          getAllUserToUserChatList[index]
-                                              .send_date!,
-                                          style: GoogleFonts.inter(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w400,
-                                            color: black,
+                                        SizedBox(
+                                            width: MediaQuery.sizeOf(context).width * 0.02),
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          ),
+                                          child: Container(
+                                            color: lightGrey,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Container(
+                                                    color: Colors.transparent,
+                                                    width: MediaQuery.sizeOf(context).width * 0.6,
+                                                    child: Text(
+                                                      "${getAllUserToUserChatList[reverseIndex].message}",
+                                                      textAlign: TextAlign.left,
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12,
+                                                        fontFamily:
+                                                            'Inter-Regular',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        'assets/images/chat-timer-grey.svg',
+                                                      ),
+                                                      SizedBox(
+                                                          width: MediaQuery.sizeOf(context).width * 0.01),
+                                                      Text(
+                                                        formattedTime,
+                                                        textAlign: TextAlign.left,
+                                                        style: const TextStyle(
+                                                          color: grey,
+                                                          fontSize: 8,
+                                                          fontFamily:
+                                                              'Inter-Regular',
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ],
-                                ),
-                              ),
-                            ),
-                          );
+                                );
+                          //   Container(
+                          //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                          //   margin: const EdgeInsets.only(bottom: 10, right: 40),
+                          //   child: Align(
+                          //     alignment: getAllUserToUserChatList[index].receiver_type == 'Rider'
+                          //         ? Alignment.topLeft
+                          //         : Alignment.topRight,
+                          //     child: Row(
+                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                          //       children: [
+                          //         ClipRRect(
+                          //           borderRadius:
+                          //           const BorderRadius.only(
+                          //             topLeft: Radius.circular(10),
+                          //             topRight: Radius.circular(10),
+                          //             bottomLeft: Radius.circular(10),
+                          //           ),
+                          //           child: Container(
+                          //             color: getAllUserToUserChatList[index].receiver_type == 'Rider' ? orange : Colors.black,
+                          //             width: 100,
+                          //             child: Padding(
+                          //               padding: const EdgeInsets.all(10),
+                          //               child: Column(
+                          //                 // crossAxisAlignment: CrossAxisAlignment.end,
+                          //                 children: [
+                          //                   Container(
+                          //                     color: Colors.transparent,
+                          //                     width: MediaQuery.sizeOf(context).width * 0.6,
+                          //                     child: Text(
+                          //                       "${getAllUserToUserChatList[reverseIndex].message}",
+                          //                       textAlign: TextAlign.left,
+                          //                       style:
+                          //                       TextStyle(
+                          //                         color: white,
+                          //                         fontSize: 12,
+                          //                         fontFamily: 'Inter-Regular',
+                          //                       ),
+                          //                     ),
+                          //                   ),
+                          //                   Row(
+                          //                     children: [
+                          //                       SvgPicture.asset(
+                          //                         'assets/images/chat-timer-grey.svg',
+                          //                       ),
+                          //                       SizedBox(
+                          //                           width: MediaQuery.sizeOf(context).width * 0.01),
+                          //                       Text(
+                          //                         formattedTime, textAlign:
+                          //                         TextAlign.left,
+                          //                         style: TextStyle(
+                          //                           color: white,
+                          //                           fontSize: 8,
+                          //                           fontFamily: 'Inter-Regular',
+                          //                         ),
+                          //                       ),
+                          //                     ],
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // );
                         },
                       ),
                     ),
+                    // SingleChildScrollView(
+                    //   child: Column(
+                    //     children: [
+                    //       isLoading
+                    //           ? spinKitRotatingCircle
+                    //           : getAllUserToUserChatList.isEmpty
+                    //           ? Container(
+                    //         color: Colors.transparent,
+                    //         height: MediaQuery.sizeOf(context).height * 0.7,
+                    //         child: ListView.builder(
+                    //           reverse: true,
+                    //           physics:
+                    //           const AlwaysScrollableScrollPhysics(),
+                    //           itemCount: getAllUserToUserChatList.length,
+                    //           padding: const EdgeInsets.only(bottom: 10),
+                    //           itemBuilder: (context, index) {
+                    //             int reverseIndex = getAllUserToUserChatList.length - 1 - index;
+                    //             String inputTime = "${getAllUserToUserChatList[reverseIndex].send_time}";
+                    //             DateFormat inputFormat = DateFormat("H:mm:ss");
+                    //             DateFormat outputFormat = DateFormat("h:mm a");
+                    //             DateTime dateTime = inputFormat.parse(inputTime);
+                    //             String formattedTime = outputFormat.format(dateTime);
+                    //             return getAllUserToUserChatList[index].receiver_type!.toLowerCase() == "Customers"
+                    //                 ? Column(
+                    //               children: [
+                    //                 SizedBox(height: MediaQuery.sizeOf(context).height * 0.015),
+                    //                 Padding(
+                    //                   padding: const EdgeInsets.only(left: 84),
+                    //                   child: Row(
+                    //                     crossAxisAlignment: CrossAxisAlignment.start,
+                    //                     children: [
+                    //                       ClipRRect(
+                    //                         borderRadius:
+                    //                         const BorderRadius.only(
+                    //                           topLeft: Radius.circular(10),
+                    //                           topRight: Radius.circular(10),
+                    //                           bottomLeft: Radius.circular(10),
+                    //                         ),
+                    //                         child: Container(
+                    //                           color: orange,
+                    //                           child: Padding(
+                    //                             padding: const EdgeInsets.all(10),
+                    //                             child: Column(
+                    //                               crossAxisAlignment: CrossAxisAlignment.end,
+                    //                               children: [
+                    //                                 Container(
+                    //                                   color: Colors.transparent,
+                    //                                   width: MediaQuery.sizeOf(context).width * 0.6,
+                    //                                   child: Text(
+                    //                                     "${getAllUserToUserChatList[reverseIndex].message}",
+                    //                                     textAlign: TextAlign.left,
+                    //                                     style:
+                    //                                     TextStyle(
+                    //                                       color: white,
+                    //                                       fontSize: 12,
+                    //                                       fontFamily: 'Inter-Regular',
+                    //                                     ),
+                    //                                   ),
+                    //                                 ),
+                    //                                 Row(
+                    //                                   children: [
+                    //                                     SvgPicture.asset(
+                    //                                       'assets/images/chat-timer-grey.svg',
+                    //                                     ),
+                    //                                     SizedBox(
+                    //                                         width: MediaQuery.sizeOf(context).width * 0.01),
+                    //                                     Text(
+                    //                                       formattedTime, textAlign:
+                    //                                       TextAlign.left,
+                    //                                       style: TextStyle(
+                    //                                         color: white,
+                    //                                         fontSize: 8,
+                    //                                         fontFamily: 'Inter-Regular',
+                    //                                       ),
+                    //                                     ),
+                    //                                   ],
+                    //                                 ),
+                    //                               ],
+                    //                             ),
+                    //                           ),
+                    //                         ),
+                    //                       ),
+                    //                     ],
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             )
+                    //                 : Column(
+                    //               children: [
+                    //                 SizedBox(
+                    //                     height: MediaQuery.sizeOf(context).height * 0.015),
+                    //                 Row(
+                    //                   crossAxisAlignment:
+                    //                   CrossAxisAlignment
+                    //                       .start,
+                    //                   children: [
+                    //                     ClipRRect(
+                    //                       borderRadius:
+                    //                       BorderRadius
+                    //                           .circular(100),
+                    //                       child: Container(
+                    //                         width: 25.6,
+                    //                         height: 25.5,
+                    //                         decoration:
+                    //                         BoxDecoration(
+                    //                           color: Colors.transparent,
+                    //                         ),
+                    //                         child: FadeInImage(
+                    //                           placeholder:
+                    //                           const AssetImage(
+                    //                             "assets/images/user-profile.png",
+                    //                           ),
+                    //                           image: NetworkImage(
+                    //                             'https://deliver.eigix.net/public/${widget.image}',
+                    //                           ),
+                    //                           fit: BoxFit.cover,
+                    //                         ),
+                    //                       ),
+                    //                     ),
+                    //                     SizedBox(
+                    //                         width: MediaQuery.sizeOf(context).width * 0.02),
+                    //                     ClipRRect(
+                    //                       borderRadius:
+                    //                       const BorderRadius.only(
+                    //                         topRight: Radius.circular(10),
+                    //                         bottomLeft: Radius.circular(10),
+                    //                         bottomRight: Radius.circular(10),
+                    //                       ),
+                    //                       child: Container(
+                    //                         color: lightGrey,
+                    //                         child: Padding(
+                    //                           padding:
+                    //                           const EdgeInsets.all(10),
+                    //                           child: Column(
+                    //                             crossAxisAlignment: CrossAxisAlignment.end,
+                    //                             children: [
+                    //                               Container(
+                    //                                 color: Colors.transparent,
+                    //                                 width: MediaQuery.sizeOf(context).width * 0.6,
+                    //                                 child: Text(
+                    //                                   "${getAllUserToUserChatList[reverseIndex].message}",
+                    //                                   textAlign: TextAlign.left,
+                    //                                   style: TextStyle(
+                    //                                     color: Colors.black,
+                    //                                     fontSize: 12,
+                    //                                     fontFamily: 'Inter-Regular',
+                    //                                   ),
+                    //                                 ),
+                    //                               ),
+                    //                               Row(
+                    //                                 children: [
+                    //                                   SvgPicture
+                    //                                       .asset(
+                    //                                     'assets/images/clock-message-icon.svg',
+                    //                                   ),
+                    //                                   SizedBox(width: MediaQuery.sizeOf(context).width * 0.01),
+                    //                                   Text(
+                    //                                     formattedTime,
+                    //                                     textAlign: TextAlign.left,
+                    //                                     style: TextStyle(
+                    //                                       color: red,
+                    //                                       fontSize: 8,
+                    //                                       fontFamily: 'Inter-Regular',
+                    //                                     ),
+                    //                                   ),
+                    //                                 ],
+                    //                               ),
+                    //                             ],
+                    //                           ),
+                    //                         ),
+                    //                       ),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //               ],
+                    //             );
+                    //           },
+                    //         ),
+                    //       )
+                    //           : Container(
+                    //         color: Colors.transparent,
+                    //         height: MediaQuery.sizeOf(context).height * 0.7,
+                    //         child: Column(
+                    //           mainAxisAlignment: MainAxisAlignment.center,
+                    //           crossAxisAlignment:
+                    //           CrossAxisAlignment.center,
+                    //           children: [
+                    //             SvgPicture.asset(
+                    //               'assets/images/no-chat-icon.svg',
+                    //               width: 80,
+                    //               height: 80,
+                    //             ),
+                    //             SizedBox(height: MediaQuery.sizeOf(context).height * 0.04),
+                    //             Text(
+                    //               "No Chat History",
+                    //               textAlign: TextAlign.center,
+                    //               style: TextStyle(
+                    //                 color: Colors.red,
+                    //                 fontSize: 24,
+                    //                 fontFamily: 'Syne-SemiBold',
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       margin: EdgeInsets.only(
                         bottom: 12.h,
                         top: 12.h,
                       ),
-                      // height:
-                      //     double.parse('${textEditingController.text.length}'),
-                      height: 50,
-                      width: double.infinity,
                       decoration: BoxDecoration(
                         color: lightGrey,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: Center(
-                              child: TextFormField(
-                                controller: sendMessageController,
-                                scrollPhysics: const BouncingScrollPhysics(),
-                                maxLines: 20,
-                                style: GoogleFonts.inter(
+                            child: TextFormField(
+                              controller: sendMessageController,
+                              cursorColor: orange,
+                              keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.newline,
+                              minLines: 1,
+                              maxLines: null,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily: 'Inter-Regular',
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                hintText: 'Write message here..',
+                                hintStyle: GoogleFonts.inter(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                   color: black,
-                                ),
-                                cursorColor: orange,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  // contentPadding: EdgeInsets.zero,
-                                  focusedBorder: InputBorder.none,
-                                  hintText: 'Write message here..',
-                                  hintStyle: GoogleFonts.inter(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: black,
-                                  ),
                                 ),
                               ),
                             ),
@@ -403,7 +767,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
                               ? SizedBox(
                                   // width: 10.w,
                                   height: 10.h,
-                                  child: SpinKitThreeInOut(
+                                  child: const SpinKitThreeInOut(
                                     size: 12,
                                     color: orange,
                                     // size: 50.0,
