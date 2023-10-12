@@ -44,17 +44,11 @@ class _UserToUserChatState extends State<UserToUserChat> {
 
   late TextEditingController sendMessageController;
 
-  // Timer? getMessageTimer;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     init();
-    // getMessageTimer = Timer.periodic(Duration(seconds: 10), (Timer t) {
-    //   print('object api after 5 sec runs successfully');
-    //   return init();
-    // });
   }
 
   bool isLoading = false;
@@ -106,7 +100,6 @@ class _UserToUserChatState extends State<UserToUserChat> {
 
   @override
   void dispose() {
-    // getMessageTimer?.cancel();
     super.dispose();
     sendMessageController.dispose();
   }
@@ -148,9 +141,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
         ],
       ),
       backgroundColor: white,
-      body: isLoading
-          ? spinKitRotatingCircle
-          : SafeArea(
+      body: SafeArea(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 22.w),
                 child: Column(
@@ -286,7 +277,15 @@ class _UserToUserChatState extends State<UserToUserChat> {
                         ],
                       ),
                     ),
-                    Expanded(
+                    isLoading
+                        ? Expanded(
+                      child: SpinKitWaveSpinner(
+                        waveColor: orange,
+                        color: orange,
+                        size: 90.0,
+                      ),
+                    )
+                        : Expanded(
                       child: ListView.builder(
                         itemCount: getAllUserToUserChatList.length,
                         reverse: true,
@@ -518,214 +517,6 @@ class _UserToUserChatState extends State<UserToUserChat> {
                         },
                       ),
                     ),
-                    // SingleChildScrollView(
-                    //   child: Column(
-                    //     children: [
-                    //       isLoading
-                    //           ? spinKitRotatingCircle
-                    //           : getAllUserToUserChatList.isEmpty
-                    //           ? Container(
-                    //         color: Colors.transparent,
-                    //         height: MediaQuery.sizeOf(context).height * 0.7,
-                    //         child: ListView.builder(
-                    //           reverse: true,
-                    //           physics:
-                    //           const AlwaysScrollableScrollPhysics(),
-                    //           itemCount: getAllUserToUserChatList.length,
-                    //           padding: const EdgeInsets.only(bottom: 10),
-                    //           itemBuilder: (context, index) {
-                    //             int reverseIndex = getAllUserToUserChatList.length - 1 - index;
-                    //             String inputTime = "${getAllUserToUserChatList[reverseIndex].send_time}";
-                    //             DateFormat inputFormat = DateFormat("H:mm:ss");
-                    //             DateFormat outputFormat = DateFormat("h:mm a");
-                    //             DateTime dateTime = inputFormat.parse(inputTime);
-                    //             String formattedTime = outputFormat.format(dateTime);
-                    //             return getAllUserToUserChatList[index].receiver_type!.toLowerCase() == "Customers"
-                    //                 ? Column(
-                    //               children: [
-                    //                 SizedBox(height: MediaQuery.sizeOf(context).height * 0.015),
-                    //                 Padding(
-                    //                   padding: const EdgeInsets.only(left: 84),
-                    //                   child: Row(
-                    //                     crossAxisAlignment: CrossAxisAlignment.start,
-                    //                     children: [
-                    //                       ClipRRect(
-                    //                         borderRadius:
-                    //                         const BorderRadius.only(
-                    //                           topLeft: Radius.circular(10),
-                    //                           topRight: Radius.circular(10),
-                    //                           bottomLeft: Radius.circular(10),
-                    //                         ),
-                    //                         child: Container(
-                    //                           color: orange,
-                    //                           child: Padding(
-                    //                             padding: const EdgeInsets.all(10),
-                    //                             child: Column(
-                    //                               crossAxisAlignment: CrossAxisAlignment.end,
-                    //                               children: [
-                    //                                 Container(
-                    //                                   color: Colors.transparent,
-                    //                                   width: MediaQuery.sizeOf(context).width * 0.6,
-                    //                                   child: Text(
-                    //                                     "${getAllUserToUserChatList[reverseIndex].message}",
-                    //                                     textAlign: TextAlign.left,
-                    //                                     style:
-                    //                                     TextStyle(
-                    //                                       color: white,
-                    //                                       fontSize: 12,
-                    //                                       fontFamily: 'Inter-Regular',
-                    //                                     ),
-                    //                                   ),
-                    //                                 ),
-                    //                                 Row(
-                    //                                   children: [
-                    //                                     SvgPicture.asset(
-                    //                                       'assets/images/chat-timer-grey.svg',
-                    //                                     ),
-                    //                                     SizedBox(
-                    //                                         width: MediaQuery.sizeOf(context).width * 0.01),
-                    //                                     Text(
-                    //                                       formattedTime, textAlign:
-                    //                                       TextAlign.left,
-                    //                                       style: TextStyle(
-                    //                                         color: white,
-                    //                                         fontSize: 8,
-                    //                                         fontFamily: 'Inter-Regular',
-                    //                                       ),
-                    //                                     ),
-                    //                                   ],
-                    //                                 ),
-                    //                               ],
-                    //                             ),
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ],
-                    //                   ),
-                    //                 ),
-                    //               ],
-                    //             )
-                    //                 : Column(
-                    //               children: [
-                    //                 SizedBox(
-                    //                     height: MediaQuery.sizeOf(context).height * 0.015),
-                    //                 Row(
-                    //                   crossAxisAlignment:
-                    //                   CrossAxisAlignment
-                    //                       .start,
-                    //                   children: [
-                    //                     ClipRRect(
-                    //                       borderRadius:
-                    //                       BorderRadius
-                    //                           .circular(100),
-                    //                       child: Container(
-                    //                         width: 25.6,
-                    //                         height: 25.5,
-                    //                         decoration:
-                    //                         BoxDecoration(
-                    //                           color: Colors.transparent,
-                    //                         ),
-                    //                         child: FadeInImage(
-                    //                           placeholder:
-                    //                           const AssetImage(
-                    //                             "assets/images/user-profile.png",
-                    //                           ),
-                    //                           image: NetworkImage(
-                    //                             'https://deliver.eigix.net/public/${widget.image}',
-                    //                           ),
-                    //                           fit: BoxFit.cover,
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                     SizedBox(
-                    //                         width: MediaQuery.sizeOf(context).width * 0.02),
-                    //                     ClipRRect(
-                    //                       borderRadius:
-                    //                       const BorderRadius.only(
-                    //                         topRight: Radius.circular(10),
-                    //                         bottomLeft: Radius.circular(10),
-                    //                         bottomRight: Radius.circular(10),
-                    //                       ),
-                    //                       child: Container(
-                    //                         color: lightGrey,
-                    //                         child: Padding(
-                    //                           padding:
-                    //                           const EdgeInsets.all(10),
-                    //                           child: Column(
-                    //                             crossAxisAlignment: CrossAxisAlignment.end,
-                    //                             children: [
-                    //                               Container(
-                    //                                 color: Colors.transparent,
-                    //                                 width: MediaQuery.sizeOf(context).width * 0.6,
-                    //                                 child: Text(
-                    //                                   "${getAllUserToUserChatList[reverseIndex].message}",
-                    //                                   textAlign: TextAlign.left,
-                    //                                   style: TextStyle(
-                    //                                     color: Colors.black,
-                    //                                     fontSize: 12,
-                    //                                     fontFamily: 'Inter-Regular',
-                    //                                   ),
-                    //                                 ),
-                    //                               ),
-                    //                               Row(
-                    //                                 children: [
-                    //                                   SvgPicture
-                    //                                       .asset(
-                    //                                     'assets/images/clock-message-icon.svg',
-                    //                                   ),
-                    //                                   SizedBox(width: MediaQuery.sizeOf(context).width * 0.01),
-                    //                                   Text(
-                    //                                     formattedTime,
-                    //                                     textAlign: TextAlign.left,
-                    //                                     style: TextStyle(
-                    //                                       color: red,
-                    //                                       fontSize: 8,
-                    //                                       fontFamily: 'Inter-Regular',
-                    //                                     ),
-                    //                                   ),
-                    //                                 ],
-                    //                               ),
-                    //                             ],
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                   ],
-                    //                 ),
-                    //               ],
-                    //             );
-                    //           },
-                    //         ),
-                    //       )
-                    //           : Container(
-                    //         color: Colors.transparent,
-                    //         height: MediaQuery.sizeOf(context).height * 0.7,
-                    //         child: Column(
-                    //           mainAxisAlignment: MainAxisAlignment.center,
-                    //           crossAxisAlignment:
-                    //           CrossAxisAlignment.center,
-                    //           children: [
-                    //             SvgPicture.asset(
-                    //               'assets/images/no-chat-icon.svg',
-                    //               width: 80,
-                    //               height: 80,
-                    //             ),
-                    //             SizedBox(height: MediaQuery.sizeOf(context).height * 0.04),
-                    //             Text(
-                    //               "No Chat History",
-                    //               textAlign: TextAlign.center,
-                    //               style: TextStyle(
-                    //                 color: Colors.red,
-                    //                 fontSize: 24,
-                    //                 fontFamily: 'Syne-SemiBold',
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       margin: EdgeInsets.only(
