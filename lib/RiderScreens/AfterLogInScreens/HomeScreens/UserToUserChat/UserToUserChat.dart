@@ -70,19 +70,17 @@ class _UserToUserChatState extends State<UserToUserChat> {
       "users_id": widget.riderID.toString(),
       "other_users_id": widget.clientID.toString(),
     };
-    print('object get all msgs:   ' + data.toString());
+    print('object get all msgs:   $data');
     getAllUserToUserChatList = [];
     getAllUserToUserMessagesResponse =
         await service.getAllUserToUserChatAPI(data);
     if (getAllUserToUserMessagesResponse.status!.toLowerCase() == 'success') {
       if (getAllUserToUserMessagesResponse.data != null) {
-        print('object getting all msgs success:   ' +
-            getAllUserToUserMessagesResponse.data.toString());
+        print('object getting all msgs success:   ${getAllUserToUserMessagesResponse.data}');
         getAllUserToUserChatList.addAll(getAllUserToUserMessagesResponse.data!);
       }
     } else {
-      print('object error getting chat:' +
-          getAllUserToUserMessagesResponse.status.toString());
+      print('object error getting chat:${getAllUserToUserMessagesResponse.status}');
       showToastError('could\'nt get chat', FToast().init(context));
     }
     setState(() {
