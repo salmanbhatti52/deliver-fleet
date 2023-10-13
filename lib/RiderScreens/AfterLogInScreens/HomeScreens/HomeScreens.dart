@@ -65,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     userLatitude = (sharedPreferences.getString('userLatitude') ?? '');
     userLongitude = (sharedPreferences.getString('userLongitude') ?? '');
     getAllClientRequestsList = [];
+    print("userId $userID");
 
     Map data = {
       "users_fleet_id": userID.toString(),
@@ -122,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
         "assets/images/custom-icon.png", 300);
     setState(() {});
   }
+  
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
@@ -288,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               '$currency $totalCharges',
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.inter(
-                                fontSize: 20,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: orange,
                               ),
@@ -334,26 +336,14 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               getData(
                 LatLng(
-                    double.parse(getAllClientRequestsList![i]
-                        .bookings!
-                        .pickup_latitude!),
-                    double.parse(getAllClientRequestsList![i]
-                        .bookings!
-                        .pickup_longitude!)),
-                getAllClientRequestsList![i]
-                    .bookings!
-                    .users_customers!
-                    .first_name!,
+                    double.parse(getAllClientRequestsList![i].bookings!.pickup_latitude!),
+                    double.parse(getAllClientRequestsList![i].bookings!.pickup_longitude!)),
+                getAllClientRequestsList![i].bookings!.users_customers!.first_name!,
                 getAllClientRequestsList![i].bookings!.pickup_address,
-                getAllClientRequestsList![i]
-                    .bookings!
-                    .users_customers!
-                    .profile_pic!,
-                getAllClientRequestsList![i].bookings!.total_discounted_charges,
+                getAllClientRequestsList![i].bookings!.users_customers!.profile_pic!,
+                getAllClientRequestsList![i].bookings!.total_charges,
                 getAllClientRequestsList![i].bookings,
-                bookingDestinations: getAllClientRequestsList![i]
-                    .bookings!
-                    .bookings_destinations,
+                bookingDestinations: getAllClientRequestsList![i].bookings!.bookings_destinations,
               );
               setState(() {});
             },

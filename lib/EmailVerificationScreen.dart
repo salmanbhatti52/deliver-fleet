@@ -50,70 +50,35 @@ class EmailVerificationScreen extends StatefulWidget {
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   ApiServices get service => GetIt.I<ApiServices>();
 
-  late TextEditingController otpController;
+  TextEditingController otpController = TextEditingController();
   // late FlutterGifController gifController;
 
-  bool isSubmitted = false;
-  String userTypedOtp = '';
+  // bool isSubmitted = false;
+  // String userTypedOtp = '';
 
-  final interval = const Duration(seconds: 1);
+  // final interval = const Duration(seconds: 1);
 
-  final int timerMaxSeconds = 120;
-  bool isTimerCompleted = false;
-  int currentSeconds = 0;
-
-  String get timerText =>
-      '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
-
-  startTimeout([int? milliseconds]) {
-    var duration = interval;
-    Timer.periodic(duration, (timer) {
-      setState(() {
-        currentSeconds = timer.tick;
-        if (timer.tick >= timerMaxSeconds) {
-          timer.cancel();
-          setState(() {
-            isTimerCompleted = true;
-          });
-        }
-      });
-    });
-  }
-
-
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  String verifyId = '';
-
-  Future<void> verifyPhoneNumber() async {
-    if (widget.phoneNumber != null) {
-      print("phoneNumber: ${widget.phoneNumber!}");
-    }
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '${widget.phoneNumber}',
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await auth.signInWithCredential(credential);
-      },
-      verificationFailed: (FirebaseAuthException e) async {
-        if (e.code == 'invalid-phone-number') {
-          print('The provided phone number is not valid.');
-        }
-      },
-      codeSent: (String verificationId, int? resendToken) async {
-        verifyId = verificationId;
-        String smsCode = otpController.text;
-
-        // Create a PhoneAuthCredential with the code
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: verificationId, smsCode: smsCode);
-
-        // Sign the user in (or link) with the credential
-        // await _auth.signInWithCredential(credential);
-      },
-      timeout: const Duration(seconds: 120),
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
-  }
-
+  // final int timerMaxSeconds = 120;
+  // bool isTimerCompleted = false;
+  // int currentSeconds = 0;
+  //
+  // String get timerText =>
+  //     '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
+  //
+  // startTimeout([int? milliseconds]) {
+  //   var duration = interval;
+  //   Timer.periodic(duration, (timer) {
+  //     setState(() {
+  //       currentSeconds = timer.tick;
+  //       if (timer.tick >= timerMaxSeconds) {
+  //         timer.cancel();
+  //         setState(() {
+  //           isTimerCompleted = true;
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
 
   CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
 
@@ -174,11 +139,49 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     // }
   }
 
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String verifyId = '';
+
+  Future<void> verifyPhoneNumber() async {
+    if (widget.phoneNumber != null) {
+      print("phoneNumber: ${widget.phoneNumber!}");
+    }
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '${widget.phoneNumber}',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await auth.signInWithCredential(credential);
+      },
+      verificationFailed: (FirebaseAuthException e) async {
+        if (e.code == 'invalid-phone-number') {
+          print('The provided phone number is not valid.');
+        }
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        verifyId = verificationId;
+        String smsCode = otpController.text;
+
+        // Create a PhoneAuthCredential with the code
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: verificationId, smsCode: smsCode);
+
+        // Sign the user in (or link) with the credential
+        // await _auth.signInWithCredential(credential);
+      },
+      timeout: const Duration(seconds: 120),
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
   bool isButtonDisabled = false;
   Timer? buttonTimer;
+  bool isVerifying = false;
+
 
   Future<void> verifyOTPCode() async {
     print("verificationId: $verifyId");
+    setState(() {
+      isVerifying = true;
+    });
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verifyId,
       smsCode: otpController.text,
@@ -189,9 +192,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       }
       print('User Login In Successful ${value.user}');
       await checkNumber();
-      setState(() {
-        isVerifying = true;
-      });
       if (checkPhoneNumberModel.status == "success") {
 
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -221,6 +221,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           print("object");
           if (checkPhoneNumberModel.data?.usersFleetId!.toInt() != null) {
             if(checkPhoneNumberModel.data?.badgeVerified == "No"){
+              setState(() {
+                isVerifying = false;
+              });
               print("object111");
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
@@ -236,13 +239,19 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   FToast().init(context),
                   seconds: 3);
             } else {
+              setState(() {
+                isVerifying = false;
+              });
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (context) => BottomNavBar(),
+                    builder: (context) => const BottomNavBar(),
                   ),
                       (Route<dynamic> route) => false);
             }
           } else {
+            setState(() {
+              isVerifying = false;
+            });
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                   builder: (context) => RegisterScreen(userType: widget.userType, phoneNumber: widget.phoneNumber.toString(), deviceID: widget.deviceID.toString()),
@@ -252,12 +261,18 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         } else {
           if(widget.userType == "Fleet"){
             if (checkPhoneNumberModel.data!.usersFleetId!.toInt() != null) {
+              setState(() {
+                isVerifying = false;
+              });
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (context) => BottomNavBarFleet(),
+                    builder: (context) => const BottomNavBarFleet(),
                   ),
                       (Route<dynamic> route) => false);
             } else {
+              setState(() {
+                isVerifying = false;
+              });
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => RegisterScreen(userType: widget.userType, phoneNumber: widget.phoneNumber.toString(), deviceID: widget.deviceID.toString()),
@@ -293,24 +308,33 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     });
   }
 
-  init() {
-    // gifController = FlutterGifController(vsync: this);
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    // gifController.repeat(
-    //   min: 0,
-    //   max: 60,
-    //   period: const Duration(seconds: 2),
-    // );
-    // });
-    if (mounted) startTimeout();
-    otpController = TextEditingController();
-    super.initState();
+  Timer? timer;
+  int secondsRemaining = 120; // Total seconds for the timer (2 minutes)
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (secondsRemaining > 0) {
+          secondsRemaining--;
+        } else {
+          timer.cancel();
+        }
+      });
+    });
   }
+
+  String getTimerText() {
+    int minutes = secondsRemaining ~/ 60;
+    int seconds = secondsRemaining % 60;
+    return '${minutes}m:${seconds.toString().padLeft(2, '0')}s';
+  }
+
+
 
   @override
   void initState() {
     super.initState();
-    init();
+    startTimer();
     verifyPhoneNumber();
     print("phoneNumber: ${widget.phoneNumber}");
   }
@@ -320,8 +344,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    otpController.dispose();
-    // gifController.dispose();
+    timer?.cancel();
   }
 
   @override
@@ -337,7 +360,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           leading: Padding(
             padding: const EdgeInsets.only(top: 8.0, left: 20),
             child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
+              onTap: (){
+                Navigator.of(context).pop();
+                timer?.cancel();
+              },
               child: backArrowWithContainer(context),
             ),
           ),
@@ -476,27 +502,27 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                           defaultPinTheme: PinTheme(
                             width: 60,
                             height: 48,
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
                               fontFamily: 'Inter-Regular',
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color(0xffF2F0EE),
+                              color: const Color(0xffF2F0EE),
                             ),
                           ),
                           focusedPinTheme: PinTheme(
                             width: 60,
                             height: 48,
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: black,
                               fontSize: 14,
                               fontFamily: 'Inter-Regular',
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color(0xffF2F0EE),
+                              color: const Color(0xffF2F0EE),
                               border: Border.all(
                                 color: orange,
                               ),
@@ -505,14 +531,14 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                           submittedPinTheme: PinTheme(
                             width: 60,
                             height: 48,
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
                               fontFamily: 'Inter-Regular',
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color(0xffF2F0EE),
+                              color: const Color(0xffF2F0EE),
                               border: Border.all(
                                 color: orange,
                               ),
@@ -547,7 +573,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                isTimerCompleted
+                                secondsRemaining == 0
                                     ? SvgPicture.asset(
                                         'assets/images/timer-icon.svg',
                                         colorFilter: const ColorFilter.mode(
@@ -562,7 +588,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                   width: 5.w,
                                 ),
                                 Text(
-                                  isTimerCompleted ? '00:00' : timerText,
+                                  getTimerText(),
                                   style: GoogleFonts.inter(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
@@ -577,58 +603,75 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       SizedBox(
                         height: 40.h,
                       ),
-                      resending
-                          ? const CircularProgressIndicator(
-                              color: orange,
-                            )
-                          : RichText(
-                              text: TextSpan(
-                                text: 'Did\'nt received code?    ',
-                                style: GoogleFonts.syne(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: grey,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        resendCode(context);
-                                      },
-                                    text: 'RESEND CODE',
-                                    style: GoogleFonts.syne(
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: isTimerCompleted ? orange : grey,
-                                    ),
-                                  ),
-                                ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Don't Receive the Code? ",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: black,
+                                fontSize: 14,
+                                fontFamily: 'Syne-Regular',
                               ),
                             ),
+                            secondsRemaining == 0
+                                ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  secondsRemaining = 20;
+                                  startTimer();
+                                });
+                                verifyPhoneNumber();
+                              },
+                              child: const Text(
+                                'Resend Code',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: orange,
+                                  fontSize: 16,
+                                  fontFamily: 'Syne-SemiBold',
+                                ),
+                              ),
+                            )
+                                : const Text(
+                              'Resend Code',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: grey,
+                                fontSize: 16,
+                                fontFamily: 'Syne-SemiBold',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(
                         height: 80.h,
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 20.0.h),
-                        child: isButtonDisabled ? apiButton(context) : GestureDetector(
+                        child: GestureDetector(
                           onTap: () {
                             if (!isButtonDisabled) {
                               setState(() {
                                 isButtonDisabled = true;
                               });
-                              buttonTimer = Timer(Duration(seconds: 5), () async {
+                              buttonTimer = Timer(const Duration(seconds: 2), () async {
                                 setState(() {
                                   isButtonDisabled = false;
                                 });
                                 await verifyOTPCode();
+                                timer?.cancel();
                               });
                             }
                           },
                           // => isVerifying
                           //     ? apiButton(context)
                           //     : verifyOTPmethod(context),
-                          child: buttonContainer(context, 'VERIFY'),
+                          child: isVerifying ? apiButton(context) : buttonContainer(context, 'VERIFY'),
                         ),
                       ),
                     ],
@@ -642,8 +685,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     );
   }
 
-  APIResponse<APIResponse>? otpResponse;
-  bool isVerifying = false;
+  // APIResponse<APIResponse>? otpResponse;
   // verifyOTPmethod(BuildContext context) async {
   //   if (isSubmitted == false && userTypedOtp == '') {
   //     showToastError('enter OTP to proceed', FToast().init(context));
@@ -752,34 +794,52 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   // }
 
   /// resend OTP API:
-  bool resending = false;
-  APIResponse<APIResponse>? _resendOTPResponse;
-  resendCode(BuildContext context) async {
-    setState(() {
-      resending = true;
-    });
-    Map oTPData = {
-      "email": widget.phoneNumber,
-    };
-    _resendOTPResponse = await service.verifyEmailAPI(oTPData);
-    if (_resendOTPResponse!.status!.toLowerCase() == 'success') {
-      showToastSuccess('OTP sent. Please verify again', FToast().init(context));
-      // if (_resendOTPResponse!.data != null) {
-      //   setState(() {
-      //     widget.otp = _resendOTPResponse!.data!.otp!.toString();
-      //   });
-      // }
-      if (mounted) {
-        setState(() {
-          isTimerCompleted = false;
-        });
-        startTimeout();
-      }
-    } else {
-      showToastError(_resendOTPResponse!.message, FToast().init(context));
-    }
-    setState(() {
-      resending = false;
-    });
-  }
+  // bool resending = false;
+  // APIResponse<APIResponse>? _resendOTPResponse;
+  // resendCode(BuildContext context) async {
+  //   setState(() {
+  //     resending = true;
+  //   });
+  //   Map oTPData = {
+  //     "email": widget.phoneNumber,
+  //   };
+  //   _resendOTPResponse = await service.verifyEmailAPI(oTPData);
+  //   if (_resendOTPResponse!.status!.toLowerCase() == 'success') {
+  //     showToastSuccess('OTP sent. Please verify again', FToast().init(context));
+  //     // if (_resendOTPResponse!.data != null) {
+  //     //   setState(() {
+  //     //     widget.otp = _resendOTPResponse!.data!.otp!.toString();
+  //     //   });
+  //     // }
+  //     if (mounted) {
+  //       setState(() {
+  //         isTimerCompleted = false;
+  //       });
+  //       startTimeout();
+  //     }
+  //   } else {
+  //     showToastError(_resendOTPResponse!.message, FToast().init(context));
+  //   }
+  //   setState(() {
+  //     resending = false;
+  //   });
+  // }
+
+  // Timer? timer;
+  // int secondsRemaining = 120; // Total seconds for the timer (2 minutes)
+
+  // void startTimer() {
+  //   timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       if (secondsRemaining > 0) {
+  //         secondsRemaining--;
+  //       } else {
+  //         timer.cancel();
+  //       }
+  //     }
+  //     );
+  //   }
+  //   );
+  // }
+
 }

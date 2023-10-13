@@ -40,6 +40,8 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
     super.initState();
     setState(() {
       isLoading = true;
+      loadSwitchState();
+      loadShiftState();
       // gettingCategory = true;
     });
     init();
@@ -127,6 +129,7 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
                                       onTap: () {
                                         setState(() {
                                           selectShift = 1;
+                                          saveShiftState(selectShift);
                                         });
                                       },
                                       child: selectShift == 1
@@ -154,6 +157,7 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
                                       onTap: () {
                                         setState(() {
                                           selectShift = 2;
+                                          saveShiftState(selectShift);
                                         });
                                       },
                                       child: selectShift == 2
@@ -196,6 +200,7 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
                                   onTap: () {
                                     setState(() {
                                       switchState = 1;
+                                      saveSwitchState(switchState);
                                     });
                                   },
                                   child: switchState == 1
@@ -236,6 +241,7 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
                                   onTap: () {
                                     setState(() {
                                       switchState = 2;
+                                      saveSwitchState(switchState);
                                     });
                                   },
                                   child: switchState == 2
@@ -333,4 +339,29 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
       isUpdating = false;
     });
   }
+
+  void loadSwitchState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      switchState = prefs.getInt('switchState') ?? -1;
+    });
+  }
+
+  void saveSwitchState(int state) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('switchState', state);
+  }
+
+  void loadShiftState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectShift = prefs.getInt('switchShift') ?? -1;
+    });
+  }
+
+  void saveShiftState(int state) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('switchShift', state);
+  }
+
 }
