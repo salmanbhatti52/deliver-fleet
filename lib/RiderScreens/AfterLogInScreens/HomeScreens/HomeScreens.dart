@@ -43,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     setState(() {
       isHomeLoading = true;
     });
     init();
+    loadCustomMarker();
   }
 
   late APIResponse<List<ShowBookingsModel>> getAllClientRequestsResponse;
@@ -66,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
     userLongitude = (sharedPreferences.getString('userLongitude') ?? '');
     getAllClientRequestsList = [];
     print("userId $userID");
-
     Map data = {
       "users_fleet_id": userID.toString(),
     };
@@ -290,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               '$currency $totalCharges',
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.inter(
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w400,
                                 color: orange,
                               ),
@@ -361,6 +360,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       }
+      if (newCustomMarkerIcon != null) {
+        markers.add(
+            Marker(
+              markerId: const MarkerId('currentLocation'),
+              position:LatLng(double.parse(userLatitude!), double.parse(userLongitude!)),
+              infoWindow:
+              const InfoWindow(title: 'Your Current Location'),
+              icon: newCustomMarkerIcon ??
+                  BitmapDescriptor.defaultMarker,
+            ),
+        );
+      }
     });
 
     return markers;
@@ -382,6 +393,17 @@ class _HomeScreenState extends State<HomeScreen> {
       );
       setState(() {});
     }
+  }
+
+  BitmapDescriptor? newCustomMarkerIcon;
+  Future<void> loadCustomMarker() async {
+    print("userLatitude $userLatitude ::: userLongitude $userLongitude");
+    final ByteData bytes = await rootBundle.load(
+      'assets/images/rider-marker-icon.png',
+    );
+    final Uint8List list = bytes.buffer.asUint8List();
+    newCustomMarkerIcon = BitmapDescriptor.fromBytes(list);
+    setState(() {});
   }
 
   @override

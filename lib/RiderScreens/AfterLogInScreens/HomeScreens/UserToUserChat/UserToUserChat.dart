@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Deliver_Rider/Constants/Colors.dart';
 import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
 import 'package:Deliver_Rider/models/API%20models/GetAllUserToUsreChatModel.dart';
@@ -42,26 +44,28 @@ class UserToUserChat extends StatefulWidget {
 class _UserToUserChatState extends State<UserToUserChat> {
   ApiServices get service => GetIt.I<ApiServices>();
 
-  late TextEditingController sendMessageController;
+ TextEditingController sendMessageController = TextEditingController();
+  late Timer chatRefreshTimer;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    chatRefreshTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+      init();
+    });
     init();
   }
 
-  bool isLoading = false;
+  // bool isLoading = false;
   late APIResponse<List<GetAllUserToUserChatModel>>
       getAllUserToUserMessagesResponse;
   late List<GetAllUserToUserChatModel> getAllUserToUserChatList;
 
-  init() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    sendMessageController = TextEditingController();
+  Future<void> init() async {
+    // setState(() {
+    //   isLoading = true;
+    // });
 
     Map data = {
       "request_type": "getMessages",
@@ -78,14 +82,15 @@ class _UserToUserChatState extends State<UserToUserChat> {
       if (getAllUserToUserMessagesResponse.data != null) {
         print('object getting all msgs success:   ${getAllUserToUserMessagesResponse.data}');
         getAllUserToUserChatList.addAll(getAllUserToUserMessagesResponse.data!);
+        setState(() {});
       }
     } else {
       print('object error getting chat:${getAllUserToUserMessagesResponse.status}');
       showToastError('could\'nt get chat', FToast().init(context));
     }
-    setState(() {
-      isLoading = false;
-    });
+    // setState(() {
+    //   isLoading = false;
+    // });
   }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
@@ -99,7 +104,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
   @override
   void dispose() {
     super.dispose();
-    sendMessageController.dispose();
+    chatRefreshTimer.cancel();
   }
 
   @override
@@ -124,19 +129,19 @@ class _UserToUserChatState extends State<UserToUserChat> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(top: 8.h, right: 20.w),
-            child: GestureDetector(
-              onTap: () => init(),
-              child: const Icon(
-                Icons.refresh_rounded,
-                color: orange,
-                size: 28,
-              ),
-            ),
-          )
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.only(top: 8.h, right: 20.w),
+        //     child: GestureDetector(
+        //       onTap: () => init(),
+        //       child: const Icon(
+        //         Icons.refresh_rounded,
+        //         color: orange,
+        //         size: 28,
+        //       ),
+        //     ),
+        //   )
+        // ],
       ),
       backgroundColor: white,
       body: SafeArea(
@@ -275,15 +280,15 @@ class _UserToUserChatState extends State<UserToUserChat> {
                         ],
                       ),
                     ),
-                    isLoading
-                        ? Expanded(
-                      child: SpinKitWaveSpinner(
-                        waveColor: orange,
-                        color: orange,
-                        size: 90.0,
-                      ),
-                    )
-                        : Expanded(
+                    // isLoading
+                    //     ? Expanded(
+                    //   child: SpinKitWaveSpinner(
+                    //     waveColor: orange,
+                    //     color: orange,
+                    //     size: 90.0,
+                    //   ),
+                    // ) :
+                    Expanded(
                       child: ListView.builder(
                         itemCount: getAllUserToUserChatList.length,
                         reverse: true,
@@ -587,7 +592,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
   bool isSending = false;
   APIResponse<APIResponse>? sendMsgResponse;
 
-  sendMessage(BuildContext context) async {
+  Future<void> sendMessage(BuildContext context) async {
     setState(() {
       isSending = true;
     });
@@ -602,6 +607,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
     };
     sendMsgResponse = await service.sendUserToUserChatAPI(sendMsgData);
     if (sendMsgResponse!.status!.toLowerCase() == 'success') {
+      sendMessageController.clear();
       showToastSuccess(sendMsgResponse!.message, FToast().init(context),
           seconds: 1);
       init();
