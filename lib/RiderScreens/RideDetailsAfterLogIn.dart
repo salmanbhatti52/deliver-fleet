@@ -68,10 +68,19 @@ class _RideDetailsAfterLogInScreenState
   late SharedPreferences sharedPreferences;
   bool isLoading = false;
 
+  String? parentID;
+
+  sharePref() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    parentID = sharedPreferences.getString('parentID')!;
+    print("parentID $parentID");
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    sharePref();
     setState(() {
       isLoading = true;
       // gettingCategory = true;
@@ -227,7 +236,8 @@ class _RideDetailsAfterLogInScreenState
                 builder: (context, constraints) => GlowingOverscrollIndicator(
                   axisDirection: AxisDirection.down,
                   color: orange,
-                  child: SingleChildScrollView(
+                  child: parentID == "0"
+                      ?  SingleChildScrollView(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 40.0.w),
                       child: Form(
@@ -535,31 +545,55 @@ class _RideDetailsAfterLogInScreenState
                             SizedBox(
                               height: 20.h,
                             ),
-                            widget.parentID == '0'
-                                ? const SizedBox()
-                                : Padding(
-                                    padding: EdgeInsets.only(bottom: 20.0.h),
-                                    child: GestureDetector(
-                                      onTap: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              RequestRideFromFleetActive(
-                                            parentID:
-                                                widget.parentID.toString(),
-                                            userFleetId:
-                                                widget.userFleetId.toString(),
-                                          ),
-                                        ),
-                                      ),
-                                      child: buttonContainerWithBorder(
-                                          context, "REQUEST A BIKE"),
-                                    ),
-                                  ),
                           ],
                         ),
                       ),
                     ),
+                  )
+                      : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+                        child: Column(
+                    children: [
+                      SizedBox(height: 50.h,),
+                        Container(
+                          width: double.infinity,
+                          height: 150.h,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.circular(10),
+                            border: Border.all(
+                              color: lightGrey,
+                              width: 4.5,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius:
+                            BorderRadius.circular(10),
+                            child: SvgPicture.asset(
+                              'assets/images/bike.svg',
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                        ),
+                      SizedBox(height: 30.h,),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  RequestRideFromFleetActive(
+                                    parentID:
+                                    widget.parentID.toString(),
+                                    userFleetId:
+                                    widget.userFleetId.toString(),
+                                  ),
+                            ),
+                          ),
+                          child: buttonContainerWithBorder(
+                              context, "REQUEST A BIKE"),
+                        ),
+                    ],
                   ),
+                      )
                 ),
               ),
       ),

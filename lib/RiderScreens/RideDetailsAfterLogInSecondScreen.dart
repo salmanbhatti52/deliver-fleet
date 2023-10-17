@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Constants/Colors.dart';
 import '../Constants/back-arrow-with-container.dart';
@@ -48,10 +49,19 @@ class _RideDetailsAfterLogInSecondScreenState
 
   final GlobalKey<FormState> _key = GlobalKey();
 
+  String? parentID;
+  late SharedPreferences sharedPreferences;
+  sharePref() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    parentID = sharedPreferences.getString('parentID')!;
+    print("parentID $parentID");
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    sharePref();
     expDateOfVehicleController = TextEditingController();
     expDateOfInsuranceController = TextEditingController();
     expDateOfRoadWorthinessController = TextEditingController();
@@ -267,7 +277,7 @@ class _RideDetailsAfterLogInSecondScreenState
           builder: (context, constraints) => GlowingOverscrollIndicator(
             axisDirection: AxisDirection.down,
             color: orange,
-            child: SingleChildScrollView(
+            child:  parentID == "0" ?   SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40.0.w),
                 child: Form(
@@ -471,25 +481,23 @@ class _RideDetailsAfterLogInSecondScreenState
                       SizedBox(
                         height: 20.h,
                       ),
-                      widget.parentID == '0'
-                          ? const SizedBox()
-                          : GestureDetector(
-                              onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      RequestRideFromFleetActive(
-                                    parentID: widget.parentID,
-                                    userFleetId: widget.userFleetId,
-                                  ),
-                                ),
-                              ),
-                              child: buttonContainerWithBorder(
-                                  context, "REQUEST A BIKE"),
-                            ),
                     ],
                   ),
                 ),
               ),
+            )
+                : GestureDetector(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      RequestRideFromFleetActive(
+                        parentID: widget.parentID,
+                        userFleetId: widget.userFleetId,
+                      ),
+                ),
+              ),
+              child: buttonContainerWithBorder(
+                  context, "REQUEST A BIKE"),
             ),
           ),
         ),

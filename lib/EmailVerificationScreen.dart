@@ -84,6 +84,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   checkNumber() async {
     // try {
+    print("one_signal_id ${widget.deviceID}");
+    print("user_type ${widget.userType}");
+    print("phone ${widget.phoneNumber}");
+    print("latitude ${widget.latitude}");
+    print("longitude ${widget.longitude}");
       String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
       print("contactNumber: ${widget.phoneNumber}");
       final response = await http.post(
@@ -207,6 +212,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             'deviceIDInfo', checkPhoneNumberModel.data!.oneSignalId.toString());
         await sharedPreferences.setString(
             'userType', checkPhoneNumberModel.data!.userType.toString());
+        await sharedPreferences.setString(
+            'parentID', checkPhoneNumberModel.data!.parentId.toString());
         await sharedPreferences.setString('isLogIn', 'true');
            print("sharedPref lat: ${widget.latitude.toString()}");
           print("sharedPref long: ${widget.longitude.toString()}");
@@ -235,7 +242,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   ),
                       (route) => false);
               showToastSuccess(
-                  'Badge Are Not Verified. PLese add Vehicle to verify badge',
+                  'Badge Are Not Verified. PLese add Vehicle or request a bike to verify badge',
                   FToast().init(context),
                   seconds: 3);
             } else {
@@ -659,7 +666,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                               setState(() {
                                 isButtonDisabled = true;
                               });
-                              buttonTimer = Timer(const Duration(seconds: 2), () async {
+                              buttonTimer = Timer(const Duration(seconds: 5), () async {
                                 setState(() {
                                   isButtonDisabled = false;
                                 });
@@ -671,7 +678,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                           // => isVerifying
                           //     ? apiButton(context)
                           //     : verifyOTPmethod(context),
-                          child: isVerifying ? apiButton(context) : buttonContainer(context, 'VERIFY'),
+                          child: isButtonDisabled? apiButton(context) : isVerifying ? apiButton(context) : buttonContainer(context, 'VERIFY'),
                         ),
                       ),
                     ],

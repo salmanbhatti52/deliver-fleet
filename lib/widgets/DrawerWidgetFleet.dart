@@ -431,10 +431,13 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                                               const ChooseAppScreen(),
                                         ),
                                       );
-                                      sharedPreferences =
-                                          await SharedPreferences.getInstance();
-                                      await sharedPreferences.setString(
-                                          'isLogin', 'false');
+                                      // sharedPreferences =
+                                      //     await SharedPreferences.getInstance();
+                                      // await sharedPreferences.setString(
+                                      //     'isLogin', 'false');
+                                      SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                                      await sharedPref.clear();
+                                      setState(() {});
                                     },
                                     child: buttonContainer(
                                         context, 'YES, LOG ME OUT'),

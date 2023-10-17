@@ -646,7 +646,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               seconds: 1);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => LogInScreen(userType: widget.userType,),
+                builder: (context) => LogInScreen(userType: widget.userType, deviceID: widget.deviceID),
               ),
                   (Route<dynamic> route) => false);
         }

@@ -331,6 +331,7 @@ class _DrivingLicensePictureVerificationState
 
   bool isVerifying = false;
   APIResponse<APIResponse>? verifyResponse;
+  String? deviceIDInfo;
 
   licenseVerify(BuildContext context) async {
     if (xFile != null && xFileForBack != null) {
@@ -346,7 +347,9 @@ class _DrivingLicensePictureVerificationState
       if (verifyResponse!.status!.toLowerCase() == 'success') {
         SharedPreferences sharedPref = await SharedPreferences.getInstance();
         userID = (sharedPref.getInt('userID') ?? null);
+        deviceIDInfo = (sharedPref.getString('deviceIDInfo') ?? null);
         print("userId value is = $userID");
+        print("deviceIDInfo = $deviceIDInfo");
         if(userID != null ){
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -363,6 +366,7 @@ class _DrivingLicensePictureVerificationState
               MaterialPageRoute(
                 builder: (context) => LogInScreen(
                   userType: 'Rider',
+                  deviceID: deviceIDInfo,
                 ),
               ),
                   (route) => false);

@@ -40,11 +40,22 @@ class _RequestRideFromFleetActiveState
   int selectedVehicleID = -1;
   bool isPageLoading = false;
 
+  String? parentID;
+
+  sharePref() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    parentID = sharedPreferences.getString('parentID')!;
+    print("parentID $parentID");
+  }
+
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     checked = -1;
+    sharePref();
     setState(() {
       isPageLoading = true;
     });
@@ -59,15 +70,17 @@ class _RequestRideFromFleetActiveState
     bikeID = -1;
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
-
+    print("users_fleet_id ${widget.userFleetId}");
+    print("parent_id ${widget.parentID}");
     Map data = {
       "users_fleet_id": widget.userFleetId,
-      "parent_id": widget.parentID,
+      "parent_id": parentID,
     };
 
     getAvailableBikesResponse = await service.getAllAvailableVehiclesApi(data);
     getAvailableBikesList = [];
     if (getAvailableBikesResponse!.status!.toLowerCase() == 'success') {
+      print("object");
       if (getAvailableBikesResponse!.data != null) {
         getAvailableBikesList!.addAll(getAvailableBikesResponse!.data!);
       }
@@ -158,17 +171,11 @@ class _RequestRideFromFleetActiveState
                                     onTap: () {
                                       setState(() {
                                         checked = index;
-                                        selectedVehicleID =
-                                            getAvailableBikesList![index]
-                                                .users_fleet_vehicles_id!;
-                                        bikeID = getAvailableBikesList![index]
-                                            .vehicles!
-                                            .vehicles_id!;
+                                        selectedVehicleID = getAvailableBikesList![index].users_fleet_vehicles_id!;
+                                        bikeID = getAvailableBikesList![index].vehicles!.vehicles_id!;
                                       });
-                                      print('id of selected vehicle:  ' +
-                                          selectedVehicleID.toString() +
-                                          '  selected vehicle id id:  ' +
-                                          bikeID.toString());
+                                      print('id of selected vehicle:  ' + selectedVehicleID.toString() +
+                                          '  selected vehicle id id:  ' + bikeID.toString());
                                     },
                                     child: Container(
                                       margin: EdgeInsets.only(bottom: 20.h),

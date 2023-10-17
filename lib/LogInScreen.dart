@@ -47,7 +47,7 @@ class _LogInScreenState extends State<LogInScreen> {
   final GlobalKey<FormState> _key = GlobalKey();
   final countryPicker = const FlCountryCodePicker();
   CountryCode? countryCode =
-  const CountryCode(name: 'Nigeria', code: 'NG', dialCode: '+234');
+      const CountryCode(name: 'Nigeria', code: 'NG', dialCode: '+234');
   TextEditingController contactNumberController = TextEditingController();
   // late TextEditingController emailController;
   // late TextEditingController passwordController;
@@ -270,7 +270,8 @@ class _LogInScreenState extends State<LogInScreen> {
                               height: 80.h,
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: TextFormField(
                                 controller: contactNumberController,
                                 cursorColor: orange,
@@ -310,7 +311,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                     ),
                                     borderSide: BorderSide.none,
                                   ),
-                                  focusedBorder:  OutlineInputBorder(
+                                  focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
                                       color: orange,
@@ -335,61 +336,76 @@ class _LogInScreenState extends State<LogInScreen> {
                                       horizontal: 20, vertical: 10),
                                   hintText: "Contact Number",
                                   hintStyle: TextStyle(
-                                    color: const Color(0xFF191919).withOpacity(0.5),
+                                    color: const Color(0xFF191919)
+                                        .withOpacity(0.5),
                                     fontSize: 12,
                                     fontFamily: 'Inter-Light',
                                   ),
                                   prefixIcon: GestureDetector(
                                     onTap: () async {
-                                      final code =
-                                      await countryPicker.showPicker(context: context);
+                                      final code = await countryPicker
+                                          .showPicker(context: context);
                                       setState(() {
                                         countryCode = code;
                                       });
-                                      print('countryName: ${countryCode!.name}');
-                                      print('countryCode: ${countryCode!.code}');
-                                      print('countryDialCode: ${countryCode!.dialCode}');
+                                      print(
+                                          'countryName: ${countryCode!.name}');
+                                      print(
+                                          'countryCode: ${countryCode!.code}');
+                                      print(
+                                          'countryDialCode: ${countryCode!.dialCode}');
                                     },
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 20),
+                                          padding:
+                                              const EdgeInsets.only(left: 20),
                                           child: Container(
                                             child: countryCode != null
                                                 ? Image.asset(
-                                              countryCode!.flagUri,
-                                              package: countryCode!.flagImagePackage,
-                                              width: 25,
-                                              height: 20,
-                                            )
+                                                    countryCode!.flagUri,
+                                                    package: countryCode!
+                                                        .flagImagePackage,
+                                                    width: 25,
+                                                    height: 20,
+                                                  )
                                                 : SvgPicture.asset(
-                                              'assets/images/flag-icon.svg',
-                                            ),
+                                                    'assets/images/flag-icon.svg',
+                                                  ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
                                           child: Text(
                                             countryCode?.dialCode ?? "+234",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              color: const Color(0xFF191919).withOpacity(0.5),
+                                              color: const Color(0xFF191919)
+                                                  .withOpacity(0.5),
                                               fontSize: 12,
                                               fontFamily: 'Inter-Light',
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: MediaQuery.sizeOf(context).width * 0.02),
+                                        SizedBox(
+                                            width: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                0.02),
                                         Text(
                                           '|',
                                           style: TextStyle(
-                                            color: const Color(0xFF191919).withOpacity(0.5),
+                                            color: const Color(0xFF191919)
+                                                .withOpacity(0.5),
                                             fontSize: 12,
                                             fontFamily: 'Inter-SemiBold',
                                           ),
                                         ),
-                                        SizedBox(width: MediaQuery.sizeOf(context).width * 0.02),
+                                        SizedBox(
+                                            width: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                0.02),
                                       ],
                                     ),
                                   ),
@@ -567,33 +583,42 @@ class _LogInScreenState extends State<LogInScreen> {
                               height: 40.h,
                             ),
                             isLoggingIn
-                                ? apiButton(context) :
-                            GestureDetector(
+                                ? apiButton(context)
+                                : GestureDetector(
                                     onTap: () {
-                                      print("lat ${ _currentPosition!.latitude.toString()}");
-                                      print("long ${ _currentPosition!.longitude.toString()}");
-    if (_key.currentState!.validate()) {
-      // hasPermission ? loginMethod(context) :
-      print("object");
-      _getCurrentPosition();
-      // MaterialPageRoute(
-      //   builder: (context) => RegisterScreen(
-      //     userType: widget.userType,
-      //     deviceID: widget.deviceID ?? '',
-      //   ),
-      // );
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => EmailVerificationScreen(
-            latitude: _currentPosition!.latitude.toString(),
-            longitude: _currentPosition!.longitude.toString(),
-            phoneNumber: countryCode!.dialCode + contactNumberController.text,
-            userType: widget.userType,
-            deviceID: widget.deviceID ?? '',
-          ),
-        ),
-      );
-    }
+                                      print(
+                                          "lat ${_currentPosition!.latitude.toString()}");
+                                      print(
+                                          "long ${_currentPosition!.longitude.toString()}");
+                                      if (_key.currentState!.validate()) {
+                                        // hasPermission ? loginMethod(context) :
+                                        print("object");
+                                        _getCurrentPosition();
+                                        // MaterialPageRoute(
+                                        //   builder: (context) => RegisterScreen(
+                                        //     userType: widget.userType,
+                                        //     deviceID: widget.deviceID ?? '',
+                                        //   ),
+                                        // );
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                EmailVerificationScreen(
+                                              latitude: _currentPosition!
+                                                  .latitude
+                                                  .toString(),
+                                              longitude: _currentPosition!
+                                                  .longitude
+                                                  .toString(),
+                                              phoneNumber: countryCode!
+                                                      .dialCode +
+                                                  contactNumberController.text,
+                                              userType: widget.userType,
+                                              deviceID: widget.deviceID ?? '',
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     },
                                     child: buttonContainer(context, 'LOGIN'),
                                   ),
