@@ -48,13 +48,13 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
   init() async {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
+    print("id ${widget.users_fleet_vehicles_id.toString()}");
 
     Map userData = {
       "users_fleet_vehicles_id": widget.users_fleet_vehicles_id.toString(),
     };
 
-    _getVehicleFleetByIdResponse =
-        await service.getFleetVehicleByIdApi(userData);
+    _getVehicleFleetByIdResponse = await service.getFleetVehicleByIdApi(userData);
 
     if (_getVehicleFleetByIdResponse.status!.toLowerCase() == 'success') {
       if (_getVehicleFleetByIdResponse.data != null) {

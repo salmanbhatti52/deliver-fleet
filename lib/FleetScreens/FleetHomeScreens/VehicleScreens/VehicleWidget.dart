@@ -115,9 +115,7 @@ class _VehicleWidgetState extends State<VehicleWidget> {
                 SizedBox(
                   width: 15.w,
                 ),
-                widget.getAllVehiclesFleetModel.users_fleet_vehicles_assigned!
-                            .users_fleet_id ==
-                        -1
+                widget.getAllVehiclesFleetModel.users_fleet_vehicles_assigned!.users_fleet_id == -1
                     ? Container(
                         width: 80.w,
                         height: 25.h,
@@ -136,11 +134,7 @@ class _VehicleWidgetState extends State<VehicleWidget> {
                           ),
                         ),
                       )
-                    : widget
-                                .getAllVehiclesFleetModel
-                                .users_fleet_vehicles_assigned!
-                                .users_fleet_id !=
-                            -1
+                    : widget.getAllVehiclesFleetModel.users_fleet_vehicles_assigned!.users_fleet_id != -1
                         ? Container(
                             width: 80.w,
                             height: 25.h,

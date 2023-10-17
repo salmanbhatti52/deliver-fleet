@@ -691,6 +691,39 @@ class ApiServices {
         ));
   }
 
+  /// deactivate Vehicle Request API:
+
+  Future<APIResponse<AcceptAndRejectRequestedVehicleModel>>
+      deactivateVehicleRequest(Map data) async {
+    String API = 'https://deliver.eigix.net/api/deactivate_rider';
+    return http.post(Uri.parse(API), body: data).then((value) {
+      if (value.statusCode == 200) {
+        final jsonData = json.decode(value.body);
+        if (jsonData['data'] != null) {
+          final itemCat =
+              AcceptAndRejectRequestedVehicleModel.fromJson(jsonData['data']);
+          return APIResponse<AcceptAndRejectRequestedVehicleModel>(
+              data: itemCat,
+              status: jsonData['status'],
+              message: jsonData['message']);
+        } else {
+          return APIResponse<AcceptAndRejectRequestedVehicleModel>(
+              data: AcceptAndRejectRequestedVehicleModel(),
+              status: jsonData['status'],
+              message: jsonData['message']);
+        }
+      }
+      return APIResponse<AcceptAndRejectRequestedVehicleModel>(
+        status: APIResponse.fromMap(json.decode(value.body)).status,
+        message: APIResponse.fromMap(json.decode(value.body)).message,
+      );
+    }).onError((error, stackTrace) =>
+        APIResponse<AcceptAndRejectRequestedVehicleModel>(
+          status: error.toString(),
+          message: stackTrace.toString(),
+        ));
+  }
+
   /// Reject Vehicle Request API:
 
   Future<APIResponse<AcceptAndRejectRequestedVehicleModel>>

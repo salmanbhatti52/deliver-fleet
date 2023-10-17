@@ -43,6 +43,7 @@ class _VehicleScreenFleetState extends State<VehicleScreenFleet> {
   init() async {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
+    print("UserID $userID");
 
     Map userData = {
       "users_fleet_id": userID.toString(),

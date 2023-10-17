@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       isHomeLoading = true;
     });
     init();
-    loadCustomMarker();
+    // loadCustomMarker();
   }
 
   late APIResponse<List<ShowBookingsModel>> getAllClientRequestsResponse;
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     addCustomIcon();
-    getPolyPoints();
+    // getPolyPoints();
 
     setState(() {
       isHomeLoading = false;
@@ -360,18 +360,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       }
-      if (newCustomMarkerIcon != null) {
+      // if (newCustomMarkerIcon != null) {
         markers.add(
             Marker(
               markerId: const MarkerId('currentLocation'),
               position:LatLng(double.parse(userLatitude!), double.parse(userLongitude!)),
-              infoWindow:
-              const InfoWindow(title: 'Your Current Location'),
-              icon: newCustomMarkerIcon ??
-                  BitmapDescriptor.defaultMarker,
+              // infoWindow:
+              // const InfoWindow(title: 'Your Current Location'),
+              icon: BitmapDescriptor.defaultMarker,
             ),
         );
-      }
+      // }
     });
 
     return markers;
@@ -395,16 +394,16 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  BitmapDescriptor? newCustomMarkerIcon;
-  Future<void> loadCustomMarker() async {
-    print("userLatitude $userLatitude ::: userLongitude $userLongitude");
-    final ByteData bytes = await rootBundle.load(
-      'assets/images/rider-marker-icon.png',
-    );
-    final Uint8List list = bytes.buffer.asUint8List();
-    newCustomMarkerIcon = BitmapDescriptor.fromBytes(list);
-    setState(() {});
-  }
+  // BitmapDescriptor? newCustomMarkerIcon;
+  // Future<void> loadCustomMarker() async {
+  //   print("userLatitude $userLatitude ::: userLongitude $userLongitude");
+  //   final ByteData bytes = await rootBundle.load(
+  //     'assets/images/rider-marker-icon.png',
+  //   );
+  //   final Uint8List list = bytes.buffer.asUint8List();
+  //   newCustomMarkerIcon = BitmapDescriptor.fromBytes(list);
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {

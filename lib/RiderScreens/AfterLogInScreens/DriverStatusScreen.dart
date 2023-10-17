@@ -41,6 +41,8 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
     setState(() {
       isLoading = true;
       loadSwitchState();
+     switchState == -1 ?  switchState == 1 : switchState == 2;
+     selectShift == -1 ?  selectShift == 1 : selectShift == 2;
       loadShiftState();
       // gettingCategory = true;
     });
