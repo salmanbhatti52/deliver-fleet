@@ -22,6 +22,7 @@ import '../RiderScreens/DrawerScreens/ProfileScreens/ProfileScreen.dart';
 import '../RiderScreens/DrawerScreens/ScooterDetails/ScooterDetails.dart';
 import '../RiderScreens/DrawerScreens/Settings/SettingsScreen.dart';
 import '../RiderScreens/DrawerScreens/UpdateLocation.dart';
+import '../RiderScreens/DrawerScreens/schedule Clients/ScheduleClients.dart';
 import '../models/API models/API response.dart';
 import '../services/API_services.dart';
 import '../utilities/showToast.dart';
@@ -233,6 +234,31 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             SvgPicture.asset('assets/images/ride-orange.svg'),
                         title: Text(
                           'Vehicle Details',
+                          style: GoogleFonts.syne(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: black,
+                          ),
+                        ),
+                        visualDensity: VisualDensity.compact,
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ScheduleClients(),
+                            ),
+                          );
+                        },
+                        leading:
+                            SvgPicture.asset('assets/images/ride-orange.svg'),
+                        title: Text(
+                          'schedule Clients',
                           style: GoogleFonts.syne(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
