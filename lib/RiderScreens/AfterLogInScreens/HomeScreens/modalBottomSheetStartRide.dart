@@ -135,7 +135,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
             top: Radius.circular(20),
           ),
         ),
-        height: MediaQuery.sizeOf(context).height * 0.57,
+        height: MediaQuery.sizeOf(context).height * 0.63,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(
@@ -353,8 +353,76 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                     ),
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 1.h,
                   ),
+                  widget.bookingModel.scheduled == "Yes"
+                      ? Column(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Schedule Ride',
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.syne(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Schedule Delivery Date',
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.syne(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: grey,
+                            ),
+                          ),
+                          Text(
+                            'Schedule Delivery Time',
+                            style: GoogleFonts.syne(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${widget.bookingModel.delivery_date}',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          Text(
+                            '${widget.bookingModel.delivery_time}',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 9.h,
+                      ),
+                    ],
+                  )
+                      : const SizedBox(),
                   Row(
                     children: [
                       SvgPicture.asset('assets/images/location.svg'),
@@ -699,6 +767,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   startRideMethod(BuildContext context) async {
     if (packageStatus == false) {
       showToastError('You\'ve to pick the parcel from pickup location first',
+          FToast().init(context),
+          seconds: 1);
+    }else if(widget.bookingModel.scheduled == "Yes"){
+      showToastError('Your Scheduled Ride is not started yet',
           FToast().init(context),
           seconds: 1);
     } else {

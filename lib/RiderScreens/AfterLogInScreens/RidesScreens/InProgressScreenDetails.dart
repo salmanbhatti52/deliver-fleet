@@ -154,7 +154,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
             top: Radius.circular(20),
           ),
         ),
-        height: MediaQuery.sizeOf(context).height * 0.57,
+        height: MediaQuery.sizeOf(context).height * 0.63,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(
@@ -374,6 +374,70 @@ class _InProgressDetailsState extends State<InProgressDetails> {
             SizedBox(
               height: 10.h,
             ),
+            widget.inProgressRidesList2?[i].bookings?.scheduled == "Yes"
+                ? Column(
+              children: [
+                Text(
+                  'Schedule Ride',
+                  textAlign: TextAlign.start,
+                  style: GoogleFonts.syne(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: grey,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Schedule Delivery Date',
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.syne(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: grey,
+                      ),
+                    ),
+                    Text(
+                      'Schedule Delivery Time',
+                      style: GoogleFonts.syne(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: grey,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 3.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${widget.inProgressRidesList2?[i].bookings?.delivery_date}',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: black,
+                      ),
+                    ),
+                    Text(
+                      '${widget.inProgressRidesList2?[i].bookings?.delivery_time}',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: black,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 9.h,
+                ),
+              ],
+            )
+                : const SizedBox(),
             Row(
               children: [
                 SvgPicture.asset('assets/images/location.svg'),

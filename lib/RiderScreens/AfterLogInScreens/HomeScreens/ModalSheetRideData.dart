@@ -126,8 +126,76 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                     ],
                   ),
                   SizedBox(
-                    height: 9.h,
+                    height: 1.h,
                   ),
+                  widget.customersModel.scheduled == "Yes"
+                  ? Column(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Schedule Ride',
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.syne(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Schedule Delivery Date',
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.syne(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: grey,
+                            ),
+                          ),
+                          Text(
+                            'Schedule Delivery Time',
+                            style: GoogleFonts.syne(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${widget.customersModel.delivery_date}',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          Text(
+                            '${widget.customersModel.delivery_time}',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 9.h,
+                      ),
+                    ],
+                  )
+                  : const SizedBox(),
                   Row(
                     children: [
                       SvgPicture.asset('assets/images/location.svg'),

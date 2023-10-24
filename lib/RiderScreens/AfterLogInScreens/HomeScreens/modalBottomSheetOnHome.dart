@@ -63,7 +63,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
           top: Radius.circular(20),
         ),
       ),
-      height: MediaQuery.sizeOf(context).height * 0.51,
+      height: MediaQuery.sizeOf(context).height * 0.57,
       child: Column(
         children: [
           Row(
@@ -228,7 +228,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             height: 10.h,
           ),
           SizedBox(
-              height: MediaQuery.sizeOf(context).height / 3.45,
+              height: MediaQuery.sizeOf(context).height / 2.8,
               child: ModalSheetRideData(
                 bookingDestinationsList: widget.bookingDestinationsList,
                 pickupAddress: widget.customersModel.pickup_address!,

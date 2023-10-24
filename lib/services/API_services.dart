@@ -19,6 +19,7 @@ import '../models/API models/GetBookingDeatinationsStatus.dart';
 import '../models/API models/LogInModel.dart';
 import '../models/API models/ReadNotificationsModel.dart';
 import '../models/API models/RequestBikeModel.dart';
+import '../models/API models/ScheduledRiderModel.dart';
 import '../models/API models/SupportedUserModel.dart';
 import '../models/APIModelsFleet/GetAllRidersModel.dart';
 import '../models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
@@ -986,6 +987,49 @@ class ApiServices {
       );
     }).onError(
       (error, stackTrace) => APIResponse<List<InProgressRidesModel>>(
+        status: error.toString(),
+        message: stackTrace.toString(),
+      ),
+    );
+  }
+
+  /// Scheduled Rides API:
+
+  Future<APIResponse<List<ScheduledRiderModel>>> scheduledRidesAPI(Map data) {
+    String api = 'https://deliver.eigix.net/api/get_bookings_scheduled_fleet';
+    return http.post(Uri.parse(api), body: data).then((value) {
+      if (value.statusCode == 200) {
+        final jsonResult = jsonDecode(value.body);
+        if (jsonResult['data'] != null) {
+          final jsonResultArray = <ScheduledRiderModel>[];
+          for (var item in jsonResult['data']) {
+            final jsonData = ScheduledRiderModel.fromJson(item);
+            jsonResultArray.add(jsonData);
+          }
+
+          return APIResponse<List<ScheduledRiderModel>>(
+            data: jsonResultArray,
+            status: jsonResult['status'],
+            message: jsonResult['message'],
+          );
+        } else {
+          return APIResponse<List<ScheduledRiderModel>>(
+            data: [],
+            status: jsonResult['status'],
+            message: jsonResult['message'],
+          );
+        }
+      }
+      return APIResponse<List<ScheduledRiderModel>>(
+        status: APIResponse.fromMap(
+          jsonDecode(value.body),
+        ).status,
+        message: APIResponse.fromMap(
+          jsonDecode(value.body),
+        ).message,
+      );
+    }).onError(
+          (error, stackTrace) => APIResponse<List<ScheduledRiderModel>>(
         status: error.toString(),
         message: stackTrace.toString(),
       ),

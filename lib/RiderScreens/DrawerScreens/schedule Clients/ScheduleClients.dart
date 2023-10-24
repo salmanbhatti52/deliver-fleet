@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../Constants/PageLoadingKits.dart';
 import '../../../Constants/back-arrow-with-container.dart';
 import '../../../models/API models/API response.dart';
+import '../../../models/API models/ScheduledRiderModel.dart';
 import '../../../services/API_services.dart';
+import '../../../utilities/showToast.dart';
 
 class ScheduleClients extends StatefulWidget {
   const ScheduleClients({super.key});
@@ -17,7 +21,10 @@ class ScheduleClients extends StatefulWidget {
 }
 
 class _ScheduleClientsState extends State<ScheduleClients> {
+
   ApiServices get service => GetIt.I<ApiServices>();
+
+  late ScrollController scrollController;
 
   int userID = -1;
   late SharedPreferences sharedPreferences;
@@ -27,35 +34,43 @@ class _ScheduleClientsState extends State<ScheduleClients> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // init();
+    init();
     isPageLoading = true;
   }
 
-  // APIResponse<GetAllAvailableVehicles>? vehicleDetailsResponse;
-  //
-  // init() async {
-  //   sharedPreferences = await SharedPreferences.getInstance();
-  //   userID = (sharedPreferences.getInt('userID') ?? -1);
-  //
-  //   Map data = {
-  //     "users_fleet_id": userID.toString(),
-  //     "user_type": "Rider",
-  //   };
-  //
-  //   vehicleDetailsResponse = await service.getVehicleDetailsForRiderAPI(data);
-  //
-  //   if (vehicleDetailsResponse!.status!.toLowerCase() == 'success') {
-  //     if (vehicleDetailsResponse!.data != null) {
-  //       showToastSuccess('getting vehicle details', FToast().init(context),
-  //           seconds: 1);
-  //     }
-  //   } else {
-  //     showToastError(vehicleDetailsResponse!.message!, FToast().init(context));
-  //   }
-  //   setState(() {
-  //     isPageLoading = false;
-  //   });
-  // }
+  APIResponse<List<ScheduledRiderModel>>? scheduledRidesResponse;
+  List<ScheduledRiderModel>? scheduledRidesList;
+
+  String? imageHolder;
+
+  init() async {
+    scrollController = ScrollController();
+
+    sharedPreferences = await SharedPreferences.getInstance();
+    userID = (sharedPreferences.getInt('userID') ?? -1);
+    print('object userId on Scheduled rides is: $userID');
+
+    Map data = {
+      "users_fleet_id": userID.toString(),
+    };
+
+    scheduledRidesResponse = await service.scheduledRidesAPI(data);
+    scheduledRidesList = [];
+
+    if (scheduledRidesResponse!.status!.toLowerCase() == 'success') {
+      if (scheduledRidesResponse!.data != null) {
+        scheduledRidesList = scheduledRidesResponse!.data!;
+      }
+    } else {
+      print(
+          'object massage:  ${scheduledRidesResponse!.message}   ${scheduledRidesResponse!.status}');
+      showToastError(scheduledRidesResponse!.message!, FToast().init(context));
+    }
+    setState(() {
+      isPageLoading = false;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,16 +99,20 @@ class _ScheduleClientsState extends State<ScheduleClients> {
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: MediaQuery.sizeOf(context).height * 0.03),
-                const ScheduledScreen(),
-              ],
-            ),
-          ),
+        body: isPageLoading
+            ? spinKitRotatingCircle
+            : scheduledRidesList!.isEmpty
+            ? Lottie.asset('assets/images/no-data.json')
+            : ListView.builder(
+          itemCount: scheduledRidesList!.length,
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.zero,
+          itemBuilder: (context, index) {
+            return ScheduledScreen(
+              scheduledRiderModel: scheduledRidesList![index],
+            );
+          },
         ),
       ),
     );
