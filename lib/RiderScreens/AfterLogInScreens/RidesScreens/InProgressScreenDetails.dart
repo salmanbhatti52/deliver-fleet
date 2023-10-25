@@ -371,9 +371,9 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10.h,
-            ),
+            widget.inProgressRidesList2?[i].bookings?.scheduled == "Yes"
+                ? SizedBox(height: 10.h,)
+                : SizedBox(height: 30.h,),
             widget.inProgressRidesList2?[i].bookings?.scheduled == "Yes"
                 ? Column(
               children: [

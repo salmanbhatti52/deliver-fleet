@@ -125,9 +125,9 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 1.h,
-                  ),
+                  widget.customersModel.scheduled == "Yes"
+                      ? SizedBox(height: 1.h,)
+                      : SizedBox(height: 30.h,),
                   widget.customersModel.scheduled == "Yes"
                   ? Column(
                     // crossAxisAlignment: CrossAxisAlignment.start,

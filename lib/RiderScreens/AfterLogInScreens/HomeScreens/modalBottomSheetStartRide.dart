@@ -352,9 +352,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 1.h,
-                  ),
+                  widget.bookingModel.scheduled == "Yes"
+                      ? SizedBox(height: 1.h,)
+                      : SizedBox(height: 30.h,),
                   widget.bookingModel.scheduled == "Yes"
                       ? Column(
                     // crossAxisAlignment: CrossAxisAlignment.start,
@@ -765,12 +765,12 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
 
   bool isRideStarting = false;
   startRideMethod(BuildContext context) async {
-    if (packageStatus == false) {
-      showToastError('You\'ve to pick the parcel from pickup location first',
+    if (widget.bookingModel.scheduled == "Yes") {
+      showToastError('Your Scheduled Ride is not started yet',
           FToast().init(context),
           seconds: 1);
-    }else if(widget.bookingModel.scheduled == "Yes"){
-      showToastError('Your Scheduled Ride is not started yet',
+    }else if(packageStatus == false){
+      showToastError('You\'ve to pick the parcel from pickup location first',
           FToast().init(context),
           seconds: 1);
     } else {

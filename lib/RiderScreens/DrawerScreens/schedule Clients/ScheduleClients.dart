@@ -84,7 +84,7 @@ class _ScheduleClientsState extends State<ScheduleClients> {
           leadingWidth: 70,
           centerTitle: true,
           title: Text(
-            'Schedule Clients',
+            'Schedule Rides',
             style: GoogleFonts.syne(
               fontWeight: FontWeight.w700,
               color: black,
@@ -102,7 +102,7 @@ class _ScheduleClientsState extends State<ScheduleClients> {
         body: isPageLoading
             ? spinKitRotatingCircle
             : scheduledRidesList!.isEmpty
-            ? Lottie.asset('assets/images/no-data.json')
+            ? Center(child: Lottie.asset('assets/images/no-data.json'))
             : ListView.builder(
           itemCount: scheduledRidesList!.length,
           shrinkWrap: true,

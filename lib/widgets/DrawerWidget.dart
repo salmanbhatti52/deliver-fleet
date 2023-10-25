@@ -258,7 +258,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         leading:
                             SvgPicture.asset('assets/images/ride-orange.svg'),
                         title: Text(
-                          'schedule Clients',
+                          'Schedule Rides',
                           style: GoogleFonts.syne(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
