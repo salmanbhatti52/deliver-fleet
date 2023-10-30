@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:Deliver_Rider/CustomSplash.dart';
 import 'package:Deliver_Rider/services/API_services.dart';
 import 'package:firebase_core/firebase_core.dart';
