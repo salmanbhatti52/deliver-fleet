@@ -250,7 +250,7 @@ class _RideDetailsAfterLogInScreenState
                               height: 20.h,
                             ),
                             Text(
-                              'Enter Ride Details if you have one or \n request a ride from Fleet Manager.',
+                              'Enter ride details of ride you own.',
                               textAlign: TextAlign.center,
                               style: GoogleFonts.syne(
                                 fontWeight: FontWeight.w400,
@@ -530,12 +530,12 @@ class _RideDetailsAfterLogInScreenState
                               ),
                             ),
                             SizedBox(
-                              height: 30.h,
+                              height: 40.h,
                             ),
-                            warningOnRidesDetailsScreen(context),
-                            SizedBox(
-                              height: 30.h,
-                            ),
+                            // warningOnRidesDetailsScreen(context),
+                            // SizedBox(
+                            //   height: 30.h,
+                            // ),
                             GestureDetector(
                               onTap: () {
                                 addBike(context);

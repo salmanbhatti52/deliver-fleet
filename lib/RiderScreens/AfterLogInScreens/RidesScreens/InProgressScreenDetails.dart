@@ -116,7 +116,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
             riderID: widget.userID.toString(),
             image: widget.inProgressRidesList2?[0].bookings?.users_customers?.profile_pic,
             name:"${widget.inProgressRidesList2?[0].bookings?.users_customers?.first_name} ${widget.inProgressRidesList2?[0].bookings?.users_customers?.last_name}",
-            address: widget.inProgressRidesList?.bookings?.pickup_address,
+            address: widget.inProgressRidesList?.bookings?.bookings_destinations?[0].pickup_address,
             clientID: widget.inProgressRidesList!.bookings!.users_customers!.users_customers_id.toString(),
           ),
         ),
@@ -133,7 +133,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
             riderID: widget.userID.toString(),
             image: widget.inProgressRidesList2?[0].bookings?.users_customers?.profile_pic,
             name:"${widget.inProgressRidesList2?[0].bookings?.users_customers?.first_name} ${widget.inProgressRidesList2?[0].bookings?.users_customers?.last_name}",
-            address: widget.inProgressRidesList?.bookings?.pickup_address,
+            address: widget.inProgressRidesList?.bookings?.bookings_destinations?[0].pickup_address,
             clientID: widget.inProgressRidesList!.bookings!.users_customers!.users_customers_id.toString(),
           ),
         ),
@@ -472,7 +472,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                 SizedBox(
                   width: 290.w,
                   child: AutoSizeText(
-                    widget.inProgressRidesList!.bookings!.pickup_address!,
+                    widget.inProgressRidesList!.bookings!.bookings_destinations![0].pickup_address!,
                     maxLines: 3,
                     minFontSize: 12,
                     overflow: TextOverflow.ellipsis,

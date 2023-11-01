@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
         getAllClientRequestsList!.addAll(getAllClientRequestsResponse.data!);
         for (int i = 0; i < getAllClientRequestsList!.length; i++) {
           print(
-              'object getting requests  : ${getAllClientRequestsList![i].bookings!.pickup_longitude}   ${getAllClientRequestsList![i].bookings!.pickup_latitude}');
+              'object getting requests  : ${getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_longitude}   ${getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_latitude}');
           print(
               "name: ${getAllClientRequestsList![i].bookings!.users_customers!.first_name}");
           print("fleet id: ${getAllClientRequestsList![i].bookings_fleet_id}");
@@ -329,16 +329,16 @@ class _HomeScreenState extends State<HomeScreen> {
           Marker(
             position: LatLng(
                 double.parse(
-                    getAllClientRequestsList![i].bookings!.pickup_latitude!),
+                    getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_latitude!),
                 double.parse(
-                    getAllClientRequestsList![i].bookings!.pickup_longitude!)),
+                    getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_longitude!)),
             onTap: () {
               getData(
                 LatLng(
-                    double.parse(getAllClientRequestsList![i].bookings!.pickup_latitude!),
-                    double.parse(getAllClientRequestsList![i].bookings!.pickup_longitude!)),
+                    double.parse(getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_latitude!),
+                    double.parse(getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_longitude!)),
                 getAllClientRequestsList![i].bookings!.users_customers!.first_name!,
-                getAllClientRequestsList![i].bookings!.pickup_address,
+                getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_address,
                 getAllClientRequestsList![i].bookings!.users_customers!.profile_pic!,
                 getAllClientRequestsList![i].bookings!.total_charges,
                 getAllClientRequestsList![i].bookings,

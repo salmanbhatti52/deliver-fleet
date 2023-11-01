@@ -409,7 +409,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                                         width: 290.w,
                                         child: Text(
                                           // "pickup_address",
-                                          '${widget.scheduledRiderModel.bookings!.pickup_address}',
+                                          '${widget.scheduledRiderModel.bookings!.bookings_destinations![0].pickup_address}',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.inter(

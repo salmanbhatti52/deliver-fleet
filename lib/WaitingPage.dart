@@ -39,7 +39,7 @@ class _WaitingPageState extends State<WaitingPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 40.h,
+                  height: 20.h,
                 ),
                 Text(
                   'STAY TIGHT!',

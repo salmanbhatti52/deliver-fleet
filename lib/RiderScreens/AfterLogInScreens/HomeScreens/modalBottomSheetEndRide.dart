@@ -107,7 +107,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
             riderID: widget.userID.toString(),
             image: widget.bookingModel.users_customers!.profile_pic!,
             name:"${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
-            address: widget.bookingModel.pickup_address,
+            address: widget.bookingModel.bookings_destinations![0].pickup_address,
             clientID: widget.bookingModel.users_customers!.users_customers_id
                 .toString(),
           ),
@@ -125,7 +125,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
             riderID: widget.userID.toString(),
             image: widget.bookingModel.users_customers!.profile_pic!,
             name:"${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
-            address: widget.bookingModel.pickup_address,
+            address: widget.bookingModel.bookings_destinations![0].pickup_address,
             clientID: widget.bookingModel.users_customers!.users_customers_id.toString(),
           ),
         ),
@@ -472,7 +472,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                       SizedBox(
                         width: 290.w,
                         child: AutoSizeText(
-                          widget.bookingModel.pickup_address!,
+                          widget.bookingModel.bookings_destinations![0].pickup_address!,
                           maxLines: 3,
                           minFontSize: 12,
                           overflow: TextOverflow.ellipsis,

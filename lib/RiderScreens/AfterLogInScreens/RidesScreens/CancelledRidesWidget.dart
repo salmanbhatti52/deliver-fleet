@@ -216,7 +216,7 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
                                     ),
                                   ),
                                   Text(
-                                    '${widget.canceledRidesModel.bookings!.pickup_address}',
+                                    '${widget.canceledRidesModel.bookings!.bookings_destinations![0].pickup_address}',
                                     style: GoogleFonts.inter(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,

@@ -247,7 +247,7 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                                       ),
                                     ),
                                     Text(
-                                      '${widget.completedRidesModel.bookings!.pickup_address}',
+                                      '${widget.completedRidesModel.bookings!.bookings_destinations![0].pickup_address}',
                                       style: GoogleFonts.inter(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,

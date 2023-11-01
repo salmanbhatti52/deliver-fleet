@@ -231,7 +231,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
               height: MediaQuery.sizeOf(context).height / 2.8,
               child: ModalSheetRideData(
                 bookingDestinationsList: widget.bookingDestinationsList,
-                pickupAddress: widget.customersModel.pickup_address!,
+                pickupAddress: widget.customersModel.bookings_destinations![0].pickup_address!,
                 customersModel: widget.customersModel,
               )),
           Padding(
@@ -420,7 +420,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             riderID: widget.userID.toString(),
             image: widget.customersModel.users_customers!.profile_pic!,
             name:"${widget.customersModel.users_customers!.first_name!} ${widget.customersModel.users_customers!.last_name!}",
-            address: widget.customersModel.pickup_address,
+            address: widget.customersModel.bookings_destinations![0].pickup_address,
             clientID: widget.customersModel.users_customers!.users_customers_id
                 .toString(),
           ),
@@ -438,7 +438,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             riderID: widget.userID.toString(),
             image: widget.customersModel.users_customers!.profile_pic!,
             name:"${widget.customersModel.users_customers!.first_name!} ${widget.customersModel.users_customers!.last_name!}",
-            address: widget.customersModel.pickup_address,
+            address: widget.customersModel.bookings_destinations![0].pickup_address,
             clientID: widget.customersModel.users_customers!.users_customers_id.toString(),
           ),
         ),

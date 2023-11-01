@@ -277,7 +277,7 @@ class _RideDetailsAfterLogInSecondScreenState
           builder: (context, constraints) => GlowingOverscrollIndicator(
             axisDirection: AxisDirection.down,
             color: orange,
-            child:  parentID == "0" ?   SingleChildScrollView(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40.0.w),
                 child: Form(
@@ -485,19 +485,6 @@ class _RideDetailsAfterLogInSecondScreenState
                   ),
                 ),
               ),
-            )
-                : GestureDetector(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      RequestRideFromFleetActive(
-                        parentID: widget.parentID,
-                        userFleetId: widget.userFleetId,
-                      ),
-                ),
-              ),
-              child: buttonContainerWithBorder(
-                  context, "REQUEST A BIKE"),
             ),
           ),
         ),
