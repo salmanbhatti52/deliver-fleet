@@ -1,7 +1,7 @@
-import 'package:Deliver_Rider/FleetScreens/BottomNavBarFleet.dart';
-import 'package:Deliver_Rider/LogInScreen.dart';
-import 'package:Deliver_Rider/widgets/TextFormField_Widget.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
+import 'package:deliver_partner/LogInScreen.dart';
+import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -509,11 +509,13 @@ class _RideDetailsAfterLogInSecondScreenState
       });
       print('vehicle_license_expiry_date ${expDateOfVehicleController.text}');
       print("bikedata ${widget.addBikeData}");
-      print('vehicle_insurance_expiry_date ${expDateOfInsuranceController.text}');
+      print(
+          'vehicle_insurance_expiry_date ${expDateOfInsuranceController.text}');
       print('rwc_expiry_date ${expDateOfRoadWorthinessController.text}');
       print('manufacture_year ${manufacturingYearController.text}');
       addVehicleResponse = await service.addVehicleAPI(widget.addBikeData);
-      print("addVehicleResponse!.status!.toLowerCase() ${addVehicleResponse!.status!.toLowerCase()}");
+      print(
+          "addVehicleResponse!.status!.toLowerCase() ${addVehicleResponse!.status!.toLowerCase()}");
       if (addVehicleResponse!.status!.toLowerCase() == 'success') {
         print("status ${addVehicleResponse!.status!.toLowerCase()}");
         showToastSuccess(
@@ -527,11 +529,14 @@ class _RideDetailsAfterLogInSecondScreenState
         // );
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>  LogInScreen(userType: widget.userType),
+            builder: (context) => LogInScreen(userType: widget.userType),
           ),
         );
       } else {
-        print('error   ' + addVehicleResponse!.status.toString() + '  ' + addVehicleResponse!.message.toString());
+        print('error   ' +
+            addVehicleResponse!.status.toString() +
+            '  ' +
+            addVehicleResponse!.message.toString());
         showToastError(addVehicleResponse!.status, FToast().init(context));
       }
     }

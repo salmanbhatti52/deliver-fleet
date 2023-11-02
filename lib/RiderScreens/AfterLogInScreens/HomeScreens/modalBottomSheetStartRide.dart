@@ -1,8 +1,8 @@
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
-import 'package:Deliver_Rider/models/API%20models/API%20response.dart';
-import 'package:Deliver_Rider/models/API%20models/GetBookingDeatinationsStatus.dart';
-import 'package:Deliver_Rider/models/API%20models/ShowBookingsModel.dart';
-import 'package:Deliver_Rider/utilities/showToast.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/models/API%20models/API%20response.dart';
+import 'package:deliver_partner/models/API%20models/GetBookingDeatinationsStatus.dart';
+import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -353,75 +353,79 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                     ),
                   ),
                   widget.bookingModel.scheduled == "Yes"
-                      ? SizedBox(height: 1.h,)
-                      : SizedBox(height: 30.h,),
+                      ? SizedBox(
+                          height: 1.h,
+                        )
+                      : SizedBox(
+                          height: 30.h,
+                        ),
                   widget.bookingModel.scheduled == "Yes"
                       ? Column(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Schedule Ride',
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.syne(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Schedule Delivery Date',
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: grey,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Schedule Ride',
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.syne(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Schedule Delivery Time',
-                            style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: grey,
+                            SizedBox(
+                              height: 3.h,
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${widget.bookingModel.delivery_date}',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: black,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Schedule Delivery Date',
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.syne(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                ),
+                                Text(
+                                  'Schedule Delivery Time',
+                                  style: GoogleFonts.syne(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Text(
-                            '${widget.bookingModel.delivery_time}',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: black,
+                            SizedBox(
+                              height: 3.h,
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 9.h,
-                      ),
-                    ],
-                  )
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${widget.bookingModel.delivery_date}',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: black,
+                                  ),
+                                ),
+                                Text(
+                                  '${widget.bookingModel.delivery_time}',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: black,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 9.h,
+                            ),
+                          ],
+                        )
                       : const SizedBox(),
                   Row(
                     children: [
@@ -457,7 +461,8 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                       SizedBox(
                         width: 290.w,
                         child: AutoSizeText(
-                          widget.bookingModel.bookings_destinations![0].pickup_address!,
+                          widget.bookingModel.bookings_destinations![0]
+                              .pickup_address!,
                           maxLines: 2,
                           minFontSize: 12,
                           overflow: TextOverflow.ellipsis,
@@ -715,11 +720,12 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
       "users_type": "Rider",
       "other_users_type": "Customers",
       "users_id": widget.userID,
-      "other_users_id": widget.bookingModel.users_customers!.users_customers_id.toString(),
+      "other_users_id":
+          widget.bookingModel.users_customers!.users_customers_id.toString(),
     };
     print('object start suer to uer chat data:  ' + startChatData.toString());
     startUserToUserChatResponse =
-    await service.startUserToUserChatAPI(startChatData);
+        await service.startUserToUserChatAPI(startChatData);
     if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
       showToastSuccess('Chat has been started!', FToast().init(context),
           seconds: 1);
@@ -729,8 +735,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
             phone: widget.bookingModel.users_customers!.phone!,
             riderID: widget.userID.toString(),
             image: widget.bookingModel.users_customers!.profile_pic!,
-            name:"${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
-            address: widget.bookingModel.bookings_destinations![0].pickup_address,
+            name:
+                "${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
+            address:
+                widget.bookingModel.bookings_destinations![0].pickup_address,
             clientID: widget.bookingModel.users_customers!.users_customers_id
                 .toString(),
           ),
@@ -747,9 +755,12 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
             phone: widget.bookingModel.users_customers!.phone!,
             riderID: widget.userID.toString(),
             image: widget.bookingModel.users_customers!.profile_pic!,
-            name:"${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
-            address: widget.bookingModel.bookings_destinations![0].pickup_address,
-            clientID: widget.bookingModel.users_customers!.users_customers_id.toString(),
+            name:
+                "${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
+            address:
+                widget.bookingModel.bookings_destinations![0].pickup_address,
+            clientID: widget.bookingModel.users_customers!.users_customers_id
+                .toString(),
           ),
         ),
       );
@@ -766,10 +777,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   bool isRideStarting = false;
   startRideMethod(BuildContext context) async {
     if (widget.bookingModel.scheduled == "Yes") {
-      showToastError('Your Scheduled Ride is not started yet',
-          FToast().init(context),
+      showToastError(
+          'Your Scheduled Ride is not started yet', FToast().init(context),
           seconds: 1);
-    }else if(packageStatus == false){
+    } else if (packageStatus == false) {
       showToastError('You\'ve to pick the parcel from pickup location first',
           FToast().init(context),
           seconds: 1);

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Deliver_Rider/widgets/TextFormField_Widget.dart';
-import 'package:Deliver_Rider/widgets/customDialogForImage.dart';
+import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
+import 'package:deliver_partner/widgets/customDialogForImage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -298,25 +298,26 @@ class _VerifyDrivingLicenseManuallyState
                                       bottomRight: Radius.circular(10),
                                     ),
                                   ),
-                                  width: MediaQuery.of(context).size.width * 0.8,
-                                  height: MediaQuery.of(context).size.height * 0.2,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.2,
                                   child: ListView.separated(
                                     itemCount: addressPredictions.length,
                                     itemBuilder: (context, index) {
                                       final prediction =
-                                      addressPredictions[index];
+                                          addressPredictions[index];
                                       return ListTile(
                                         title: Text(prediction.name),
                                         subtitle: Text(
-                                            prediction.formattedAddress ??
-                                                ''),
+                                            prediction.formattedAddress ?? ''),
                                         onTap: () {
                                           addressController.text =
-                                          prediction.formattedAddress!;
-                                          final double lat = prediction
-                                              .geometry!.location.lat;
-                                          final double lng = prediction
-                                              .geometry!.location.lng;
+                                              prediction.formattedAddress!;
+                                          final double lat =
+                                              prediction.geometry!.location.lat;
+                                          final double lng =
+                                              prediction.geometry!.location.lng;
                                           const double zoomLevel = 15.0;
                                           onAddressLocationSelected(
                                               LatLng(lat, lng), zoomLevel);
@@ -324,8 +325,7 @@ class _VerifyDrivingLicenseManuallyState
                                           addressLng = lng.toString();
                                           setState(() {
                                             addressPredictions.clear();
-                                            FocusManager
-                                                .instance.primaryFocus
+                                            FocusManager.instance.primaryFocus
                                                 ?.unfocus();
                                             print("pickupLat: $addressLat");
                                             print("pickupLng $addressLng");
@@ -352,29 +352,29 @@ class _VerifyDrivingLicenseManuallyState
                         SizedBox(
                           height: 30.h,
                         ),
-                           // SizedBox(
-                           //   width: 300.w,
-                           //   child: TextFormFieldWidget(
-                           //     controller: CNICController,
-                           //     textInputType: TextInputType.number,
-                           //     enterTextStyle: enterTextStyle,
-                           //     cursorColor: orange,
-                           //     hintText: 'National identification number',
-                           //     border: border,
-                           //     hintStyle: hintStyle,
-                           //     focusedBorder: focusedBorder,
-                           //     obscureText: null,
-                           //     contentPadding: contentPadding,
-                           //     enableBorder: enableBorder,
-                           //     validator: (val) {
-                           //       if (val!.isEmpty) {
-                           //         return 'make sure you\'ve entered the same NIN';
-                           //       }
-                           //       return null;
-                           //     },
-                           //     length: 11,
-                           //   ),
-                           // ),
+                        // SizedBox(
+                        //   width: 300.w,
+                        //   child: TextFormFieldWidget(
+                        //     controller: CNICController,
+                        //     textInputType: TextInputType.number,
+                        //     enterTextStyle: enterTextStyle,
+                        //     cursorColor: orange,
+                        //     hintText: 'National identification number',
+                        //     border: border,
+                        //     hintStyle: hintStyle,
+                        //     focusedBorder: focusedBorder,
+                        //     obscureText: null,
+                        //     contentPadding: contentPadding,
+                        //     enableBorder: enableBorder,
+                        //     validator: (val) {
+                        //       if (val!.isEmpty) {
+                        //         return 'make sure you\'ve entered the same NIN';
+                        //       }
+                        //       return null;
+                        //     },
+                        //     length: 11,
+                        //   ),
+                        // ),
                         // SizedBox(
                         //   height: 30.h,
                         // ),
@@ -453,7 +453,8 @@ class _VerifyDrivingLicenseManuallyState
     }
   }
 
-  final places = GoogleMapsPlaces(apiKey: 'AIzaSyAk-CA4yYf-txNZvvwmCshykjpLiASEkcw');
+  final places =
+      GoogleMapsPlaces(apiKey: 'AIzaSyAk-CA4yYf-txNZvvwmCshykjpLiASEkcw');
   List<PlacesSearchResult> addressPredictions = [];
   LatLng? selectedLocation;
   LatLng? currentLocation;
@@ -484,5 +485,4 @@ class _VerifyDrivingLicenseManuallyState
     mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(selectedLocation!, zoomLevel));
   }
-
 }

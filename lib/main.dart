@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:Deliver_Rider/CustomSplash.dart';
-import 'package:Deliver_Rider/services/API_services.dart';
+import 'package:deliver_partner/CustomSplash.dart';
+import 'package:deliver_partner/services/API_services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';

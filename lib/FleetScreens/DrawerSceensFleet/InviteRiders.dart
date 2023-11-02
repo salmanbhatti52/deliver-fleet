@@ -1,8 +1,8 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
-import 'package:Deliver_Rider/Constants/buttonContainer.dart';
-import 'package:Deliver_Rider/models/API%20models/API%20response.dart';
-import 'package:Deliver_Rider/utilities/showToast.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/buttonContainer.dart';
+import 'package:deliver_partner/models/API%20models/API%20response.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

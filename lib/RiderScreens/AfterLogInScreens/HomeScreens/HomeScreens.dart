@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:Deliver_Rider/Constants/buttonContainer.dart';
-import 'package:Deliver_Rider/RiderScreens/AfterLogInScreens/HomeScreens/modalBottomSheetOnHome.dart';
+import 'package:deliver_partner/Constants/buttonContainer.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/modalBottomSheetOnHome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -122,7 +122,6 @@ class _HomeScreenState extends State<HomeScreen> {
         "assets/images/custom-icon.png", 300);
     setState(() {});
   }
-  
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
@@ -328,21 +327,42 @@ class _HomeScreenState extends State<HomeScreen> {
         markers.add(
           Marker(
             position: LatLng(
-                double.parse(
-                    getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_latitude!),
-                double.parse(
-                    getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_longitude!)),
+                double.parse(getAllClientRequestsList![i]
+                    .bookings!
+                    .bookings_destinations![0]
+                    .pickup_latitude!),
+                double.parse(getAllClientRequestsList![i]
+                    .bookings!
+                    .bookings_destinations![0]
+                    .pickup_longitude!)),
             onTap: () {
               getData(
                 LatLng(
-                    double.parse(getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_latitude!),
-                    double.parse(getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_longitude!)),
-                getAllClientRequestsList![i].bookings!.users_customers!.first_name!,
-                getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_address,
-                getAllClientRequestsList![i].bookings!.users_customers!.profile_pic!,
+                    double.parse(getAllClientRequestsList![i]
+                        .bookings!
+                        .bookings_destinations![0]
+                        .pickup_latitude!),
+                    double.parse(getAllClientRequestsList![i]
+                        .bookings!
+                        .bookings_destinations![0]
+                        .pickup_longitude!)),
+                getAllClientRequestsList![i]
+                    .bookings!
+                    .users_customers!
+                    .first_name!,
+                getAllClientRequestsList![i]
+                    .bookings!
+                    .bookings_destinations![0]
+                    .pickup_address,
+                getAllClientRequestsList![i]
+                    .bookings!
+                    .users_customers!
+                    .profile_pic!,
                 getAllClientRequestsList![i].bookings!.total_charges,
                 getAllClientRequestsList![i].bookings,
-                bookingDestinations: getAllClientRequestsList![i].bookings!.bookings_destinations,
+                bookingDestinations: getAllClientRequestsList![i]
+                    .bookings!
+                    .bookings_destinations,
               );
               setState(() {});
             },
@@ -361,15 +381,16 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
       // if (newCustomMarkerIcon != null) {
-        markers.add(
-            Marker(
-              markerId: const MarkerId('currentLocation'),
-              position:LatLng(double.parse(userLatitude!), double.parse(userLongitude!)),
-              // infoWindow:
-              // const InfoWindow(title: 'Your Current Location'),
-              icon: BitmapDescriptor.defaultMarker,
-            ),
-        );
+      markers.add(
+        Marker(
+          markerId: const MarkerId('currentLocation'),
+          position:
+              LatLng(double.parse(userLatitude!), double.parse(userLongitude!)),
+          // infoWindow:
+          // const InfoWindow(title: 'Your Current Location'),
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+      );
       // }
     });
 

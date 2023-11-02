@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:Deliver_Rider/FleetScreens/BottomNavBarFleet.dart';
-import 'package:Deliver_Rider/RiderScreens/BottomNavBar.dart';
-import 'package:Deliver_Rider/VerifyYourself.dart';
-import 'package:Deliver_Rider/services/API_services.dart';
-import 'package:Deliver_Rider/utilities/showToast.dart';
-import 'package:Deliver_Rider/widgets/TextFormField_Widget.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
+import 'package:deliver_partner/VerifyYourself.dart';
+import 'package:deliver_partner/services/API_services.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
+import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:device_info/device_info.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';

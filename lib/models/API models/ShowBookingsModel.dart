@@ -1,5 +1,5 @@
-import 'package:Deliver_Rider/models/API%20models/GetAllVehicalsModel.dart';
-import 'package:Deliver_Rider/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/API%20models/GetAllVehicalsModel.dart';
+import 'package:deliver_partner/models/API%20models/LogInModel.dart';
 
 class ShowBookingsModel {
   int? bookings_fleet_id,

@@ -1,4 +1,4 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
@@ -247,7 +247,7 @@ class _RidesScreenState extends State<RidesScreen>
                   child: TabBarView(
                     physics: const NeverScrollableScrollPhysics(),
                     controller: tabController,
-                    children:  [
+                    children: [
                       InProgressScreen(),
                       const CompletedRidesScreen(),
                       const CencelledRidesScreen(),

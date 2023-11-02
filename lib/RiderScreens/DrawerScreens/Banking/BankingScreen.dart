@@ -1,4 +1,4 @@
-import 'package:Deliver_Rider/widgets/RecentTransactionsOnBankigScreen.dart';
+import 'package:deliver_partner/widgets/RecentTransactionsOnBankigScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';

@@ -1,4 +1,4 @@
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
-import 'package:Deliver_Rider/models/API%20models/API%20response.dart';
-import 'package:Deliver_Rider/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/models/API%20models/API%20response.dart';
+import 'package:deliver_partner/models/API%20models/LogInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

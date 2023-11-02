@@ -1,12 +1,12 @@
-import 'package:Deliver_Rider/ChooseAppScreen.dart';
-import 'package:Deliver_Rider/Constants/Colors.dart';
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
-import 'package:Deliver_Rider/Constants/buttonConatinerWithBorder.dart';
-import 'package:Deliver_Rider/Constants/buttonContainer.dart';
-import 'package:Deliver_Rider/FleetScreens/DrawerSceensFleet/SettingsScreenFleet.dart';
-import 'package:Deliver_Rider/RiderScreens/OnboardingSCreen.dart';
-import 'package:Deliver_Rider/RiderScreens/VerifyDrivingLisecnseManually.dart';
-import 'package:Deliver_Rider/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/ChooseAppScreen.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/Constants/buttonConatinerWithBorder.dart';
+import 'package:deliver_partner/Constants/buttonContainer.dart';
+import 'package:deliver_partner/FleetScreens/DrawerSceensFleet/SettingsScreenFleet.dart';
+import 'package:deliver_partner/RiderScreens/OnboardingSCreen.dart';
+import 'package:deliver_partner/RiderScreens/VerifyDrivingLisecnseManually.dart';
+import 'package:deliver_partner/models/API%20models/LogInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -238,8 +238,9 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                                       .data!.driving_license_no ==
                                   '' ||
                               getUserProfileResponse!
-                                      .data!.driving_license_no!.isEmpty && getUserProfileResponse!
-                                  .data!.address!.isEmpty &&
+                                      .data!.driving_license_no!.isEmpty &&
+                                  getUserProfileResponse!
+                                      .data!.address!.isEmpty &&
                                   getUserProfileResponse!.data!.user_type ==
                                       'Fleet') {
                             Navigator.of(context).push(
@@ -252,7 +253,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                           } else {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => const BottomNavBar(),
+                                builder: (context) => const BottomNavBar(),
                               ),
                             );
                           }
@@ -435,7 +436,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                                       //     await SharedPreferences.getInstance();
                                       // await sharedPreferences.setString(
                                       //     'isLogin', 'false');
-                                      SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                                      SharedPreferences sharedPref =
+                                          await SharedPreferences.getInstance();
                                       await sharedPref.clear();
                                       setState(() {});
                                     },

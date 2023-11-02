@@ -1,5 +1,5 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
-import 'package:Deliver_Rider/RiderScreens/DrawerScreens/schedule%20Clients/scheduled_screen.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/schedule%20Clients/scheduled_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
@@ -21,7 +21,6 @@ class ScheduleClients extends StatefulWidget {
 }
 
 class _ScheduleClientsState extends State<ScheduleClients> {
-
   ApiServices get service => GetIt.I<ApiServices>();
 
   late ScrollController scrollController;
@@ -71,7 +70,6 @@ class _ScheduleClientsState extends State<ScheduleClients> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -102,18 +100,18 @@ class _ScheduleClientsState extends State<ScheduleClients> {
         body: isPageLoading
             ? spinKitRotatingCircle
             : scheduledRidesList!.isEmpty
-            ? Center(child: Lottie.asset('assets/images/no-data.json'))
-            : ListView.builder(
-          itemCount: scheduledRidesList!.length,
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.zero,
-          itemBuilder: (context, index) {
-            return ScheduledScreen(
-              scheduledRiderModel: scheduledRidesList![index],
-            );
-          },
-        ),
+                ? Center(child: Lottie.asset('assets/images/no-data.json'))
+                : ListView.builder(
+                    itemCount: scheduledRidesList!.length,
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      return ScheduledScreen(
+                        scheduledRiderModel: scheduledRidesList![index],
+                      );
+                    },
+                  ),
       ),
     );
   }

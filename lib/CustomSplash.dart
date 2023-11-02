@@ -1,6 +1,6 @@
-import 'package:Deliver_Rider/ChooseAppScreen.dart';
-import 'package:Deliver_Rider/FleetScreens/BottomNavBarFleet.dart';
-import 'package:Deliver_Rider/RiderScreens/BottomNavBar.dart';
+import 'package:deliver_partner/ChooseAppScreen.dart';
+import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,28 +29,26 @@ class _CustomSplashState extends State<CustomSplash> {
   }
 
   sharedPrefs() async {
-    Future.delayed(
-        const Duration(seconds: 6),
-            () async {
-          SharedPreferences sharedPref = await SharedPreferences.getInstance();
-          userID = (sharedPref.getInt('userID') ?? -1);
-          userType = (sharedPref.getString('userType') ?? "");
-          print("userId value is = $userID");
-          print("userType ${userType}");
+    Future.delayed(const Duration(seconds: 6), () async {
+      SharedPreferences sharedPref = await SharedPreferences.getInstance();
+      userID = (sharedPref.getInt('userID') ?? -1);
+      userType = (sharedPref.getString('userType') ?? "");
+      print("userId value is = $userID");
+      print("userType ${userType}");
 
-          if (userID != null && userType == "Rider") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const  BottomNavBar()));
-            print("current session starts with userId = $userID");
-          } else if(userID != null && userType == "Fleet") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const BottomNavBarFleet()));
-            print("userId value is = $userID");
-          } else {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const  ChooseAppScreen()));
-          }
-        });
+      if (userID != null && userType == "Rider") {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const BottomNavBar()));
+        print("current session starts with userId = $userID");
+      } else if (userID != null && userType == "Fleet") {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const BottomNavBarFleet()));
+        print("userId value is = $userID");
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const ChooseAppScreen()));
+      }
+    });
   }
 
   // init() async {

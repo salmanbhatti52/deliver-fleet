@@ -1,4 +1,4 @@
-package com.example.rider_deliver
+package com.deliverbygfl.partner
 
 import io.flutter.embedding.android.FlutterActivity
 

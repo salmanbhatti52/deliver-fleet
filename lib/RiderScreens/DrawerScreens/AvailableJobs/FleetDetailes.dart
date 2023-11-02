@@ -1,7 +1,7 @@
-// import 'package:Deliver_Rider/Constants/MsgContainerButton.dart';
-// import 'package:Deliver_Rider/DrawerScreens/AvailableJobs/ContactHistoryTabOnFleetDetails.dart';
-// import 'package:Deliver_Rider/DrawerScreens/AvailableJobs/RidesTabOnFleetDetails.dart';
-// import 'package:Deliver_Rider/DrawerScreens/AvailableJobs/requestToJoinButton.dart';
+// import 'package:deliver_partner/Constants/MsgContainerButton.dart';
+// import 'package:deliver_partner/DrawerScreens/AvailableJobs/ContactHistoryTabOnFleetDetails.dart';
+// import 'package:deliver_partner/DrawerScreens/AvailableJobs/RidesTabOnFleetDetails.dart';
+// import 'package:deliver_partner/DrawerScreens/AvailableJobs/requestToJoinButton.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:google_fonts/google_fonts.dart';

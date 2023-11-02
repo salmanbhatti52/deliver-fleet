@@ -1,4 +1,4 @@
-import 'package:Deliver_Rider/Constants/buttonContainer.dart';
+import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialogBox extends StatefulWidget {

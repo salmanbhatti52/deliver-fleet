@@ -1,5 +1,5 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
-import 'package:Deliver_Rider/FleetScreens/FleetHomeScreens/DriverScreens/AllDriversOfFleet.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/FleetScreens/FleetHomeScreens/DriverScreens/AllDriversOfFleet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

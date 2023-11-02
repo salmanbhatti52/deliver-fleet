@@ -1,4 +1,4 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Constants/back-arrow-with-container.dart';

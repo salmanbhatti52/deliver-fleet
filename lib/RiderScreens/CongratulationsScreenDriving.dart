@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:Deliver_Rider/LogInScreen.dart';
-import 'package:Deliver_Rider/widgets/columnWithAllDetailsOfRider.dart';
-import 'package:Deliver_Rider/widgets/picturesOfDricingLicense.dart';
+import 'package:deliver_partner/LogInScreen.dart';
+import 'package:deliver_partner/widgets/columnWithAllDetailsOfRider.dart';
+import 'package:deliver_partner/widgets/picturesOfDricingLicense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

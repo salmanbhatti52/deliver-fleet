@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:Deliver_Rider/Constants/buttonConatinerWithBorder.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
-import 'package:Deliver_Rider/widgets/customDialogForImage.dart';
+import 'package:deliver_partner/Constants/buttonConatinerWithBorder.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
+import 'package:deliver_partner/widgets/customDialogForImage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

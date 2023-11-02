@@ -1,5 +1,5 @@
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
-import 'package:Deliver_Rider/models/API%20models/ShowBookingsModel.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +18,10 @@ class ModalSheetRideData extends StatefulWidget {
   final BookingModel customersModel;
 
   ModalSheetRideData(
-      {super.key, this.bookingDestinationsList, required this.customersModel, required this.pickupAddress});
+      {super.key,
+      this.bookingDestinationsList,
+      required this.customersModel,
+      required this.pickupAddress});
 
   @override
   State<ModalSheetRideData> createState() => _ModalSheetRideDataState();
@@ -126,76 +129,80 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                     ],
                   ),
                   widget.customersModel.scheduled == "Yes"
-                      ? SizedBox(height: 1.h,)
-                      : SizedBox(height: 30.h,),
-                  widget.customersModel.scheduled == "Yes"
-                  ? Column(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Schedule Ride',
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.syne(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
+                      ? SizedBox(
+                          height: 1.h,
+                        )
+                      : SizedBox(
+                          height: 30.h,
                         ),
-                      ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Schedule Delivery Date',
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: grey,
+                  widget.customersModel.scheduled == "Yes"
+                      ? Column(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Schedule Ride',
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.syne(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Schedule Delivery Time',
-                            style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: grey,
+                            SizedBox(
+                              height: 3.h,
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${widget.customersModel.delivery_date}',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: black,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Schedule Delivery Date',
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.syne(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                ),
+                                Text(
+                                  'Schedule Delivery Time',
+                                  style: GoogleFonts.syne(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Text(
-                            '${widget.customersModel.delivery_time}',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: black,
+                            SizedBox(
+                              height: 3.h,
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 9.h,
-                      ),
-                    ],
-                  )
-                  : const SizedBox(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${widget.customersModel.delivery_date}',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: black,
+                                  ),
+                                ),
+                                Text(
+                                  '${widget.customersModel.delivery_time}',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: black,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 9.h,
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
                   Row(
                     children: [
                       SvgPicture.asset('assets/images/location.svg'),

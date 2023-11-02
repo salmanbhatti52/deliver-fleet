@@ -1,6 +1,6 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
-import 'package:Deliver_Rider/models/GetFleetVehicleByIdModel.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/models/GetFleetVehicleByIdModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';

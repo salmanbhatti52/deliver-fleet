@@ -1,4 +1,4 @@
-import 'package:Deliver_Rider/models/API%20models/ShowBookingsModel.dart';
+import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
 
 class GetAllRatingsModel {
   int? bookings_ratings_id, users_customers_id, users_fleet_id, bookings_id;

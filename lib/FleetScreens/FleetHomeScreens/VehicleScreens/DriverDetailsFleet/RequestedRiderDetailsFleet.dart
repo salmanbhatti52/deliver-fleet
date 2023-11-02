@@ -1,12 +1,12 @@
-import 'package:Deliver_Rider/Constants/buttonConatinerWithBorder.dart';
-import 'package:Deliver_Rider/FleetScreens/BottomNavBarFleet.dart';
-import 'package:Deliver_Rider/FleetScreens/FleetHomeScreens/VehicleScreens/DriverDetailsFleet/ContactHistoryOfDriverFleet.dart';
-import 'package:Deliver_Rider/FleetScreens/FleetHomeScreens/VehicleScreens/DriverDetailsFleet/DriverInfoWidgetFleet.dart';
-import 'package:Deliver_Rider/FleetScreens/FleetHomeScreens/VehicleScreens/DriverDetailsFleet/ReviewsOfDrivers.dart';
-import 'package:Deliver_Rider/models/APIModelsFleet/AcceptAndRejectRequestedVehicleModel.dart';
-import 'package:Deliver_Rider/models/APIModelsFleet/GetFleetVehicleRequestByIdModel.dart';
-import 'package:Deliver_Rider/models/GetFleetVehicleByIdModel.dart';
-import 'package:Deliver_Rider/utilities/showToast.dart';
+import 'package:deliver_partner/Constants/buttonConatinerWithBorder.dart';
+import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
+import 'package:deliver_partner/FleetScreens/FleetHomeScreens/VehicleScreens/DriverDetailsFleet/ContactHistoryOfDriverFleet.dart';
+import 'package:deliver_partner/FleetScreens/FleetHomeScreens/VehicleScreens/DriverDetailsFleet/DriverInfoWidgetFleet.dart';
+import 'package:deliver_partner/FleetScreens/FleetHomeScreens/VehicleScreens/DriverDetailsFleet/ReviewsOfDrivers.dart';
+import 'package:deliver_partner/models/APIModelsFleet/AcceptAndRejectRequestedVehicleModel.dart';
+import 'package:deliver_partner/models/APIModelsFleet/GetFleetVehicleRequestByIdModel.dart';
+import 'package:deliver_partner/models/GetFleetVehicleByIdModel.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -47,6 +47,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
     userID = (sharedPreferences.getInt('userID') ?? -1);
     print("userID $userID");
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -159,84 +160,95 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                         height: 25.h,
                       ),
                       Container(
-                        child: widget.getFleetVehicleRequestByIdModel.status != "Accepted"
+                        child: widget.getFleetVehicleRequestByIdModel.status !=
+                                "Accepted"
                             ? Column(
-                          children: [
-                            SizedBox(
-                              width: 134.w,
-                              height: 45.h,
-                              child: isAccepting
-                                  ? SpinKitFadingCircle(
-                                color: orange,
-                                size: 50.0,
-                              )
-                                  : GestureDetector(
-                                onTap: () => accpetVehicleRequest(context),
-                                child: buttonContainer(context, 'Accept'),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.h,
-                            ),
-                            SizedBox(
-                              width: 134.w,
-                              height: 45.h,
-                              child: GestureDetector(
-                                onTap: () => showAdaptiveDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog.adaptive(
-                                    title: Text(
-                                      'Are you sure you want to reject the request?',
-                                      style: GoogleFonts.syne(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                        color: black,
-                                      ),
-                                    ),
-                                    actions: [
-                                      GestureDetector(
-                                        onTap: () => Navigator.of(context).pop(),
-                                        child: SizedBox(
-                                          height: 45.h,
-                                          width: 100.w,
-                                          child: buttonContainerWithBorder(
-                                              context, 'NO'),
-                                        ),
-                                      ),
-                                      isRejecting
-                                          ? apiButton(context)
-                                          : GestureDetector(
-                                        onTap: () =>
-                                            rejectVehicleRequest(context),
-                                        child: SizedBox(
-                                          height: 45.h,
-                                          width: 100.w,
-                                          child:
-                                          buttonContainer(context, 'YES'),
-                                        ),
-                                      ),
-                                    ],
-                                    actionsAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  SizedBox(
+                                    width: 134.w,
+                                    height: 45.h,
+                                    child: isAccepting
+                                        ? SpinKitFadingCircle(
+                                            color: orange,
+                                            size: 50.0,
+                                          )
+                                        : GestureDetector(
+                                            onTap: () =>
+                                                accpetVehicleRequest(context),
+                                            child: buttonContainer(
+                                                context, 'Accept'),
+                                          ),
                                   ),
-                                ),
-                                child: buttonContainerWithBorder(context, 'Reject'),
-                              ),
-                            ),
-                          ],
-                        )
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
+                                  SizedBox(
+                                    width: 134.w,
+                                    height: 45.h,
+                                    child: GestureDetector(
+                                      onTap: () => showAdaptiveDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            AlertDialog.adaptive(
+                                          title: Text(
+                                            'Are you sure you want to reject the request?',
+                                            style: GoogleFonts.syne(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              color: black,
+                                            ),
+                                          ),
+                                          actions: [
+                                            GestureDetector(
+                                              onTap: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: SizedBox(
+                                                height: 45.h,
+                                                width: 100.w,
+                                                child:
+                                                    buttonContainerWithBorder(
+                                                        context, 'NO'),
+                                              ),
+                                            ),
+                                            isRejecting
+                                                ? apiButton(context)
+                                                : GestureDetector(
+                                                    onTap: () =>
+                                                        rejectVehicleRequest(
+                                                            context),
+                                                    child: SizedBox(
+                                                      height: 45.h,
+                                                      width: 100.w,
+                                                      child: buttonContainer(
+                                                          context, 'YES'),
+                                                    ),
+                                                  ),
+                                          ],
+                                          actionsAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                        ),
+                                      ),
+                                      child: buttonContainerWithBorder(
+                                          context, 'Reject'),
+                                    ),
+                                  ),
+                                ],
+                              )
                             : SizedBox(
-                          width: 134.w,
-                          height: 45.h,
-                          child: isDeactivate
-                              ? SpinKitFadingCircle(
-                            color: orange,
-                            size: 50.0,
-                          )
-                              : GestureDetector(
-                            onTap: () => deactivateVehicleRequest(context),
-                            child: buttonContainer(context, 'Deactivate'),
-                          ),
-                        ),
+                                width: 134.w,
+                                height: 45.h,
+                                child: isDeactivate
+                                    ? SpinKitFadingCircle(
+                                        color: orange,
+                                        size: 50.0,
+                                      )
+                                    : GestureDetector(
+                                        onTap: () =>
+                                            deactivateVehicleRequest(context),
+                                        child: buttonContainer(
+                                            context, 'Deactivate'),
+                                      ),
+                              ),
                       )
                     ],
                   ),
@@ -483,12 +495,13 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
 
     Map deactivateResponseData = {
       "users_fleet_id": userID.toString(),
-      };
+    };
 
-    deactivateResponse = await service.deactivateVehicleRequest(deactivateResponseData);
+    deactivateResponse =
+        await service.deactivateVehicleRequest(deactivateResponseData);
     if (deactivateResponse!.status!.toLowerCase() == 'success') {
-      showToastSuccess(
-          'The request has been successfully Deactivated', FToast().init(context),
+      showToastSuccess('The request has been successfully Deactivated',
+          FToast().init(context),
           seconds: 1);
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -503,8 +516,6 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
       isDeactivate = false;
     });
   }
-
-
 
   /// reject vehicle request method:
   bool isRejecting = false;

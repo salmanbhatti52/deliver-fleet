@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:Deliver_Rider/LogInScreen.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/LogInScreen.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gif/flutter_gif.dart';

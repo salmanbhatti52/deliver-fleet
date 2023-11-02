@@ -1,6 +1,6 @@
-import 'package:Deliver_Rider/FleetScreens/BottomNavBarFleet.dart';
-import 'package:Deliver_Rider/widgets/TextFormField_Widget.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
+import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';

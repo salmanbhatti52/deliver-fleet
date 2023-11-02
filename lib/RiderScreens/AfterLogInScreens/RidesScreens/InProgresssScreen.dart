@@ -1,7 +1,7 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
-import 'package:Deliver_Rider/Constants/details-button.dart';
-import 'package:Deliver_Rider/RiderScreens/AfterLogInScreens/RidesScreens/InProgressScreenDetails.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/Constants/details-button.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/RidesScreens/InProgressScreenDetails.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -129,9 +129,9 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                 horizontal: 14.w, vertical: 14.h),
                             width: double.infinity,
                             height:
-                            // details && selectedIndex == index
-                            //     ? 185.h :
-                            110.h,
+                                // details && selectedIndex == index
+                                //     ? 185.h :
+                                110.h,
                             decoration: BoxDecoration(
                               color: lightWhite,
                               borderRadius: BorderRadius.circular(20),
@@ -332,7 +332,12 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                     ),
                                     isScrollControlled: true,
                                     context: context,
-                                    builder: (context) => InProgressDetails(userID : userID.toString(), inProgressRidesList: listItem, inProgressRidesList2: inProgressRidesList,));
+                                    builder: (context) => InProgressDetails(
+                                          userID: userID.toString(),
+                                          inProgressRidesList: listItem,
+                                          inProgressRidesList2:
+                                              inProgressRidesList,
+                                        ));
                               },
                               child: details && selectedIndex == index
                                   ? detailsButtonOpen(context)

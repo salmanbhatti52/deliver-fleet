@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:Deliver_Rider/LogInScreen.dart';
-import 'package:Deliver_Rider/RegisterScreen.dart';
-import 'package:Deliver_Rider/services/API_services.dart';
-import 'package:Deliver_Rider/utilities/showToast.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/LogInScreen.dart';
+import 'package:deliver_partner/RegisterScreen.dart';
+import 'package:deliver_partner/services/API_services.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,12 @@ class EmailVerificationScreen extends StatefulWidget {
   final String? latitude;
   final String? longitude;
   const EmailVerificationScreen(
-      {super.key, required this.phoneNumber, required this.longitude, required this.latitude,  required this.userType, this.deviceID});
+      {super.key,
+      required this.phoneNumber,
+      required this.longitude,
+      required this.latitude,
+      required this.userType,
+      this.deviceID});
 
   @override
   State<EmailVerificationScreen> createState() =>
@@ -89,55 +94,55 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     print("phone ${widget.phoneNumber}");
     print("latitude ${widget.latitude}");
     print("longitude ${widget.longitude}");
-      String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
-      print("contactNumber: ${widget.phoneNumber}");
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          "one_signal_id": widget.deviceID,
-          "user_type": widget.userType,
-          "phone": widget.phoneNumber,
-          "latitude": widget.latitude,
-          "longitude": widget.longitude,
-        },
-      );
-      final responseString = response.body;
-      print("response: $responseString");
-      print("statusCode: ${response.statusCode}");
-      if (response.statusCode == 200) {
-        print("hello1");
-        checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
-        setState(() {});
-        print("hello2");
-        // if (checkPhoneNumberModel.data != null) {
-        //   SharedPreferences sharedPref = await SharedPreferences.getInstance();
-        //   await sharedPref.setInt('userID', checkPhoneNumberModel.data?.usersFleetId?.toInt() ?? 0);
-        //   await sharedPref.setString('userEmail', checkPhoneNumberModel.data?.email ?? "");
-        //   await sharedPref.setString('userLatitude', widget.latitude.toString());
-        //   await sharedPref.setString('userLongitude', widget.longitude.toString());
-        //   await sharedPref.setString('deviceIDInfo', checkPhoneNumberModel.data?.oneSignalId ?? "");
-        //   await sharedPref.setString('userType', checkPhoneNumberModel.data?.userType ?? "");
-        //   await sharedPref.setString('parentID', checkPhoneNumberModel.data?.parentId.toString() ?? "");
-        //   print("sharedPref userId: ${checkPhoneNumberModel.data?.usersFleetId?.toString() ?? ""}");
-        //   print("sharedPref email: ${checkPhoneNumberModel.data?.email ?? ""}");
-        //   print("sharedPref lat: ${widget.latitude.toString()}");
-        //   print("sharedPref long: ${widget.longitude.toString()}");
-        //   print("sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
-        //   print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
-        //   print("sharedPref parentId: ${checkPhoneNumberModel.data?.parentId ?? ""}");
-        //   setState(() {
-        //     isVerifying = false;
-        //   });
-        // } else {
-        //   print("checkPhoneNumberModel.data is null");
-        //   setState(() {
-        //     isVerifying = false;
-        //   });
-        // }
-      }
+    String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
+    print("contactNumber: ${widget.phoneNumber}");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        "one_signal_id": widget.deviceID,
+        "user_type": widget.userType,
+        "phone": widget.phoneNumber,
+        "latitude": widget.latitude,
+        "longitude": widget.longitude,
+      },
+    );
+    final responseString = response.body;
+    print("response: $responseString");
+    print("statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      print("hello1");
+      checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
+      setState(() {});
+      print("hello2");
+      // if (checkPhoneNumberModel.data != null) {
+      //   SharedPreferences sharedPref = await SharedPreferences.getInstance();
+      //   await sharedPref.setInt('userID', checkPhoneNumberModel.data?.usersFleetId?.toInt() ?? 0);
+      //   await sharedPref.setString('userEmail', checkPhoneNumberModel.data?.email ?? "");
+      //   await sharedPref.setString('userLatitude', widget.latitude.toString());
+      //   await sharedPref.setString('userLongitude', widget.longitude.toString());
+      //   await sharedPref.setString('deviceIDInfo', checkPhoneNumberModel.data?.oneSignalId ?? "");
+      //   await sharedPref.setString('userType', checkPhoneNumberModel.data?.userType ?? "");
+      //   await sharedPref.setString('parentID', checkPhoneNumberModel.data?.parentId.toString() ?? "");
+      //   print("sharedPref userId: ${checkPhoneNumberModel.data?.usersFleetId?.toString() ?? ""}");
+      //   print("sharedPref email: ${checkPhoneNumberModel.data?.email ?? ""}");
+      //   print("sharedPref lat: ${widget.latitude.toString()}");
+      //   print("sharedPref long: ${widget.longitude.toString()}");
+      //   print("sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
+      //   print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
+      //   print("sharedPref parentId: ${checkPhoneNumberModel.data?.parentId ?? ""}");
+      //   setState(() {
+      //     isVerifying = false;
+      //   });
+      // } else {
+      //   print("checkPhoneNumberModel.data is null");
+      //   setState(() {
+      //     isVerifying = false;
+      //   });
+      // }
+    }
     // } catch (e) {
     //   print('Something went wrong = ${e.toString()}');
     //   return null;
@@ -181,7 +186,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   Timer? buttonTimer;
   bool isVerifying = false;
 
-
   Future<void> verifyOTPCode() async {
     print("verificationId: $verifyId");
     setState(() {
@@ -198,8 +202,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       print('User Login In Successful ${value.user}');
       await checkNumber();
       if (checkPhoneNumberModel.status == "success") {
-
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
         await sharedPreferences.setInt(
             'userID', checkPhoneNumberModel.data!.usersFleetId!.toInt());
         await sharedPreferences.setString(
@@ -215,19 +219,20 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         await sharedPreferences.setString(
             'parentID', checkPhoneNumberModel.data!.parentId.toString());
         await sharedPreferences.setString('isLogIn', 'true');
-           print("sharedPref lat: ${widget.latitude.toString()}");
-          print("sharedPref long: ${widget.longitude.toString()}");
-          print("sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
-          print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
-          fleetId = sharedPreferences.getInt('userID');
-          parentId = sharedPreferences.getString('userEmail');
-          print("fleetId $fleetId");
-          print("parentId $parentId");
-          print("badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
-        if(widget.userType == "Rider"){
+        print("sharedPref lat: ${widget.latitude.toString()}");
+        print("sharedPref long: ${widget.longitude.toString()}");
+        print(
+            "sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
+        print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
+        fleetId = sharedPreferences.getInt('userID');
+        parentId = sharedPreferences.getString('userEmail');
+        print("fleetId $fleetId");
+        print("parentId $parentId");
+        print("badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
+        if (widget.userType == "Rider") {
           print("object");
           if (checkPhoneNumberModel.data?.usersFleetId!.toInt() != null) {
-            if(checkPhoneNumberModel.data?.badgeVerified == "No"){
+            if (checkPhoneNumberModel.data?.badgeVerified == "No") {
               setState(() {
                 isVerifying = false;
               });
@@ -240,7 +245,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       parentID: parentId.toString(),
                     ),
                   ),
-                      (route) => false);
+                  (route) => false);
               showToastSuccess(
                   'Badge Are Not Verified. PLese add Vehicle or request a bike to verify badge',
                   FToast().init(context),
@@ -253,7 +258,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   MaterialPageRoute(
                     builder: (context) => const BottomNavBar(),
                   ),
-                      (Route<dynamic> route) => false);
+                  (Route<dynamic> route) => false);
             }
           } else {
             setState(() {
@@ -261,12 +266,15 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             });
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                  builder: (context) => RegisterScreen(userType: widget.userType, phoneNumber: widget.phoneNumber.toString(), deviceID: widget.deviceID.toString()),
+                  builder: (context) => RegisterScreen(
+                      userType: widget.userType,
+                      phoneNumber: widget.phoneNumber.toString(),
+                      deviceID: widget.deviceID.toString()),
                 ),
-                    (Route<dynamic> route) => false);
+                (Route<dynamic> route) => false);
           }
         } else {
-          if(widget.userType == "Fleet"){
+          if (widget.userType == "Fleet") {
             if (checkPhoneNumberModel.data!.usersFleetId!.toInt() != null) {
               setState(() {
                 isVerifying = false;
@@ -275,38 +283,47 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   MaterialPageRoute(
                     builder: (context) => const BottomNavBarFleet(),
                   ),
-                      (Route<dynamic> route) => false);
+                  (Route<dynamic> route) => false);
             } else {
               setState(() {
                 isVerifying = false;
               });
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                    builder: (context) => RegisterScreen(userType: widget.userType, phoneNumber: widget.phoneNumber.toString(), deviceID: widget.deviceID.toString()),
+                    builder: (context) => RegisterScreen(
+                        userType: widget.userType,
+                        phoneNumber: widget.phoneNumber.toString(),
+                        deviceID: widget.deviceID.toString()),
                   ),
-                      (Route<dynamic> route) => false);
+                  (Route<dynamic> route) => false);
             }
           }
         }
-      }else if(checkPhoneNumberModel.status == "error" && checkPhoneNumberModel.message == "Your account is not approved yet.") {
+      } else if (checkPhoneNumberModel.status == "error" &&
+          checkPhoneNumberModel.message ==
+              "Your account is not approved yet.") {
         print("2");
         Navigator.pop(context);
         showToastSuccess(
-            'Your account is not approved yet.',
-            FToast().init(context),
+            'Your account is not approved yet.', FToast().init(context),
             seconds: 3);
-      }  else if(checkPhoneNumberModel.status == "error" && checkPhoneNumberModel.message == "Phone number does not exist.") {
+      } else if (checkPhoneNumberModel.status == "error" &&
+          checkPhoneNumberModel.message == "Phone number does not exist.") {
         print("3");
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => RegisterScreen(userType: widget.userType, phoneNumber: widget.phoneNumber.toString(), deviceID: widget.deviceID.toString()),
+              builder: (context) => RegisterScreen(
+                  userType: widget.userType,
+                  phoneNumber: widget.phoneNumber.toString(),
+                  deviceID: widget.deviceID.toString()),
             ),
-                (Route<dynamic> route) => false);
-      }   else if(checkPhoneNumberModel.status == "error" && checkPhoneNumberModel.message == "Your account is in Deleted state.") {
+            (Route<dynamic> route) => false);
+      } else if (checkPhoneNumberModel.status == "error" &&
+          checkPhoneNumberModel.message ==
+              "Your account is in Deleted state.") {
         Navigator.pop(context);
         showToastSuccess(
-            'Your account is in Deleted state.',
-            FToast().init(context),
+            'Your account is in Deleted state.', FToast().init(context),
             seconds: 3);
       }
       setState(() {
@@ -336,8 +353,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     return '${minutes}m:${seconds.toString().padLeft(2, '0')}s';
   }
 
-
-
   @override
   void initState() {
     super.initState();
@@ -345,7 +360,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     verifyPhoneNumber();
     print("phoneNumber: ${widget.phoneNumber}");
   }
-
 
   @override
   void dispose() {
@@ -367,7 +381,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           leading: Padding(
             padding: const EdgeInsets.only(top: 8.0, left: 20),
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.of(context).pop();
                 timer?.cancel();
               },
@@ -500,8 +514,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       //   }, // end onSubmit
                       // ),
                       Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
                         child: Pinput(
                           length: 6,
                           controller: otpController,
@@ -626,32 +640,32 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                             ),
                             secondsRemaining == 0
                                 ? GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  secondsRemaining = 20;
-                                  startTimer();
-                                });
-                                verifyPhoneNumber();
-                              },
-                              child: const Text(
-                                'Resend Code',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: orange,
-                                  fontSize: 16,
-                                  fontFamily: 'Syne-SemiBold',
-                                ),
-                              ),
-                            )
+                                    onTap: () {
+                                      setState(() {
+                                        secondsRemaining = 20;
+                                        startTimer();
+                                      });
+                                      verifyPhoneNumber();
+                                    },
+                                    child: const Text(
+                                      'Resend Code',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        color: orange,
+                                        fontSize: 16,
+                                        fontFamily: 'Syne-SemiBold',
+                                      ),
+                                    ),
+                                  )
                                 : const Text(
-                              'Resend Code',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: grey,
-                                fontSize: 16,
-                                fontFamily: 'Syne-SemiBold',
-                              ),
-                            ),
+                                    'Resend Code',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      color: grey,
+                                      fontSize: 16,
+                                      fontFamily: 'Syne-SemiBold',
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
@@ -666,7 +680,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                               setState(() {
                                 isButtonDisabled = true;
                               });
-                              buttonTimer = Timer(const Duration(seconds: 5), () async {
+                              buttonTimer =
+                                  Timer(const Duration(seconds: 5), () async {
                                 setState(() {
                                   isButtonDisabled = false;
                                 });
@@ -678,7 +693,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                           // => isVerifying
                           //     ? apiButton(context)
                           //     : verifyOTPmethod(context),
-                          child: isButtonDisabled? apiButton(context) : isVerifying ? apiButton(context) : buttonContainer(context, 'VERIFY'),
+                          child: isButtonDisabled
+                              ? apiButton(context)
+                              : isVerifying
+                                  ? apiButton(context)
+                                  : buttonContainer(context, 'VERIFY'),
                         ),
                       ),
                     ],
@@ -848,5 +867,4 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   //   }
   //   );
   // }
-
 }

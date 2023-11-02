@@ -1,12 +1,12 @@
-import 'package:Deliver_Rider/Constants/FacebookButton.dart';
-import 'package:Deliver_Rider/Constants/GoogleButton.dart';
-import 'package:Deliver_Rider/PrivacyPolicy.dart';
-import 'package:Deliver_Rider/TermsAndConditions.dart';
-import 'package:Deliver_Rider/VerifyYourself.dart';
-import 'package:Deliver_Rider/services/API_services.dart';
-import 'package:Deliver_Rider/utilities/showToast.dart';
-import 'package:Deliver_Rider/widgets/TextFormField_Widget.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/Constants/FacebookButton.dart';
+import 'package:deliver_partner/Constants/GoogleButton.dart';
+import 'package:deliver_partner/PrivacyPolicy.dart';
+import 'package:deliver_partner/TermsAndConditions.dart';
+import 'package:deliver_partner/VerifyYourself.dart';
+import 'package:deliver_partner/services/API_services.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
+import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,10 @@ class RegisterScreen extends StatefulWidget {
   final String deviceID;
   final String phoneNumber;
   const RegisterScreen(
-      {super.key, required this.userType, required this.phoneNumber, required this.deviceID});
+      {super.key,
+      required this.userType,
+      required this.phoneNumber,
+      required this.deviceID});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -630,7 +633,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         showToastSuccess(
             _signupResponse!.message!.toString(), FToast().init(context),
             seconds: 1);
-        if(widget.userType == "Rider"){
+        if (widget.userType == "Rider") {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => VerifyDrivingLicenseManually(
@@ -642,13 +645,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         } else {
           showToastSuccess(
-              "You have registered Successfully, PLease Wait Admin Approve Your Account Soon...", FToast().init(context),
+              "You have registered Successfully, PLease Wait Admin Approve Your Account Soon...",
+              FToast().init(context),
               seconds: 1);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => LogInScreen(userType: widget.userType, deviceID: widget.deviceID),
+                builder: (context) => LogInScreen(
+                    userType: widget.userType, deviceID: widget.deviceID),
               ),
-                  (Route<dynamic> route) => false);
+              (Route<dynamic> route) => false);
         }
       } else {
         print('device id for android while registering:  ' +

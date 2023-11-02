@@ -1,5 +1,5 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -147,7 +147,9 @@ class _ScooterDetailsState extends State<ScooterDetails> {
                             ),
                           ),
                         ),
-                        vehicleDetailsResponse?.data?.users_fleet?.user_type?.toLowerCase() == 'fleet'
+                        vehicleDetailsResponse?.data?.users_fleet?.user_type
+                                    ?.toLowerCase() ==
+                                'fleet'
                             ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -235,11 +237,16 @@ class _ScooterDetailsState extends State<ScooterDetails> {
                           height: 20.h,
                         ),
                         ScooterOwnerDetailsWidget(
-                          name: '${vehicleDetailsResponse?.data?.users_fleet?.first_name} ${vehicleDetailsResponse?.data?.users_fleet?.last_name}',
-                          contactNumber: "${vehicleDetailsResponse?.data?.users_fleet?.phone}",
-                          address: "${vehicleDetailsResponse?.data?.users_fleet?.address}",
-                          userTypeOfVehicleOwner: "${vehicleDetailsResponse?.data?.users_fleet?.user_type}",
-                          statusOfVehicleOwner: "${vehicleDetailsResponse?.data?.users_fleet?.status}",
+                          name:
+                              '${vehicleDetailsResponse?.data?.users_fleet?.first_name} ${vehicleDetailsResponse?.data?.users_fleet?.last_name}',
+                          contactNumber:
+                              "${vehicleDetailsResponse?.data?.users_fleet?.phone}",
+                          address:
+                              "${vehicleDetailsResponse?.data?.users_fleet?.address}",
+                          userTypeOfVehicleOwner:
+                              "${vehicleDetailsResponse?.data?.users_fleet?.user_type}",
+                          statusOfVehicleOwner:
+                              "${vehicleDetailsResponse?.data?.users_fleet?.status}",
                         )
                       ],
                     ),

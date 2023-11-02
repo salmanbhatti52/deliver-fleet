@@ -1,7 +1,7 @@
-import 'package:Deliver_Rider/Constants/Colors.dart';
-import 'package:Deliver_Rider/Constants/PageLoadingKits.dart';
-import 'package:Deliver_Rider/Constants/buttonContainer.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/Constants/buttonContainer.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,8 +41,8 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
     setState(() {
       isLoading = true;
       loadSwitchState();
-     switchState == -1 ?  switchState == 1 : switchState == 2;
-     selectShift == -1 ?  selectShift == 1 : selectShift == 2;
+      switchState == -1 ? switchState == 1 : switchState == 2;
+      selectShift == -1 ? selectShift == 1 : selectShift == 2;
       loadShiftState();
       // gettingCategory = true;
     });
@@ -365,5 +365,4 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('switchShift', state);
   }
-
 }

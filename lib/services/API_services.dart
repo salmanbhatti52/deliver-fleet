@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:Deliver_Rider/models/API%20models/GetAllAvailableVehicles.dart';
-import 'package:Deliver_Rider/models/API%20models/GetAllSystemDataModel.dart';
-import 'package:Deliver_Rider/models/API%20models/GetAllUserToUsreChatModel.dart';
-import 'package:Deliver_Rider/models/API%20models/InProgressRidesModel.dart';
-import 'package:Deliver_Rider/models/API%20models/ShowBookingsModel.dart';
-import 'package:Deliver_Rider/models/APIModelsFleet/AcceptAndRejectRequestedVehicleModel.dart';
-import 'package:Deliver_Rider/models/GetFleetVehicleByIdModel.dart';
+import 'package:deliver_partner/models/API%20models/GetAllAvailableVehicles.dart';
+import 'package:deliver_partner/models/API%20models/GetAllSystemDataModel.dart';
+import 'package:deliver_partner/models/API%20models/GetAllUserToUsreChatModel.dart';
+import 'package:deliver_partner/models/API%20models/InProgressRidesModel.dart';
+import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
+import 'package:deliver_partner/models/APIModelsFleet/AcceptAndRejectRequestedVehicleModel.dart';
+import 'package:deliver_partner/models/GetFleetVehicleByIdModel.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/API models/API response.dart';
@@ -1029,7 +1029,7 @@ class ApiServices {
         ).message,
       );
     }).onError(
-          (error, stackTrace) => APIResponse<List<ScheduledRiderModel>>(
+      (error, stackTrace) => APIResponse<List<ScheduledRiderModel>>(
         status: error.toString(),
         message: stackTrace.toString(),
       ),

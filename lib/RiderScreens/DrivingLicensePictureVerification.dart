@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:Deliver_Rider/widgets/apiButton.dart';
-import 'package:Deliver_Rider/widgets/customDialogForImage.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
+import 'package:deliver_partner/widgets/customDialogForImage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gif/flutter_gif.dart';
@@ -350,7 +350,7 @@ class _DrivingLicensePictureVerificationState
         deviceIDInfo = (sharedPref.getString('deviceIDInfo') ?? null);
         print("userId value is = $userID");
         print("deviceIDInfo = $deviceIDInfo");
-        if(userID != null ){
+        if (userID != null) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => RideDetailsAfterLogInScreen(
@@ -359,7 +359,7 @@ class _DrivingLicensePictureVerificationState
                   parentID: parentId.toString(),
                 ),
               ),
-                  (route) => false);
+              (route) => false);
         } else {
           showToastSuccess(verifyResponse!.message, FToast().init(context));
           Navigator.of(context).pushAndRemoveUntil(
@@ -369,7 +369,7 @@ class _DrivingLicensePictureVerificationState
                   deviceID: deviceIDInfo,
                 ),
               ),
-                  (route) => false);
+              (route) => false);
         }
       } else {
         showToastError(verifyResponse!.message, FToast().init(context));

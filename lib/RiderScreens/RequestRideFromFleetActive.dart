@@ -1,5 +1,5 @@
-import 'package:Deliver_Rider/WaitingPage.dart';
-import 'package:Deliver_Rider/widgets/apiButton.dart';
+import 'package:deliver_partner/WaitingPage.dart';
+import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,8 +47,6 @@ class _RequestRideFromFleetActiveState
     parentID = sharedPreferences.getString('parentID')!;
     print("parentID $parentID");
   }
-
-
 
   @override
   void initState() {
@@ -171,11 +169,17 @@ class _RequestRideFromFleetActiveState
                                     onTap: () {
                                       setState(() {
                                         checked = index;
-                                        selectedVehicleID = getAvailableBikesList![index].users_fleet_vehicles_id!;
-                                        bikeID = getAvailableBikesList![index].vehicles!.vehicles_id!;
+                                        selectedVehicleID =
+                                            getAvailableBikesList![index]
+                                                .users_fleet_vehicles_id!;
+                                        bikeID = getAvailableBikesList![index]
+                                            .vehicles!
+                                            .vehicles_id!;
                                       });
-                                      print('id of selected vehicle:  ' + selectedVehicleID.toString() +
-                                          '  selected vehicle id id:  ' + bikeID.toString());
+                                      print('id of selected vehicle:  ' +
+                                          selectedVehicleID.toString() +
+                                          '  selected vehicle id id:  ' +
+                                          bikeID.toString());
                                     },
                                     child: Container(
                                       margin: EdgeInsets.only(bottom: 20.h),

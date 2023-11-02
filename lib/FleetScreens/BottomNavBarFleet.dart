@@ -1,6 +1,6 @@
-import 'package:Deliver_Rider/FleetScreens/ProfileScreensFleet/EditProfileFleet.dart';
-import 'package:Deliver_Rider/FleetScreens/ProfileScreensFleet/ProfileScreenFleet.dart';
-import 'package:Deliver_Rider/widgets/DrawerWidgetFleet.dart';
+import 'package:deliver_partner/FleetScreens/ProfileScreensFleet/EditProfileFleet.dart';
+import 'package:deliver_partner/FleetScreens/ProfileScreensFleet/ProfileScreenFleet.dart';
+import 'package:deliver_partner/widgets/DrawerWidgetFleet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';

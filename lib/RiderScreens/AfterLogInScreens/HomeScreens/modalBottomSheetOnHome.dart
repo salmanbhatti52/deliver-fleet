@@ -1,6 +1,6 @@
-import 'package:Deliver_Rider/RiderScreens/AfterLogInScreens/HomeScreens/UserToUserChat/UserToUserChat.dart';
-import 'package:Deliver_Rider/models/API%20models/API%20response.dart';
-import 'package:Deliver_Rider/utilities/showToast.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/UserToUserChat/UserToUserChat.dart';
+import 'package:deliver_partner/models/API%20models/API%20response.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +25,7 @@ class ModalBottomSheetOnHome extends StatefulWidget {
   ModalBottomSheetOnHome(
       {super.key,
       required this.userID,
-        this.customerDetails,
+      this.customerDetails,
       this.bookingDestinationsList,
       required this.customersModel});
 
@@ -231,7 +231,8 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
               height: MediaQuery.sizeOf(context).height / 2.8,
               child: ModalSheetRideData(
                 bookingDestinationsList: widget.bookingDestinationsList,
-                pickupAddress: widget.customersModel.bookings_destinations![0].pickup_address!,
+                pickupAddress: widget
+                    .customersModel.bookings_destinations![0].pickup_address!,
                 customersModel: widget.customersModel,
               )),
           Padding(
@@ -419,8 +420,10 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             phone: widget.customersModel.users_customers!.phone!,
             riderID: widget.userID.toString(),
             image: widget.customersModel.users_customers!.profile_pic!,
-            name:"${widget.customersModel.users_customers!.first_name!} ${widget.customersModel.users_customers!.last_name!}",
-            address: widget.customersModel.bookings_destinations![0].pickup_address,
+            name:
+                "${widget.customersModel.users_customers!.first_name!} ${widget.customersModel.users_customers!.last_name!}",
+            address:
+                widget.customersModel.bookings_destinations![0].pickup_address,
             clientID: widget.customersModel.users_customers!.users_customers_id
                 .toString(),
           ),
@@ -437,9 +440,12 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             phone: widget.customersModel.users_customers!.phone!,
             riderID: widget.userID.toString(),
             image: widget.customersModel.users_customers!.profile_pic!,
-            name:"${widget.customersModel.users_customers!.first_name!} ${widget.customersModel.users_customers!.last_name!}",
-            address: widget.customersModel.bookings_destinations![0].pickup_address,
-            clientID: widget.customersModel.users_customers!.users_customers_id.toString(),
+            name:
+                "${widget.customersModel.users_customers!.first_name!} ${widget.customersModel.users_customers!.last_name!}",
+            address:
+                widget.customersModel.bookings_destinations![0].pickup_address,
+            clientID: widget.customersModel.users_customers!.users_customers_id
+                .toString(),
           ),
         ),
       );
