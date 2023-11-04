@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "698660214068",
-    "project_id": "deliverappgfl-fleet",
-    "storage_bucket": "deliverappgfl-fleet.appspot.com"
+    "project_number": "1068098316831",
+    "project_id": "deliverbygfl-partner",
+    "storage_bucket": "deliverbygfl-partner.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:698660214068:android:58ed9a32a05ca62d0ac161",
+        "mobilesdk_app_id": "1:1068098316831:android:3fadd29db2d9f8a0c4432a",
         "android_client_info": {
           "package_name": "com.deliverbygfl.partner"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAcJ-WhBUIW6YFlbSFPKnpllfsIyxYRGk8"
+          "current_key": "AIzaSyC2SaQFG3zxItsWp2tYbMxvrbjjZqs1cZM"
         }
       ],
       "services": {

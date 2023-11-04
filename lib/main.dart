@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:deliver_partner/CustomSplash.dart';
 import 'package:deliver_partner/services/API_services.dart';
+import 'package:deliver_partner/utilities/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
@@ -12,10 +13,12 @@ void main() async {
   HttpOverrides.global = MyHttpOverrides();
   await Future.delayed(const Duration(seconds: 5));
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   runApp(const MyApp());
-  // runApp(t
+  // runApp(
   //   DevicePreview(
   //     enabled: true,
   //     builder: (context) => const MyApp(),
