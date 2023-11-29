@@ -22,6 +22,7 @@ class ModalBottomSheetOnHome extends StatefulWidget {
   List<BookingDestinations>? bookingDestinationsList;
   final BookingModel customersModel;
   final CustomersModel? customerDetails;
+
   ModalBottomSheetOnHome(
       {super.key,
       required this.userID,
@@ -36,7 +37,9 @@ class ModalBottomSheetOnHome extends StatefulWidget {
 class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
   ApiServices get service => GetIt.I<ApiServices>();
 
+  int currentIndex = 0;
   late PageController scrollController;
+  ScrollController nextPageScrollController = ScrollController();
 
   @override
   void initState() {
@@ -44,6 +47,15 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
     super.initState();
 
     scrollController = PageController();
+
+    nextPageScrollController.addListener(() {
+      setState(() {
+        // Update the current index based on the scroll position
+        currentIndex = (nextPageScrollController.offset /
+                MediaQuery.of(context).size.width)
+            .round();
+      });
+    });
   }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
@@ -63,7 +75,9 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
           top: Radius.circular(20),
         ),
       ),
-      height: MediaQuery.sizeOf(context).height * 0.57,
+      height: widget.customersModel.scheduled == "Yes"
+          ? MediaQuery.sizeOf(context).height * 0.625
+          : MediaQuery.sizeOf(context).height * 0.6,
       child: Column(
         children: [
           Row(
@@ -130,14 +144,23 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
                       SizedBox(
                         height: 4.h,
                       ),
-                      Text(
-                        '${widget.customersModel.delivery_type}',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: grey,
-                        ),
-                      ),
+                      widget.customersModel.scheduled == "Yes"
+                          ? Text(
+                              '${widget.customersModel.delivery_type} (Scheduled Ride)',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: grey,
+                              ),
+                            )
+                          : Text(
+                              '${widget.customersModel.delivery_type}',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: grey,
+                              ),
+                            ),
                     ],
                   ),
                 ],
@@ -148,7 +171,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
                       ? SizedBox(
                           // width: 10.w,
                           height: 10.h,
-                          child: SpinKitThreeInOut(
+                          child: const SpinKitThreeInOut(
                             size: 12,
                             color: orange,
                             // size: 50.0,
@@ -225,23 +248,134 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             ],
           ),
           SizedBox(
-            height: 10.h,
+            height: 15.h,
           ),
           SizedBox(
-              height: MediaQuery.sizeOf(context).height / 2.8,
-              child: ModalSheetRideData(
-                bookingDestinationsList: widget.bookingDestinationsList,
-                pickupAddress: widget
-                    .customersModel.bookings_destinations![0].pickup_address!,
-                customersModel: widget.customersModel,
-              )),
+            height: widget.customersModel.scheduled == "Yes"
+                ? MediaQuery.sizeOf(context).height * 0.4
+                : MediaQuery.sizeOf(context).height / 2.9,
+            child: ModalSheetRideData(
+              // scrollController: nextPageScrollController,
+              deliveryType: '${widget.customersModel.delivery_type}',
+              bookingDestinationsList: widget.bookingDestinationsList,
+              pickupAddress: widget
+                  .customersModel.bookings_destinations![0].pickup_address!,
+              customersModel: widget.customersModel,
+            ),
+          ),
+          SizedBox(height: 5.h),
+          widget.customersModel.delivery_type == 'Single'
+              ? const SizedBox()
+              : Container(
+                  color: Colors.transparent,
+                  height: 12.h,
+                  width: 100.w,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 7),
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        controller: nextPageScrollController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: widget.bookingDestinationsList!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 3.w),
+                              Container(
+                                width: 10,
+                                height: 10,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: currentIndex == 0 ? orange : grey,
+                                ),
+                              ),
+                              SizedBox(width: 3.w)
+                            ],
+                          );
+                        }),
+                  ),
+                ),
+          // Row(
+          //   mainAxisAlignment:
+          //   MainAxisAlignment.center,
+          //   children: [
+          //
+          //     Container(
+          //       width: 10,
+          //       height: 10,
+          //       margin: const EdgeInsets.symmetric(
+          //           horizontal: 2),
+          //       decoration: BoxDecoration(
+          //         shape: BoxShape.circle,
+          //         color: currentIndex == 1
+          //             ? orange
+          //             : grey,
+          //       ),
+          //     ),
+          //     // if (widget.multipleData![
+          //     // "destin_address2"] !=
+          //     //     null &&
+          //     //     widget
+          //     //         .multipleData![
+          //     //     "destin_address2"]
+          //     //         .isNotEmpty)
+          //       Container(
+          //         width: 10,
+          //         height: 10,
+          //         margin: const EdgeInsets.symmetric(
+          //             horizontal: 1),
+          //         decoration: BoxDecoration(
+          //           shape: BoxShape.circle,
+          //           color: currentIndex == 2
+          //               ? orange
+          //               : grey,
+          //         ),
+          //       ),
+          //     // if (widget.multipleData![
+          //     // "destin_address3"] !=
+          //     //     null &&
+          //     //     widget
+          //     //         .multipleData![
+          //     //     "destin_address3"]
+          //     //         .isNotEmpty)
+          //       Container(
+          //         width: 10,
+          //         height: 10,
+          //         margin: const EdgeInsets.symmetric(
+          //             horizontal: 1),
+          //         decoration: BoxDecoration(
+          //           shape: BoxShape.circle,
+          //           color: currentIndex == 3
+          //               ? orange
+          //               : grey,
+          //         ),
+          //       ),
+          //     if (widget.bookingDestinationsList![3].pickup_address != null &&
+          //         widget.bookingDestinationsList![3].pickup_address!.isNotEmpty)
+          //       Container(
+          //         width: 10,
+          //         height: 10,
+          //         margin: const EdgeInsets.symmetric(
+          //             horizontal: 1),
+          //         decoration: BoxDecoration(
+          //           shape: BoxShape.circle,
+          //           color: currentIndex == 4
+          //               ? orange
+          //               : grey,
+          //         ),
+          //       ),
+          //   ],
+          // ),
+          SizedBox(height: 5.h),
           Padding(
             padding: EdgeInsets.only(top: 14.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 isAcceptingRide
-                    ? Padding(
+                    ? const Padding(
                         padding: EdgeInsets.only(left: 35.0),
                         child: SpinKitDoubleBounce(
                           color: orange,
@@ -319,6 +453,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
 
   bool isAcceptingRide = false;
   APIResponse<ShowBookingsModel>? acceptRideResponse;
+
   acceptRideMethod(BuildContext context) async {
     setState(() {
       isAcceptingRide = true;
@@ -366,6 +501,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
 
   bool isRejectingRide = false;
   APIResponse<ShowBookingsModel>? rejectRideResponse;
+
   rejectRequestMethod(BuildContext context) async {
     setState(() {
       isRejectingRide = true;

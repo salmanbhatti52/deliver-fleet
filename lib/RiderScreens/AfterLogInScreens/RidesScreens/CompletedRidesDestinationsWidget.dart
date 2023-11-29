@@ -18,6 +18,7 @@ class CompletedRidesDestinationsWidget extends StatefulWidget {
       {super.key,
       required this.destination,
       required this.distance,
+
       required this.time,
       required this.fare});
 
@@ -111,7 +112,8 @@ class _CompletedRidesDestinationsWidgetState
                     ),
                   ),
                   Container(
-                    width: 298.h,
+                    color: Colors.transparent,
+                    width: 290.w,
                     child: Text(
                       widget.destination,
                       overflow: TextOverflow.ellipsis,
@@ -198,7 +200,7 @@ class _CompletedRidesDestinationsWidgetState
                     ),
                     Expanded(
                       child: Text(
-                        '$currency ${widget.fare}',
+                        widget.fare,
                         style: GoogleFonts.inter(
                           fontSize: 15,
                           fontWeight: FontWeight.w400,

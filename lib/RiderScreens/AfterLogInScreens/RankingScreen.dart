@@ -129,7 +129,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                 height: 30.h,
                               ),
                               Text(
-                                '$totalRating/5',
+                                '${totalRating.toStringAsFixed(1)}/5',
                                 style: GoogleFonts.inter(
                                   fontSize: 41,
                                   fontWeight: FontWeight.w700,

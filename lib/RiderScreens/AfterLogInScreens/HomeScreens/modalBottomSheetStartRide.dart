@@ -52,6 +52,11 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   int? startRideID;
   String? distance;
   bool isLoading = false;
+  int currentIndex = 0;
+  String? bookingsDestinationsId;
+
+  ScrollController nextPageScrollController = ScrollController();
+  List<String>? pickedParcelIds = [];
 
   @override
   void initState() {
@@ -61,10 +66,19 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     setState(() {
       isLoading = true;
     });
+    nextPageScrollController.addListener(() {
+      setState(() {
+        // Update the current index based on the scroll position
+        currentIndex = (nextPageScrollController.offset /
+                MediaQuery.of(context).size.width)
+            .round();
+      });
+    });
   }
 
   String? name;
   String? startRide;
+
   init() async {
     getBookingDestinationsStatusResponse =
         await service.getBookingDestinationsStatusAPI();
@@ -81,6 +95,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
             setState(() {
               name = model.name!;
               statusID = model.bookings_destinations_status_id!;
+              print("statusID: $statusID");
             });
           } else if (model.name == "Start Ride") {
             setState(() {
@@ -135,11 +150,16 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
             top: Radius.circular(20),
           ),
         ),
-        height: MediaQuery.sizeOf(context).height * 0.63,
+        height: widget.bookingModel.scheduled == "Yes"
+            ? MediaQuery.sizeOf(context).height * 0.665
+            : MediaQuery.sizeOf(context).height * 0.635,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(
                 children: [
+                  SizedBox(
+                    height: 15.h,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -209,14 +229,23 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               SizedBox(
                                 height: 4.h,
                               ),
-                              Text(
-                                widget.bookingModel.bookings_types!.name!,
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: grey,
-                                ),
-                              ),
+                              widget.bookingModel.scheduled == "Yes"
+                                  ? Text(
+                                      '${widget.bookingModel.bookings_types!.name!} (Scheduled Ride)',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: grey,
+                                      ),
+                                    )
+                                  : Text(
+                                      widget.bookingModel.bookings_types!.name!,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: grey,
+                                      ),
+                                    ),
                               SizedBox(
                                 height: 4.h,
                               ),
@@ -297,89 +326,16 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                     ],
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 20.h,
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 36.h,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Receiver Name',
-                              style: GoogleFonts.syne(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: grey,
-                              ),
-                            ),
-                            Text(
-                              widget.bookingDestinations[i].receiver_name!,
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: black,
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Receiver Contact',
-                              style: GoogleFonts.syne(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: grey,
-                              ),
-                            ),
-                            Text(
-                              widget.bookingDestinations[i].receiver_phone!,
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: black,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  widget.bookingModel.scheduled == "Yes"
-                      ? SizedBox(
-                          height: 1.h,
-                        )
-                      : SizedBox(
-                          height: 30.h,
-                        ),
-                  widget.bookingModel.scheduled == "Yes"
+                  widget.bookingModel.delivery_type == 'Single'
                       ? Column(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Schedule Ride',
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.syne(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Schedule Delivery Date',
+                                  'Receiver Name',
                                   textAlign: TextAlign.start,
                                   style: GoogleFonts.syne(
                                     fontSize: 14,
@@ -388,7 +344,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                   ),
                                 ),
                                 Text(
-                                  'Schedule Delivery Time',
+                                  'Receiver Contact',
                                   style: GoogleFonts.syne(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
@@ -404,7 +360,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${widget.bookingModel.delivery_date}',
+                                  '${widget.bookingDestinations[i].receiver_name}',
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -412,7 +368,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                   ),
                                 ),
                                 Text(
-                                  '${widget.bookingModel.delivery_time}',
+                                  '${widget.bookingDestinations[i].receiver_phone}',
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -421,286 +377,980 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                 )
                               ],
                             ),
-                            SizedBox(
-                              height: 9.h,
-                            ),
-                          ],
-                        )
-                      : const SizedBox(),
-                  Row(
-                    children: [
-                      SvgPicture.asset('assets/images/location.svg'),
-                      SizedBox(
-                        width: 15.w,
-                      ),
-                      Text(
-                        'Pickup From',
-                        style: GoogleFonts.syne(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: grey,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.0.w),
-                        child: SvgPicture.asset(
-                          'assets/images/dotted-line.svg',
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 25.w,
-                      ),
-                      SizedBox(
-                        width: 290.w,
-                        child: AutoSizeText(
-                          widget.bookingModel.bookings_destinations![0]
-                              .pickup_address!,
-                          maxLines: 2,
-                          minFontSize: 12,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/pointer.svg',
-                        colorFilter:
-                            const ColorFilter.mode(orange, BlendMode.srcIn),
-                        width: 24.w,
-                        height: 24.h,
-                      ),
-                      SizedBox(
-                        width: 15.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Deliver To',
-                            style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: grey,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          SizedBox(
-                            width: 290.w,
-                            child: AutoSizeText(
-                              widget.bookingDestinations[i].destin_address!,
-                              minFontSize: 12,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          width: 40.w,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/timer-icon.svg',
-                                colorFilter: const ColorFilter.mode(
-                                    black, BlendMode.srcIn),
-                              ),
-                              Text(
-                                widget.bookingDestinations[i].destin_time!,
-                                style: GoogleFonts.inter(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: black,
+                            widget.bookingModel.scheduled == "Yes"
+                                ? SizedBox(
+                                    height: 5.h,
+                                  )
+                                : SizedBox(
+                                    height: 20.h,
+                                  ),
+                            widget.bookingModel.scheduled == "Yes"
+                                ? Column(
+                                    // crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Schedule Delivery Date',
+                                            textAlign: TextAlign.start,
+                                            style: GoogleFonts.syne(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: grey,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Schedule Delivery Time',
+                                            style: GoogleFonts.syne(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '${widget.bookingModel.delivery_date}',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${widget.bookingModel.delivery_time}',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: black,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15.h,
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
+                            Row(
+                              children: [
+                                SvgPicture.asset('assets/images/location.svg'),
+                                SizedBox(
+                                  width: 15.w,
                                 ),
-                              ),
-                              Text(
-                                'Estimate Time',
-                                style: GoogleFonts.syne(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: SizedBox(
-                          width: 40.w,
-                          child: Column(
-                            children: [
-                              SvgPicture.asset('assets/images/meter-icon.svg'),
-                              Text(
-                                '${widget.bookingDestinations[i].destin_distance!} $distance',
-                                style: GoogleFonts.inter(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: black,
-                                ),
-                              ),
-                              Text(
-                                'Total Distance',
-                                style: GoogleFonts.syne(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: SizedBox(
-                          width: 85.w,
-                          child: Column(
-                            children: [
-                              Text(
-                                '$currency ${widget.bookingModel.total_charges}',
-                                // '$currency ${widget.bookingDestinations[i].destin_discounted_charges!}',
-                                style: GoogleFonts.inter(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  color: black,
-                                ),
-                              ),
-                              Text(
-                                'Fare',
-                                style: GoogleFonts.syne(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  isParcelPicked
-                      ? SizedBox(
-                          // width: 10.w,
-                          height: 10.h,
-                          child: SpinKitThreeInOut(
-                            size: 10,
-                            color: orange,
-                            // size: 50.0,
-                          ),
-                        )
-                      : Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  packageStatus = !packageStatus;
-                                  statusID;
-                                });
-                                parcelPickedMethod(context);
-                                print('object id of picked parcel:  ' +
-                                    statusID.toString());
-                              },
-                              child: packageStatus
-                                  ? SvgPicture.asset(
-                                      'assets/images/tick-orange.svg')
-                                  : SvgPicture.asset(
-                                      'assets/images/tick-grey.svg'),
+                                Text(
+                                  'Pickup From',
+                                  style: GoogleFonts.syne(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                )
+                              ],
                             ),
                             SizedBox(
-                              width: 15.w,
+                              height: 4.h,
                             ),
-                            Text(
-                              name!,
-                              style: GoogleFonts.syne(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: black,
-                              ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8.0.w),
+                                  child: SvgPicture.asset(
+                                    'assets/images/dotted-line.svg',
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 25.w,
+                                ),
+                                SizedBox(
+                                  width: 290.w,
+                                  child: AutoSizeText(
+                                    widget
+                                        .bookingModel
+                                        .bookings_destinations![0]
+                                        .pickup_address!,
+                                    maxLines: 2,
+                                    minFontSize: 12,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: black,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 22.h),
-                    child: isRideStarting
-                        ? Padding(
-                            padding: EdgeInsets.only(left: 35.0),
-                            child: SpinKitDoubleBounce(
-                              color: orange,
-                              size: 50.0,
+                            SizedBox(
+                              height: 5.h,
                             ),
-                          )
-                        : GestureDetector(
-                            onTap: () {
-                              startRideMethod(context);
-                            },
-                            child: Container(
-                              width: 170.w,
-                              height: 51.h,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xffFF6302),
-                                    Color(0xffFBC403),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/pointer.svg',
+                                  colorFilter: const ColorFilter.mode(
+                                      orange, BlendMode.srcIn),
+                                  width: 24.w,
+                                  height: 24.h,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Deliver To',
+                                      style: GoogleFonts.syne(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    SizedBox(
+                                      width: 290.w,
+                                      child: AutoSizeText(
+                                        widget.bookingDestinations[i]
+                                            .destin_address!,
+                                        minFontSize: 12,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: black,
+                                        ),
+                                      ),
+                                    ),
                                   ],
-                                  begin: Alignment.centerRight,
-                                  end: Alignment.centerLeft,
                                 ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    width: 40.w,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/images/timer-icon.svg',
+                                          colorFilter: const ColorFilter.mode(
+                                              black, BlendMode.srcIn),
+                                        ),
+                                        SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.004),
+                                        Text(
+                                          widget.bookingDestinations[i]
+                                              .destin_time!,
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w700,
+                                            color: black,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Estimate Time',
+                                          style: GoogleFonts.syne(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: SizedBox(
+                                    width: 40.w,
+                                    child: Column(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/images/meter-icon.svg'),
+                                        SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.007),
+                                        Text(
+                                          '${widget.bookingDestinations[i].destin_distance!} $distance',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w700,
+                                            color: black,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Total Distance',
+                                          style: GoogleFonts.syne(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: SizedBox(
+                                    width: 85.w,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          currency,
+                                          style: GoogleFonts.inter(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                            color: black,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${widget.bookingModel.total_charges}',
+                                          // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w700,
+                                            color: black,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Fare',
+                                          style: GoogleFonts.syne(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Container(
+                              color: Colors.transparent,
+                              padding: const EdgeInsets.only(right: 10),
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.38,
+                              child: isLoading
+                                  ? spinKitRotatingCircle
+                                  : ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          widget.bookingDestinations.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Container(
+                                          color: Colors.transparent,
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.86,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.38,
+                                          child: isLoading
+                                              ? spinKitRotatingCircle
+                                              : Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 10.h,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          'Receiver Name',
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          style:
+                                                              GoogleFonts.syne(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: grey,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          'Receiver Contact',
+                                                          style:
+                                                              GoogleFonts.syne(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 3.h,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          '${widget.bookingDestinations[index].receiver_name}',
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: black,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          '${widget.bookingDestinations[index].receiver_phone}',
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: black,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    widget.bookingModel
+                                                                .scheduled ==
+                                                            "Yes"
+                                                        ? SizedBox(
+                                                            height: 5.h,
+                                                          )
+                                                        : SizedBox(
+                                                            height: 20.h,
+                                                          ),
+                                                    widget.bookingModel
+                                                                .scheduled ==
+                                                            "Yes"
+                                                        ? Column(
+                                                            // crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 10.h,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    'Schedule Delivery Date',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    style:
+                                                                        GoogleFonts
+                                                                            .syne(
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color:
+                                                                          grey,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    'Schedule Delivery Time',
+                                                                    style:
+                                                                        GoogleFonts
+                                                                            .syne(
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color:
+                                                                          grey,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5.h,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    '${widget.bookingModel.delivery_date}',
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color:
+                                                                          black,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    '${widget.bookingModel.delivery_time}',
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color:
+                                                                          black,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15.h,
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : const SizedBox(),
+                                                    Row(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            'assets/images/location.svg'),
+                                                        SizedBox(
+                                                          width: 15.w,
+                                                        ),
+                                                        Text(
+                                                          'Pickup From',
+                                                          style:
+                                                              GoogleFonts.syne(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: grey,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 8.0.w),
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            'assets/images/dotted-line.svg',
+                                                            fit: BoxFit
+                                                                .scaleDown,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 25.w,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 250.w,
+                                                          child: AutoSizeText(
+                                                            widget
+                                                                .bookingDestinations[
+                                                                    index]
+                                                                .pickup_address!,
+                                                            maxLines: 3,
+                                                            minFontSize: 12,
+                                                            style: GoogleFonts
+                                                                .inter(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: black,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          'assets/images/pointer.svg',
+                                                          colorFilter:
+                                                              const ColorFilter
+                                                                  .mode(
+                                                                  orange,
+                                                                  BlendMode
+                                                                      .srcIn),
+                                                          width: 24.w,
+                                                          height: 24.h,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10.w,
+                                                        ),
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              'Deliver To',
+                                                              style: GoogleFonts
+                                                                  .syne(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: grey,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 10.h,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 270.w,
+                                                              child:
+                                                                  AutoSizeText(
+                                                                widget
+                                                                    .bookingDestinations[
+                                                                        index]
+                                                                    .destin_address!,
+                                                                minFontSize: 12,
+                                                                maxLines: 2,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .inter(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: black,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 15.h,
+                                                    ),
+                                                    Expanded(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              width: 40.w,
+                                                              child: Column(
+                                                                children: [
+                                                                  SvgPicture
+                                                                      .asset(
+                                                                    'assets/images/timer-icon.svg',
+                                                                    colorFilter: const ColorFilter
+                                                                        .mode(
+                                                                        black,
+                                                                        BlendMode
+                                                                            .srcIn),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.004),
+                                                                  Text(
+                                                                    widget
+                                                                        .bookingDestinations[
+                                                                            index]
+                                                                        .destin_time!,
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      fontSize:
+                                                                          10,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color:
+                                                                          black,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    'Estimate Time',
+                                                                    style:
+                                                                        GoogleFonts
+                                                                            .syne(
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color:
+                                                                          grey,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              width: 40.w,
+                                                              child: Column(
+                                                                children: [
+                                                                  SvgPicture.asset(
+                                                                      'assets/images/meter-icon.svg'),
+                                                                  SizedBox(
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.007),
+                                                                  Text(
+                                                                    '${widget.bookingDestinations[index].destin_distance!} $distance',
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      fontSize:
+                                                                          10,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color:
+                                                                          black,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    'Total Distance',
+                                                                    style:
+                                                                        GoogleFonts
+                                                                            .syne(
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color:
+                                                                          grey,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              width: 85.w,
+                                                              child: Column(
+                                                                children: [
+                                                                  Text(
+                                                                    currency,
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      fontSize:
+                                                                          18,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color:
+                                                                          black,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    '${widget.bookingModel.total_charges}',
+                                                                    // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      fontSize:
+                                                                          10,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color:
+                                                                          black,
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      'Fare',
+                                                                      style: GoogleFonts
+                                                                          .syne(
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
+                                                                        color:
+                                                                            grey,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    isParcelPicked
+                                                        ? SizedBox(
+                                                            // width: 10.w,
+                                                            height: 10.h,
+                                                            child:
+                                                                const SpinKitThreeInOut(
+                                                              size: 10,
+                                                              color: orange,
+                                                            ),
+                                                          )
+                                                        : Row(
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    // packageStatus =
+                                                                    //     !packageStatus;
+                                                                    statusID;
+                                                                  });
+                                                                  bookingsDestinationsId = widget
+                                                                      .bookingDestinations[
+                                                                          index]
+                                                                      .bookings_destinations_id
+                                                                      .toString();
+                                                                  print(
+                                                                      'object id of picked parcel: $bookingsDestinationsId');
+                                                                  parcelPickedMethod(
+                                                                      context,
+                                                                      bookingsDestinationsId!);
+
+                                                                  print(
+                                                                      'object id of picked parcel: ${statusID.toString()}');
+                                                                },
+                                                                child: pickedParcelIds!.contains(widget
+                                                                        .bookingDestinations[
+                                                                            index]
+                                                                        .bookings_destinations_id
+                                                                        .toString())
+                                                                    ? SvgPicture
+                                                                        .asset(
+                                                                            'assets/images/tick-orange.svg')
+                                                                    : SvgPicture
+                                                                        .asset(
+                                                                            'assets/images/tick-grey.svg'),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 15.w,
+                                                              ),
+                                                              pickedParcelIds!.contains(widget
+                                                                      .bookingDestinations[
+                                                                          index]
+                                                                      .bookings_destinations_id
+                                                                      .toString())
+                                                                  ? Text(
+                                                                      name!,
+                                                                      style: GoogleFonts
+                                                                          .syne(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        color:
+                                                                            black,
+                                                                      ),
+                                                                    )
+                                                                  : Text(
+                                                                      'Pick Parcel',
+                                                                      style: GoogleFonts
+                                                                          .syne(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        color:
+                                                                            black,
+                                                                      ),
+                                                                    ),
+                                                            ],
+                                                          ),
+                                                  ],
+                                                ),
+                                        );
+                                      }),
+                            ),
+                          ],
+                        ),
+                  widget.bookingModel.delivery_type == 'Single'
+                      ? SizedBox(height: 5.h)
+                      : SizedBox(height: 15.h),
+                  widget.bookingModel.delivery_type == 'Single'
+                      ? isParcelPicked
+                          ? SizedBox(
+                              height: 10.h,
+                              child: const SpinKitThreeInOut(
+                                size: 10,
+                                color: orange,
                               ),
-                              child: Center(
-                                child: Text(
-                                  'START RIDE',
-                                  textAlign: TextAlign.center,
+                            )
+                          : Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      packageStatus = !packageStatus;
+                                      statusID;
+                                    });
+                                    parcelPickedMethod(
+                                        context,
+                                        widget.bookingDestinations[0]
+                                            .bookings_destinations_id
+                                            .toString());
+                                    print(
+                                        'object id of picked parcel: ${statusID.toString()}');
+                                  },
+                                  child: packageStatus
+                                      ? SvgPicture.asset(
+                                          'assets/images/tick-orange.svg')
+                                      : SvgPicture.asset(
+                                          'assets/images/tick-grey.svg'),
+                                ),
+                                SizedBox(
+                                  width: 15.w,
+                                ),
+                                Text(
+                                  name!,
                                   style: GoogleFonts.syne(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    color: white,
+                                    color: black,
                                   ),
+                                ),
+                              ],
+                            )
+                      : const SizedBox(),
+                  widget.bookingModel.delivery_type == 'Single'
+                      ? SizedBox(
+                          height: 15.h,
+                        )
+                      : const SizedBox(),
+                  widget.bookingModel.delivery_type == 'Single'
+                      ? const SizedBox()
+                      : Container(
+                          color: Colors.transparent,
+                          height: 12.h,
+                          width: 100.w,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 7),
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                controller: nextPageScrollController,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: widget.bookingDestinations.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(width: 3.w),
+                                      Container(
+                                        width: 10,
+                                        height: 10,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color:
+                                              currentIndex == 0 ? orange : grey,
+                                        ),
+                                      ),
+                                      SizedBox(width: 3.w)
+                                    ],
+                                  );
+                                }),
+                          ),
+                        ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  isRideStarting
+                      ? const SpinKitDoubleBounce(
+                          color: orange,
+                          size: 50.0,
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            startRideMethod(context);
+                          },
+                          child: Container(
+                            width: 170.w,
+                            height: 51.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xffFF6302),
+                                  Color(0xffFBC403),
+                                ],
+                                begin: Alignment.centerRight,
+                                end: Alignment.centerLeft,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'START RIDE',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.syne(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: white,
                                 ),
                               ),
                             ),
                           ),
-                  ),
+                        ),
                 ],
               ),
       );
@@ -723,7 +1373,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
       "other_users_id":
           widget.bookingModel.users_customers!.users_customers_id.toString(),
     };
-    print('object start suer to uer chat data:  ' + startChatData.toString());
+    print('object start suer to uer chat data: ${startChatData.toString()}');
     startUserToUserChatResponse =
         await service.startUserToUserChatAPI(startChatData);
     if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
@@ -745,8 +1395,8 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
         ),
       );
     } else {
-      print(' error starting chat:  ' +
-          startUserToUserChatResponse!.message!.toString());
+      print(
+          'error starting chat:  ${startUserToUserChatResponse!.message!.toString()}');
       // showToastError('error occurred,try again', FToast().init(context),
       //     seconds: 2);
       Navigator.of(context).push(
@@ -775,13 +1425,15 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   APIResponse<ShowBookingsModel>? startRideResponse;
 
   bool isRideStarting = false;
+
   startRideMethod(BuildContext context) async {
     if (widget.bookingModel.scheduled == "Yes") {
       showToastError(
           'Your Scheduled Ride is not started yet', FToast().init(context),
           seconds: 1);
-    } else if (packageStatus == false) {
-      showToastError('You\'ve to pick the parcel from pickup location first',
+    } else if (pickedParcelIds!.length != widget.bookingDestinations.length) {
+      showToastError(
+          'You\'ve to pick all the parcel from pickup location first.',
           FToast().init(context),
           seconds: 1);
     } else {
@@ -795,7 +1447,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
             widget.bookingDestinations[0].bookings_destinations_id.toString(),
         "bookings_destinations_status_id": startRideID.toString()
       };
-      print('object start ride data:    ' + startRideData.toString());
+      print('object start ride data: ${startRideData.toString()}');
       startRideResponse = await service.startRideRequest(startRideData);
 
       if (startRideResponse!.status!.toLowerCase() == "success") {
@@ -821,10 +1473,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
         }
       } else {
         showToastError(startRideResponse!.message, FToast().init(context));
-        print('object error starting ride:   ' +
-            startRideResponse!.message!.toString() +
-            '   ' +
-            startRideResponse!.status!.toString());
+        print(
+            'object status starting ride: ${startRideResponse!.status!.toString()}');
+        print(
+            'object message starting ride: ${startRideResponse!.message!.toString()}');
       }
       setState(() {
         isRideStarting = false;
@@ -835,29 +1487,30 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   bool isParcelPicked = false;
   APIResponse<ShowBookingsModel>? pickedResponse;
 
-  parcelPickedMethod(BuildContext context) async {
+  parcelPickedMethod(BuildContext context, String index) async {
     setState(() {
       isParcelPicked = true;
     });
     Map startRideData = {
       "bookings_id": widget.bookingModel.bookings_id.toString(),
-      "bookings_destinations_id":
-          widget.bookingDestinations[0].bookings_destinations_id.toString(),
+      "bookings_destinations_id": index,
       "bookings_destinations_status_id": statusID.toString()
     };
-    print('object start ride data:    ' + startRideData.toString());
+    print('object picked parcel data: ${startRideData.toString()}');
     pickedResponse = await service.startRideRequest(startRideData);
 
     if (pickedResponse!.status!.toLowerCase() == "success") {
       if (pickedResponse!.data != null) {
         showToastSuccess('Parcel has been picked', FToast().init(context));
       }
+      pickedParcelIds!.add(index);
+      print('picked parcels id: ${pickedParcelIds!.toString()}');
     } else {
       showToastError(pickedResponse!.message, FToast().init(context));
-      print('object error starting ride:   ' +
-          pickedResponse!.message!.toString() +
-          '   ' +
-          pickedResponse!.status!.toString());
+      print(
+          'object status picked parcel: ${pickedResponse!.status!.toString()}');
+      print(
+          'object message picked parcel: ${pickedResponse!.message!.toString()}');
     }
     setState(() {
       isParcelPicked = false;

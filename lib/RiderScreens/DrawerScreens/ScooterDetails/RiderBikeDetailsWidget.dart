@@ -169,27 +169,27 @@ class _RiderBikeDetailsWidgetState extends State<RiderBikeDetailsWidget> {
                   // SizedBox(
                   //   height: 10.h,
                   // ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Mileage',
-                        style: GoogleFonts.syne(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: black,
-                        ),
-                      ),
-                      Text(
-                        'widget.mileage',
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: black,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text(
+                  //       'Mileage',
+                  //       style: GoogleFonts.syne(
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.w400,
+                  //         color: black,
+                  //       ),
+                  //     ),
+                  //     Text(
+                  //       'widget.mileage',
+                  //       style: GoogleFonts.inter(
+                  //         fontSize: 14,
+                  //         fontWeight: FontWeight.w400,
+                  //         color: black,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

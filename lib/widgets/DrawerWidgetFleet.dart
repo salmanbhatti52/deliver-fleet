@@ -4,9 +4,11 @@ import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/Constants/buttonConatinerWithBorder.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:deliver_partner/FleetScreens/DrawerSceensFleet/SettingsScreenFleet.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/ContactSupport.dart';
 import 'package:deliver_partner/RiderScreens/OnboardingSCreen.dart';
 import 'package:deliver_partner/RiderScreens/VerifyDrivingLisecnseManually.dart';
 import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/APIModelsFleet/GetAllSupportAdmin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,7 +16,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 import '../FleetScreens/DrawerSceensFleet/InviteRiders.dart';
 import '../RiderScreens/BottomNavBar.dart';
 import '../RiderScreens/DrawerScreens/NotificationScreen.dart';
@@ -41,12 +43,52 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
   late SharedPreferences sharedPreferences;
   bool isLoading = false;
 
+  String? getAdminId;
+  String? getAdminName;
+  String? getAdminImage;
+  String? getAdminAddress;
+
+  GetSupportAdminModel getSupportAdminModel = GetSupportAdminModel();
+
+  getSupportAdmin() async {
+    try {
+      String apiUrl = "https://deliver.eigix.net/api/get_admin_list";
+      print("apiUrl: $apiUrl");
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+      );
+      final responseString = response.body;
+      print("response: $responseString");
+      print("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        getSupportAdminModel = getSupportAdminModelFromJson(responseString);
+        setState(() {});
+        print('getSupportAdminModel status: ${getSupportAdminModel.status}');
+        print(
+            'getSupportAdminModel length: ${getSupportAdminModel.data!.length}');
+        for (int i = 0; i < getSupportAdminModel.data!.length; i++) {
+          getAdminId = "${getSupportAdminModel.data![i].usersSystemId}";
+          getAdminName = "${getSupportAdminModel.data![i].firstName}";
+          getAdminImage = "${getSupportAdminModel.data![i].userImage}";
+          getAdminAddress = "${getSupportAdminModel.data![i].address}";
+        }
+      }
+    } catch (e) {
+      print('Something went wrong = ${e.toString()}');
+      return null;
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     setState(() {
       isLoading = true;
+      getSupportAdmin();
       // gettingCategory = true;
     });
     init();
@@ -173,7 +215,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                       // profile list
                       ListTile(
                         style: ListTileStyle.drawer,
-                        onTap: () => showAdaptiveDialog(
+                        onTap: () => showDialog(
                             context: context,
                             builder: (context) => InviteRiders(
                                   users_fleet_id: getUserProfileResponse!
@@ -368,7 +410,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                       ListTile(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const SettingsScreen(),
+                            builder: (context) => ContactSupport(adminPicture: '$getAdminImage', adminName: '$getAdminName', adminAddress: '$getAdminAddress', adminID: '$getAdminId', userID: '$userID'),
                           ),
                         ),
                         leading: SvgPicture.asset(

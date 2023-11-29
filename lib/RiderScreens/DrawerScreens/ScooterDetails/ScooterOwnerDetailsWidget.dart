@@ -153,12 +153,21 @@ class _ScooterOwnerDetailsWidgetState extends State<ScooterOwnerDetailsWidget> {
                           color: black,
                         ),
                       ),
-                      Text(
-                        widget.address,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: black,
+                      Tooltip(
+                        message: widget.address,
+                        child: Container(
+                          color: Colors.transparent,
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: Text(
+                            widget.address,
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: black,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     ],
@@ -170,16 +179,16 @@ class _ScooterOwnerDetailsWidgetState extends State<ScooterOwnerDetailsWidget> {
                         'Status',
                         style: GoogleFonts.syne(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w700,
                           color: black,
                         ),
                       ),
                       Text(
                         widget.statusOfVehicleOwner,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: orange,
                         ),
                       ),
                     ],

@@ -112,8 +112,8 @@ class _SettingsScreenFleetState extends State<SettingsScreenFleet> {
                         Text(
                           'Enable Notifications',
                           style: GoogleFonts.syne(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
                             color: black,
                           ),
                         ),
@@ -135,8 +135,8 @@ class _SettingsScreenFleetState extends State<SettingsScreenFleet> {
                                   updateNotification(context);
                                 },
                                 child: SizedBox(
-                                  width: 45.w,
-                                  height: 25.h,
+                                  width: 40.w,
+                                  height: 20.h,
                                   child: isToggled
                                       ? SvgPicture.asset(
                                           'assets/images/switch-on.svg',

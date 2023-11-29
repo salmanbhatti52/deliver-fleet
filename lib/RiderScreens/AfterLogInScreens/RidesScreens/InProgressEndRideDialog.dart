@@ -20,6 +20,7 @@ import '../../../utilities/showToast.dart';
 class INProgressEndRideDialog extends StatefulWidget {
   final InProgressRidesModel? inProgressRidesList;
   final List<InProgressRidesModel>? inProgressRidesList2;
+
   const INProgressEndRideDialog(
       {super.key, this.inProgressRidesList, this.inProgressRidesList2});
 
@@ -110,217 +111,234 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog.adaptive(
+    var size = MediaQuery.of(context).size;
+    return Dialog(
       backgroundColor: white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(40),
       ),
-      icon: Align(
-        alignment: Alignment.topRight,
-        child: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: SvgPicture.asset('assets/images/close-circle.svg'),
+      insetPadding: const EdgeInsets.only(left: 20, right: 20),
+      child: SizedBox(
+        height: size.height * 0.5,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5, right: 15),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: SvgPicture.asset(
+                    "assets/images/close-circle.svg",
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              'Ending Ride',
+              style: GoogleFonts.syne(
+                fontSize: 20,
+                color: orange,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              'Select the reason why are \nyou ending this ride',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.syne(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: grey,
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            isLoading
+                ? SizedBox(height: 200.h, child: spinKitRotatingCircle)
+                : SizedBox(
+                    height: 200.h,
+                    width: 270.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              radioButton = 1;
+                              deliveredID;
+                              print(
+                                  'object delivered: ${deliveredID.toString()}');
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              radioButton == 1
+                                  ? SvgPicture.asset(
+                                      'assets/images/select-radio.svg')
+                                  : SvgPicture.asset(
+                                      'assets/images/unselect-radio.svg'),
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              Text(
+                                'Parcel has been delivered',
+                                style: GoogleFonts.syne(
+                                  fontSize: 16,
+                                  color: black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              radioButton = 2;
+                              cancelledID;
+                              print(
+                                  'object cancelled: ${cancelledID.toString()}');
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              radioButton == 2
+                                  ? SvgPicture.asset(
+                                      'assets/images/select-radio.svg')
+                                  : SvgPicture.asset(
+                                      'assets/images/unselect-radio.svg'),
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              Text(
+                                'Delivery is cancelled by rider',
+                                style: GoogleFonts.syne(
+                                  fontSize: 16,
+                                  color: black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              radioButton = 3;
+                              lostID;
+                              print('object lost: ${lostID.toString()}');
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              radioButton == 3
+                                  ? SvgPicture.asset(
+                                      'assets/images/select-radio.svg')
+                                  : SvgPicture.asset(
+                                      'assets/images/unselect-radio.svg'),
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              Text(
+                                'Parcel is lost by rider',
+                                style: GoogleFonts.syne(
+                                  fontSize: 16,
+                                  color: black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              radioButton = 4;
+                              returnedID;
+                              print(
+                                  'object returned: ${returnedID.toString()}');
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              radioButton == 4
+                                  ? SvgPicture.asset(
+                                      'assets/images/select-radio.svg')
+                                  : SvgPicture.asset(
+                                      'assets/images/unselect-radio.svg'),
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              Text(
+                                'Parcel is returned by the rider',
+                                style: GoogleFonts.syne(
+                                  fontSize: 16,
+                                  color: black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              radioButton = 5;
+                              damagedID;
+                              print('object damaged: ${damagedID.toString()}');
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              radioButton == 5
+                                  ? SvgPicture.asset(
+                                      'assets/images/select-radio.svg')
+                                  : SvgPicture.asset(
+                                      'assets/images/unselect-radio.svg'),
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              Text(
+                                'Parcel is damaged',
+                                style: GoogleFonts.syne(
+                                  fontSize: 16,
+                                  color: black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            SizedBox(
+              height: 10.h,
+            ),
+            isRideEnding
+                ? const Center(
+                    child: SpinKitDoubleBounce(
+                      color: orange,
+                      size: 50.0,
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      // Navigator.of(context).pop();
+                      endRideMethod(context);
+                    },
+                    child: buttonContainer(context, 'End Ride'),
+                  ),
+          ],
         ),
       ),
-      title: Column(
-        children: [
-          Text(
-            'Ending Ride',
-            style: GoogleFonts.syne(
-              fontSize: 20,
-              color: black,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Text(
-            'Select the reason why are you\n ending this ride',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.syne(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: grey,
-            ),
-          ),
-        ],
-      ),
-      content: isLoading
-          ? SizedBox(height: 200.h, child: spinKitRotatingCircle)
-          : SizedBox(
-              // color: red,
-              height: 200.h,
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        radioButton = 1;
-                        deliveredID;
-                        print('object delivered:   ' + deliveredID.toString());
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        radioButton == 1
-                            ? SvgPicture.asset('assets/images/select-radio.svg')
-                            : SvgPicture.asset(
-                                'assets/images/unselect-radio.svg'),
-                        SizedBox(
-                          width: 12.w,
-                        ),
-                        Text(
-                          'Parcel has been delivered',
-                          style: GoogleFonts.syne(
-                            fontSize: 16,
-                            color: black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        radioButton = 2;
-                        cancelledID;
-                        print('object cancelled:   ' + cancelledID.toString());
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        radioButton == 2
-                            ? SvgPicture.asset('assets/images/select-radio.svg')
-                            : SvgPicture.asset(
-                                'assets/images/unselect-radio.svg'),
-                        SizedBox(
-                          width: 12.w,
-                        ),
-                        Text(
-                          'Delivery is cancelled by rider',
-                          style: GoogleFonts.syne(
-                            fontSize: 16,
-                            color: black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        radioButton = 3;
-                        lostID;
-                        print('object lost:   ' + lostID.toString());
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        radioButton == 3
-                            ? SvgPicture.asset('assets/images/select-radio.svg')
-                            : SvgPicture.asset(
-                                'assets/images/unselect-radio.svg'),
-                        SizedBox(
-                          width: 12.w,
-                        ),
-                        Text(
-                          'Parcel is lost by rider',
-                          style: GoogleFonts.syne(
-                            fontSize: 16,
-                            color: black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        radioButton = 4;
-                        returnedID;
-                        print('object returned:   ' + returnedID.toString());
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        radioButton == 4
-                            ? SvgPicture.asset('assets/images/select-radio.svg')
-                            : SvgPicture.asset(
-                                'assets/images/unselect-radio.svg'),
-                        SizedBox(
-                          width: 12.w,
-                        ),
-                        Text(
-                          'Parcel is returned by the rider',
-                          style: GoogleFonts.syne(
-                            fontSize: 16,
-                            color: black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        radioButton = 5;
-                        damagedID;
-                        print('object damaged:   ' + damagedID.toString());
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        radioButton == 5
-                            ? SvgPicture.asset('assets/images/select-radio.svg')
-                            : SvgPicture.asset(
-                                'assets/images/unselect-radio.svg'),
-                        SizedBox(
-                          width: 12.w,
-                        ),
-                        Text(
-                          'Parcel is damaged',
-                          style: GoogleFonts.syne(
-                            fontSize: 16,
-                            color: black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-      actionsAlignment: MainAxisAlignment.center,
-      actions: [
-        isRideEnding
-            ? Padding(
-                padding: EdgeInsets.only(left: 35.0),
-                child: SpinKitDoubleBounce(
-                  color: orange,
-                  size: 50.0,
-                ),
-              )
-            : GestureDetector(
-                onTap: () {
-                  // Navigator.of(context).pop();
-                  endRideMethod(context);
-                },
-                child: buttonContainer(context, 'End Ride'),
-              ),
-      ],
     );
   }
 
@@ -347,7 +365,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
                           ? damagedID.toString()
                           : null,
     };
-    print('object end ride data:    ' + endRideData.toString());
+    print('object end ride data: ${endRideData.toString()}');
     endRideResponse = await service.endRideRequest(endRideData);
 
     if (endRideResponse!.status!.toLowerCase() == "success") {
@@ -362,10 +380,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
       }
     } else {
       showToastError(endRideResponse!.message, FToast().init(context));
-      print('object error ending ride:   ' +
-          // endRideResponse!.message!.toString() +
-          // '   ' +
-          endRideResponse!.status!.toString());
+      print('object error ending ride: ${endRideResponse!.status!.toString()}');
     }
     setState(() {
       isRideEnding = false;

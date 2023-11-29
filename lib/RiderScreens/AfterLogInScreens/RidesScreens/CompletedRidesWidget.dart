@@ -246,12 +246,18 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                                         color: grey,
                                       ),
                                     ),
-                                    Text(
-                                      '${widget.completedRidesModel.bookings!.bookings_destinations![0].pickup_address}',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: black,
+                                    Container(
+                                      color: Colors.transparent,
+                                      width: 290.w,
+                                      child: Text(
+                                        '${widget.completedRidesModel.bookings!.bookings_destinations![0].pickup_address}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: black,
+                                        ),
                                       ),
                                     ),
                                   ],

@@ -295,17 +295,8 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                         child: Expanded(
                           flex: 2,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              AutoSizeText(
-                                // "color",
-                                'Ride Color ${widget.scheduledRiderModel.users_fleet_vehicles!.color}',
-                                style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.w400,
-                                  color: black,
-                                  fontSize: 14,
-                                ),
-                              ),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -485,15 +476,15 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                                   destination: widget
                                       .scheduledRiderModel
                                       .bookings!
-                                      .bookings_destinations![0]!
+                                      .bookings_destinations![0]
                                       .destin_address!,
                                   distance: widget
                                       .scheduledRiderModel
                                       .bookings!
-                                      .bookings_destinations![0]!
+                                      .bookings_destinations![0]
                                       .destin_distance!,
                                   time: widget.scheduledRiderModel.bookings!
-                                      .bookings_destinations![0]!.destin_time!,
+                                      .bookings_destinations![0].destin_time!,
                                   fare: widget.scheduledRiderModel.bookings!
                                       .total_charges
                                       .toString(),
@@ -510,7 +501,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                                       ? SizedBox(
                                     // width: 10.w,
                                     height: 10.h,
-                                    child: SpinKitThreeInOut(
+                                    child: const SpinKitThreeInOut(
                                       size: 10,
                                       color: orange,
                                       // size: 50.0,
@@ -551,7 +542,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                                     height: 20.h,
                                   ),
                                   isRideStarting
-                                      ? Padding(
+                                      ? const Padding(
                                     padding: EdgeInsets.only(left: 35.0),
                                     child: SpinKitDoubleBounce(
                                       color: orange,
@@ -591,7 +582,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                                   ),
                                 ],
                               )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               SizedBox(
                                 height: 25.h,
                               ),
@@ -702,7 +693,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
           // );
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => BottomNavBar(),
+              builder: (context) => const BottomNavBar(),
             ),
           );
         }

@@ -100,7 +100,9 @@ class _ScheduleClientsState extends State<ScheduleClients> {
         body: isPageLoading
             ? spinKitRotatingCircle
             : scheduledRidesList!.isEmpty
-                ? Center(child: Lottie.asset('assets/images/no-data.json'))
+                ? Center(
+                    child: Lottie.asset('assets/images/no-data.json'),
+                  )
                 : ListView.builder(
                     itemCount: scheduledRidesList!.length,
                     shrinkWrap: true,
