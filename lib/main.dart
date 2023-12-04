@@ -13,10 +13,7 @@ void main() async {
   HttpOverrides.global = MyHttpOverrides();
   await Future.delayed(const Duration(seconds: 5));
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    name: 'deliverbygfl-partner',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp();
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   runApp(const MyApp());
   // runApp(
