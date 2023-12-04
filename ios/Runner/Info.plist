@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Deliver</string>
+	<string>Deliver Partner</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -23,7 +23,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>5</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sms</string>
@@ -32,17 +32,19 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Deliver</string>
+	<string>This app using camera to capture and upload profile images.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open to get your current location for delivery access.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription </key>
-	<string>Deliver</string>
+	<string>This app needs access to location when open to get your current location for delivery access.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
+	<string>This app needs access to location when in the background for the delivery of packages.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>This app needs access to location when open to get your current location for delivery access.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Deliver</string>
+	<string>This app uses microphone to call to each customer.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Deliver</string>
+	<string>This app using camera to capture and upload profile images.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
