@@ -14,6 +14,7 @@ void main() async {
   await Future.delayed(const Duration(seconds: 5));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'deliverbygfl-partner',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
