@@ -45,6 +45,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('bookingDestinationsList length:${widget.bookingDestinationsList!.length}');
 
     scrollController = PageController();
 

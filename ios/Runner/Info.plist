@@ -14,7 +14,7 @@
     <key>NSLocationAlwaysUsageDescription</key>
     <string>This app needs access to location when in the background.</string>
 	<key>CFBundleDisplayName</key>
-	<string>Deliver</string>
+	<string>Deliver Partner</string>
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
 	<key>CFBundleExecutable</key>
