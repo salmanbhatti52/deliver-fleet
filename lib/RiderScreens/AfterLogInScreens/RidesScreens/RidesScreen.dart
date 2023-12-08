@@ -1,4 +1,6 @@
 import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/drawer_container.dart';
+import 'package:deliver_partner/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
@@ -35,6 +37,30 @@ class _RidesScreenState extends State<RidesScreen>
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         // backgroundColor: white,
+        drawer: const DrawerWidget(),
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          leadingWidth: 70,
+          leading: Builder(builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 20),
+              child: GestureDetector(
+                onTap: () => Scaffold.of(context).openDrawer(),
+                child: drawerContainer(context),
+              ),
+            );
+          }),
+          centerTitle: true,
+          title: Text(
+            'Rides',
+            style: GoogleFonts.syne(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: black,
+            ),
+          ),
+        ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 22.w),
