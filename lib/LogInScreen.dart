@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:deliver_partner/VerifyYourself.dart';
@@ -626,28 +625,28 @@ class _LogInScreenState extends State<LogInScreen> {
                             SizedBox(
                               height: 30.h,
                             ),
-                            Text(
-                              'OR',
-                              style: GoogleFonts.syne(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: grey,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.h,
-                            ),
-                            GestureDetector(
-                              onTap: null,
-                              child: facebookButton(context),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            GestureDetector(
-                              onTap: null,
-                              child: googleButton(context),
-                            ),
+                            // Text(
+                            //   'OR',
+                            //   style: GoogleFonts.syne(
+                            //     fontSize: 18,
+                            //     fontWeight: FontWeight.w600,
+                            //     color: grey,
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   height: 15.h,
+                            // ),
+                            // GestureDetector(
+                            //   onTap: null,
+                            //   child: facebookButton(context),
+                            // ),
+                            // SizedBox(
+                            //   height: 20.h,
+                            // ),
+                            // GestureDetector(
+                            //   onTap: null,
+                            //   child: googleButton(context),
+                            // ),
                             // Padding(
                             //   padding: EdgeInsets.only(bottom: 20.0.h, top: 20.h),
                             //   child: GestureDetector(
