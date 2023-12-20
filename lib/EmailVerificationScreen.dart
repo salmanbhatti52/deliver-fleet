@@ -230,13 +230,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         print("parentId $parentId");
         print("badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
         if (widget.userType == "Rider") {
-          print("object");
           if (checkPhoneNumberModel.data?.usersFleetId!.toInt() != null) {
             if (checkPhoneNumberModel.data?.badgeVerified == "No") {
               setState(() {
                 isVerifying = false;
               });
-              print("object111");
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                     builder: (context) => RideDetailsAfterLogInScreen(
@@ -247,7 +245,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   ),
                   (route) => false);
               showToastSuccess(
-                  'Badge Are Not Verified. PLese add Vehicle or request a bike to verify badge',
+                  'Badge is not verified. PLese add vehicle or request a bike to verify badge.',
                   FToast().init(context),
                   seconds: 3);
             } else {
@@ -302,14 +300,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       } else if (checkPhoneNumberModel.status == "error" &&
           checkPhoneNumberModel.message ==
               "Your account is not approved yet.") {
-        print("2");
         Navigator.pop(context);
         showToastSuccess(
             'Your account is not approved yet.', FToast().init(context),
             seconds: 3);
       } else if (checkPhoneNumberModel.status == "error" &&
           checkPhoneNumberModel.message == "Phone number does not exist.") {
-        print("3");
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => RegisterScreen(

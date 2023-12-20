@@ -436,30 +436,6 @@ class _HomeScreenState extends State<HomeScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: white,
-        // drawer: const DrawerWidget(),
-        // appBar: AppBar(
-        //   elevation: 0.0,
-        //   backgroundColor: Colors.transparent,
-        //   leadingWidth: 70,
-        //   leading: Builder(builder: (context) {
-        //     return Padding(
-        //       padding: const EdgeInsets.only(top: 8.0, left: 20),
-        //       child: GestureDetector(
-        //         onTap: () =>  Scaffold.of(context).openDrawer(),
-        //         child: drawerContainer(context),
-        //       ),
-        //     );
-        //   }),
-        //   centerTitle: true,
-        //   title: Text(
-        //     'Home',
-        //     style: GoogleFonts.syne(
-        //       fontSize: 22,
-        //       fontWeight: FontWeight.w700,
-        //       color: black,
-        //     ),
-        //   ),
-        // ),
         body: isHomeLoading
             ? spinKitRotatingCircle
             : Stack(

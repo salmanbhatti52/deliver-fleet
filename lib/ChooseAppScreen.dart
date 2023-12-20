@@ -19,6 +19,7 @@ class _ChooseAppScreenState extends State<ChooseAppScreen> {
   int checkmarkFleet = -1;
 
   int isAppSelected = 1;
+
   @override
   Widget build(BuildContext context) {
     final appMode = checkmarkFleet == 1 ? 'Fleet' : 'Rider';
@@ -110,7 +111,7 @@ class _ChooseAppScreenState extends State<ChooseAppScreen> {
                               : ErrorPage(),
                     ),
                   ),
-                  child: buttonContainer(context, 'Continue with $appMode'),
+                  child: buttonContainer(context, 'Continue'),
                 ),
               ),
             ],
