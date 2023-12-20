@@ -1,6 +1,7 @@
 import 'package:deliver_partner/ChooseAppScreen.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/LegalScreen.dart';
 import 'package:deliver_partner/models/API%20models/LogInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,8 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Constants/buttonConatinerWithBorder.dart';
 import '../Constants/buttonContainer.dart';
 import '../FleetScreens/BottomNavBarFleet.dart';
-import '../FleetScreens/OnboardingFleetScreen.dart';
-import '../RiderScreens/BottomNavBar.dart';
 import '../RiderScreens/DrawerScreens/AwardScreens/AwardsScreen.dart';
 import '../RiderScreens/DrawerScreens/Banking/BankingScreen.dart';
 import '../RiderScreens/DrawerScreens/NotificationScreen.dart';
@@ -160,7 +159,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ),
                     color: Colors.white,
                     width: 280.w,
-                    height: 600.h,
+                    height: 650.h,
                     child: Column(
                       children: [
                         // profile list
@@ -409,6 +408,33 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           ),
                           title: Text(
                             'Settings',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        // legal tile
+                        ListTile(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const LegalScreen(),
+                            ),
+                          ),
+                          leading: SvgPicture.asset(
+                            'assets/images/legal-icon.svg',
+                            colorFilter:
+                            const ColorFilter.mode(orange, BlendMode.srcIn),
+                          ),
+                          title: Text(
+                            'Legal',
                             style: GoogleFonts.syne(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
