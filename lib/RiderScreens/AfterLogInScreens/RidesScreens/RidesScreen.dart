@@ -48,21 +48,21 @@ class _RidesScreenState extends State<RidesScreen>
                 Container(
                   padding: const EdgeInsets.all(6),
                   width: double.infinity,
-                  height: 70.h,
+                  height: 60.h,
                   decoration: BoxDecoration(
                     color: white,
-                    borderRadius: BorderRadius.circular(19),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      width: 1,
+                      color: lightGrey.withOpacity(0.5),
+                    ),
                   ),
                   child: TabBar(
-                    unselectedLabelColor: black,
-                    // physics: NeverScrollableScrollPhysics(),
-
                     labelColor: white,
-
                     controller: tabController,
+                    unselectedLabelColor: black,
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(19),
-                      // color: statusOfRide != 1 ? lightGrey : null,
                       gradient: const LinearGradient(
                         colors: [
                           Color(0xffFF6302),
@@ -76,22 +76,24 @@ class _RidesScreenState extends State<RidesScreen>
                       Text(
                         'In Progress',
                         style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w500,
                           fontSize: 14,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       Text(
                         'Completed',
                         style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w500,
                           fontSize: 14,
+                          fontWeight: FontWeight.w400,
+
                         ),
                       ),
                       Text(
                         'Cancelled',
                         style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w500,
                           fontSize: 14,
+                          fontWeight: FontWeight.w400,
+
                         ),
                       ),
                     ],
@@ -249,10 +251,10 @@ class _RidesScreenState extends State<RidesScreen>
                   child: TabBarView(
                     physics: const NeverScrollableScrollPhysics(),
                     controller: tabController,
-                    children: [
+                    children: const [
                       InProgressScreen(),
-                      const CompletedRidesScreen(),
-                      const CencelledRidesScreen(),
+                      CompletedRidesScreen(),
+                      CencelledRidesScreen(),
                     ],
                   ),
                 ),

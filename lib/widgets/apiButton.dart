@@ -30,7 +30,7 @@ Widget apiButton(context) {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
-              'Please Wait    ',
+              'Please Wait...',
               textAlign: TextAlign.center,
               style: GoogleFonts.syne(
                 fontSize: 16,
@@ -40,6 +40,7 @@ Widget apiButton(context) {
             ),
             const CircularProgressIndicator(
               color: orange,
+              strokeWidth: 3,
             ),
           ],
         ),
