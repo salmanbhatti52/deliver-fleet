@@ -244,7 +244,7 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
                 ),
               ),
               Positioned(
-                bottom: -10,
+                bottom: -12,
                 child: Visibility(
                   visible: details,
                   child: GestureDetector(

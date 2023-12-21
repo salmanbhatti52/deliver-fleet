@@ -349,7 +349,7 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
               Visibility(
                 visible: opened,
                 child: Positioned(
-                  bottom: -10,
+                  bottom: -15,
                   child: GestureDetector(
                     onTap: () {
                       setState(() {

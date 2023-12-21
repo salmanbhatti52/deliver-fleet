@@ -5,8 +5,8 @@ import 'Colors.dart';
 
 Widget detailsButtonDown(context) {
   return Container(
-    width: 25.w,
-    height: 25.h,
+    width: 30.w,
+    height: 30.h,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       color: white,
@@ -22,15 +22,15 @@ Widget detailsButtonDown(context) {
     child: const Icon(
       Icons.keyboard_arrow_down_outlined,
       color: white,
-      size: 14,
+      size: 18,
     ),
   );
 }
 
 Widget detailsButtonUp(context) {
   return Container(
-    width: 25.w,
-    height: 25.h,
+    width: 30.w,
+    height: 30.h,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       color: white,
@@ -46,7 +46,7 @@ Widget detailsButtonUp(context) {
     child: const Icon(
       Icons.keyboard_arrow_up_outlined,
       color: white,
-      size: 14,
+      size: 18,
     ),
   );
 }
