@@ -18,7 +18,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 import 'Constants/Colors.dart';
 import 'Constants/FacebookButton.dart';
 import 'Constants/GoogleButton.dart';
@@ -53,6 +53,40 @@ class _LogInScreenState extends State<LogInScreen> {
   TextEditingController contactNumberController = TextEditingController();
 
   CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
+
+  checkNumber() async {
+    // try {
+    print("one_signal_id ${widget.deviceID}");
+    print("user_type ${widget.userType}");
+    print("phone ${countryCode!.dialCode + contactNumberController.text}");
+    print("latitude ${_currentPosition!.latitude.toString()}");
+    print("longitude ${_currentPosition!.longitude.toString()}");
+    String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        "one_signal_id": widget.deviceID,
+        "user_type": widget.userType,
+        "phone": countryCode!.dialCode + contactNumberController.text,
+        "latitude": _currentPosition!.latitude.toString(),
+        "longitude": _currentPosition!.longitude.toString(),
+      },
+    );
+    final responseString = response.body;
+    print("response: $responseString");
+    print("statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
+      setState(() {});
+    }
+    // } catch (e) {
+    //   print('Something went wrong = ${e.toString()}');
+    //   return null;
+    // }
+  }
 
   // late TextEditingController emailController;
   // late TextEditingController passwordController;
@@ -605,38 +639,41 @@ class _LogInScreenState extends State<LogInScreen> {
                             isLoggingIn
                                 ? apiButton(context)
                                 : GestureDetector(
-                                    onTap: () {
-                                      print(
-                                          "lat ${_currentPosition!.latitude.toString()}");
-                                      print(
-                                          "long ${_currentPosition!.longitude.toString()}");
-                                      if(checkPhoneNumberModel.status == "error" &&
-                                          checkPhoneNumberModel.message ==
-                                              "Your account is not approved yet.") {
-                                        showToastSuccess(
-                                            'Your account is not approved yet.', FToast().init(context),
-                                            seconds: 3);
-                                      }
-                                      else if (_key.currentState!.validate()) {
-                                        _getCurrentPosition();
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                EmailVerificationScreen(
-                                              latitude: _currentPosition!
-                                                  .latitude
-                                                  .toString(),
-                                              longitude: _currentPosition!
-                                                  .longitude
-                                                  .toString(),
-                                              phoneNumber: countryCode!
-                                                      .dialCode +
-                                                  contactNumberController.text,
-                                              userType: widget.userType,
-                                              deviceID: widget.deviceID ?? '',
+                                    onTap: () async {
+                                      if (_key.currentState!.validate()) {
+                                        await checkNumber();
+                                        if (checkPhoneNumberModel.status ==
+                                                "error" &&
+                                            checkPhoneNumberModel.message ==
+                                                "Your account is not approved yet.") {
+                                          showToastSuccess(
+                                              'Your account is not approved yet.',
+                                              FToast().init(context),
+                                              seconds: 3);
+                                        } else if (checkPhoneNumberModel
+                                                .status ==
+                                            "success") {
+                                          _getCurrentPosition();
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EmailVerificationScreen(
+                                                latitude: _currentPosition!
+                                                    .latitude
+                                                    .toString(),
+                                                longitude: _currentPosition!
+                                                    .longitude
+                                                    .toString(),
+                                                phoneNumber:
+                                                    countryCode!.dialCode +
+                                                        contactNumberController
+                                                            .text,
+                                                userType: widget.userType,
+                                                deviceID: widget.deviceID ?? '',
+                                              ),
                                             ),
-                                          ),
-                                        );
+                                          );
+                                        } else {}
                                       }
                                     },
                                     child: buttonContainer(context, 'LOGIN'),
