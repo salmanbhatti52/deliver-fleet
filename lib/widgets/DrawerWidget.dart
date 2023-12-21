@@ -288,65 +288,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           contentPadding: EdgeInsets.zero,
                           dense: true,
                         ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
-                        // awards list
-                        ListTile(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AwardsScreen(),
-                            ),
-                          ),
-                          leading: SvgPicture.asset('assets/images/medal.svg'),
-                          title: Text(
-                            'Awards',
-                            style: GoogleFonts.syne(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: black,
-                            ),
-                          ),
-                          visualDensity: VisualDensity.compact,
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                        ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
-                        // loyalty points
-                        ListTile(
-                          onTap: () {
-                            showToastSuccess(
-                                'switching to fleet', FToast().init(context),
-                                seconds: 1);
-                            Navigator.of(context).push(
-                              // MaterialPageRoute(
-                              //   builder: (context) => const OnboardingFleetScreen(
-                              //     fleet: 'Fleet',
-                              //   ),
-                              // ),
-                              MaterialPageRoute(
-                                builder: (context) => const BottomNavBarFleet(),
-                              ),
-                            );
-                          },
-                          leading: const Icon(
-                            Icons.switch_access_shortcut_rounded,
-                            color: orange,
-                          ),
-                          title: Text(
-                            'Switch To Fleet',
-                            style: GoogleFonts.syne(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: black,
-                            ),
-                          ),
-                          visualDensity: VisualDensity.compact,
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                        ),
                         // available jobs list
                         // ListTile(
                         //   onTap: () => Navigator.of(context).push(
@@ -408,6 +349,65 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           ),
                           title: Text(
                             'Settings',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        // awards list
+                        ListTile(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AwardsScreen(),
+                            ),
+                          ),
+                          leading: SvgPicture.asset('assets/images/medal.svg'),
+                          title: Text(
+                            'Awards',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        // loyalty points
+                        ListTile(
+                          onTap: () {
+                            showToastSuccess(
+                                'switching to fleet', FToast().init(context),
+                                seconds: 1);
+                            Navigator.of(context).push(
+                              // MaterialPageRoute(
+                              //   builder: (context) => const OnboardingFleetScreen(
+                              //     fleet: 'Fleet',
+                              //   ),
+                              // ),
+                              MaterialPageRoute(
+                                builder: (context) => const BottomNavBarFleet(),
+                              ),
+                            );
+                          },
+                          leading: const Icon(
+                            Icons.switch_access_shortcut_rounded,
+                            color: orange,
+                          ),
+                          title: Text(
+                            'Switch To Fleet',
                             style: GoogleFonts.syne(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
