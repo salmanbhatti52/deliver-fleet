@@ -254,7 +254,7 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
                         details = false;
                       });
                     },
-                    child: details ? detailsButtonDown(context) : null,
+                    child: details ? detailsButtonUp(context) : null,
                   ),
                 ),
               ),

@@ -344,7 +344,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                         ));
                               },
                               child: details && selectedIndex == index
-                                  ? detailsButtonOpen(context)
+                                  ? detailsButtonDown(context)
                                   : detailsButtonDown(context),
                             ),
                           ),

@@ -357,7 +357,7 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                         closed = true;
                       });
                     },
-                    child: detailsButtonOpen(context),
+                    child: detailsButtonUp(context),
                   ),
                 ),
               ),

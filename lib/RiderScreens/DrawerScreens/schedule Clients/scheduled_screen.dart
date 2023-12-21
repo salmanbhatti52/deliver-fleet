@@ -608,7 +608,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                           closed = true;
                         });
                       },
-                      child: detailsButtonOpen(context),
+                      child: detailsButtonUp(context),
                     ),
                   ),
                 ),
