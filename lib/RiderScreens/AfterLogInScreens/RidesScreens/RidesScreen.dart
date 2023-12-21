@@ -46,7 +46,7 @@ class _RidesScreenState extends State<RidesScreen>
                   height: 20.h,
                 ),
                 Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.fromLTRB(3, 5, 3, 5),
                   width: double.infinity,
                   height: 60.h,
                   decoration: BoxDecoration(

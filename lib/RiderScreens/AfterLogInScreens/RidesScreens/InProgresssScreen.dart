@@ -144,8 +144,12 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                       width: 70.w,
                                       height: 70.h,
                                       decoration: BoxDecoration(
+                                        color: Colors.transparent,
                                         borderRadius: BorderRadius.circular(15),
-                                        color: red,
+                                        border: Border.all(
+                                          width: 1,
+                                          color: lightGrey.withOpacity(0.8),
+                                        ),
                                       ),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(15),

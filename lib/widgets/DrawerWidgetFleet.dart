@@ -139,12 +139,12 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                   width: 85.w,
                   height: 85.h,
                   decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(15),
                     border: Border.all(
-                      color: lightWhite,
-                      width: 1.5,
+                      width: 1,
+                      color: lightGrey.withOpacity(0.8),
                     ),
-                    borderRadius: BorderRadius.circular(10),
-                    // color: red,
                   ),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
