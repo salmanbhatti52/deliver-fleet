@@ -134,7 +134,7 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
               }),
               _currentIndex == 3
                   ? Padding(
-                      padding: EdgeInsets.only(top: 8.h, right: 20.w),
+                      padding: const EdgeInsets.only(top: 8, right: 20),
                       child: GestureDetector(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -269,7 +269,6 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
                   //       builder: (context) => DashBoard(),
                   //     ),
                   //   );
-                  //   print('nav bar');
                   // },
                   child: Container(
                     width: 60.w,

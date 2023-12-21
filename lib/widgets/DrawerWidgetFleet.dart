@@ -393,6 +393,33 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                       SizedBox(
                         height: 12.h,
                       ),
+                      // legal tile
+                      ListTile(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const LegalScreen(),
+                          ),
+                        ),
+                        leading: SvgPicture.asset(
+                          'assets/images/legal-icon.svg',
+                          colorFilter:
+                          const ColorFilter.mode(orange, BlendMode.srcIn),
+                        ),
+                        title: Text(
+                          'Legal',
+                          style: GoogleFonts.syne(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: black,
+                          ),
+                        ),
+                        visualDensity: VisualDensity.compact,
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
                       // settings tile
                       ListTile(
                         onTap: () => Navigator.of(context).push(
@@ -412,33 +439,6 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         ),
                         title: Text(
                           'Contact Support',
-                          style: GoogleFonts.syne(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: black,
-                          ),
-                        ),
-                        visualDensity: VisualDensity.compact,
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                      ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      // legal tile
-                      ListTile(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const LegalScreen(),
-                          ),
-                        ),
-                        leading: SvgPicture.asset(
-                          'assets/images/legal-icon.svg',
-                          colorFilter:
-                          const ColorFilter.mode(orange, BlendMode.srcIn),
-                        ),
-                        title: Text(
-                          'Legal',
                           style: GoogleFonts.syne(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
