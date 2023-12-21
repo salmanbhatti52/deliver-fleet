@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/LogInScreen.dart';
 import 'package:deliver_partner/RegisterScreen.dart';
 import 'package:deliver_partner/services/API_services.dart';
@@ -39,6 +40,7 @@ class EmailVerificationScreen extends StatefulWidget {
   final String? phoneNumber;
   final String? latitude;
   final String? longitude;
+
   const EmailVerificationScreen(
       {super.key,
       required this.phoneNumber,
@@ -53,9 +55,12 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
+  bool isLoading = false;
+
   ApiServices get service => GetIt.I<ApiServices>();
 
   TextEditingController otpController = TextEditingController();
+
   // late FlutterGifController gifController;
 
   // bool isSubmitted = false;
@@ -349,10 +354,18 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     return '${minutes}m:${seconds.toString().padLeft(2, '0')}s';
   }
 
+  loaderTimer() {
+    Timer(const Duration(seconds: 8), () {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     startTimer();
+    loaderTimer();
+    isLoading = true;
     verifyPhoneNumber();
     print("phoneNumber: ${widget.phoneNumber}");
   }
@@ -385,482 +398,492 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             ),
           ),
         ),
-        body: GlowingOverscrollIndicator(
-          color: orange,
-          axisDirection: AxisDirection.down,
-          child: LayoutBuilder(
-            builder: (context, constraints) => SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.minHeight),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      Text(
-                        // 'Email Verification',
-                        'Phone Verification',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.syne(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: black,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      SvgPicture.asset('assets/images/email-number-verify.svg'),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      Text(
-                        'VERIFICATION CODE',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.syne(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: orange,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 4.h,
-                      ),
-                      Text(
-                        'We have sent 6 digit code to\n Your Phone.',
-                        // 'We have sent 4 digit code to\n Your Email.',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.syne(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: grey,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      // OtpTextField(
-                      //   fillColor: mildGrey,
-                      //
-                      //   filled: true,
-                      //   keyboardType: TextInputType.number,
-                      //   borderWidth: 0.0,
-                      //   borderRadius: BorderRadius.circular(10.0),
-                      //   fieldWidth: 50.h,
-                      //
-                      //   clearText: true,
-                      //   inputFormatters: [
-                      //     LengthLimitingTextInputFormatter(1),
-                      //     FilteringTextInputFormatter.digitsOnly,
-                      //   ],
-                      //   textStyle: GoogleFonts.inter(
-                      //     color: black,
-                      //     fontSize: 13,
-                      //     fontWeight: FontWeight.w300,
-                      //   ),
-                      //   decoration: InputDecoration(
-                      //     fillColor: mildGrey,
-                      //     filled: true,
-                      //     counterText: '',
-                      //     border: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(
-                      //         10,
-                      //       ),
-                      //       // borderSide: BorderSide(
-                      //       //   color: Colors.transparent,
-                      //       // ),
-                      //     ),
-                      //     focusedBorder: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(
-                      //         10,
-                      //       ),
-                      //       borderSide: const BorderSide(
-                      //         color: mildGrey,
-                      //       ),
-                      //     ),
-                      //     focusColor: mildGrey,
-                      //     hintText: '0',
-                      //     hintStyle: GoogleFonts.inter(
-                      //       color: black,
-                      //       fontSize: 13,
-                      //       fontWeight: FontWeight.w300,
-                      //     ),
-                      //   ),
-                      //   numberOfFields: 6,
-                      //   borderColor: mildGrey,
-                      //   showCursor: false,
-                      //   showFieldAsBox: true,
-                      //
-                      //   hasCustomInputDecoration: true,
-                      //   onCodeChanged: (String code) {
-                      //     setState(() {
-                      //       isSubmitted = false;
-                      //       userTypedOtp = '';
-                      //     });
-                      //   },
-                      //   onSubmit: (String verificationCode) {
-                      //     setState(() {
-                      //       isSubmitted = true;
-                      //       userTypedOtp = verificationCode;
-                      //     });
-                      //   }, // end onSubmit
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 15),
-                        child: Pinput(
-                          length: 6,
-                          controller: otpController,
-                          keyboardType: TextInputType.number,
-                          defaultPinTheme: PinTheme(
-                            width: 60,
-                            height: 48,
-                            textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontFamily: 'Inter-Regular',
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xffF2F0EE),
-                            ),
-                          ),
-                          focusedPinTheme: PinTheme(
-                            width: 60,
-                            height: 48,
-                            textStyle: const TextStyle(
-                              color: black,
-                              fontSize: 14,
-                              fontFamily: 'Inter-Regular',
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xffF2F0EE),
-                              border: Border.all(
-                                color: orange,
-                              ),
-                            ),
-                          ),
-                          submittedPinTheme: PinTheme(
-                            width: 60,
-                            height: 48,
-                            textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontFamily: 'Inter-Regular',
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xffF2F0EE),
-                              border: Border.all(
-                                color: orange,
-                              ),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            code = value;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50.0.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: isLoading
+            ? Center(
+                child: spinKitRotatingCircle,
+              )
+            : GlowingOverscrollIndicator(
+                color: orange,
+                axisDirection: AxisDirection.down,
+                child: LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: constraints.minHeight),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: 89.w,
-                              height: 20.h,
-                              child: Text(
-                                'OTP valid for',
-                                style: GoogleFonts.syne(
-                                  fontSize: 14,
-                                  color: black,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              height: 30.h,
+                            ),
+                            Text(
+                              // 'Email Verification',
+                              'Phone Verification',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.syne(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: black,
                               ),
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                secondsRemaining == 0
-                                    ? SvgPicture.asset(
-                                        'assets/images/timer-icon.svg',
-                                        colorFilter: const ColorFilter.mode(
-                                            grey, BlendMode.srcIn),
-                                      )
-                                    : SvgPicture.asset(
-                                        'assets/images/timer-icon.svg',
-                                        // colorFilter:
-                                        // ColorFilter.mode(grey, BlendMode.srcIn),
-                                      ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Text(
-                                  getTimerText(),
-                                  style: GoogleFonts.inter(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                    color: black,
+                            SizedBox(
+                              height: 30.h,
+                            ),
+                            SvgPicture.asset(
+                                'assets/images/email-number-verify.svg'),
+                            SizedBox(
+                              height: 50.h,
+                            ),
+                            Text(
+                              'VERIFICATION CODE',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.syne(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: orange,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            Text(
+                              'We have sent 6 digit code to\n Your Phone.',
+                              // 'We have sent 4 digit code to\n Your Email.',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.syne(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: grey,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            // OtpTextField(
+                            //   fillColor: mildGrey,
+                            //
+                            //   filled: true,
+                            //   keyboardType: TextInputType.number,
+                            //   borderWidth: 0.0,
+                            //   borderRadius: BorderRadius.circular(10.0),
+                            //   fieldWidth: 50.h,
+                            //
+                            //   clearText: true,
+                            //   inputFormatters: [
+                            //     LengthLimitingTextInputFormatter(1),
+                            //     FilteringTextInputFormatter.digitsOnly,
+                            //   ],
+                            //   textStyle: GoogleFonts.inter(
+                            //     color: black,
+                            //     fontSize: 13,
+                            //     fontWeight: FontWeight.w300,
+                            //   ),
+                            //   decoration: InputDecoration(
+                            //     fillColor: mildGrey,
+                            //     filled: true,
+                            //     counterText: '',
+                            //     border: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(
+                            //         10,
+                            //       ),
+                            //       // borderSide: BorderSide(
+                            //       //   color: Colors.transparent,
+                            //       // ),
+                            //     ),
+                            //     focusedBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(
+                            //         10,
+                            //       ),
+                            //       borderSide: const BorderSide(
+                            //         color: mildGrey,
+                            //       ),
+                            //     ),
+                            //     focusColor: mildGrey,
+                            //     hintText: '0',
+                            //     hintStyle: GoogleFonts.inter(
+                            //       color: black,
+                            //       fontSize: 13,
+                            //       fontWeight: FontWeight.w300,
+                            //     ),
+                            //   ),
+                            //   numberOfFields: 6,
+                            //   borderColor: mildGrey,
+                            //   showCursor: false,
+                            //   showFieldAsBox: true,
+                            //
+                            //   hasCustomInputDecoration: true,
+                            //   onCodeChanged: (String code) {
+                            //     setState(() {
+                            //       isSubmitted = false;
+                            //       userTypedOtp = '';
+                            //     });
+                            //   },
+                            //   onSubmit: (String verificationCode) {
+                            //     setState(() {
+                            //       isSubmitted = true;
+                            //       userTypedOtp = verificationCode;
+                            //     });
+                            //   }, // end onSubmit
+                            // ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 15),
+                              child: Pinput(
+                                length: 6,
+                                controller: otpController,
+                                keyboardType: TextInputType.number,
+                                defaultPinTheme: PinTheme(
+                                  width: 60,
+                                  height: 48,
+                                  textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: 'Inter-Regular',
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: const Color(0xffF2F0EE),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Don't Receive the Code? ",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: black,
-                                fontSize: 14,
-                                fontFamily: 'Syne-Regular',
+                                focusedPinTheme: PinTheme(
+                                  width: 60,
+                                  height: 48,
+                                  textStyle: const TextStyle(
+                                    color: black,
+                                    fontSize: 14,
+                                    fontFamily: 'Inter-Regular',
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: const Color(0xffF2F0EE),
+                                    border: Border.all(
+                                      color: orange,
+                                    ),
+                                  ),
+                                ),
+                                submittedPinTheme: PinTheme(
+                                  width: 60,
+                                  height: 48,
+                                  textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: 'Inter-Regular',
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: const Color(0xffF2F0EE),
+                                    border: Border.all(
+                                      color: orange,
+                                    ),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  code = value;
+                                },
                               ),
                             ),
-                            secondsRemaining == 0
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        secondsRemaining = 20;
-                                        startTimer();
-                                      });
-                                      verifyPhoneNumber();
-                                    },
-                                    child: const Text(
-                                      'Resend Code',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        color: orange,
-                                        fontSize: 16,
-                                        fontFamily: 'Syne-SemiBold',
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 50.0.w),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 89.w,
+                                    height: 20.h,
+                                    child: Text(
+                                      'OTP valid for',
+                                      style: GoogleFonts.syne(
+                                        fontSize: 14,
+                                        color: black,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                  )
-                                : const Text(
-                                    'Resend Code',
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      secondsRemaining == 0
+                                          ? SvgPicture.asset(
+                                              'assets/images/timer-icon.svg',
+                                              colorFilter:
+                                                  const ColorFilter.mode(
+                                                      grey, BlendMode.srcIn),
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/images/timer-icon.svg',
+                                              // colorFilter:
+                                              // ColorFilter.mode(grey, BlendMode.srcIn),
+                                            ),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      Text(
+                                        getTimerText(),
+                                        style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          color: black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 40.h,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    "Don't Receive the Code? ",
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
-                                      color: grey,
-                                      fontSize: 16,
-                                      fontFamily: 'Syne-SemiBold',
+                                      color: black,
+                                      fontSize: 14,
+                                      fontFamily: 'Syne-Regular',
                                     ),
                                   ),
+                                  secondsRemaining == 0
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              secondsRemaining = 20;
+                                              startTimer();
+                                            });
+                                            verifyPhoneNumber();
+                                          },
+                                          child: const Text(
+                                            'Resend Code',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              color: orange,
+                                              fontSize: 16,
+                                              fontFamily: 'Syne-SemiBold',
+                                            ),
+                                          ),
+                                        )
+                                      : const Text(
+                                          'Resend Code',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            color: grey,
+                                            fontSize: 16,
+                                            fontFamily: 'Syne-SemiBold',
+                                          ),
+                                        ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 80.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 20.0.h),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (!isButtonDisabled) {
+                                    setState(() {
+                                      isButtonDisabled = true;
+                                    });
+                                    buttonTimer = Timer(
+                                        const Duration(seconds: 5), () async {
+                                      setState(() {
+                                        isButtonDisabled = false;
+                                      });
+                                      await verifyOTPCode();
+                                      timer?.cancel();
+                                    });
+                                  }
+                                },
+                                // => isVerifying
+                                //     ? apiButton(context)
+                                //     : verifyOTPmethod(context),
+                                child: isButtonDisabled
+                                    ? apiButton(context)
+                                    : isVerifying
+                                        ? apiButton(context)
+                                        : buttonContainer(context, 'VERIFY'),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 80.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 20.0.h),
-                        child: GestureDetector(
-                          onTap: () {
-                            if (!isButtonDisabled) {
-                              setState(() {
-                                isButtonDisabled = true;
-                              });
-                              buttonTimer =
-                                  Timer(const Duration(seconds: 5), () async {
-                                setState(() {
-                                  isButtonDisabled = false;
-                                });
-                                await verifyOTPCode();
-                                timer?.cancel();
-                              });
-                            }
-                          },
-                          // => isVerifying
-                          //     ? apiButton(context)
-                          //     : verifyOTPmethod(context),
-                          child: isButtonDisabled
-                              ? apiButton(context)
-                              : isVerifying
-                                  ? apiButton(context)
-                                  : buttonContainer(context, 'VERIFY'),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
 
-  // APIResponse<APIResponse>? otpResponse;
-  // verifyOTPmethod(BuildContext context) async {
-  //   if (isSubmitted == false && userTypedOtp == '') {
-  //     showToastError('enter OTP to proceed', FToast().init(context));
-  //   } else {
-  //     setState(() {
-  //       isVerifying = true;
-  //     });
-  //     Map otpData = {
-  //       "email": widget.email,
-  //       "otp": userTypedOtp.toString(),
-  //     };
-  //     otpResponse = await service.verifyOtpApi(otpData);
-  //     if (otpResponse!.status!.toLowerCase() == 'success') {
-  //       showToastSuccess('OTP successfully entered', FToast().init(context));
-  //       showDialog(
-  //         context: context,
-  //         builder: (context) => Dialog(
-  //           backgroundColor: white,
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(20),
-  //           ),
-  //           alignment: Alignment.center,
-  //           insetPadding: const EdgeInsets.symmetric(
-  //             horizontal: 20,
-  //           ),
-  //           child: Container(
-  //             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
-  //             width: 350.w,
-  //             height: 442.h,
-  //             child: Column(
-  //               // crossAxisAlignment: CrossAxisAlignment.end,
-  //               children: [
-  //                 Align(
-  //                   alignment: Alignment.topRight,
-  //                   child: GestureDetector(
-  //                     onTap: () => Navigator.of(context).pop(),
-  //                     child: SvgPicture.asset('assets/images/close-circle.svg'),
-  //                   ),
-  //                 ),
-  //                 SizedBox(
-  //                   width: 186.w,
-  //                   height: 186.h,
-  //                   child: GifImage(
-  //                     fit: BoxFit.scaleDown,
-  //                     controller: gifController,
-  //                     image: const AssetImage(
-  //                       "assets/images/email-verify-done.gif",
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   'Congratulations',
-  //                   style: GoogleFonts.syne(
-  //                     fontSize: 20,
-  //                     fontWeight: FontWeight.w700,
-  //                     color: orange,
-  //                   ),
-  //                 ),
-  //                 SizedBox(
-  //                   height: 20.h,
-  //                 ),
-  //                 Text(
-  //                   'You have successfully verify\n the Email Address',
-  //                   textAlign: TextAlign.center,
-  //                   style: GoogleFonts.syne(
-  //                     fontSize: 18,
-  //                     fontWeight: FontWeight.w400,
-  //                     color: black,
-  //                   ),
-  //                 ),
-  //                 SizedBox(
-  //                   height: 20.h,
-  //                 ),
-  //                 Expanded(
-  //                   child: GestureDetector(
-  //                     onTap: () {
-  //                       Navigator.of(context).push(
-  //                         MaterialPageRoute(
-  //                           builder: (context) => widget.userType == 'Rider'
-  //                               ? VerifyDrivingLicenseManually(
-  //                                   email: widget.email,
-  //                                   userType: widget.userType,
-  //                                 )
-  //                               : LogInScreen(
-  //                                   userType: widget.userType,
-  //                                   deviceID: widget.deviceID,
-  //                                 ),
-  //                         ),
-  //                       );
-  //                     },
-  //                     child: buttonContainer(context, 'OK'),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     } else {
-  //       showToastError(otpResponse!.message, FToast().init(context));
-  //     }
-  //     setState(() {
-  //       isVerifying = false;
-  //     });
-  //   }
-  // }
+// APIResponse<APIResponse>? otpResponse;
+// verifyOTPmethod(BuildContext context) async {
+//   if (isSubmitted == false && userTypedOtp == '') {
+//     showToastError('enter OTP to proceed', FToast().init(context));
+//   } else {
+//     setState(() {
+//       isVerifying = true;
+//     });
+//     Map otpData = {
+//       "email": widget.email,
+//       "otp": userTypedOtp.toString(),
+//     };
+//     otpResponse = await service.verifyOtpApi(otpData);
+//     if (otpResponse!.status!.toLowerCase() == 'success') {
+//       showToastSuccess('OTP successfully entered', FToast().init(context));
+//       showDialog(
+//         context: context,
+//         builder: (context) => Dialog(
+//           backgroundColor: white,
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(20),
+//           ),
+//           alignment: Alignment.center,
+//           insetPadding: const EdgeInsets.symmetric(
+//             horizontal: 20,
+//           ),
+//           child: Container(
+//             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
+//             width: 350.w,
+//             height: 442.h,
+//             child: Column(
+//               // crossAxisAlignment: CrossAxisAlignment.end,
+//               children: [
+//                 Align(
+//                   alignment: Alignment.topRight,
+//                   child: GestureDetector(
+//                     onTap: () => Navigator.of(context).pop(),
+//                     child: SvgPicture.asset('assets/images/close-circle.svg'),
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   width: 186.w,
+//                   height: 186.h,
+//                   child: GifImage(
+//                     fit: BoxFit.scaleDown,
+//                     controller: gifController,
+//                     image: const AssetImage(
+//                       "assets/images/email-verify-done.gif",
+//                     ),
+//                   ),
+//                 ),
+//                 Text(
+//                   'Congratulations',
+//                   style: GoogleFonts.syne(
+//                     fontSize: 20,
+//                     fontWeight: FontWeight.w700,
+//                     color: orange,
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 20.h,
+//                 ),
+//                 Text(
+//                   'You have successfully verify\n the Email Address',
+//                   textAlign: TextAlign.center,
+//                   style: GoogleFonts.syne(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.w400,
+//                     color: black,
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 20.h,
+//                 ),
+//                 Expanded(
+//                   child: GestureDetector(
+//                     onTap: () {
+//                       Navigator.of(context).push(
+//                         MaterialPageRoute(
+//                           builder: (context) => widget.userType == 'Rider'
+//                               ? VerifyDrivingLicenseManually(
+//                                   email: widget.email,
+//                                   userType: widget.userType,
+//                                 )
+//                               : LogInScreen(
+//                                   userType: widget.userType,
+//                                   deviceID: widget.deviceID,
+//                                 ),
+//                         ),
+//                       );
+//                     },
+//                     child: buttonContainer(context, 'OK'),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       );
+//     } else {
+//       showToastError(otpResponse!.message, FToast().init(context));
+//     }
+//     setState(() {
+//       isVerifying = false;
+//     });
+//   }
+// }
 
   /// resend OTP API:
-  // bool resending = false;
-  // APIResponse<APIResponse>? _resendOTPResponse;
-  // resendCode(BuildContext context) async {
-  //   setState(() {
-  //     resending = true;
-  //   });
-  //   Map oTPData = {
-  //     "email": widget.phoneNumber,
-  //   };
-  //   _resendOTPResponse = await service.verifyEmailAPI(oTPData);
-  //   if (_resendOTPResponse!.status!.toLowerCase() == 'success') {
-  //     showToastSuccess('OTP sent. Please verify again', FToast().init(context));
-  //     // if (_resendOTPResponse!.data != null) {
-  //     //   setState(() {
-  //     //     widget.otp = _resendOTPResponse!.data!.otp!.toString();
-  //     //   });
-  //     // }
-  //     if (mounted) {
-  //       setState(() {
-  //         isTimerCompleted = false;
-  //       });
-  //       startTimeout();
-  //     }
-  //   } else {
-  //     showToastError(_resendOTPResponse!.message, FToast().init(context));
-  //   }
-  //   setState(() {
-  //     resending = false;
-  //   });
-  // }
+// bool resending = false;
+// APIResponse<APIResponse>? _resendOTPResponse;
+// resendCode(BuildContext context) async {
+//   setState(() {
+//     resending = true;
+//   });
+//   Map oTPData = {
+//     "email": widget.phoneNumber,
+//   };
+//   _resendOTPResponse = await service.verifyEmailAPI(oTPData);
+//   if (_resendOTPResponse!.status!.toLowerCase() == 'success') {
+//     showToastSuccess('OTP sent. Please verify again', FToast().init(context));
+//     // if (_resendOTPResponse!.data != null) {
+//     //   setState(() {
+//     //     widget.otp = _resendOTPResponse!.data!.otp!.toString();
+//     //   });
+//     // }
+//     if (mounted) {
+//       setState(() {
+//         isTimerCompleted = false;
+//       });
+//       startTimeout();
+//     }
+//   } else {
+//     showToastError(_resendOTPResponse!.message, FToast().init(context));
+//   }
+//   setState(() {
+//     resending = false;
+//   });
+// }
 
-  // Timer? timer;
-  // int secondsRemaining = 120; // Total seconds for the timer (2 minutes)
+// Timer? timer;
+// int secondsRemaining = 120; // Total seconds for the timer (2 minutes)
 
-  // void startTimer() {
-  //   timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     setState(() {
-  //       if (secondsRemaining > 0) {
-  //         secondsRemaining--;
-  //       } else {
-  //         timer.cancel();
-  //       }
-  //     }
-  //     );
-  //   }
-  //   );
-  // }
+// void startTimer() {
+//   timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+//     setState(() {
+//       if (secondsRemaining > 0) {
+//         secondsRemaining--;
+//       } else {
+//         timer.cancel();
+//       }
+//     }
+//     );
+//   }
+//   );
+// }
 }
