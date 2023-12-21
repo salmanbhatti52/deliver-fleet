@@ -44,6 +44,9 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  bool isLoading = false;
+  bool isLoading2 = false;
+
   ApiServices get service => GetIt.I<ApiServices>();
 
   final GlobalKey<FormState> _key = GlobalKey();
@@ -56,6 +59,9 @@ class _LogInScreenState extends State<LogInScreen> {
 
   checkNumber() async {
     // try {
+    setState(() {
+      isLoading2 = true;
+    });
     print("one_signal_id ${widget.deviceID}");
     print("user_type ${widget.userType}");
     print("phone ${countryCode!.dialCode + contactNumberController.text}");
@@ -80,7 +86,9 @@ class _LogInScreenState extends State<LogInScreen> {
     print("statusCode: ${response.statusCode}");
     if (response.statusCode == 200) {
       checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
-      setState(() {});
+      setState(() {
+        isLoading2 = false;
+      });
     }
     // } catch (e) {
     //   print('Something went wrong = ${e.toString()}');
@@ -92,7 +100,6 @@ class _LogInScreenState extends State<LogInScreen> {
   // late TextEditingController passwordController;
 
   late SharedPreferences sharedPreferences;
-  bool isLoading = false;
 
   @override
   void initState() {
@@ -651,6 +658,31 @@ class _LogInScreenState extends State<LogInScreen> {
                                               FToast().init(context),
                                               seconds: 3);
                                         } else if (checkPhoneNumberModel
+                                                    .status ==
+                                                "error" &&
+                                            checkPhoneNumberModel.message ==
+                                                "Phone number does not exist.") {
+                                          _getCurrentPosition();
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EmailVerificationScreen(
+                                                latitude: _currentPosition!
+                                                    .latitude
+                                                    .toString(),
+                                                longitude: _currentPosition!
+                                                    .longitude
+                                                    .toString(),
+                                                phoneNumber:
+                                                    countryCode!.dialCode +
+                                                        contactNumberController
+                                                            .text,
+                                                userType: widget.userType,
+                                                deviceID: widget.deviceID ?? '',
+                                              ),
+                                            ),
+                                          );
+                                        } else if (checkPhoneNumberModel
                                                 .status ==
                                             "success") {
                                           _getCurrentPosition();
@@ -676,7 +708,9 @@ class _LogInScreenState extends State<LogInScreen> {
                                         } else {}
                                       }
                                     },
-                                    child: buttonContainer(context, 'LOGIN'),
+                                    child: isLoading2
+                                        ? apiButton(context)
+                                        : buttonContainer(context, 'LOGIN'),
                                   ),
                             SizedBox(
                               height: 30.h,

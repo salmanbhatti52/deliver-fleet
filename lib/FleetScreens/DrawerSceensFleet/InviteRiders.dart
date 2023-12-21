@@ -267,6 +267,7 @@ class _InviteRidersState extends State<InviteRiders> {
       if (_inviteResponse!.status!.toLowerCase() == 'success') {
         showToastSuccess(_inviteResponse!.message!, FToast().init(context),
             seconds: 1);
+        Navigator.pop(context);
       } else {
         showToastError(_inviteResponse!.message!, FToast().init(context),
             seconds: 1);
