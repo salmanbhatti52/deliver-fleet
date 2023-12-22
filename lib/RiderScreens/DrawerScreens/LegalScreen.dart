@@ -3,6 +3,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
@@ -54,6 +55,7 @@ class _LegalScreenState extends State<LegalScreen> {
       }
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -143,29 +145,29 @@ class _LegalScreenState extends State<LegalScreen> {
                                             Text(
                                               "Terms & Conditions",
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 18,
+                                              style: GoogleFonts.syne(
                                                 color: black,
-                                                fontFamily: 'Syne-Bold',
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             SizedBox(
                                                 height: size.height * 0.02),
-                                            Text(
-                                              "$termsText",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: black,
-                                                fontFamily: 'Syne-Regular',
-                                              ),
+                                            Html(
+                                              data: "$termsText",
+                                              style: {
+                                                "html": Style(
+                                                  fontSize: FontSize(16),
+                                                  color: black,
+                                                  fontFamily: 'Syne-Regular',
+                                                ),
+                                              },
                                             ),
                                             SizedBox(
                                                 height: size.height * 0.02),
                                             Icon(
                                               Icons.keyboard_arrow_up_rounded,
-                                              color:
-                                                  black.withOpacity(0.5),
+                                              color: black.withOpacity(0.5),
                                             ),
                                             SizedBox(
                                                 height: size.height * 0.01),
@@ -183,18 +185,15 @@ class _LegalScreenState extends State<LegalScreen> {
                                           Text(
                                             "Terms & Conditions",
                                             textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 16,
+                                            style: GoogleFonts.syne(
                                               color: black,
-                                              fontFamily: 'Syne-Medium',
+                                              fontSize: 16,
                                             ),
                                           ),
                                           const Spacer(),
                                           Icon(
-                                            Icons
-                                                .keyboard_arrow_right_rounded,
-                                            color:
-                                                black.withOpacity(0.5),
+                                            Icons.keyboard_arrow_right_rounded,
+                                            color: black.withOpacity(0.5),
                                           ),
                                         ],
                                       ),
@@ -208,93 +207,86 @@ class _LegalScreenState extends State<LegalScreen> {
                             });
                           },
                           child: Container(
-                              width: size.width,
-                              height: isExpanded2
-                                  ? size.height * 0.6
-                                  : size.height * 0.06,
-                              decoration: BoxDecoration(
-                                color: white,
-                                border: Border.all(
-                                  color: grey.withOpacity(0.1),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: black.withOpacity(0.1),
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 5),
-                                  ),
-                                ],
+                            width: size.width,
+                            height: isExpanded2
+                                ? size.height * 0.6
+                                : size.height * 0.06,
+                            decoration: BoxDecoration(
+                              color: white,
+                              border: Border.all(
+                                color: grey.withOpacity(0.1),
+                                width: 1,
                               ),
-                              child: isExpanded2
-                                  ? Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            SizedBox(
-                                                height: size.height * 0.02),
-                                            Text(
-                                              "Privacy Policy",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: black,
-                                                fontFamily: 'Syne-Bold',
-                                              ),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: black.withOpacity(0.1),
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: isExpanded2
+                                ? Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: size.height * 0.02),
+                                          Text(
+                                            "Privacy Policy",
+                                            style: GoogleFonts.syne(
+                                              color: black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            SizedBox(
-                                                height: size.height * 0.02),
-                                            Text(
-                                              "$privacyText",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontSize: 16,
+                                          ),
+                                          SizedBox(height: size.height * 0.02),
+                                          Html(
+                                            data: "$privacyText",
+                                            style: {
+                                              "html": Style(
+                                                fontSize: FontSize(16),
                                                 color: black,
                                                 fontFamily: 'Syne-Regular',
                                               ),
-                                            ),
-                                            SizedBox(
-                                                height: size.height * 0.02),
-                                            Icon(
-                                              Icons.keyboard_arrow_up_rounded,
-                                              color:
-                                                  black.withOpacity(0.5),
-                                            ),
-                                            SizedBox(
-                                                height: size.height * 0.01),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 20, right: 10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Privacy Policy",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              color: black,
-                                              fontFamily: 'Syne-Medium',
-                                            ),
+                                            },
                                           ),
-                                          const Spacer(),
+                                          SizedBox(height: size.height * 0.02),
                                           Icon(
-                                            Icons
-                                                .keyboard_arrow_right_rounded,
-                                            color:
-                                                black.withOpacity(0.5),
+                                            Icons.keyboard_arrow_up_rounded,
+                                            color: black.withOpacity(0.5),
                                           ),
+                                          SizedBox(height: size.height * 0.01),
                                         ],
                                       ),
-                                    )),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Privacy Policy",
+                                          textAlign: TextAlign.left,
+                                          style: GoogleFonts.syne(
+                                            color: black,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Icon(
+                                          Icons.keyboard_arrow_right_rounded,
+                                          color: black.withOpacity(0.5),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ),
                         ),
                       ],
                     ),
@@ -304,10 +296,10 @@ class _LegalScreenState extends State<LegalScreen> {
                   child: Text(
                     "Data Not Fetched Completely\nPlease Try Again",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.grey,
+                    style: GoogleFonts.syne(
+                      color: grey,
                       fontSize: 24,
-                      fontFamily: 'Syne-SemiBold',
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
