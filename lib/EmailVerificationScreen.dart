@@ -161,6 +161,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     if (widget.phoneNumber != null) {
       print("phoneNumber: ${widget.phoneNumber!}");
     }
+    auth.setSettings(appVerificationDisabledForTesting: true);
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: '${widget.phoneNumber}',
       verificationCompleted: (PhoneAuthCredential credential) async {
