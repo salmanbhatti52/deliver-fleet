@@ -161,7 +161,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     if (widget.phoneNumber != null) {
       print("phoneNumber: ${widget.phoneNumber!}");
     }
-    auth.setSettings(appVerificationDisabledForTesting: true);
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: '${widget.phoneNumber}',
       verificationCompleted: (PhoneAuthCredential credential) async {
@@ -643,10 +642,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                             SizedBox(
                               height: 40.h,
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
+                            Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Text(
@@ -688,7 +684,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                         ),
                                 ],
                               ),
-                            ),
                             SizedBox(
                               height: 80.h,
                             ),
