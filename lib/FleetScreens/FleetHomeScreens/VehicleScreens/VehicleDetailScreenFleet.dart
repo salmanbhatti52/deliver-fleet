@@ -48,7 +48,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
   init() async {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
-    print("id ${widget.users_fleet_vehicles_id.toString()}");
+    print("fleetVehiclesId: ${widget.users_fleet_vehicles_id.toString()}");
 
     Map userData = {
       "users_fleet_vehicles_id": widget.users_fleet_vehicles_id.toString(),
@@ -59,7 +59,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
 
     if (_getVehicleFleetByIdResponse.status!.toLowerCase() == 'success') {
       if (_getVehicleFleetByIdResponse.data != null) {
-        showToastSuccess('getting bike details', FToast().init(context),
+        showToastSuccess('Getting bike details', FToast().init(context),
             seconds: 1);
       }
     } else {
@@ -160,6 +160,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
                         VehicleDetailsWigdetFleet(
                           getFleetVehicleByIdModel:
                               _getVehicleFleetByIdResponse.data!,
+
                         ),
                         SizedBox(height: 20.h),
                         Text(

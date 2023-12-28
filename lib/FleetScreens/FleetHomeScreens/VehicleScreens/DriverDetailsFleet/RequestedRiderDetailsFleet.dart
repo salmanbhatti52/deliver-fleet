@@ -25,6 +25,7 @@ import '../../../../widgets/apiButton.dart';
 class RequestedRiderDetailsFleet extends StatefulWidget {
   final GetFleetVehicleRequestByIdModel getFleetVehicleRequestByIdModel;
   final GetFleetVehicleByIdModel requestVehicleById;
+
   const RequestedRiderDetailsFleet(
       {super.key,
       required this.getFleetVehicleRequestByIdModel,
@@ -186,48 +187,124 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                                     width: 134.w,
                                     height: 45.h,
                                     child: GestureDetector(
-                                      onTap: () => showAdaptiveDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            AlertDialog.adaptive(
-                                          title: Text(
-                                            'Are you sure you want to reject the request?',
-                                            style: GoogleFonts.syne(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                              color: black,
+                                      onTap: () {
+                                        var size = MediaQuery.of(context).size;
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => Dialog(
+                                            backgroundColor: white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
                                             ),
-                                          ),
-                                          actions: [
-                                            GestureDetector(
-                                              onTap: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: SizedBox(
-                                                height: 45.h,
-                                                width: 100.w,
-                                                child:
-                                                    buttonContainerWithBorder(
-                                                        context, 'NO'),
+                                            insetPadding: const EdgeInsets.only(
+                                                left: 30, right: 30),
+                                            child: SizedBox(
+                                              height: size.height * 0.22,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 20),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Are you sure you want to\nreject the request?',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: GoogleFonts.syne(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: black,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 30.h),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(),
+                                                          child: SizedBox(
+                                                            height: 45.h,
+                                                            width: 100.w,
+                                                            child:
+                                                                buttonContainerWithBorder(
+                                                                    context,
+                                                                    'NO'),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 10.w),
+                                                        isRejecting
+                                                            ? apiButton(context)
+                                                            : GestureDetector(
+                                                                onTap: () =>
+                                                                    rejectVehicleRequest(
+                                                                        context),
+                                                                child: SizedBox(
+                                                                  height: 45.h,
+                                                                  width: 100.w,
+                                                                  child: buttonContainer(
+                                                                      context,
+                                                                      'YES'),
+                                                                ),
+                                                              ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                            isRejecting
-                                                ? apiButton(context)
-                                                : GestureDetector(
-                                                    onTap: () =>
-                                                        rejectVehicleRequest(
-                                                            context),
-                                                    child: SizedBox(
-                                                      height: 45.h,
-                                                      width: 100.w,
-                                                      child: buttonContainer(
-                                                          context, 'YES'),
-                                                    ),
-                                                  ),
-                                          ],
-                                          actionsAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                        ),
-                                      ),
+                                          ),
+                                        );
+                                      },
+                                      //   showAdaptiveDialog(
+                                      // context: context,
+                                      // builder: (context) =>
+                                      //     AlertDialog.adaptive(
+                                      //   title: Text(
+                                      //     'Are you sure you want to reject the request?',
+                                      //     style: GoogleFonts.syne(
+                                      //       fontSize: 18,
+                                      //       fontWeight: FontWeight.w500,
+                                      //       color: black,
+                                      //     ),
+                                      //   ),
+                                      //   actions: [
+                                      //     GestureDetector(
+                                      //       onTap: () =>
+                                      //           Navigator.of(context).pop(),
+                                      //       child: SizedBox(
+                                      //         height: 45.h,
+                                      //         width: 100.w,
+                                      //         child:
+                                      //             buttonContainerWithBorder(
+                                      //                 context, 'NO'),
+                                      //       ),
+                                      //     ),
+                                      //     isRejecting
+                                      //         ? apiButton(context)
+                                      //         : GestureDetector(
+                                      //             onTap: () =>
+                                      //                 rejectVehicleRequest(
+                                      //                     context),
+                                      //             child: SizedBox(
+                                      //               height: 45.h,
+                                      //               width: 100.w,
+                                      //               child: buttonContainer(
+                                      //                   context, 'YES'),
+                                      //             ),
+                                      //           ),
+                                      //   ],
+                                      //   actionsAlignment:
+                                      //       MainAxisAlignment.spaceAround,
+                                      // ),
                                       child: buttonContainerWithBorder(
                                           context, 'Reject'),
                                     ),
@@ -450,6 +527,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
   /// accept vehicle request method:
   bool isAccepting = false;
   APIResponse<AcceptAndRejectRequestedVehicleModel>? acceptResponse;
+
   accpetVehicleRequest(BuildContext context) async {
     setState(() {
       isAccepting = true;
@@ -488,6 +566,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
   /// accept vehicle request method:
   bool isDeactivate = false;
   APIResponse<AcceptAndRejectRequestedVehicleModel>? deactivateResponse;
+
   deactivateVehicleRequest(BuildContext context) async {
     setState(() {
       isDeactivate = true;
@@ -520,6 +599,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
   /// reject vehicle request method:
   bool isRejecting = false;
   APIResponse<AcceptAndRejectRequestedVehicleModel>? rejectResponse;
+
   rejectVehicleRequest(BuildContext context) async {
     setState(() {
       isRejecting = true;
