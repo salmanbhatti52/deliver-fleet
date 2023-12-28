@@ -69,7 +69,7 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
         ? spinKitRotatingCircle
         : Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            height: 260.h,
+            height: 280.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: white,
@@ -173,16 +173,16 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                   height: 30.h,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Stack(
-                      alignment: Alignment.topCenter,
                       clipBehavior: Clip.none,
+                      alignment: Alignment.topCenter,
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 22),
-                          width: 95.w,
-                          height: 95.h,
+                          width: 120.w,
+                          height: 100.h,
                           decoration: BoxDecoration(
                             color: lightGrey,
                             borderRadius: BorderRadius.circular(15),
@@ -213,10 +213,10 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                           ),
                         ),
                         Positioned(
-                          top: -25,
+                          top: -20,
                           child: Container(
-                            width: 45.w,
-                            height: 45.h,
+                            width: 50.w,
+                            height: 50.h,
                             decoration: BoxDecoration(
                               color: white,
                               border: Border.all(color: lightGrey),
@@ -236,8 +236,8 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 22),
-                          width: 95.w,
-                          height: 95.h,
+                          width: 120.w,
+                          height: 100.h,
                           decoration: BoxDecoration(
                             color: lightGrey,
                             borderRadius: BorderRadius.circular(15),
@@ -268,10 +268,10 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                           ),
                         ),
                         Positioned(
-                          top: -25,
+                          top: -20,
                           child: Container(
-                            width: 45.w,
-                            height: 45.h,
+                            width: 50.w,
+                            height: 50.h,
                             decoration: BoxDecoration(
                               color: white,
                               border: Border.all(color: lightGrey),

@@ -18,14 +18,18 @@ class _VehicleWidgetState extends State<VehicleWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => VehicleDetailScreenFleet(
-            users_fleet_vehicles_id:
-                widget.getAllVehiclesFleetModel.users_fleet_vehicles_id!,
-          ),
-        ),
-      ),
+      onTap: () {
+        print('sd: ${widget.getAllVehiclesFleetModel.users_fleet_vehicles_id}');
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  VehicleDetailScreenFleet(
+                    users_fleet_vehicles_id: widget.getAllVehiclesFleetModel
+                        .users_fleet_vehicles_id!,
+                  ),
+            ),
+          );
+      },
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -144,7 +148,7 @@ class _VehicleWidgetState extends State<VehicleWidget> {
                             ),
                             child: Center(
                               child: Text(
-                                'assigned',
+                                'Assigned',
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   color: green,
