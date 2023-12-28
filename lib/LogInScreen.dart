@@ -705,7 +705,12 @@ class _LogInScreenState extends State<LogInScreen> {
                                               ),
                                             ),
                                           );
-                                        } else {}
+                                        } else {
+                                          showToastSuccess(
+                                              '${checkPhoneNumberModel.message}',
+                                              FToast().init(context),
+                                              seconds: 3);
+                                        }
                                       }
                                     },
                                     child: isLoading2
