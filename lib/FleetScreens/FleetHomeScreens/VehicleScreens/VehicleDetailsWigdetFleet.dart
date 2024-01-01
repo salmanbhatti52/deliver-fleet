@@ -170,7 +170,7 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                   ],
                 ),
                 SizedBox(
-                  height: 30.h,
+                  height: 40.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -189,8 +189,11 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                           ),
                           child: Center(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                                 Text(
                                   widget.getFleetVehicleByIdModel
                                       .trips_completed!,
@@ -199,6 +202,9 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                                     fontWeight: FontWeight.w700,
                                     color: black,
                                   ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
                                 ),
                                 Text(
                                   'Trips',
@@ -230,6 +236,9 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
                     Stack(
                       alignment: Alignment.topCenter,
                       clipBehavior: Clip.none,
@@ -244,8 +253,11 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                           ),
                           child: Center(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                                 Text(
                                   widget.getFleetVehicleByIdModel
                                       .distance_covered!,
@@ -254,6 +266,9 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                                     fontWeight: FontWeight.w700,
                                     color: black,
                                   ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
                                 ),
                                 Text(
                                   'Distance ($distanceUnit)',
