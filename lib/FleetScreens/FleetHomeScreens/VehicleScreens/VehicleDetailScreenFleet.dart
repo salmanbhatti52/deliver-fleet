@@ -17,8 +17,9 @@ import 'VehicleDetailsWigdetFleet.dart';
 
 class VehicleDetailScreenFleet extends StatefulWidget {
   final int users_fleet_vehicles_id;
+  final int? usersFleetVehiclesAssigned;
   const VehicleDetailScreenFleet(
-      {super.key, required this.users_fleet_vehicles_id});
+      {super.key, required this.users_fleet_vehicles_id, this.usersFleetVehiclesAssigned});
 
   @override
   State<VehicleDetailScreenFleet> createState() =>
@@ -38,6 +39,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
     setState(() {
       isLoading = true;
     });
+    print('usersFleetVehiclesAssigned2: ${widget.usersFleetVehiclesAssigned}');
     init();
   }
 
@@ -160,7 +162,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
                         VehicleDetailsWigdetFleet(
                           getFleetVehicleByIdModel:
                               _getVehicleFleetByIdResponse.data!,
-
+                          usersFleetVehiclesAssigned: widget.usersFleetVehiclesAssigned,
                         ),
                         SizedBox(height: 20.h),
                         Text(

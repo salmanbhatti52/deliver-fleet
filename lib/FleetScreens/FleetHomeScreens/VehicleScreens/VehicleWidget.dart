@@ -19,13 +19,14 @@ class _VehicleWidgetState extends State<VehicleWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('sd: ${widget.getAllVehiclesFleetModel.users_fleet_vehicles_id}');
+        print('usersFleetVehiclesAssigned: ${widget.getAllVehiclesFleetModel.users_fleet_vehicles_assigned!.users_fleet_id}');
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) =>
                   VehicleDetailScreenFleet(
                     users_fleet_vehicles_id: widget.getAllVehiclesFleetModel
                         .users_fleet_vehicles_id!,
+                    usersFleetVehiclesAssigned: widget.getAllVehiclesFleetModel.users_fleet_vehicles_assigned!.users_fleet_id!,
                   ),
             ),
           );

@@ -13,9 +13,9 @@ import '../../../services/API_services.dart';
 
 class VehicleDetailsWigdetFleet extends StatefulWidget {
   final GetFleetVehicleByIdModel getFleetVehicleByIdModel;
-
+  final int? usersFleetVehiclesAssigned;
   const VehicleDetailsWigdetFleet(
-      {super.key, required this.getFleetVehicleByIdModel});
+      {super.key, required this.getFleetVehicleByIdModel, this.usersFleetVehiclesAssigned});
 
   @override
   State<VehicleDetailsWigdetFleet> createState() =>
@@ -35,6 +35,7 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
       userFleetId = widget.getFleetVehicleByIdModel.users_fleet_vehicles_id;
     });
     print('userFleetId: $userFleetId');
+    print('usersFleetVehiclesAssigned3: ${widget.usersFleetVehiclesAssigned}');
     init();
   }
 
@@ -108,9 +109,9 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                       ),
                     ),
                     Text(
-                      userFleetId == -1
+                      widget.usersFleetVehiclesAssigned == -1
                           ? 'Not Assigned'
-                          : userFleetId != -1
+                          : widget.usersFleetVehiclesAssigned != -1
                               ? '${widget.getFleetVehicleByIdModel.users_fleet!.first_name!} ${widget.getFleetVehicleByIdModel.users_fleet!.last_name!}'
                               : '',
                       style: GoogleFonts.syne(
@@ -136,9 +137,9 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                       ),
                     ),
                     Text(
-                      userFleetId == -1
+                      widget.usersFleetVehiclesAssigned == -1
                           ? 'Active'
-                          : userFleetId != -1
+                          : widget.usersFleetVehiclesAssigned != -1
                               ? 'In Use'
                               : '',
                       style: GoogleFonts.syne(
