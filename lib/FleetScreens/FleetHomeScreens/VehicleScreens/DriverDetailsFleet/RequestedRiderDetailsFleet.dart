@@ -175,7 +175,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                                           )
                                         : GestureDetector(
                                             onTap: () =>
-                                                accpetVehicleRequest(context),
+                                                acceptVehicleRequest(context),
                                             child: buttonContainer(
                                                 context, 'Accept'),
                                           ),
@@ -528,7 +528,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
   bool isAccepting = false;
   APIResponse<AcceptAndRejectRequestedVehicleModel>? acceptResponse;
 
-  accpetVehicleRequest(BuildContext context) async {
+  acceptVehicleRequest(BuildContext context) async {
     setState(() {
       isAccepting = true;
     });
@@ -552,7 +552,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
           seconds: 1);
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => BottomNavBarFleet(),
+          builder: (context) => const BottomNavBarFleet(),
         ),
       );
     } else {
@@ -563,7 +563,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
     });
   }
 
-  /// accept vehicle request method:
+  /// deactivate vehicle request method:
   bool isDeactivate = false;
   APIResponse<AcceptAndRejectRequestedVehicleModel>? deactivateResponse;
 
@@ -579,12 +579,12 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
     deactivateResponse =
         await service.deactivateVehicleRequest(deactivateResponseData);
     if (deactivateResponse!.status!.toLowerCase() == 'success') {
-      showToastSuccess('The request has been successfully deactivated',
-          FToast().init(context),
+      showToastSuccess(
+          'The rider has been successfully deactivated', FToast().init(context),
           seconds: 1);
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => BottomNavBarFleet(),
+          builder: (context) => const BottomNavBarFleet(),
         ),
       );
     } else {
@@ -624,7 +624,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
           seconds: 1);
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => BottomNavBarFleet(),
+          builder: (context) => const BottomNavBarFleet(),
         ),
       );
     } else {
