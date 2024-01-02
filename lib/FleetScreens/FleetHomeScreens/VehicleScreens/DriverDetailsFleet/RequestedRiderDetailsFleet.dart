@@ -579,7 +579,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
     deactivateResponse =
         await service.deactivateVehicleRequest(deactivateResponseData);
     if (deactivateResponse!.status!.toLowerCase() == 'success') {
-      showToastSuccess('The request has been successfully Deactivated',
+      showToastSuccess('The request has been successfully deactivated',
           FToast().init(context),
           seconds: 1);
       Navigator.of(context).push(

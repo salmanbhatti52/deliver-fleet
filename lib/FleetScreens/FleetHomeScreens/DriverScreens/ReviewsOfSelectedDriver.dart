@@ -50,12 +50,11 @@ class _ReviewsOfSelectedDriverState extends State<ReviewsOfSelectedDriver> {
 
     getAllRatingsList = [];
     if (_allRatingsResponse.status!.toLowerCase() == 'success') {
-      //imageHolder = data.profile_pic == null ? '' : data.profile_pic!;
       if (_allRatingsResponse.data != null) {
         getAllRatingsList!.addAll(_allRatingsResponse.data!);
       }
     } else {
-      showToastError('No rating found', FToast().init(context), seconds: 1);
+      showToastError('No Rating Found', FToast().init(context), seconds: 1);
     }
 
     setState(() {

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:deliver_partner/CustomSplash.dart';
 import 'package:deliver_partner/services/API_services.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
@@ -28,13 +27,13 @@ void main() async {
     ),
   );
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
-  // runApp(const MyApp());
-  runApp(
-    DevicePreview(
-      enabled: true,
-      builder: (context) => const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
+  // runApp(
+  //   DevicePreview(
+  //     enabled: true,
+  //     builder: (context) => const MyApp(),
+  //   ),
+  // );
 }
 
 class MyApp extends StatefulWidget {
@@ -70,12 +69,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(390, 844),
-      builder: (context, child) => MaterialApp(
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
+      builder: (context, child) => const MaterialApp(
+        // locale: DevicePreview.locale(context),
+        // builder: DevicePreview.appBuilder,
         debugShowCheckedModeBanner: false,
         title: 'Deliver Rider',
-        home: const CustomSplash(),
+        home: CustomSplash(),
       ),
     );
   }
