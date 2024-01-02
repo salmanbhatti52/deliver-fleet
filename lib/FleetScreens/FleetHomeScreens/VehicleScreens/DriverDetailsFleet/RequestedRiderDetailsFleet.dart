@@ -573,7 +573,15 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
     });
 
     Map deactivateResponseData = {
-      "users_fleet_id": userID.toString(),
+      "users_fleet_vehicles_assigned_id": widget
+          .getFleetVehicleRequestByIdModel.users_fleet_vehicles_assigned_id
+          .toString(),
+      "users_fleet_id": widget
+          .getFleetVehicleRequestByIdModel.users_fleet!.users_fleet_id
+          .toString(),
+      "users_fleet_vehicles_id": widget
+          .getFleetVehicleRequestByIdModel.users_fleet_vehicles_id
+          .toString(),
     };
 
     deactivateResponse =
@@ -590,11 +598,21 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
     } else {
       showToastError(deactivateResponse!.message!, FToast().init(context));
       print("message  ${deactivateResponse?.message}");
+      print('users_fleet_vehicles_id ${widget
+          .getFleetVehicleRequestByIdModel.users_fleet_vehicles_id
+          .toString()}');
+      print('users_fleet_id ${widget
+          .getFleetVehicleRequestByIdModel.users_fleet!.users_fleet_id
+          .toString()}');
+      print('users_fleet_vehicles_assigned_id ${widget
+          .getFleetVehicleRequestByIdModel.users_fleet_vehicles_assigned_id
+          .toString()}');
     }
     setState(() {
       isDeactivate = false;
     });
   }
+
 
   /// reject vehicle request method:
   bool isRejecting = false;

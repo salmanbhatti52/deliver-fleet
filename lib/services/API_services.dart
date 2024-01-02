@@ -696,7 +696,7 @@ class ApiServices {
 
   Future<APIResponse<AcceptAndRejectRequestedVehicleModel>>
       deactivateVehicleRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/deactivate_rider';
+    String API = 'https://deliver.eigix.net/api/deactivate_fleet_vehicle';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
