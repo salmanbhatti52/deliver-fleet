@@ -588,56 +588,50 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                             SizedBox(
                               height: 20.h,
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 50.0.w),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 89.w,
-                                    height: 20.h,
-                                    child: Text(
-                                      'OTP valid for',
-                                      style: GoogleFonts.syne(
-                                        fontSize: 14,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'OTP valid for',
+                                  style: GoogleFonts.syne(
+                                    fontSize: 14,
+                                    color: black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    secondsRemaining == 0
+                                        ? SvgPicture.asset(
+                                            'assets/images/timer-icon.svg',
+                                            colorFilter:
+                                                const ColorFilter.mode(
+                                                    grey, BlendMode.srcIn),
+                                          )
+                                        : SvgPicture.asset(
+                                            'assets/images/timer-icon.svg',
+                                            // colorFilter:
+                                            // ColorFilter.mode(grey, BlendMode.srcIn),
+                                          ),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    Text(
+                                      getTimerText(),
+                                      style: GoogleFonts.inter(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
                                         color: black,
-                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      secondsRemaining == 0
-                                          ? SvgPicture.asset(
-                                              'assets/images/timer-icon.svg',
-                                              colorFilter:
-                                                  const ColorFilter.mode(
-                                                      grey, BlendMode.srcIn),
-                                            )
-                                          : SvgPicture.asset(
-                                              'assets/images/timer-icon.svg',
-                                              // colorFilter:
-                                              // ColorFilter.mode(grey, BlendMode.srcIn),
-                                            ),
-                                      SizedBox(
-                                        width: 5.w,
-                                      ),
-                                      Text(
-                                        getTimerText(),
-                                        style: GoogleFonts.inter(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          color: black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 40.h,

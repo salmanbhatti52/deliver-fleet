@@ -269,12 +269,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           ),
                           leading: SvgPicture.asset(
                             'assets/images/update-icon.svg',
-                            width: 30.w,
-                            fit: BoxFit.scaleDown,
-                            colorFilter: ColorFilter.mode(
-                              orange,
-                              BlendMode.srcIn,
-                            ),
                           ),
                           title: Text(
                             'Update Location',
@@ -452,19 +446,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ListTile(
                           onTap: () {
                             showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                side: const BorderSide(
-                                  color: orange,
-                                  width: 2,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
                                 ),
                               ),
                               backgroundColor: orange.withOpacity(0.8),
                               context: context,
                               builder: (context) => Container(
                                 height: 250.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    topRight: Radius.circular(30),
+                                  ),
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 22, vertical: 22),

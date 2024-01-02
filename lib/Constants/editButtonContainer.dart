@@ -6,8 +6,8 @@ import 'Colors.dart';
 
 Widget editButtonContainer(context) {
   return Container(
-    width: 55.w,
-    height: 38.h,
+    width: 50,
+    height: 38,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       border: Border.all(

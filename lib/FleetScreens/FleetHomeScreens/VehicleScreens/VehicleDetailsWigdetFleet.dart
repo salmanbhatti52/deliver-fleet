@@ -13,6 +13,7 @@ import '../../../services/API_services.dart';
 
 class VehicleDetailsWigdetFleet extends StatefulWidget {
   final GetFleetVehicleByIdModel getFleetVehicleByIdModel;
+
   const VehicleDetailsWigdetFleet(
       {super.key, required this.getFleetVehicleByIdModel});
 
@@ -23,6 +24,7 @@ class VehicleDetailsWigdetFleet extends StatefulWidget {
 
 class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
   bool isLoading = false;
+  int? userFleetId;
 
   @override
   void initState() {
@@ -30,7 +32,9 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
     super.initState();
     setState(() {
       isLoading = true;
+      userFleetId = widget.getFleetVehicleByIdModel.users_fleet_vehicles_id;
     });
+    print('userFleetId: $userFleetId');
     init();
   }
 
@@ -104,11 +108,11 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                       ),
                     ),
                     Text(
-                      widget.getFleetVehicleByIdModel.vehicle_assigned_to!
-                                  .users_fleet_id !=
-                              -1
-                          ? '${widget.getFleetVehicleByIdModel.vehicle_assigned_to!.first_name!} ${widget.getFleetVehicleByIdModel.vehicle_assigned_to!.last_name!}'
-                          : 'Not assigned',
+                      userFleetId == -1
+                          ? 'Not Assigned'
+                          : userFleetId != -1
+                              ? '${widget.getFleetVehicleByIdModel.users_fleet!.first_name!} ${widget.getFleetVehicleByIdModel.users_fleet!.last_name!}'
+                              : '',
                       style: GoogleFonts.syne(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -132,11 +136,11 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                       ),
                     ),
                     Text(
-                      widget.getFleetVehicleByIdModel.vehicle_assigned_to!
-                                  .users_fleet_id ==
-                              -1
+                      userFleetId == -1
                           ? 'Active'
-                          : 'In Use',
+                          : userFleetId != -1
+                              ? 'In Use'
+                              : '',
                       style: GoogleFonts.syne(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

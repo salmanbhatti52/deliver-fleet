@@ -98,28 +98,24 @@ class _CustomSplashState extends State<CustomSplash> {
               SizedBox(
                 height: 30.h,
               ),
-              SizedBox(
-                width: 295.w,
-                height: 85.h,
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      'We   Get   It   There',
-                      textStyle: GoogleFonts.syne(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff212A37),
-                      ),
-                      speed: const Duration(milliseconds: 200),
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'We   Get   It   There',
+                    textStyle: GoogleFonts.syne(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xff212A37),
                     ),
-                  ],
-                  totalRepeatCount: 4,
-                  isRepeatingAnimation: true,
+                    speed: const Duration(milliseconds: 200),
+                  ),
+                ],
+                totalRepeatCount: 4,
+                isRepeatingAnimation: true,
 
-                  // pause: const Duration(milliseconds: 1000),
-                  displayFullTextOnTap: true,
-                  // stopPauseOnTap: true,
-                ),
+                // pause: const Duration(milliseconds: 1000),
+                displayFullTextOnTap: true,
+                // stopPauseOnTap: true,
               ),
             ],
           ),

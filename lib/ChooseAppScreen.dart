@@ -36,11 +36,10 @@ class _ChooseAppScreenState extends State<ChooseAppScreen> {
       //     ),
       //   ),
       // ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
                 height: 100.h,
