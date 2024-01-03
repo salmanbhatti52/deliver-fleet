@@ -28,6 +28,7 @@ class RegisterScreen extends StatefulWidget {
   final String userType;
   final String deviceID;
   final String phoneNumber;
+
   const RegisterScreen(
       {super.key,
       required this.userType,
@@ -43,6 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
   late TextEditingController emailController;
+
   // late TextEditingController passwordController;
   // late TextEditingController confirmPasswordController;
   // late TextEditingController phoneNumberController;
@@ -460,7 +462,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 textInputType: TextInputType.text,
                                 enterTextStyle: enterTextStyle,
                                 cursorColor: orange,
-                                // hintText: 'National identification number',
                                 hintText: 'Fleet Code',
                                 border: border,
                                 hintStyle: hintStyle,
@@ -476,7 +477,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ? SizedBox(
                               height: 15.h,
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       widget.userType == 'Rider'
                           ? Text(
                               '* Register without fleet code if you have a vehicle',
@@ -507,7 +508,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       });
                                     },
                                     child: SvgPicture.asset(
-                                        'assets/images/check-icon.svg'))
+                                        'assets/images/check-icon.svg'),
+                                  )
                                 : SvgPicture.asset(
                                     'assets/images/uncheck-icon.svg'),
                           ),
@@ -606,6 +608,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool isRegistering = false;
   APIResponse<APIResponse>? _signupResponse;
+
   registerMethod(BuildContext context) async {
     if (_key.currentState!.validate()) {
       setState(() {
@@ -625,11 +628,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         "account_type": "SignupWithApp"
       };
 
-      print('device ID for android or Ios is:  ' + signupData.toString());
+      print('device ID for android or Ios is: ${signupData.toString()}');
 
       _signupResponse = await service.signUpAPI(signupData);
       if (_signupResponse!.status!.toLowerCase() == 'success') {
-        print('object device id:  ' + widget.deviceID);
+        print('object device id: ${widget.deviceID}');
         showToastSuccess(
             _signupResponse!.message!.toString(), FToast().init(context),
             seconds: 1);
@@ -645,7 +648,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
         } else {
           showToastSuccess(
-              "You have registered Successfully, PLease Wait Admin Approve Your Account Soon...",
+              "You have registered successfully admin approve your account soon...",
               FToast().init(context),
               seconds: 1);
           Navigator.of(context).pushAndRemoveUntil(
@@ -656,8 +659,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               (Route<dynamic> route) => false);
         }
       } else {
-        print('device id for android while registering:  ' +
-            _signupResponse!.message!.toString());
+        print(
+            'device id for android while registering: ${_signupResponse!.message!.toString()}');
 
         showToastError(
           _signupResponse!.message!.toString(),

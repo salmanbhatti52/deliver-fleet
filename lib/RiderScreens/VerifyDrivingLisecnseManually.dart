@@ -72,10 +72,10 @@ class _VerifyDrivingLicenseManuallyState
             base64img = base64.encode(imageByte);
           });
         } else {
-          showToastError("You didn't Take Any Picture", FToast().init(context));
+          showToastError("You didn't take any picture", FToast().init(context));
         }
       } else {
-        showToastError("Select Image to proceed", FToast().init(context));
+        showToastError("Select image to proceed", FToast().init(context));
       }
     } catch (e) {
       showToastError("Couldn't select image $e", FToast().init(context));
@@ -148,270 +148,276 @@ class _VerifyDrivingLicenseManuallyState
       home: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
-          ),
+          // leadingWidth: 70,
+          // leading: Padding(
+          //   padding: const EdgeInsets.only(top: 8.0, left: 20),
+          //   child: GestureDetector(
+          //     onTap: () => Navigator.of(context).pop(),
+          //     child: backArrowWithContainer(context),
+          //   ),
+          // ),
         ),
-        body: LayoutBuilder(
-          builder: (context, constraints) => GlowingOverscrollIndicator(
-            axisDirection: AxisDirection.down,
-            color: orange,
-            child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.minHeight),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-                  child: Form(
-                    key: _key,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Rider Onboarding',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.syne(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: black,
+        body: WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
+          },
+          child: LayoutBuilder(
+            builder: (context, constraints) => GlowingOverscrollIndicator(
+              axisDirection: AxisDirection.down,
+              color: orange,
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.minHeight),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+                    child: Form(
+                      key: _key,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 20.h,
                           ),
-                        ),
-                        SizedBox(
-                          height: 50.h,
-                        ),
-                        Stack(
-                          alignment: Alignment.bottomRight,
-                          clipBehavior: Clip.none,
-                          children: [
-                            imagePath != null
-                                ? Container(
-                                    width: 150.w,
-                                    height: 150.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: lightGrey,
-                                        width: 4.5,
-                                      ),
-                                      image: DecorationImage(
-                                        image: FileImage(imagePath!),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    // child: ClipRRect(
-                                    //   borderRadius: BorderRadius.circular(10),
-                                    //   child: SvgPicture.asset(
-                                    //     'assets/images/sample.jpg',
-                                    //     fit: BoxFit.cover,
-                                    //   ),
-                                    // ),
-                                  )
-                                : Container(
-                                    width: 150.w,
-                                    height: 150.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: lightGrey,
-                                        width: 4.5,
-                                      ),
-                                      image: const DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/place-holder.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                            Positioned(
-                              right: -7,
-                              bottom: -10,
-                              child: GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CustomDialogBox(
-                                            name: '',
-                                            onCameraBTNPressed: () {
-                                              imageSelection(
-                                                  ImageSource.camera, 0);
-                                            },
-                                            onGalleryBTNPressed: () {
-                                              imageSelection(
-                                                  ImageSource.gallery, 0);
-                                            });
-                                      });
-                                },
-                                child: cameraIcon(context),
-                              ),
+                          Text(
+                            'Rider Onboarding',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.syne(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                              color: black,
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Stack(
-                          children: [
-                            SizedBox(
-                              width: 300.w,
-                              child: TextFormFieldWidget(
-                                controller: addressController,
-                                textInputType: TextInputType.text,
-                                enterTextStyle: enterTextStyle,
-                                cursorColor: orange,
-                                hintText: 'Address',
-                                border: border,
-                                hintStyle: hintStyle,
-                                focusedBorder: focusedBorder,
-                                obscureText: null,
-                                contentPadding: contentPadding,
-                                enableBorder: enableBorder,
-                                onChanged: (value) {
-                                  searchAddressPlaces(value!);
-                                },
-                                validator: (val) {
-                                  if (val!.isEmpty) {
-                                    return 'make sure you\'ve entered the same address';
-                                  }
-                                  return null;
-                                },
-                                length: -1,
-                              ),
-                            ),
-                            if (addressPredictions.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 40),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: white,
-                                    borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
+                          ),
+                          SizedBox(
+                            height: 50.h,
+                          ),
+                          Stack(
+                            alignment: Alignment.bottomRight,
+                            clipBehavior: Clip.none,
+                            children: [
+                              imagePath != null
+                                  ? Container(
+                                      width: 150.w,
+                                      height: 150.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: lightGrey,
+                                          width: 4.5,
+                                        ),
+                                        image: DecorationImage(
+                                          image: FileImage(imagePath!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      // child: ClipRRect(
+                                      //   borderRadius: BorderRadius.circular(10),
+                                      //   child: SvgPicture.asset(
+                                      //     'assets/images/sample.jpg',
+                                      //     fit: BoxFit.cover,
+                                      //   ),
+                                      // ),
+                                    )
+                                  : Container(
+                                      width: 150.w,
+                                      height: 150.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: lightGrey,
+                                          width: 4.5,
+                                        ),
+                                        image: const DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/place-holder.png'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  child: ListView.separated(
-                                    itemCount: addressPredictions.length,
-                                    itemBuilder: (context, index) {
-                                      final prediction =
-                                          addressPredictions[index];
-                                      return ListTile(
-                                        title: Text(prediction.name),
-                                        subtitle: Text(
-                                            prediction.formattedAddress ?? ''),
-                                        onTap: () {
-                                          addressController.text =
-                                              prediction.formattedAddress!;
-                                          final double lat =
-                                              prediction.geometry!.location.lat;
-                                          final double lng =
-                                              prediction.geometry!.location.lng;
-                                          const double zoomLevel = 15.0;
-                                          onAddressLocationSelected(
-                                              LatLng(lat, lng), zoomLevel);
-                                          addressLat = lat.toString();
-                                          addressLng = lng.toString();
-                                          setState(() {
-                                            addressPredictions.clear();
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
-                                            print("pickupLat: $addressLat");
-                                            print("pickupLng $addressLng");
-                                            print(
-                                                "pickupLocation: ${prediction.formattedAddress}");
-                                          });
-                                          // Move the map camera to the selected location
-                                          mapController?.animateCamera(
-                                              CameraUpdate.newLatLng(
-                                                  selectedLocation!));
-                                        },
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return const Divider(
-                                        color: Colors.black,
-                                      );
-                                    },
-                                  ),
+                              Positioned(
+                                right: -7,
+                                bottom: -10,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return CustomDialogBox(
+                                              name: '',
+                                              onCameraBTNPressed: () {
+                                                imageSelection(
+                                                    ImageSource.camera, 0);
+                                              },
+                                              onGalleryBTNPressed: () {
+                                                imageSelection(
+                                                    ImageSource.gallery, 0);
+                                              });
+                                        });
+                                  },
+                                  child: cameraIcon(context),
                                 ),
                               ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        // SizedBox(
-                        //   width: 300.w,
-                        //   child: TextFormFieldWidget(
-                        //     controller: CNICController,
-                        //     textInputType: TextInputType.number,
-                        //     enterTextStyle: enterTextStyle,
-                        //     cursorColor: orange,
-                        //     hintText: 'National identification number',
-                        //     border: border,
-                        //     hintStyle: hintStyle,
-                        //     focusedBorder: focusedBorder,
-                        //     obscureText: null,
-                        //     contentPadding: contentPadding,
-                        //     enableBorder: enableBorder,
-                        //     validator: (val) {
-                        //       if (val!.isEmpty) {
-                        //         return 'make sure you\'ve entered the same NIN';
-                        //       }
-                        //       return null;
-                        //     },
-                        //     length: 11,
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: 30.h,
-                        // ),
-                        SizedBox(
-                          width: 300.w,
-                          child: TextFormFieldWidget(
-                            controller: licenseController,
-                            textInputType: TextInputType.text,
-                            enterTextStyle: enterTextStyle,
-                            cursorColor: orange,
-                            hintText: 'Driving license number',
-                            border: border,
-                            hintStyle: hintStyle,
-                            focusedBorder: focusedBorder,
-                            obscureText: null,
-                            contentPadding: contentPadding,
-                            enableBorder: enableBorder,
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return 'make sure you\'ve entered the same number';
-                              }
-                              return null;
-                            },
-                            length: -1,
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 120.h,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 20.0.h),
-                          child: GestureDetector(
-                            onTap: () => licenseVerify(context),
-                            child: buttonContainer(context, 'NEXT'),
+                          SizedBox(
+                            height: 30.h,
                           ),
-                        ),
-                      ],
+                          Stack(
+                            children: [
+                              SizedBox(
+                                width: 300.w,
+                                child: TextFormFieldWidget(
+                                  controller: addressController,
+                                  textInputType: TextInputType.text,
+                                  enterTextStyle: enterTextStyle,
+                                  cursorColor: orange,
+                                  hintText: 'Address',
+                                  border: border,
+                                  hintStyle: hintStyle,
+                                  focusedBorder: focusedBorder,
+                                  obscureText: null,
+                                  contentPadding: contentPadding,
+                                  enableBorder: enableBorder,
+                                  onChanged: (value) {
+                                    searchAddressPlaces(value!);
+                                  },
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return 'make sure you\'ve entered the same address';
+                                    }
+                                    return null;
+                                  },
+                                  length: -1,
+                                ),
+                              ),
+                              if (addressPredictions.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 40),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: white,
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      ),
+                                    ),
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height:
+                                        MediaQuery.of(context).size.height * 0.2,
+                                    child: ListView.separated(
+                                      itemCount: addressPredictions.length,
+                                      itemBuilder: (context, index) {
+                                        final prediction =
+                                            addressPredictions[index];
+                                        return ListTile(
+                                          title: Text(prediction.name),
+                                          subtitle: Text(
+                                              prediction.formattedAddress ?? ''),
+                                          onTap: () {
+                                            addressController.text =
+                                                prediction.formattedAddress!;
+                                            final double lat =
+                                                prediction.geometry!.location.lat;
+                                            final double lng =
+                                                prediction.geometry!.location.lng;
+                                            const double zoomLevel = 15.0;
+                                            onAddressLocationSelected(
+                                                LatLng(lat, lng), zoomLevel);
+                                            addressLat = lat.toString();
+                                            addressLng = lng.toString();
+                                            setState(() {
+                                              addressPredictions.clear();
+                                              FocusManager.instance.primaryFocus
+                                                  ?.unfocus();
+                                              print("pickupLat: $addressLat");
+                                              print("pickupLng $addressLng");
+                                              print(
+                                                  "pickupLocation: ${prediction.formattedAddress}");
+                                            });
+                                            // Move the map camera to the selected location
+                                            mapController?.animateCamera(
+                                                CameraUpdate.newLatLng(
+                                                    selectedLocation!));
+                                          },
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return const Divider(
+                                          color: Colors.black,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          // SizedBox(
+                          //   width: 300.w,
+                          //   child: TextFormFieldWidget(
+                          //     controller: CNICController,
+                          //     textInputType: TextInputType.number,
+                          //     enterTextStyle: enterTextStyle,
+                          //     cursorColor: orange,
+                          //     hintText: 'National identification number',
+                          //     border: border,
+                          //     hintStyle: hintStyle,
+                          //     focusedBorder: focusedBorder,
+                          //     obscureText: null,
+                          //     contentPadding: contentPadding,
+                          //     enableBorder: enableBorder,
+                          //     validator: (val) {
+                          //       if (val!.isEmpty) {
+                          //         return 'make sure you\'ve entered the same NIN';
+                          //       }
+                          //       return null;
+                          //     },
+                          //     length: 11,
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   height: 30.h,
+                          // ),
+                          SizedBox(
+                            width: 300.w,
+                            child: TextFormFieldWidget(
+                              controller: licenseController,
+                              textInputType: TextInputType.text,
+                              enterTextStyle: enterTextStyle,
+                              cursorColor: orange,
+                              hintText: 'Driving license number',
+                              border: border,
+                              hintStyle: hintStyle,
+                              focusedBorder: focusedBorder,
+                              obscureText: null,
+                              contentPadding: contentPadding,
+                              enableBorder: enableBorder,
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return 'make sure you\'ve entered the same number';
+                                }
+                                return null;
+                              },
+                              length: -1,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 120.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 20.0.h),
+                            child: GestureDetector(
+                              onTap: () => licenseVerify(context),
+                              child: buttonContainer(context, 'NEXT'),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

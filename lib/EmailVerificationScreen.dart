@@ -250,7 +250,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   ),
                   (route) => false);
               showToastSuccess(
-                  'Badge is not verified. PLese add vehicle or request a bike to verify badge.',
+                  'Badge is not verified. PLease add vehicle or request a bike to verify badge.',
                   FToast().init(context),
                   seconds: 3);
             } else {
@@ -321,10 +321,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             (Route<dynamic> route) => false);
       } else if (checkPhoneNumberModel.status == "error" &&
           checkPhoneNumberModel.message ==
-              "Your account is in Deleted state.") {
+              "Your account is in deleted state.") {
         Navigator.pop(context);
         showToastSuccess(
-            'Your account is in Deleted state.', FToast().init(context),
+            'Your account is in deleted state.', FToast().init(context),
             seconds: 3);
       }
       setState(() {

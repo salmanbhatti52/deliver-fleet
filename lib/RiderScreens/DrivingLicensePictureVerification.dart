@@ -88,7 +88,7 @@ class _DrivingLicensePictureVerificationState
             base64img = base64.encode(imageByte);
           });
         } else {
-          showToastError("You didn't Take Any Picture", FToast().init(context));
+          showToastError("You didn't take any picture", FToast().init(context));
         }
       } else if (selection == 1) {
         XFile? imageFile1 = await ImagePicker().pickImage(
@@ -106,10 +106,10 @@ class _DrivingLicensePictureVerificationState
             base64imgForBack = base64.encode(imageByte);
           });
         } else {
-          showToastError("You didn't Take Any Picture", FToast().init(context));
+          showToastError("You didn't take any picture", FToast().init(context));
         }
       } else {
-        showToastError("You didn't Take Any Picture", FToast().init(context));
+        showToastError("You didn't take any picture", FToast().init(context));
       }
     } catch (e) {
       showToastError("CATCH " + e.toString(), FToast().init(context));

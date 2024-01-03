@@ -1,6 +1,6 @@
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
-import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -68,7 +68,7 @@ class _WaitingPageState extends State<WaitingPage> {
                     onTap: () {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                              builder: (context) => const BottomNavBarFleet()),
+                              builder: (context) => const BottomNavBar()),
                           (Route<dynamic> route) => false);
                     },
                     child: buttonContainer(context, 'CONTINUE'),
