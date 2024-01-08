@@ -168,7 +168,10 @@ class _InProgressDetailsState extends State<InProgressDetails> {
             top: Radius.circular(20),
           ),
         ),
-        height: MediaQuery.sizeOf(context).height * 0.63,
+        // height: MediaQuery.sizeOf(context).height * 0.66,
+        height: widget.inProgressRidesList!.bookings!.scheduled == "Yes"
+            ? MediaQuery.sizeOf(context).height * 0.66
+            : MediaQuery.sizeOf(context).height * 0.6,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(
@@ -242,7 +245,16 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                               SizedBox(
                                 height: 4.h,
                               ),
-                              Text(
+                              widget.inProgressRidesList!.bookings!.scheduled == "Yes"
+                                  ? Text(
+                                '${widget.inProgressRidesList!.bookings!.bookings_types!.name!} (Scheduled Ride)',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: grey,
+                                ),
+                              )
+                                  : Text(
                                 widget.inProgressRidesList!.bookings!
                                     .bookings_types!.name!,
                                 style: GoogleFonts.inter(
@@ -252,82 +264,82 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                                 ),
                               ),
                               SizedBox(
-                                height: 4.h,
+                                height: 5.h,
                               ),
                             ],
                           ),
                         ],
                       ),
-                      // Row(
-                      //   children: [
-                      //     // GestureDetector(
-                      //     //   onTap: () => startUserToUserChatMethod(context),
-                      //     //   child: Column(
-                      //     //     children: [
-                      //     //       SizedBox(
-                      //     //         width: 34.w,
-                      //     //         height: 34.h,
-                      //     //         child: SvgPicture.asset(
-                      //     //           'assets/images/msg-map-icon.svg',
-                      //     //           fit: BoxFit.scaleDown,
-                      //     //         ),
-                      //     //       ),
-                      //     //       SizedBox(
-                      //     //         height: 5.h,
-                      //     //       ),
-                      //     //       Text(
-                      //     //         'Chat',
-                      //     //         style: GoogleFonts.syne(
-                      //     //           fontSize: 12,
-                      //     //           fontWeight: FontWeight.w400,
-                      //     //           color: grey,
-                      //     //         ),
-                      //     //       )
-                      //     //     ],
-                      //     //   ),
-                      //     // ),
-                      //     SizedBox(
-                      //       width: 10.w,
-                      //     ),
-                      //     GestureDetector(
-                      //       onTap: () {
-                      //         _makePhoneCall(
-                      //             widget.inProgressRidesList!.bookings!.users_customers!.phone!);
-                      //       },
-                      //       child: Column(
-                      //         children: [
-                      //           Container(
-                      //             width: 34.w,
-                      //             height: 34.h,
-                      //             decoration: const BoxDecoration(
-                      //               shape: BoxShape.circle,
-                      //               color: orange,
-                      //             ),
-                      //             child: SvgPicture.asset(
-                      //               'assets/images/call.svg',
-                      //               width: 30,
-                      //               height: 30,
-                      //               colorFilter: const ColorFilter.mode(
-                      //                   white, BlendMode.srcIn),
-                      //               fit: BoxFit.scaleDown,
-                      //             ),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 12.w,
-                      //           ),
-                      //           Text(
-                      //             'Call',
-                      //             style: GoogleFonts.syne(
-                      //               fontSize: 12,
-                      //               fontWeight: FontWeight.w400,
-                      //               color: grey,
-                      //             ),
-                      //           )
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
+                      Row(
+                        children: [
+                          // GestureDetector(
+                          //   onTap: () => startUserToUserChatMethod(context),
+                          //   child: Column(
+                          //     children: [
+                          //       SizedBox(
+                          //         width: 34.w,
+                          //         height: 34.h,
+                          //         child: SvgPicture.asset(
+                          //           'assets/images/msg-map-icon.svg',
+                          //           fit: BoxFit.scaleDown,
+                          //         ),
+                          //       ),
+                          //       SizedBox(
+                          //         height: 5.h,
+                          //       ),
+                          //       Text(
+                          //         'Chat',
+                          //         style: GoogleFonts.syne(
+                          //           fontSize: 12,
+                          //           fontWeight: FontWeight.w400,
+                          //           color: grey,
+                          //         ),
+                          //       )
+                          //     ],
+                          //   ),
+                          // ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              _makePhoneCall(
+                                  widget.inProgressRidesList!.bookings!.users_customers!.phone!);
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 34.w,
+                                  height: 34.h,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: orange,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    'assets/images/call.svg',
+                                    width: 30,
+                                    height: 30,
+                                    colorFilter: const ColorFilter.mode(
+                                        white, BlendMode.srcIn),
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 12.w,
+                                ),
+                                Text(
+                                  'Call',
+                                  style: GoogleFonts.syne(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -335,7 +347,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    height: 35.h,
+                    height: 40.h,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -387,25 +399,16 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                       ],
                     ),
                   ),
-                  widget.inProgressRidesList2?[i].bookings?.scheduled == "Yes"
+                  widget.inProgressRidesList!.bookings!.scheduled == "Yes"
                       ? SizedBox(
                           height: 10.h,
                         )
                       : SizedBox(
-                          height: 30.h,
+                          height: 20.h,
                         ),
-                  widget.inProgressRidesList2?[i].bookings?.scheduled == "Yes"
+                  widget.inProgressRidesList!.bookings!.scheduled == "Yes"
                       ? Column(
                           children: [
-                            Text(
-                              'Schedule Ride',
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.syne(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: grey,
-                              ),
-                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -429,31 +432,31 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                               ],
                             ),
                             SizedBox(
-                              height: 3.h,
+                              height: 5.h,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${widget.inProgressRidesList2?[i].bookings?.delivery_date}',
+                                  '${widget.inProgressRidesList!.bookings!.delivery_date}',
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w400,
                                     color: black,
                                   ),
                                 ),
                                 Text(
-                                  '${widget.inProgressRidesList2?[i].bookings?.delivery_time}',
+                                  '${widget.inProgressRidesList!.bookings!.delivery_time}',
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w400,
                                     color: black,
                                   ),
                                 )
                               ],
                             ),
                             SizedBox(
-                              height: 9.h,
+                              height: 15.h,
                             ),
                           ],
                         )
@@ -554,10 +557,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                     ],
                   ),
                   SizedBox(
-                    height: 15.h,
-                  ),
-                  SizedBox(
-                    height: 15.h,
+                    height: 20.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -627,7 +627,6 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                             children: [
                               Text(
                                 '$currency ${widget.inProgressRidesList2![i].bookings?.total_charges}',
-                                // '$currency ${widget.inProgressRidesList2![i].bookings?.bookings_destinations?[i].destin_discounted_charges!}',
                                 style: GoogleFonts.inter(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
@@ -649,56 +648,40 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                     ],
                   ),
                   SizedBox(
-                    height: 15.h,
+                    height: 20.h,
                   ),
-
-                  // Padding(
-                  //   padding: EdgeInsets.only(top: 22.h),
-                  //   child: isRideStarting
-                  //       ? Padding(
-                  //     padding: EdgeInsets.only(left: 35.0),
-                  //     child: SpinKitDoubleBounce(
-                  //       color: orange,
-                  //       size: 50.0,
-                  //     ),
-                  //   )
-                  //       :
-                  Padding(
-                    padding: const EdgeInsets.only(top: 24.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        showAdaptiveDialog(
-                          context: context,
-                          builder: (context) => INProgressEndRideDialog(
-                            inProgressRidesList: widget.inProgressRidesList,
-                            inProgressRidesList2: widget.inProgressRidesList2,
-                          ),
-                        );
-                        // startRide(context);
-                      },
-                      child: Container(
-                        width: 170.w,
-                        height: 51.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xffFF6302),
-                              Color(0xffFBC403),
-                            ],
-                            begin: Alignment.centerRight,
-                            end: Alignment.centerLeft,
-                          ),
+                  GestureDetector(
+                    onTap: () {
+                      showAdaptiveDialog(
+                        context: context,
+                        builder: (context) => INProgressEndRideDialog(
+                          inProgressRidesList: widget.inProgressRidesList,
+                          inProgressRidesList2: widget.inProgressRidesList2,
                         ),
-                        child: Center(
-                          child: Text(
-                            'End RIDE',
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.syne(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: white,
-                            ),
+                      );
+                    },
+                    child: Container(
+                      width: 170.w,
+                      height: 51.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xffFF6302),
+                            Color(0xffFBC403),
+                          ],
+                          begin: Alignment.centerRight,
+                          end: Alignment.centerLeft,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'End RIDE',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.syne(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: white,
                           ),
                         ),
                       ),
@@ -708,6 +691,6 @@ class _InProgressDetailsState extends State<InProgressDetails> {
               ),
       );
     }
-    return SizedBox();
+    return const SizedBox();
   }
 }

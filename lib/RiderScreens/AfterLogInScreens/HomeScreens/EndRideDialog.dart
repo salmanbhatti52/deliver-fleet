@@ -384,7 +384,7 @@ class _EndRideDialogState extends State<EndRideDialog> {
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => BottomNavBar(),
+            builder: (context) => const BottomNavBar(),
           ),
         );
       } else if (widget.bookingModel.delivery_type != 'Single') {
@@ -392,7 +392,7 @@ class _EndRideDialogState extends State<EndRideDialog> {
           Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => BottomNavBar(),
+              builder: (context) => const BottomNavBar(),
             ),
           );
         } else {

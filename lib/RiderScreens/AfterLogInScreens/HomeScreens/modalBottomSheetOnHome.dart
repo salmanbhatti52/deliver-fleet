@@ -77,7 +77,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
         ),
       ),
       height: widget.customersModel.scheduled == "Yes"
-          ? MediaQuery.sizeOf(context).height * 0.625
+          ? MediaQuery.sizeOf(context).height * 0.64
           : MediaQuery.sizeOf(context).height * 0.6,
       child: Column(
         children: [
@@ -466,7 +466,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
       "users_fleet_id": widget.userID.toString(),
     };
 
-    print('object accept ride data:   ' + acceptRideData.toString());
+    print('object accept ride data: ${acceptRideData.toString()}');
 
     acceptRideResponse = await service.acceptRideRequest(acceptRideData);
     if (acceptRideResponse!.status!.toLowerCase() == 'success') {
@@ -545,7 +545,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
       "other_users_id":
           widget.customersModel.users_customers!.users_customers_id.toString(),
     };
-    print('object start suer to uer chat data:  ' + startChatData.toString());
+    print('object start suer to uer chat data: ${startChatData.toString()}');
     startUserToUserChatResponse =
         await service.startUserToUserChatAPI(startChatData);
     if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
@@ -567,8 +567,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
         ),
       );
     } else {
-      print(' error starting chat:  ' +
-          startUserToUserChatResponse!.message!.toString());
+      print('error starting chat: ${startUserToUserChatResponse!.message!.toString()}');
       // showToastError('error occurred,try again', FToast().init(context),
       //     seconds: 2);
       Navigator.of(context).push(

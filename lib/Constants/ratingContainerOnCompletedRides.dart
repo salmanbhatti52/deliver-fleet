@@ -12,15 +12,14 @@ class RatingContainerOnCompletedRides extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w),
-      width: 40.w,
+      width: 60.w,
       height: 25.h,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(11),
+        borderRadius: BorderRadius.circular(100),
         color: lightOrange,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(
             'assets/images/rating-star.svg',
@@ -28,6 +27,7 @@ class RatingContainerOnCompletedRides extends StatelessWidget {
             height: 10.h,
             fit: BoxFit.scaleDown,
           ),
+          SizedBox(width: 5.w),
           Text(
             ratings,
             style: GoogleFonts.inter(

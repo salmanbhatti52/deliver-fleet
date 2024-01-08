@@ -151,7 +151,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
           ),
         ),
         height: widget.bookingModel.scheduled == "Yes"
-            ? MediaQuery.sizeOf(context).height * 0.665
+            ? MediaQuery.sizeOf(context).height * 0.685
             : MediaQuery.sizeOf(context).height * 0.635,
         child: isLoading
             ? spinKitRotatingCircle
@@ -1429,13 +1429,13 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   startRideMethod(BuildContext context) async {
     if (widget.bookingModel.scheduled == "Yes") {
       showToastError(
-          'Your Scheduled Ride is not started yet', FToast().init(context),
-          seconds: 1);
+          'Your scheduled ride is not started yet', FToast().init(context),
+          seconds: 2);
     } else if (pickedParcelIds!.length != widget.bookingDestinations.length) {
       showToastError(
           'You\'ve to pick all the parcel from pickup location first.',
           FToast().init(context),
-          seconds: 1);
+          seconds: 2);
     } else {
       setState(() {
         isRideStarting = true;
