@@ -55,46 +55,46 @@ class _LogInScreenState extends State<LogInScreen> {
       const CountryCode(name: 'Nigeria', code: 'NG', dialCode: '+234');
   TextEditingController contactNumberController = TextEditingController();
 
-  CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
-
-  checkNumber() async {
-    // try {
-    setState(() {
-      isLoading2 = true;
-    });
-    print("one_signal_id ${widget.deviceID}");
-    print("user_type ${widget.userType}");
-    print("phone ${countryCode!.dialCode + contactNumberController.text}");
-    print("latitude ${_currentPosition!.latitude.toString()}");
-    print("longitude ${_currentPosition!.longitude.toString()}");
-    String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        "one_signal_id": widget.deviceID,
-        "user_type": widget.userType,
-        "phone": countryCode!.dialCode + contactNumberController.text,
-        "latitude": _currentPosition!.latitude.toString(),
-        "longitude": _currentPosition!.longitude.toString(),
-      },
-    );
-    final responseString = response.body;
-    print("response: $responseString");
-    print("statusCode: ${response.statusCode}");
-    if (response.statusCode == 200) {
-      checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
-      setState(() {
-        isLoading2 = false;
-      });
-    }
-    // } catch (e) {
-    //   print('Something went wrong = ${e.toString()}');
-    //   return null;
-    // }
-  }
+  // CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
+  //
+  // checkNumber() async {
+  //   // try {
+  //   setState(() {
+  //     isLoading2 = true;
+  //   });
+  //   print("one_signal_id ${widget.deviceID}");
+  //   print("user_type ${widget.userType}");
+  //   print("phone ${countryCode!.dialCode + contactNumberController.text}");
+  //   print("latitude ${_currentPosition!.latitude.toString()}");
+  //   print("longitude ${_currentPosition!.longitude.toString()}");
+  //   String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
+  //   final response = await http.post(
+  //     Uri.parse(apiUrl),
+  //     headers: {
+  //       'Accept': 'application/json',
+  //     },
+  //     body: {
+  //       "one_signal_id": widget.deviceID,
+  //       "user_type": widget.userType,
+  //       "phone": countryCode!.dialCode + contactNumberController.text,
+  //       "latitude": _currentPosition!.latitude.toString(),
+  //       "longitude": _currentPosition!.longitude.toString(),
+  //     },
+  //   );
+  //   final responseString = response.body;
+  //   print("response: $responseString");
+  //   print("statusCode: ${response.statusCode}");
+  //   if (response.statusCode == 200) {
+  //     checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
+  //     setState(() {
+  //       isLoading2 = false;
+  //     });
+  //   }
+  //   // } catch (e) {
+  //   //   print('Something went wrong = ${e.toString()}');
+  //   //   return null;
+  //   // }
+  // }
 
   // late TextEditingController emailController;
   // late TextEditingController passwordController;
@@ -648,20 +648,20 @@ class _LogInScreenState extends State<LogInScreen> {
                                 : GestureDetector(
                                     onTap: () async {
                                       if (_key.currentState!.validate()) {
-                                        await checkNumber();
-                                        if (checkPhoneNumberModel.status ==
-                                                "error" &&
-                                            checkPhoneNumberModel.message ==
-                                                "Your account is not approved yet.") {
-                                          showToastSuccess(
-                                              'Your account is not approved yet.',
-                                              FToast().init(context),
-                                              seconds: 3);
-                                        } else if (checkPhoneNumberModel
-                                                    .status ==
-                                                "error" &&
-                                            checkPhoneNumberModel.message ==
-                                                "Phone number does not exist.") {
+                                        // await checkNumber();
+                                        // if (checkPhoneNumberModel.status ==
+                                        //         "error" &&
+                                        //     checkPhoneNumberModel.message ==
+                                        //         "Your account is not approved yet.") {
+                                        //   showToastSuccess(
+                                        //       'Your account is not approved yet.',
+                                        //       FToast().init(context),
+                                        //       seconds: 3);
+                                        // } else if (checkPhoneNumberModel
+                                        //             .status ==
+                                        //         "error" &&
+                                        //     checkPhoneNumberModel.message ==
+                                        //         "Phone number does not exist.") {
                                           _getCurrentPosition();
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
@@ -682,35 +682,35 @@ class _LogInScreenState extends State<LogInScreen> {
                                               ),
                                             ),
                                           );
-                                        } else if (checkPhoneNumberModel
-                                                .status ==
-                                            "success") {
-                                          _getCurrentPosition();
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  EmailVerificationScreen(
-                                                latitude: _currentPosition!
-                                                    .latitude
-                                                    .toString(),
-                                                longitude: _currentPosition!
-                                                    .longitude
-                                                    .toString(),
-                                                phoneNumber:
-                                                    countryCode!.dialCode +
-                                                        contactNumberController
-                                                            .text,
-                                                userType: widget.userType,
-                                                deviceID: widget.deviceID ?? '',
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          showToastSuccess(
-                                              '${checkPhoneNumberModel.message}',
-                                              FToast().init(context),
-                                              seconds: 3);
-                                        }
+                                        // } else if (checkPhoneNumberModel
+                                        //         .status ==
+                                        //     "success") {
+                                        //   _getCurrentPosition();
+                                        //   Navigator.of(context).push(
+                                        //     MaterialPageRoute(
+                                        //       builder: (context) =>
+                                        //           EmailVerificationScreen(
+                                        //         latitude: _currentPosition!
+                                        //             .latitude
+                                        //             .toString(),
+                                        //         longitude: _currentPosition!
+                                        //             .longitude
+                                        //             .toString(),
+                                        //         phoneNumber:
+                                        //             countryCode!.dialCode +
+                                        //                 contactNumberController
+                                        //                     .text,
+                                        //         userType: widget.userType,
+                                        //         deviceID: widget.deviceID ?? '',
+                                        //       ),
+                                        //     ),
+                                        //   );
+                                        // } else {
+                                        //   showToastSuccess(
+                                        //       '${checkPhoneNumberModel.message}',
+                                        //       FToast().init(context),
+                                        //       seconds: 3);
+                                        // }
                                       }
                                     },
                                     child: isLoading2
