@@ -42,7 +42,7 @@ class LogInScreen extends StatefulWidget {
   @override
   State<LogInScreen> createState() => _LogInScreenState();
 }
-=
+
 class _LogInScreenState extends State<LogInScreen> {
   bool isLoading = false;
   bool isLoading2 = false;
@@ -59,37 +59,37 @@ class _LogInScreenState extends State<LogInScreen> {
 
   checkNumber() async {
     try {
-    setState(() {
-      isLoading2 = true;
-    });
-    print("one_signal_id ${widget.deviceID}");
-    print("user_type ${widget.userType}");
-    print("phone ${countryCode!.dialCode + contactNumberController.text}");
-    print("latitude ${_currentPosition!.latitude.toString()}");
-    print("longitude ${_currentPosition!.longitude.toString()}");
-    String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        "one_signal_id": widget.deviceID,
-        "user_type": widget.userType,
-        "phone": countryCode!.dialCode + contactNumberController.text,
-        "latitude": _currentPosition!.latitude.toString(),
-        "longitude": _currentPosition!.longitude.toString(),
-      },
-    );
-    final responseString = response.body;
-    print("response: $responseString");
-    print("statusCode: ${response.statusCode}");
-    if (response.statusCode == 200) {
-      checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
       setState(() {
-        isLoading2 = false;
+        isLoading2 = true;
       });
-    }
+      print("one_signal_id ${widget.deviceID}");
+      print("user_type ${widget.userType}");
+      print("phone ${countryCode!.dialCode + contactNumberController.text}");
+      print("latitude ${_currentPosition!.latitude.toString()}");
+      print("longitude ${_currentPosition!.longitude.toString()}");
+      String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "one_signal_id": widget.deviceID,
+          "user_type": widget.userType,
+          "phone": countryCode!.dialCode + contactNumberController.text,
+          "latitude": _currentPosition!.latitude.toString(),
+          "longitude": _currentPosition!.longitude.toString(),
+        },
+      );
+      final responseString = response.body;
+      print("response: $responseString");
+      print("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
+        setState(() {
+          isLoading2 = false;
+        });
+      }
     } catch (e) {
       print('Something went wrong = ${e.toString()}');
       return null;
