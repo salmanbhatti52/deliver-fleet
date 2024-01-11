@@ -316,7 +316,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                 fontSize: 30,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Text(
@@ -347,15 +347,15 @@ class _LogInScreenState extends State<LogInScreen> {
                                   }
                                   return null;
                                 },
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
                                   fontFamily: 'Inter-Regular',
                                 ),
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Color(0xffF2F0EE),
-                                  errorStyle: TextStyle(
+                                  fillColor: const Color(0xffF2F0EE),
+                                  errorStyle: const TextStyle(
                                     color: red,
                                     fontSize: 10,
                                     fontFamily: 'Inter-Bold',
@@ -384,8 +384,8 @@ class _LogInScreenState extends State<LogInScreen> {
                                     ),
                                     borderSide: BorderSide.none,
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
+                                  errorBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
                                       Radius.circular(10),
                                     ),
                                     borderSide: BorderSide(
@@ -858,6 +858,12 @@ class _LogInScreenState extends State<LogInScreen> {
         await sharedPreferences.setString(
             'userEmail', _loginResponse!.data!.email!);
         await sharedPreferences.setString(
+            'userFirstName', _loginResponse!.data!.first_name!);
+        await sharedPreferences.setString(
+            'userLastName', _loginResponse!.data!.last_name!);
+        await sharedPreferences.setString(
+            'userProfilePic', checkPhoneNumberModel.data!.profilePic!);
+        await sharedPreferences.setString(
             'userLatitude', _loginResponse!.data!.latitude!);
         await sharedPreferences.setString(
             'userLongitude', _loginResponse!.data!.longitude!);
@@ -882,7 +888,7 @@ class _LogInScreenState extends State<LogInScreen> {
           if (_getAllVehicleFleetResponse.status!.toLowerCase() == 'success') {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => BottomNavBar(),
+                builder: (context) => const BottomNavBar(),
               ),
             );
           } else {
@@ -899,7 +905,7 @@ class _LogInScreenState extends State<LogInScreen> {
         } else if (widget.userType == 'Fleet') {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => BottomNavBarFleet(),
+              builder: (context) => const BottomNavBarFleet(),
             ),
           );
         }

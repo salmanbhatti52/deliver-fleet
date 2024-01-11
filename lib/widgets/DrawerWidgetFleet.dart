@@ -38,6 +38,9 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
 
   int userID = -1;
   String userEmail = '';
+  String? userFirstName;
+  String? userLastName;
+  String? userProfilePic;
 
   late SharedPreferences sharedPreferences;
   bool isLoading = false;
@@ -98,7 +101,10 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
   init() async {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
-    userEmail = (sharedPreferences.getString('userEmail') ?? '');
+    userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
+    userLastName = (sharedPreferences.getString('userLastName') ?? '');
+    userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
+    print('sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
 
     Map data = {
       "users_fleet_id": userID.toString(),
@@ -149,7 +155,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                        'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
+                        // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {
@@ -180,7 +187,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                   height: 20.h,
                 ),
                 Text(
-                  '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
+                  '$userFirstName $userLastName',
+                  // '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
                   style: GoogleFonts.syne(
                     fontSize: 14,
                     color: black,

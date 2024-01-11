@@ -17,14 +17,17 @@ class ErrorPage extends StatefulWidget {
 class _ErrorPageState extends State<ErrorPage> {
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    double fontSize = screenHeight * 0.02;
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
         elevation: 0.0,
+        leadingWidth: 65,
         backgroundColor: Colors.transparent,
-        leadingWidth: 70,
         leading: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          padding: const EdgeInsets.only(top: 4, bottom: 4, left: 20),
           child: GestureDetector(
             onTap: () => Navigator.of(context).pop(),
             child: backArrowWithContainer(context),
@@ -40,47 +43,52 @@ class _ErrorPageState extends State<ErrorPage> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 22.w,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // SizedBox(
+          //   height: screenHeight * 0.08,
+          // ),
+          Text(
+            'Something must have gone wrong',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.syne(
+              fontSize: fontSize,
+              fontWeight: FontWeight.w600,
+              color: orange,
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 30.h,
-              ),
-              Text(
-                'Something must have went wrong',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.syne(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: orange,
-                ),
-              ),
-              SvgPicture.asset(
-                  'assets/images/404 Error Page not Found with people connecting a plug-pana.svg'),
-              Text(
-                'Please confirm that you have\n performed the correct action\n and try again',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.syne(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: orange,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 18.0, top: 40),
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: buttonContainer(context, 'GO BACK'),
-                ),
-              ),
-            ],
+          // SizedBox(
+          //   height: screenHeight * 0.08,
+          // ),
+          SvgPicture.asset(
+            'assets/images/error-icon.svg',
+            width: screenWidth * 0.9,
+            fit: BoxFit.scaleDown,
           ),
-        ),
+          // SizedBox(
+          //   height: screenHeight * 0.08,
+          // ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Text(
+              'Please confirm that you have performed the correct action and try again',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.syne(
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+                color: orange,
+              ),
+            ),
+          ),
+          // SizedBox(
+          //   height: screenHeight * 0.08,
+          // ),
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: buttonContainer(context, 'GO BACK'),
+          ),
+        ],
       ),
     );
   }

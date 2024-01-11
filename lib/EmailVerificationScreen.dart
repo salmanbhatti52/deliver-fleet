@@ -214,6 +214,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         await sharedPreferences.setString(
             'userEmail', checkPhoneNumberModel.data!.email.toString());
         await sharedPreferences.setString(
+            'userFirstName', checkPhoneNumberModel.data!.firstName.toString());
+        await sharedPreferences.setString(
+            'userLastName', checkPhoneNumberModel.data!.lastName.toString());
+        await sharedPreferences.setString(
+            'userProfilePic', checkPhoneNumberModel.data!.profilePic.toString());
+        await sharedPreferences.setString(
             'userLatitude', widget.latitude.toString());
         await sharedPreferences.setString(
             'userLongitude', widget.longitude.toString());
@@ -226,6 +232,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         await sharedPreferences.setString('isLogIn', 'true');
         print("sharedPref lat: ${widget.latitude.toString()}");
         print("sharedPref long: ${widget.longitude.toString()}");
+        final pic = sharedPreferences.getString('userProfilePic');
+        print('pic: $pic');
         print(
             "sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
         print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");

@@ -38,6 +38,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   ApiServices get service => GetIt.I<ApiServices>();
 
   int userID = -1;
+  String? userFirstName;
+  String? userLastName;
+  String? userProfilePic;
 
   late SharedPreferences sharedPreferences;
   bool isLoading = false;
@@ -50,34 +53,45 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       isLoading = true;
       // gettingCategory = true;
     });
-    init();
+    sharedPrefs();
+    // init();
   }
 
-  late APIResponse<LogInModel>? getUserProfileResponse;
-
-  init() async {
+  sharedPrefs() async {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
-
-    Map data = {
-      "users_fleet_id": userID.toString(),
-    };
-
-    getUserProfileResponse = await service.getUserProfileAPI(data);
-
-    if (getUserProfileResponse!.status!.toLowerCase() == 'success') {
-      if (getUserProfileResponse!.data != null) {
-        // showToastSuccess('Loading user data', FToast().init(context));
-      }
-    } else {
-      showToastError(getUserProfileResponse!.message, FToast().init(context));
-    }
-
+    userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
+    userLastName = (sharedPreferences.getString('userLastName') ?? '');
+    userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
+    print('sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
     setState(() {
       isLoading = false;
-      // gettingCategory = false;
     });
   }
+
+  // late APIResponse<LogInModel>? getUserProfileResponse;
+  //
+  // init() async {
+  //
+  //   Map data = {
+  //     "users_fleet_id": userID.toString(),
+  //   };
+  //
+  //   getUserProfileResponse = await service.getUserProfileAPI(data);
+  //
+  //   if (getUserProfileResponse!.status!.toLowerCase() == 'success') {
+  //     if (getUserProfileResponse!.data != null) {
+  //       // showToastSuccess('Loading user data', FToast().init(context));
+  //     }
+  //   } else {
+  //     showToastError(getUserProfileResponse!.message, FToast().init(context));
+  //   }
+  //
+  //   setState(() {
+  //     isLoading = false;
+  //     // gettingCategory = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +121,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
-                          'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                          'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
+                          // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
                           fit: BoxFit.cover,
                           errorBuilder: (BuildContext context,
                               Object exception, StackTrace? stackTrace) {
@@ -143,7 +158,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     height: 20.h,
                   ),
                   Text(
-                    '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
+                    '$userFirstName $userLastName',
+                    // '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
                     style: GoogleFonts.syne(
                       fontSize: 14,
                       color: black,
