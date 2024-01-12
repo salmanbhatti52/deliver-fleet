@@ -104,7 +104,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
     userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
     userLastName = (sharedPreferences.getString('userLastName') ?? '');
     userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
-    print('sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
+    print(
+        'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
 
     Map data = {
       "users_fleet_id": userID.toString(),
@@ -220,8 +221,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         leading: Image.asset(
                           'assets/images/icons8-invite-48.png',
                           color: orange,
-                          width: 25.w,
-                          height: 25.h,
+                          width: 22,
+                          height: 22,
                           fit: BoxFit.scaleDown,
                         ),
                         title: Text(
@@ -411,7 +412,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         leading: SvgPicture.asset(
                           'assets/images/legal-icon.svg',
                           colorFilter:
-                          const ColorFilter.mode(orange, BlendMode.srcIn),
+                              const ColorFilter.mode(orange, BlendMode.srcIn),
                         ),
                         title: Text(
                           'Legal',

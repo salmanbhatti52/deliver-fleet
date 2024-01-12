@@ -23,65 +23,65 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  ApiServices get service => GetIt.I<ApiServices>();
+  // ApiServices get service => GetIt.I<ApiServices>();
 
-  int userID = -1;
-  late SharedPreferences sharedPreferences;
-  bool isPageLoading = false;
+  // int userID = -1;
+  // late SharedPreferences sharedPreferences;
+  // bool isPageLoading = false;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setState(() {
-      isPageLoading = true;
-    });
-    init();
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   setState(() {
+  //     isPageLoading = true;
+  //   });
+  //   init();
+  // }
 
-  late APIResponse<List<GetAllNotificationsModel>>? getAllNotificationsResponse;
-  List<GetAllNotificationsModel>? getAllNotificationsList;
+  // late APIResponse<List<GetAllNotificationsModel>>? getAllNotificationsResponse;
+  // List<GetAllNotificationsModel>? getAllNotificationsList;
 
-  late APIResponse<List<ReadNotificationsModel>>? readNotificationsResponse;
-  List<ReadNotificationsModel>? readNotificationsList;
+  // late APIResponse<List<ReadNotificationsModel>>? readNotificationsResponse;
+  // List<ReadNotificationsModel>? readNotificationsList;
 
-  init() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    userID = (sharedPreferences.getInt('userID') ?? -1);
+  // init() async {
+  //   sharedPreferences = await SharedPreferences.getInstance();
+  //   userID = (sharedPreferences.getInt('userID') ?? -1);
 
-    Map data = {
-      "users_customers_id": userID.toString(),
-    };
-    getAllNotificationsResponse = await service.getAllNotificationsAPI(data);
-    getAllNotificationsList = [];
+  //   Map data = {
+  //     "users_customers_id": userID.toString(),
+  //   };
+  //   getAllNotificationsResponse = await service.getAllNotificationsAPI(data);
+  //   getAllNotificationsList = [];
 
-    if (getAllNotificationsResponse!.status!.toLowerCase() == 'success') {
-      if (getAllNotificationsResponse!.data != null) {
-        getAllNotificationsList!.addAll(getAllNotificationsResponse!.data!);
-        showToastSuccess('Loading all notifications', FToast().init(context),
-            seconds: 1);
-      }
-    } else {
-      showToastError(
-          getAllNotificationsResponse!.message, FToast().init(context));
-    }
+  //   if (getAllNotificationsResponse!.status!.toLowerCase() == 'success') {
+  //     if (getAllNotificationsResponse!.data != null) {
+  //       getAllNotificationsList!.addAll(getAllNotificationsResponse!.data!);
+  //       showToastSuccess('Loading all notifications', FToast().init(context),
+  //           seconds: 1);
+  //     }
+  //   } else {
+  //     showToastError(
+  //         getAllNotificationsResponse!.message, FToast().init(context));
+  //   }
 
-    readNotificationsResponse = await service.readNotificationsAPI(data);
-    readNotificationsList = [];
+  //   readNotificationsResponse = await service.readNotificationsAPI(data);
+  //   readNotificationsList = [];
 
-    if (readNotificationsResponse!.status!.toLowerCase() == 'success') {
-      if (readNotificationsResponse!.data != null) {
-        readNotificationsList!.addAll(readNotificationsResponse!.data!);
-        // showToastSuccess('Loading all notifications', FToast().init(context),
-        //     seconds: 1);
-      }
-    } else {
-      showToastError('No notification found', FToast().init(context));
-    }
-    setState(() {
-      isPageLoading = false;
-    });
-  }
+  //   if (readNotificationsResponse!.status!.toLowerCase() == 'success') {
+  //     if (readNotificationsResponse!.data != null) {
+  //       readNotificationsList!.addAll(readNotificationsResponse!.data!);
+  //       // showToastSuccess('Loading all notifications', FToast().init(context),
+  //       //     seconds: 1);
+  //     }
+  //   } else {
+  //     showToastError('No notification found', FToast().init(context));
+  //   }
+  //   setState(() {
+  //     isPageLoading = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -295,6 +295,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Future<void> onRefreshReadNotifications() async {
-    init();
+    // init();
   }
 }

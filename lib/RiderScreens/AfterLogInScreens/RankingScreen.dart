@@ -69,8 +69,8 @@ class _RankingScreenState extends State<RankingScreen> {
         getAllRatingsList!.addAll(_allRatingsResponse.data!);
       }
     } else {
-      print('object rating :  ' + _allRatingsResponse!.status!.toString());
-      showToastError('something went wrong!', FToast().init(context));
+      print('object rating : ${_allRatingsResponse!.status!.toString()}');
+      // showToastError('something went wrong!', FToast().init(context));
     }
     for (GetAllRatingsModel model in getAllRatingsList!) {
       totalRating = totalRating + double.parse(model.rating ?? '0.0');

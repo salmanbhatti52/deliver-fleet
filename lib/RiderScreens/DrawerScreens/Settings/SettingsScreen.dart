@@ -1,18 +1,23 @@
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/models/API%20models/API%20response.dart';
 import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/NotificationSettingModel.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Constants/Colors.dart';
 import '../../../Constants/back-arrow-with-container.dart';
+
+String? notificationStatus = "Yes";
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -22,54 +27,111 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  ApiServices get service => GetIt.I<ApiServices>();
+  // ApiServices get service => GetIt.I<ApiServices>();
 
   int userID = -1;
-  String userEmail = '';
+  bool switchStatus = true;
 
-  late SharedPreferences sharedPreferences;
-  bool isLoading = false;
+  checkSwitch() async {
+    if (switchStatus == false) {
+      notificationStatus = "No";
+    } else {
+      notificationStatus = "Yes";
+    }
+
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.setString('notificationStatus', "$notificationStatus");
+    notificationSwitch();
+  }
+
+  NotificationSettingModel notificationSettingModel = NotificationSettingModel();
+
+  notificationSwitch() async {
+    try {
+      SharedPreferences sharedPref = await SharedPreferences.getInstance();
+      userID = sharedPref.getInt('userID')!;
+      String apiUrl = "https://deliver.eigix.net/api/update_notification_switch_fleet";
+      print("apiUrl: $apiUrl");
+      print("userId: $userID");
+      print("notifications: $notificationStatus");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "users_fleet_id": userID.toString(),
+          "notifications": notificationStatus,
+        },
+      );
+      final responseString = response.body;
+      print("response: $responseString");
+      print("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        notificationSettingModel =
+            notificationSettingModelFromJson(responseString);
+        setState(() {});
+        print(
+            'notificationSettingModel status: ${notificationSettingModel.status}');
+      }
+    } catch (e) {
+      print('Something went wrong = ${e.toString()}');
+      return null;
+    }
+  }
+
+  sharedPrefs() async {
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    notificationStatus = sharedPref.getString('notificationStatus');
+    print("notificationStatus in sharedPrefs is: $notificationStatus");
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    setState(() {
-      isLoading = true;
-      // gettingCategory = true;
-    });
-    init();
+    sharedPrefs();
   }
 
-  bool isToggled = false;
-  late APIResponse<LogInModel>? getUserProfileResponse;
-
-  init() async {
-    isToggled = false;
-
-    sharedPreferences = await SharedPreferences.getInstance();
-    userID = (sharedPreferences.getInt('userID') ?? -1);
-    userEmail = (sharedPreferences.getString('userEmail') ?? '');
-
-    Map data = {
-      "users_fleet_id": userID.toString(),
-    };
-
-    getUserProfileResponse = await service.getUserProfileAPI(data);
-
-    if (getUserProfileResponse!.status!.toLowerCase() == 'success') {
-      if (getUserProfileResponse!.data != null) {
-        // showToastSuccess('Loading user data', FToast().init(context));
-      }
-    } else {
-      showToastError(getUserProfileResponse!.message, FToast().init(context));
-    }
-
-    setState(() {
-      isLoading = false;
-      // gettingCategory = false;
-    });
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   setState(() {
+  //     isLoading = true;
+  //     // gettingCategory = true;
+  //   });
+  //   init();
+  // }
+  //
+  // bool isToggled = false;
+  // late APIResponse<LogInModel>? getUserProfileResponse;
+  //
+  // init() async {
+  //   isToggled = false;
+  //
+  //   sharedPreferences = await SharedPreferences.getInstance();
+  //   userID = (sharedPreferences.getInt('userID') ?? -1);
+  //   userEmail = (sharedPreferences.getString('userEmail') ?? '');
+  //
+  //   Map data = {
+  //     "users_fleet_id": userID.toString(),
+  //   };
+  //
+  //   getUserProfileResponse = await service.getUserProfileAPI(data);
+  //
+  //   if (getUserProfileResponse!.status!.toLowerCase() == 'success') {
+  //     if (getUserProfileResponse!.data != null) {
+  //       // showToastSuccess('Loading user data', FToast().init(context));
+  //     }
+  //   } else {
+  //     showToastError(getUserProfileResponse!.message, FToast().init(context));
+  //   }
+  //
+  //   setState(() {
+  //     isLoading = false;
+  //     // gettingCategory = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -95,93 +157,81 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: isLoading
-            ? spinKitRotatingCircle
-            : Padding(
-          padding: EdgeInsets.symmetric(horizontal: 22.w),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 40.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Enable Notifications',
-                    style: GoogleFonts.syne(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: black,
-                    ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 22.w),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 40.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Enable Notifications',
+                  style: GoogleFonts.syne(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: black,
                   ),
-                  isUpdating
-                      ? SizedBox(
-                    // width: 10.w,
-                    height: 10.h,
-                    child: SpinKitThreeInOut(
-                      size: 10,
-                      color: orange,
-                      // size: 50.0,
-                    ),
-                  )
-                      : GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isToggled = !isToggled;
-                      });
-                      updateNotification(context);
-                    },
-                    child: SizedBox(
-                      width: 40.w,
-                      height: 20.h,
-                      child: isToggled
-                          ? SvgPicture.asset(
-                        'assets/images/switch-on.svg',
-                        fit: BoxFit.contain,
-                      )
-                          : SvgPicture.asset(
-                        'assets/images/switch-off.svg',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                FlutterSwitch(
+                  width: 35,
+                  height: 20,
+                  activeColor: black,
+                  inactiveColor: white,
+                  activeToggleBorder: Border.all(color: black, width: 2),
+                  inactiveToggleBorder:
+                  Border.all(color: black, width: 2),
+                  inactiveSwitchBorder:
+                  Border.all(color: black, width: 2),
+                  toggleSize: 12,
+                  value: notificationStatus == "Yes"
+                      ? switchStatus = true
+                      : switchStatus = false,
+                  borderRadius: 50,
+                  onToggle: (val) {
+                    setState(() {
+                      switchStatus = val;
+                      checkSwitch();
+                      print("switchStatus onToggle: $switchStatus");
+                    });
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
 
-  APIResponse<LogInModel>? _updateResponse;
-  bool isUpdating = false;
-  updateNotification(BuildContext context) async {
-    setState(() {
-      isUpdating = true;
-    });
-    Map updateData = {
-      "users_fleet_id": userID.toString(),
-      "notifications": isToggled ? 'Yes' : 'No',
-    };
-
-    _updateResponse = await service.updateNotificationStatusApi(updateData);
-
-    if (_updateResponse!.status!.toLowerCase() == 'success') {
-      isToggled
-          ? showToastSuccess(
-          'Notifications are enabled', FToast().init(context))
-          : showToastSuccess(
-          'Notifications are disabled', FToast().init(context));
-    } else {
-      showToastError(_updateResponse!.message!, FToast().init(context));
-    }
-    setState(() {
-      isUpdating = false;
-    });
-  }
+  // APIResponse<LogInModel>? _updateResponse;
+  // bool isUpdating = false;
+  // updateNotification(BuildContext context) async {
+  //   setState(() {
+  //     isUpdating = true;
+  //   });
+  //   Map updateData = {
+  //     "users_fleet_id": userID.toString(),
+  //     "notifications": isToggled ? 'Yes' : 'No',
+  //   };
+  //
+  //   _updateResponse = await service.updateNotificationStatusApi(updateData);
+  //
+  //   if (_updateResponse!.status!.toLowerCase() == 'success') {
+  //     isToggled
+  //         ? showToastSuccess(
+  //         'Notifications are enabled', FToast().init(context))
+  //         : showToastSuccess(
+  //         'Notifications are disabled', FToast().init(context));
+  //   } else {
+  //     showToastError(_updateResponse!.message!, FToast().init(context));
+  //   }
+  //   setState(() {
+  //     isUpdating = false;
+  //   });
+  // }
 }
 
 

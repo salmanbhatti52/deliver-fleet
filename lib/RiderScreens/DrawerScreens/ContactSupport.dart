@@ -69,11 +69,12 @@ class _ContactSupportState extends State<ContactSupport> {
       "other_users_id": widget.adminID.toString(),
     };
     print('object get all msgs:   ' + data.toString());
+    print('adminID ${widget.adminID.toString()}');
     getAllSupportMessagesList = [];
     getAllSupportMessagesResponse = await service.getAllSupportMessages(data);
     if (getAllSupportMessagesResponse.data != null) {
       print('object getting all msgs:   ' +
-          getAllSupportMessagesResponse!.data.toString());
+          getAllSupportMessagesResponse.data.toString());
       getAllSupportMessagesList.addAll(getAllSupportMessagesResponse.data!);
     }
     setState(() {
@@ -224,7 +225,7 @@ class _ContactSupportState extends State<ContactSupport> {
                           children: [
                             SvgPicture.asset('assets/images/location.svg'),
                             SizedBox(
-                              width: 4.w,
+                              width: 2.w,
                             ),
                             SizedBox(
                               width: 150.w,
@@ -500,8 +501,10 @@ class _ContactSupportState extends State<ContactSupport> {
                             border: InputBorder.none,
                             // contentPadding: EdgeInsets.zero,
                             focusedBorder: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 20),
                             hintText: 'Write message here..',
                             hintStyle: GoogleFonts.inter(
+                              height: 2.7,
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: black,

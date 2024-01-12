@@ -111,6 +111,7 @@ class _LegalScreenState extends State<LegalScreen> {
                           onTap: () {
                             setState(() {
                               isExpanded = !isExpanded;
+                              isExpanded2 = false;
                             });
                           },
                           child: Container(
@@ -203,6 +204,7 @@ class _LegalScreenState extends State<LegalScreen> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
+                              isExpanded = false;
                               isExpanded2 = !isExpanded2;
                             });
                           },
