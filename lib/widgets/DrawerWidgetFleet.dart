@@ -4,6 +4,7 @@ import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/Constants/buttonConatinerWithBorder.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:deliver_partner/FleetScreens/DrawerSceensFleet/SettingsScreenFleet.dart';
+import 'package:deliver_partner/FleetScreens/DrawerSceensFleet/SupportScreen.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/ContactSupport.dart';
 import 'package:deliver_partner/RiderScreens/VerifyDrivingLisecnseManually.dart';
 import 'package:deliver_partner/models/API%20models/LogInModel.dart';
@@ -433,12 +434,12 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                       ListTile(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => ContactSupport(
-                                adminPicture: '$getAdminImage',
-                                adminName: '$getAdminName',
-                                adminAddress: '$getAdminAddress',
-                                adminID: '$getAdminId',
-                                userID: '$userID'),
+                            builder: (context) => SupportScreen(
+                                getAdminImage: '$getAdminImage',
+                                getAdminName: '$getAdminName',
+                                getAdminAddress: '$getAdminAddress',
+                                getAdminId: '$getAdminId',
+                            ),
                           ),
                         ),
                         leading: SvgPicture.asset(

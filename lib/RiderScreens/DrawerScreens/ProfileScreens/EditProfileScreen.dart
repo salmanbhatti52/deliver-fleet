@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/APIModelsFleet/StartSupportChatModel.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ import '../../../models/API models/SupportedUserModel.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
 import '../../../widgets/customDialogForImage.dart';
-import '../ContactSupport.dart';
+import 'package:http/http.dart' as http;
 
 class EditProfileScreen extends StatefulWidget {
   final String firstName;
@@ -742,7 +743,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           FToast().init(context),
           seconds: 7);
       saveInfo
-          ? startChat(context)
+          ? startSupportChat()
           : setState(() {
               saveInfo = true;
             });
@@ -752,44 +753,76 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
-  late APIResponse<APIResponse> startChatResponse;
+  StartSupportChatModel startSupportChatModel = StartSupportChatModel();
 
-  startChat(BuildContext context) async {
-    Map startChatData = {
-      "request_type": " startChat",
-      "users_type": "Rider",
-      "other_users_type": "Admin",
-      "users_id": userID.toString(),
-      "other_users_id": getAdminList![0].users_system_id.toString(),
-    };
-    startChatResponse = await service.startChatAPI(startChatData);
-    print('object chat started data:       ' + startChatData.toString());
-
-    if (startChatResponse.status!.toLowerCase() == 'success') {
-      showToastSuccess('Start contact support chat', FToast().init(context));
-      Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(
-          builder: (context) => ContactSupport(
-            adminPicture: getAdminList![0].user_image!,
-            adminName: getAdminList![0].first_name!,
-            adminAddress: getAdminList![0].address!,
-            adminID: getAdminList![0].users_system_id.toString(),
-            userID: userID.toString(),
-          ),
-        ),
+  startSupportChat() async {
+    try {
+      SharedPreferences sharedPref = await SharedPreferences.getInstance();
+      userID = sharedPref.getInt('userID') ?? -1;
+      String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
+      print("apiUrlStartChat: $apiUrl");
+      print("userID: $userID");
+      print("OtherUserId: ${getAdminList![0].users_system_id.toString()}");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "request_type": " startChat",
+          "users_type": "Rider",
+          "other_users_type": "Admin",
+          "users_id": userID.toString(),
+          "other_users_id": getAdminList![0].users_system_id.toString(),
+        },
       );
-    } else {
-      Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(
-          builder: (context) => ContactSupport(
-            adminPicture: getAdminList![0].user_image!,
-            adminName: getAdminList![0].first_name!,
-            adminAddress: getAdminList![0].address!,
-            adminID: getAdminList![0].users_system_id.toString(),
-            userID: userID.toString(),
-          ),
-        ),
-      );
+      final responseString = jsonDecode(response.body);
+      print("response: $responseString");
+      print("status: ${responseString['status']}");
+    } catch (e) {
+      print('Something went wrong = ${e.toString()}');
+      return null;
     }
   }
+
+  // late APIResponse<APIResponse> startChatResponse;
+  //
+  // startChat(BuildContext context) async {
+  //   Map startChatData = {
+  //     "request_type": " startChat",
+  //     "users_type": "Rider",
+  //     "other_users_type": "Admin",
+  //     "users_id": userID.toString(),
+  //     "other_users_id": getAdminList![0].users_system_id.toString(),
+  //   };
+  //   startChatResponse = await service.startChatAPI(startChatData);
+  //   print('object chat started data:       ' + startChatData.toString());
+  //
+  //   if (startChatResponse.status!.toLowerCase() == 'success') {
+  //     showToastSuccess('Start contact support chat', FToast().init(context));
+  //     Navigator.of(context, rootNavigator: true).push(
+  //       MaterialPageRoute(
+  //         builder: (context) => SupportScreen(
+  //           adminPicture: getAdminList![0].user_image!,
+  //           adminName: getAdminList![0].first_name!,
+  //           adminAddress: getAdminList![0].address!,
+  //           adminID: getAdminList![0].users_system_id.toString(),
+  //           userID: userID.toString(),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     Navigator.of(context, rootNavigator: true).push(
+  //       MaterialPageRoute(
+  //         builder: (context) => ContactSupport(
+  //           adminPicture: getAdminList![0].user_image!,
+  //           adminName: getAdminList![0].first_name!,
+  //           adminAddress: getAdminList![0].address!,
+  //           adminID: getAdminList![0].users_system_id.toString(),
+  //           userID: userID.toString(),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
 }
