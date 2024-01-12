@@ -45,7 +45,6 @@ class _RequestRideFromFleetActiveState
   sharePref() async {
     sharedPreferences = await SharedPreferences.getInstance();
     parentID = sharedPreferences.getString('parentID')!;
-    print("parentID $parentID");
   }
 
   @override
@@ -69,7 +68,7 @@ class _RequestRideFromFleetActiveState
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
     print("users_fleet_id ${widget.userFleetId}");
-    print("parent_id ${widget.parentID}");
+    print("parent_id $parentID");
     Map data = {
       "users_fleet_id": widget.userFleetId,
       "parent_id": parentID,
@@ -83,8 +82,10 @@ class _RequestRideFromFleetActiveState
         getAvailableBikesList!.addAll(getAvailableBikesResponse!.data!);
       }
     } else {
-      showToastError(
-          getAvailableBikesResponse!.message, FToast().init(context));
+      // showToastError(
+      //     getAvailableBikesResponse!.message, FToast().init(context));
+      print('listLength: ${getAvailableBikesList!.length}');
+      print('listData: ${getAvailableBikesList!.toList()}');
       setState(() {
         isPageLoading = false;
       });
@@ -176,10 +177,8 @@ class _RequestRideFromFleetActiveState
                                             .vehicles!
                                             .vehicles_id!;
                                       });
-                                      print('id of selected vehicle:  ' +
-                                          selectedVehicleID.toString() +
-                                          '  selected vehicle id id:  ' +
-                                          bikeID.toString());
+                                      print('selected bike id: ${bikeID.toString()}');
+                                      print('id of selected vehicle: ${selectedVehicleID.toString()}');
                                     },
                                     child: Container(
                                       margin: EdgeInsets.only(bottom: 20.h),
