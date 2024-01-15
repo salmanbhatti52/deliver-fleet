@@ -168,7 +168,18 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       },
       verificationFailed: (FirebaseAuthException e) async {
         if (e.code == 'invalid-phone-number') {
-          print('The provided phone number is not valid.');
+          showToastError(
+              'The provided phone number is invalid', FToast().init(context));
+          print('The provided phone number is invalid.');
+          setState(() {
+            isVerifying = false;
+          });
+        } else {
+          // showToastError('Verification failed: ${e.message}', FToast().init(context));
+          print('Verification failed: ${e.message}');
+          setState(() {
+            isVerifying = false;
+          });
         }
       },
       codeSent: (String verificationId, int? resendToken) async {
@@ -200,6 +211,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       verificationId: verifyId,
       smsCode: otpController.text,
     );
+    try {
     await auth.signInWithCredential(credential).then((value) async {
       if (buttonTimer != null && buttonTimer!.isActive) {
         buttonTimer!.cancel();
@@ -217,8 +229,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             'userFirstName', checkPhoneNumberModel.data!.firstName.toString());
         await sharedPreferences.setString(
             'userLastName', checkPhoneNumberModel.data!.lastName.toString());
-        await sharedPreferences.setString(
-            'userProfilePic', checkPhoneNumberModel.data!.profilePic.toString());
+        await sharedPreferences.setString('userProfilePic',
+            checkPhoneNumberModel.data!.profilePic.toString());
         await sharedPreferences.setString(
             'userLatitude', widget.latitude.toString());
         await sharedPreferences.setString(
@@ -339,6 +351,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         isVerifying = false;
       });
     });
+    } catch (e) {
+      print('Something went wrong = ${e.toString()}');
+      showToastError('The provided verification code is invalid or expired', FToast().init(context));
+      setState(() {
+        isVerifying = false;
+      });
+    }
   }
 
   Timer? timer;
@@ -611,15 +630,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                   width: 5.w,
                                 ),
                                 Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     secondsRemaining == 0
                                         ? SvgPicture.asset(
                                             'assets/images/timer-icon.svg',
-                                            colorFilter:
-                                                const ColorFilter.mode(
-                                                    grey, BlendMode.srcIn),
+                                            colorFilter: const ColorFilter.mode(
+                                                grey, BlendMode.srcIn),
                                           )
                                         : SvgPicture.asset(
                                             'assets/images/timer-icon.svg',
@@ -645,47 +662,47 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                               height: 40.h,
                             ),
                             Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Don't Receive the Code? ",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      color: black,
-                                      fontSize: 14,
-                                      fontFamily: 'Syne-Regular',
-                                    ),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Don't Receive the Code? ",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: black,
+                                    fontSize: 14,
+                                    fontFamily: 'Syne-Regular',
                                   ),
-                                  secondsRemaining == 0
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              secondsRemaining = 20;
-                                              startTimer();
-                                            });
-                                            verifyPhoneNumber();
-                                          },
-                                          child: const Text(
-                                            'Resend Code',
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              color: orange,
-                                              fontSize: 16,
-                                              fontFamily: 'Syne-SemiBold',
-                                            ),
-                                          ),
-                                        )
-                                      : const Text(
+                                ),
+                                secondsRemaining == 0
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            secondsRemaining = 20;
+                                            startTimer();
+                                          });
+                                          verifyPhoneNumber();
+                                        },
+                                        child: const Text(
                                           'Resend Code',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
-                                            color: grey,
+                                            color: orange,
                                             fontSize: 16,
                                             fontFamily: 'Syne-SemiBold',
                                           ),
                                         ),
-                                ],
-                              ),
+                                      )
+                                    : const Text(
+                                        'Resend Code',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          color: grey,
+                                          fontSize: 16,
+                                          fontFamily: 'Syne-SemiBold',
+                                        ),
+                                      ),
+                              ],
+                            ),
                             SizedBox(
                               height: 80.h,
                             ),
@@ -703,7 +720,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                         isButtonDisabled = false;
                                       });
                                       await verifyOTPCode();
-                                      timer?.cancel();
                                     });
                                   }
                                 },
