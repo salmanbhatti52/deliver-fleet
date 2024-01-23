@@ -5,7 +5,7 @@ import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:deliver_partner/widgets/customDialogForImage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gif/flutter_gif.dart';
+// import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,7 +46,7 @@ class DrivingLicensePictureVerification extends StatefulWidget {
 class _DrivingLicensePictureVerificationState
     extends State<DrivingLicensePictureVerification>
     with TickerProviderStateMixin {
-  late FlutterGifController gifController;
+  // late FlutterGifController gifController;
 
   ApiServices get service => GetIt.I<ApiServices>();
 
@@ -60,14 +60,14 @@ class _DrivingLicensePictureVerificationState
   void initState() {
     // TODO: implement initState
     super.initState();
-    gifController = FlutterGifController(vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      gifController.repeat(
-        min: 0,
-        max: 60,
-        period: const Duration(seconds: 2),
-      );
-    });
+    // gifController = FlutterGifController(vsync: this);
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   gifController.repeat(
+    //     min: 0,
+    //     max: 60,
+    //     period: const Duration(seconds: 2),
+    //   );
+    // });
   }
 
   Future<void> imageSelection(ImageSource imageSource, int selection) async {
