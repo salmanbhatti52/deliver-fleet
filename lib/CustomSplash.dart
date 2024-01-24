@@ -29,18 +29,18 @@ class _CustomSplashState extends State<CustomSplash> {
   }
 
   sharedPrefs() async {
-    Future.delayed(const Duration(seconds: 6), () async {
+    Future.delayed(const Duration(seconds: 4), () async {
       SharedPreferences sharedPref = await SharedPreferences.getInstance();
       userID = (sharedPref.getInt('userID') ?? -1);
       userType = (sharedPref.getString('userType') ?? "");
       print("userId value is = $userID");
-      print("userType ${userType}");
+      print("userType $userType");
 
-      if (userID != null && userType == "Rider") {
+      if (userType == "Rider") {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const BottomNavBar()));
         print("current session starts with userId = $userID");
-      } else if (userID != null && userType == "Fleet") {
+      } else if (userType == "Fleet") {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const BottomNavBarFleet()));
         print("userId value is = $userID");
@@ -86,45 +86,42 @@ class _CustomSplashState extends State<CustomSplash> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Container(
-          constraints: const BoxConstraints.expand(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/images/logo.svg'),
-              SizedBox(
-                height: 30.h,
-              ),
-              SizedBox(
-                width: 295.w,
-                height: 85.h,
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      'We   Get   It   There',
-                      textStyle: GoogleFonts.syne(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff212A37),
-                      ),
-                      speed: const Duration(milliseconds: 200),
-                    ),
-                  ],
-                  totalRepeatCount: 4,
-                  isRepeatingAnimation: true,
-
-                  // pause: const Duration(milliseconds: 1000),
-                  displayFullTextOnTap: true,
-                  // stopPauseOnTap: true,
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: const Color(0xFFFBF9F7),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/logo.svg',
+                  width: 300,
+                  height: 125,
                 ),
-              ),
-            ],
+                Container(
+                  color: Colors.transparent,
+                  child: DefaultTextStyle(
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Color(0xFF000000),
+                      fontSize: 32,
+                      fontFamily: 'Inter-Light',
+                    ),
+                    child: AnimatedTextKit(
+                      repeatForever: false,
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          'We Get It There',
+                          speed: const Duration(milliseconds: 200),
+                        ),
+                      ],
+                      onTap: () {},
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

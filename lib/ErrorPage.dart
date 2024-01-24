@@ -45,40 +45,45 @@ class _ErrorPageState extends State<ErrorPage> {
           padding: EdgeInsets.symmetric(
             horizontal: 22.w,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 30.h,
-              ),
-              Text(
-                'Something must have went wrong',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.syne(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: orange,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 30,
                 ),
-              ),
-              SvgPicture.asset(
-                  'assets/images/404 Error Page not Found with people connecting a plug-pana.svg'),
-              Text(
-                'Please confirm that you have\n performed the correct action\n and try again',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.syne(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: orange,
+                Text(
+                  'Something must have went wrong',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.syne(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: orange,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 18.0, top: 40),
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: buttonContainer(context, 'GO BACK'),
+                SvgPicture.asset(
+                  'assets/images/404 Error Page not Found with people connecting a plug-pana.svg',
+                  height: 450,
+                  width: 450,
                 ),
-              ),
-            ],
+                Text(
+                  'Please confirm that you have\n performed the correct action\n and try again',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.syne(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: orange,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 18.0, top: 40),
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: buttonContainer(context, 'GO BACK'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

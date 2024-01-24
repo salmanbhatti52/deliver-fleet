@@ -35,86 +35,78 @@ class _ChooseAppScreenState extends State<ChooseAppScreen> {
       //     ),
       //   ),
       // ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 100.h,
+      body: Center(
+        child: Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+            Text(
+              'Choose the role you want to continue with',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.syne(
+                fontWeight: FontWeight.w700,
+                color: black,
+                fontSize: MediaQuery.of(context).size.width * 0.04,
               ),
-              Text(
-                'Choose the role you want to continue with',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.syne(
-                  fontWeight: FontWeight.w700,
-                  color: black,
-                  fontSize: 20,
-                ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  checkmarkFleet = 1;
+                });
+              },
+              child: checkmarkFleet == 1
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          checkmarkFleet = -1;
+                        });
+                      },
+                      child: buttonContainer1(context, 'SELECT FLEET MODE'),
+                    )
+                  : buttonContainerWithBorder(context, 'SELECT FLEET MODE'),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  checkmarkFleet = 2;
+                });
+              },
+              child: checkmarkFleet == 2
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          checkmarkFleet = -1;
+                        });
+                      },
+                      child: buttonContainer1(context, 'SELECT RIDER MODE'),
+                    )
+                  : buttonContainerWithBorder(context, 'SELECT RIDER MODE'),
+            ),
+            const Spacer(),
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.02,
               ),
-              SizedBox(
-                height: 80.h,
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    checkmarkFleet = 1;
-                  });
-                },
-                child: checkmarkFleet == 1
-                    ? GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            checkmarkFleet = -1;
-                          });
-                        },
-                        child: buttonContainer(context, 'SELECT FLEET MODE'),
-                      )
-                    : buttonContainerWithBorder(context, 'SELECT FLEET MODE'),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    checkmarkFleet = 2;
-                  });
-                },
-                child: checkmarkFleet == 2
-                    ? GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            checkmarkFleet = -1;
-                          });
-                        },
-                        child: buttonContainer(context, 'SELECT RIDER MODE'),
-                      )
-                    : buttonContainerWithBorder(context, 'SELECT RIDER MODE'),
-              ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => checkmarkFleet == 1
-                          ? OnboardingFleetScreen(
-                              fleet: appMode,
-                            )
-                          : checkmarkFleet == 2
-                              ? OnboardingScreen(
-                                  rider: appMode,
-                                )
-                              : ErrorPage(),
-                    ),
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => checkmarkFleet == 1
+                        ? OnboardingFleetScreen(
+                            fleet: appMode,
+                          )
+                        : checkmarkFleet == 2
+                            ? OnboardingScreen(
+                                rider: appMode,
+                              )
+                            : const ErrorPage(),
                   ),
-                  child: buttonContainer(context, 'Continue with $appMode'),
                 ),
+                child: buttonContainer1(context, 'Continue with $appMode'),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

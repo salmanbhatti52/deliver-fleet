@@ -40,8 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           deviceName = build.model;
           deviceVersion = build.version.toString();
           identifier = build.androidId;
-          print('device id for android while registering:  ' +
-              identifier.toString());
+          print('device id for android while registering:  $identifier');
         });
         //UUID for Android
       } else if (Platform.isIOS) {
@@ -74,7 +73,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('app mode in rider:  ' + widget.rider.toString());
+    print('app mode in rider:  ${widget.rider}');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -84,7 +83,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ? spinKitRotatingCircle
                 : Container(
                     width: double.infinity,
-                    height: 328.h,
+                    height: MediaQuery.of(context).size.height *
+                        0.34, // Adjust as needed for iPad
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.vertical(
                         bottom: Radius.circular(30),
@@ -101,19 +101,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: Center(
                       child: SvgPicture.asset(
                         'assets/images/logo.svg',
+                        height: MediaQuery.of(context).size.height *
+                            0.15, // Adjust as needed
+                        width: MediaQuery.of(context).size.width *
+                            0.7, // Adjust as needed
                         fit: BoxFit.scaleDown,
                       ),
                     ),
                   ),
             SizedBox(
-              height: 30.h,
+              height: MediaQuery.of(context).size.height *
+                  0.07, // Adjust as needed for iPad
             ),
             SvgPicture.asset(
               'assets/images/onboarding-pic.svg',
-              fit: BoxFit.scaleDown,
+              height:
+                  MediaQuery.of(context).size.height * 0.15, // Adjust as needed
+              width: MediaQuery.of(context).size.width * 0.7,
             ),
             SizedBox(
-              height: 40.h,
+              height: MediaQuery.of(context).size.height *
+                  0.03, // Adjust as needed for iPad
             ),
             AnimatedTextKit(
               animatedTexts: [
@@ -121,16 +129,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   'Welcome to Golden Fleet Logistics.\n Join our fleet of Riders to deliver amazing\n experience to customers.',
                   textAlign: TextAlign.center,
                   textStyle: GoogleFonts.inter(
-                    fontSize: 16,
-                    color: black,
+                    fontSize: MediaQuery.of(context).size.width *
+                        0.04, // Adjust as needed for iPad
+                    color: Colors.black,
                     fontWeight: FontWeight.w400,
                   ),
                   speed: const Duration(milliseconds: 100),
                   colors: [
-                    black,
-                    orange,
-                    red,
-                    orange,
+                    Colors.black,
+                    Colors.orange,
+                    Colors.red,
+                    Colors.orange,
                   ],
                 )
               ],
@@ -147,51 +156,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 );
               },
-              child: buttonContainer(
+              child: buttonContainer1(
                 context,
                 'Continue',
               ),
             ),
             SizedBox(
-              height: 30.h,
+              height: MediaQuery.of(context).size.height *
+                  0.02, // Adjust as needed for iPad
             ),
-            // Padding(
-            //   padding: EdgeInsets.only(bottom: 20.0.h),
-            //   child: GestureDetector(
-            //     onTap: () {
-            //       _deviceDetails();
-            //       Navigator.of(context).push(
-            //         MaterialPageRoute(
-            //           builder: (context) => LogInScreen(
-            //             userType: widget.rider,
-            //             deviceID: identifier.toString(),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //     child: RichText(
-            //       text: TextSpan(
-            //         text: 'Have an account already? ',
-            //         style: GoogleFonts.syne(
-            //           fontSize: 13,
-            //           fontWeight: FontWeight.w400,
-            //           color: grey,
-            //         ),
-            //         children: [
-            //           TextSpan(
-            //             text: 'Login',
-            //             style: GoogleFonts.syne(
-            //               decoration: TextDecoration.underline,
-            //               fontSize: 14,
-            //               fontWeight: FontWeight.w500,
-            //               color: orange,
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            // Other commented code
           ],
         ),
       ),

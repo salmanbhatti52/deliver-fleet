@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'Colors.dart';
-
-Widget buttonContainerWithBorder(context, String buttonText) {
+Widget buttonContainerWithBorder(BuildContext context, String buttonText) {
+  double fontSize = MediaQuery.of(context).size.height * 0.02;
   return Container(
-    width: 236.w,
-    height: 51.h,
+    width: MediaQuery.of(context).size.width * 0.6, // Adjust width
+    height: MediaQuery.of(context).size.height * 0.065, // Adjust height
+
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       gradient: const LinearGradient(
@@ -23,16 +23,16 @@ Widget buttonContainerWithBorder(context, String buttonText) {
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: white,
+        color: Colors.white,
       ),
       child: Center(
         child: Text(
           buttonText,
           textAlign: TextAlign.center,
-          style: GoogleFonts.syne(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: fontSize, // Adjust font size
             fontWeight: FontWeight.w500,
-            color: orange,
+            color: Colors.orange,
           ),
         ),
       ),

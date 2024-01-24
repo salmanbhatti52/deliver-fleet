@@ -624,50 +624,47 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       SizedBox(
                         height: 40.h,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Don't Receive the Code? ",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: black,
-                                fontSize: 14,
-                                fontFamily: 'Syne-Regular',
-                              ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Don't Receive the Code? ",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: black,
+                              fontSize: 14,
+                              fontFamily: 'Syne-Regular',
                             ),
-                            secondsRemaining == 0
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        secondsRemaining = 20;
-                                        startTimer();
-                                      });
-                                      verifyPhoneNumber();
-                                    },
-                                    child: const Text(
-                                      'Resend Code',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        color: orange,
-                                        fontSize: 16,
-                                        fontFamily: 'Syne-SemiBold',
-                                      ),
-                                    ),
-                                  )
-                                : const Text(
+                          ),
+                          secondsRemaining == 0
+                              ? GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      secondsRemaining = 20;
+                                      startTimer();
+                                    });
+                                    verifyPhoneNumber();
+                                  },
+                                  child: const Text(
                                     'Resend Code',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
-                                      color: grey,
+                                      color: orange,
                                       fontSize: 16,
                                       fontFamily: 'Syne-SemiBold',
                                     ),
                                   ),
-                          ],
-                        ),
+                                )
+                              : const Text(
+                                  'Resend Code',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: grey,
+                                    fontSize: 16,
+                                    fontFamily: 'Syne-SemiBold',
+                                  ),
+                                ),
+                        ],
                       ),
                       SizedBox(
                         height: 80.h,
