@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:deliver_partner/Constants/drawer_container.dart';
+import 'package:deliver_partner/ErrorPage.dart';
 import 'package:deliver_partner/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -68,8 +69,8 @@ class _RankingScreenState extends State<RankingScreen> {
         getAllRatingsList!.addAll(_allRatingsResponse.data!);
       }
     } else {
-      print('object rating :  ' + _allRatingsResponse!.status!.toString());
-      showToastError('something went wrong!', FToast().init(context));
+      print('object rating : ${_allRatingsResponse!.status!.toString()}');
+      // showToastError('something went wrong!', FToast().init(context));
     }
     for (GetAllRatingsModel model in getAllRatingsList!) {
       totalRating = totalRating + double.parse(model.rating ?? '0.0');
@@ -87,30 +88,6 @@ class _RankingScreenState extends State<RankingScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: white,
-        drawer: const DrawerWidget(),
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          leading: Builder(builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 20),
-              child: GestureDetector(
-                onTap: () => Scaffold.of(context).openDrawer(),
-                child: drawerContainer(context),
-              ),
-            );
-          }),
-          centerTitle: true,
-          title: Text(
-            'My Reviews',
-            style: GoogleFonts.syne(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: black,
-            ),
-          ),
-        ),
         body: isRankingLoading
             ? spinKitRotatingCircle
             : GlowingOverscrollIndicator(

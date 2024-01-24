@@ -35,7 +35,7 @@ class _RiderBikeDetailsWidgetState extends State<RiderBikeDetailsWidget> {
     return Container(
       padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 12.h),
       width: double.infinity,
-      height: dropDown ? 270.h : 57.h,
+      height: dropDown ? 270.h : 50.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: lightWhite,

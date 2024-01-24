@@ -150,11 +150,11 @@ class _UpdateLocationState extends State<UpdateLocation> {
             ),
           ),
         ),
-        body: SafeArea(
-          child: isPageLoading
-              ? spinKitRotatingCircle
-              : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 22.w),
+        body: isPageLoading
+            ? spinKitRotatingCircle
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Center(
                   child: Column(
                     children: [
                       SizedBox(
@@ -203,7 +203,7 @@ class _UpdateLocationState extends State<UpdateLocation> {
                     ],
                   ),
                 ),
-        ),
+              ),
       ),
     );
   }

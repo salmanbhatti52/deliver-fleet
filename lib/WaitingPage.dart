@@ -1,5 +1,6 @@
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class WaitingPage extends StatefulWidget {
   final String userType;
+
   const WaitingPage({super.key, required this.userType});
 
   @override
@@ -63,7 +65,12 @@ class _WaitingPageState extends State<WaitingPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: GestureDetector(
-                    onTap: null,
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const BottomNavBar()),
+                          (Route<dynamic> route) => false);
+                    },
                     child: buttonContainer(context, 'CONTINUE'),
                   ),
                 ),

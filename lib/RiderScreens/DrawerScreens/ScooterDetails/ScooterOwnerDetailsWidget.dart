@@ -35,7 +35,7 @@ class _ScooterOwnerDetailsWidgetState extends State<ScooterOwnerDetailsWidget> {
       padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 12.h),
       margin: EdgeInsets.only(bottom: 20.h),
       width: double.infinity,
-      height: dropDown ? 175.h : 57.h,
+      height: dropDown ? 175.h : 50.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: lightWhite,

@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:deliver_partner/Constants/back-arrow-with-container.dart';
 import '../Constants/Colors.dart';
 import '../Constants/buttonContainer.dart';
 import '../LogInScreen.dart';
@@ -15,6 +15,7 @@ import '../RegisterScreen.dart';
 
 class OnboardingFleetScreen extends StatefulWidget {
   final String fleet;
+
   const OnboardingFleetScreen({super.key, required this.fleet});
 
   @override
@@ -69,11 +70,23 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Color(0xffFBC403),
+          leadingWidth: 70,
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 20),
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: backArrowWithContainer(context),
+            ),
+          ),
+        ),
         body: Column(
           children: [
             Container(
               width: double.infinity,
-              height: 328.h,
+              height: 250.h,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),

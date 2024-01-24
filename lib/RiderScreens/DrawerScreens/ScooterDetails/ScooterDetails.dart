@@ -147,106 +147,98 @@ class _ScooterDetailsState extends State<ScooterDetails> {
                             ),
                           ),
                         ),
-                        vehicleDetailsResponse?.data?.users_fleet?.user_type
-                                    ?.toLowerCase() ==
-                                'fleet'
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Text(
-                                    'Vehicle Service Details',
-                                    style: GoogleFonts.syne(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: orange,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Last Vehicle Service Date',
-                                        style: GoogleFonts.syne(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                          color: black,
-                                        ),
-                                      ),
-                                      Text(
-                                        '12 May 202214',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Vehicle Service Station',
-                                        style: GoogleFonts.syne(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                          color: black,
-                                        ),
-                                      ),
-                                      Text(
-                                        'abc xyz, Nigeria',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )
-                            : SizedBox(),
+                        // vehicleDetailsResponse?.data?.users_fleet?.user_type
+                        //             ?.toLowerCase() ==
+                        //         'fleet'
+                        //     ?
+                        // Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           SizedBox(
+                        //             height: 10.h,
+                        //           ),
+                        //           Text(
+                        //             'Vehicle Service Details',
+                        //             style: GoogleFonts.syne(
+                        //               fontSize: 14,
+                        //               fontWeight: FontWeight.w700,
+                        //               color: orange,
+                        //             ),
+                        //           ),
+                        //           SizedBox(
+                        //             height: 10.h,
+                        //           ),
+                        //           Row(
+                        //             mainAxisAlignment:
+                        //                 MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //               Text(
+                        //                 'Last Vehicle Service Date',
+                        //                 style: GoogleFonts.syne(
+                        //                   fontSize: 16,
+                        //                   fontWeight: FontWeight.w400,
+                        //                   color: black,
+                        //                 ),
+                        //               ),
+                        //               Text(
+                        //                 '12 May 202214',
+                        //                 style: GoogleFonts.inter(
+                        //                   fontSize: 14,
+                        //                   fontWeight: FontWeight.w400,
+                        //                   color: black,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //           SizedBox(
+                        //             height: 10.h,
+                        //           ),
+                        //           Row(
+                        //             mainAxisAlignment:
+                        //                 MainAxisAlignment.spaceBetween,
+                        //             children: [
+                        //               Text(
+                        //                 'Vehicle Service Station',
+                        //                 style: GoogleFonts.syne(
+                        //                   fontSize: 16,
+                        //                   fontWeight: FontWeight.w400,
+                        //                   color: black,
+                        //                 ),
+                        //               ),
+                        //               Text(
+                        //                 'abc xyz, Nigeria',
+                        //                 style: GoogleFonts.inter(
+                        //                   fontSize: 14,
+                        //                   fontWeight: FontWeight.w400,
+                        //                   color: black,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ],
+                        //       )
+                        //     : SizedBox(),
                         SizedBox(
-                          height: 10.h,
+                          height: 20.h,
                         ),
                         RiderBikeDetailsWidget(
-                          model: '${vehicleDetailsResponse!.data!.model}',
-                          color: '${vehicleDetailsResponse!.data!.color}',
-                          chassisNumber:
-                              '${vehicleDetailsResponse!.data!.vehicle_identification_no}',
-                          yearOfManufacture:
-                              '${vehicleDetailsResponse!.data!.manufacture_year}',
-                          bikeInsuranceDate:
-                              '${vehicleDetailsResponse!.data!.vehicle_insurance_expiry_date}',
-                          licenseExpiryDate:
-                              '${vehicleDetailsResponse!.data!.vehicle_license_expiry_date}',
-                          status: '${vehicleDetailsResponse!.data!.status}',
+                          model: vehicleDetailsResponse!.data!.model ?? 'N/A',
+                          color: vehicleDetailsResponse!.data!.color ?? 'N/A',
+                          chassisNumber: vehicleDetailsResponse!.data!.vehicle_identification_no ?? 'N/A',
+                          yearOfManufacture: vehicleDetailsResponse!.data!.manufacture_year ?? 'N/A',
+                          bikeInsuranceDate: vehicleDetailsResponse!.data!.vehicle_insurance_expiry_date ?? 'N/A',
+                          licenseExpiryDate: vehicleDetailsResponse!.data!.vehicle_license_expiry_date ?? 'N/A',
+                          status: vehicleDetailsResponse!.data!.status ?? 'N/A',
                         ),
                         SizedBox(
                           height: 20.h,
                         ),
                         ScooterOwnerDetailsWidget(
-                          name:
-                              '${vehicleDetailsResponse?.data?.users_fleet?.first_name} ${vehicleDetailsResponse?.data?.users_fleet?.last_name}',
-                          contactNumber:
-                              "${vehicleDetailsResponse?.data?.users_fleet?.phone}",
-                          address:
-                              "${vehicleDetailsResponse?.data?.users_fleet?.address}",
-                          userTypeOfVehicleOwner:
-                              "${vehicleDetailsResponse?.data?.users_fleet?.user_type}",
-                          statusOfVehicleOwner:
-                              "${vehicleDetailsResponse?.data?.users_fleet?.status}",
+                          name: "${vehicleDetailsResponse?.data?.users_fleet?.first_name ?? 'N/A'} ${vehicleDetailsResponse?.data?.users_fleet?.last_name ?? 'N/A'}",
+                          contactNumber: vehicleDetailsResponse?.data?.users_fleet?.phone ?? 'N/A',
+                          address: vehicleDetailsResponse?.data?.users_fleet?.address ?? 'N/A',
+                          userTypeOfVehicleOwner: vehicleDetailsResponse?.data?.users_fleet?.user_type ?? 'N/A',
+                          statusOfVehicleOwner: vehicleDetailsResponse?.data?.users_fleet?.status ?? 'N/A',
                         )
                       ],
                     ),

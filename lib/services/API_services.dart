@@ -7,6 +7,7 @@ import 'package:deliver_partner/models/API%20models/InProgressRidesModel.dart';
 import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
 import 'package:deliver_partner/models/APIModelsFleet/AcceptAndRejectRequestedVehicleModel.dart';
 import 'package:deliver_partner/models/GetFleetVehicleByIdModel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/API models/API response.dart';
@@ -696,7 +697,7 @@ class ApiServices {
 
   Future<APIResponse<AcceptAndRejectRequestedVehicleModel>>
       deactivateVehicleRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/deactivate_rider';
+    String API = 'https://deliver.eigix.net/api/deactivate_fleet_vehicle';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1240,9 +1241,11 @@ class ApiServices {
         final jsonResult = jsonDecode(value.body);
         if (jsonResult['data'] != null) {
           final jsonResultArray = <GetAllSupportMessagesModel>[];
+          debugPrint("jsonResult ${jsonResult['data']}");
           for (var item in jsonResult['data']) {
-            final jsonData = GetAllSupportMessagesModel.fromJson(item);
-            jsonResultArray.add(jsonData);
+            // final jsonData = GetAllSupportMessagesModel.fromJson(item);
+            // jsonResultArray.add(jsonData);
+            print("jsonResultArray $item");
           }
 
           // final jsonData = Signin_Signup_Model.fromMap(

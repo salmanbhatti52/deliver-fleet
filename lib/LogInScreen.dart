@@ -10,13 +10,15 @@ import 'package:device_info/device_info.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:deliver_partner/Constants/back-arrow-with-container.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 import 'Constants/Colors.dart';
 import 'Constants/FacebookButton.dart';
 import 'Constants/GoogleButton.dart';
@@ -25,6 +27,7 @@ import 'Constants/buttonContainer.dart';
 import 'EmailVerificationScreen.dart';
 import 'ForgetPassword.dart';
 import 'RegisterScreen.dart';
+import 'models/API models/CheckPhoneNumberModel.dart';
 import 'RiderScreens/RideDetailsAfterLogIn.dart';
 import 'models/API models/API response.dart';
 import 'models/API models/LogInModel.dart';
@@ -33,6 +36,7 @@ import 'models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
 class LogInScreen extends StatefulWidget {
   final String userType;
   final String? deviceID;
+
   const LogInScreen({super.key, required this.userType, this.deviceID});
 
   @override
@@ -40,6 +44,9 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  bool isLoading = false;
+  bool isLoading2 = false;
+
   ApiServices get service => GetIt.I<ApiServices>();
 
   final GlobalKey<FormState> _key = GlobalKey();
@@ -47,11 +54,53 @@ class _LogInScreenState extends State<LogInScreen> {
   CountryCode? countryCode =
       const CountryCode(name: 'Nigeria', code: 'NG', dialCode: '+234');
   TextEditingController contactNumberController = TextEditingController();
-  // late TextEditingController emailController;
-  // late TextEditingController passwordController;
+
+  CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
+
+  checkNumber() async {
+    try {
+      setState(() {
+        isLoading2 = true;
+      });
+      print("one_signal_id ${widget.deviceID}");
+      print("user_type ${widget.userType}");
+      print("phone ${countryCode!.dialCode + contactNumberController.text}");
+      print("latitude ${_currentPosition!.latitude.toString()}");
+      print("longitude ${_currentPosition!.longitude.toString()}");
+      String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "one_signal_id": widget.deviceID,
+          "user_type": widget.userType,
+          "phone": countryCode!.dialCode + contactNumberController.text,
+          "latitude": _currentPosition!.latitude.toString(),
+          "longitude": _currentPosition!.longitude.toString(),
+        },
+      );
+      final responseString = response.body;
+      print("response: $responseString");
+      print("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
+        setState(() {
+          isLoading2 = false;
+        });
+      }
+    } catch (e) {
+      print('Something went wrong = ${e.toString()}');
+      return null;
+    }
+  }
+
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
 
   late SharedPreferences sharedPreferences;
-  bool isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -63,6 +112,7 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   String userType = '';
+
   init() async {
     _deviceDetails();
 
@@ -97,7 +147,8 @@ class _LogInScreenState extends State<LogInScreen> {
           deviceName = build.model;
           deviceVersion = build.version.toString();
           identifier = build.androidId;
-          print('device id for android while registering:  $identifier');
+          print(
+              'device id for android while registering: ${identifier.toString()}');
         });
         //UUID for Android
       } else if (Platform.isIOS) {
@@ -159,6 +210,7 @@ class _LogInScreenState extends State<LogInScreen> {
   // String? _currentAddress;
   var hasPermission = false;
   Position? _currentPosition;
+
   Future<void> _getCurrentPosition() async {
     hasPermission = await _handleLocationPermission();
     if (!hasPermission) return;
@@ -228,6 +280,18 @@ class _LogInScreenState extends State<LogInScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: white,
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: white,
+          leadingWidth: 70,
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 20),
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: backArrowWithContainer(context),
+            ),
+          ),
+        ),
         body: SafeArea(
           child: isLoading
               ? spinKitRotatingCircle
@@ -744,7 +808,7 @@ class _LogInScreenState extends State<LogInScreen> {
         "latitude": _currentPosition!.latitude.toString(),
         "longitude": _currentPosition!.longitude.toString(),
       };
-      print('map log in :  $loginData');
+      print('map log in : ${loginData.toString()}');
       _loginResponse = await service.logInAPI(loginData);
       if (_loginResponse!.status!.toLowerCase() == 'success') {
         /// call get all vehicals api to chedck:
@@ -763,6 +827,12 @@ class _LogInScreenState extends State<LogInScreen> {
         await sharedPreferences.setString(
             'userEmail', _loginResponse!.data!.email!);
         await sharedPreferences.setString(
+            'userFirstName', _loginResponse!.data!.first_name!);
+        await sharedPreferences.setString(
+            'userLastName', _loginResponse!.data!.last_name!);
+        await sharedPreferences.setString(
+            'userProfilePic', checkPhoneNumberModel.data!.profilePic!);
+        await sharedPreferences.setString(
             'userLatitude', _loginResponse!.data!.latitude!);
         await sharedPreferences.setString(
             'userLongitude', _loginResponse!.data!.longitude!);
@@ -775,11 +845,11 @@ class _LogInScreenState extends State<LogInScreen> {
         if (_loginResponse!.data!.badge_verified!.toLowerCase() == 'no' &&
             _loginResponse!.data!.status!.toLowerCase() == 'active') {
           showToastSuccess(
-              'LogIn successful. Your documents will be approved soon',
+              'Log In successful. Your documents will be approved soon',
               FToast().init(context),
               seconds: 1);
         } else {
-          showToastSuccess('LogIn successful!', FToast().init(context),
+          showToastSuccess('Log In successful!', FToast().init(context),
               seconds: 1);
         }
 
@@ -805,10 +875,13 @@ class _LogInScreenState extends State<LogInScreen> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const BottomNavBarFleet(),
+              builder: (context) => const BottomNavBarFleet(),
             ),
           );
         }
       } else {
+        print('error: ${_loginResponse!.message!.toString()}');
+        print('status: ${_loginResponse!.status!.toString()}');
         print('error  ${_loginResponse!.message!}');
         print('status  ${_loginResponse!.status!}');
         showToastError(_loginResponse!.message!, FToast().init(context),
@@ -822,38 +895,38 @@ class _LogInScreenState extends State<LogInScreen> {
 
   /// Remember Me Method:
 
-  // void _RemeberMeMethod(bool value) {
-  //   rememberMe = value;
-  //   SharedPreferences.getInstance().then(
-  //     (prefs) {
-  //       prefs.setString("rememberMe", 'false');
-  //       prefs.setString('email', emailController.text);
-  //       prefs.setString('password', passwordController.text);
-  //     },
-  //   );
-  //   setState(() {
-  //     rememberMe = value;
-  //   });
-  // }
-  //
-  // void getEmailAndPassword() async {
-  //   try {
-  //     SharedPreferences _prefs = await SharedPreferences.getInstance();
-  //     var getEmail = _prefs.getString("email") ?? "";
-  //     var getPassword = _prefs.getString("password") ?? "";
-  //     var getRememberMe = _prefs.getString('rememberMe') ?? "";
-  //     print(getRememberMe);
-  //     print(getEmail);
-  //     print(getPassword);
-  //     if (getRememberMe != false) {
-  //       setState(() {
-  //         // rememberMe = true;
-  //       });
-  //       emailController.text = getEmail ?? "";
-  //       passwordController.text = getPassword ?? "";
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+// void _RemeberMeMethod(bool value) {
+//   rememberMe = value;
+//   SharedPreferences.getInstance().then(
+//     (prefs) {
+//       prefs.setString("rememberMe", 'false');
+//       prefs.setString('email', emailController.text);
+//       prefs.setString('password', passwordController.text);
+//     },
+//   );
+//   setState(() {
+//     rememberMe = value;
+//   });
+// }
+//
+// void getEmailAndPassword() async {
+//   try {
+//     SharedPreferences _prefs = await SharedPreferences.getInstance();
+//     var getEmail = _prefs.getString("email") ?? "";
+//     var getPassword = _prefs.getString("password") ?? "";
+//     var getRememberMe = _prefs.getString('rememberMe') ?? "";
+//     print(getRememberMe);
+//     print(getEmail);
+//     print(getPassword);
+//     if (getRememberMe != false) {
+//       setState(() {
+//         // rememberMe = true;
+//       });
+//       emailController.text = getEmail ?? "";
+//       passwordController.text = getPassword ?? "";
+//     }
+//   } catch (e) {
+//     print(e);
+//   }
+// }
 }

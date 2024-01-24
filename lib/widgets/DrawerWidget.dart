@@ -1,6 +1,7 @@
 import 'package:deliver_partner/ChooseAppScreen.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/LegalScreen.dart';
 import 'package:deliver_partner/models/API%20models/LogInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,8 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Constants/buttonConatinerWithBorder.dart';
 import '../Constants/buttonContainer.dart';
 import '../FleetScreens/BottomNavBarFleet.dart';
-import '../FleetScreens/OnboardingFleetScreen.dart';
-import '../RiderScreens/BottomNavBar.dart';
 import '../RiderScreens/DrawerScreens/AwardScreens/AwardsScreen.dart';
 import '../RiderScreens/DrawerScreens/Banking/BankingScreen.dart';
 import '../RiderScreens/DrawerScreens/NotificationScreen.dart';
@@ -39,6 +38,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   ApiServices get service => GetIt.I<ApiServices>();
 
   int userID = -1;
+  String? userFirstName;
+  String? userLastName;
+  String? userProfilePic;
 
   late SharedPreferences sharedPreferences;
   bool isLoading = false;
@@ -51,34 +53,45 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       isLoading = true;
       // gettingCategory = true;
     });
-    init();
+    sharedPrefs();
+    // init();
   }
 
-  late APIResponse<LogInModel>? getUserProfileResponse;
-
-  init() async {
+  sharedPrefs() async {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
-
-    Map data = {
-      "users_fleet_id": userID.toString(),
-    };
-
-    getUserProfileResponse = await service.getUserProfileAPI(data);
-
-    if (getUserProfileResponse!.status!.toLowerCase() == 'success') {
-      if (getUserProfileResponse!.data != null) {
-        // showToastSuccess('Loading user data', FToast().init(context));
-      }
-    } else {
-      showToastError(getUserProfileResponse!.message, FToast().init(context));
-    }
-
+    userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
+    userLastName = (sharedPreferences.getString('userLastName') ?? '');
+    userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
+    print('sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
     setState(() {
       isLoading = false;
-      // gettingCategory = false;
     });
   }
+
+  // late APIResponse<LogInModel>? getUserProfileResponse;
+  //
+  // init() async {
+  //
+  //   Map data = {
+  //     "users_fleet_id": userID.toString(),
+  //   };
+  //
+  //   getUserProfileResponse = await service.getUserProfileAPI(data);
+  //
+  //   if (getUserProfileResponse!.status!.toLowerCase() == 'success') {
+  //     if (getUserProfileResponse!.data != null) {
+  //       // showToastSuccess('Loading user data', FToast().init(context));
+  //     }
+  //   } else {
+  //     showToastError(getUserProfileResponse!.message, FToast().init(context));
+  //   }
+  //
+  //   setState(() {
+  //     isLoading = false;
+  //     // gettingCategory = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -98,17 +111,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     width: 85.w,
                     height: 85.h,
                     decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(15),
                       border: Border.all(
-                        color: lightWhite,
-                        width: 1.5,
+                        width: 1,
+                        color: lightGrey.withOpacity(0.8),
                       ),
-                      borderRadius: BorderRadius.circular(10),
-                      // color: red,
                     ),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
-                          'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                          'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
+                          // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
                           fit: BoxFit.cover,
                           errorBuilder: (BuildContext context,
                               Object exception, StackTrace? stackTrace) {
@@ -144,7 +158,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     height: 20.h,
                   ),
                   Text(
-                    '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
+                    '$userFirstName $userLastName',
+                    // '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
                     style: GoogleFonts.syne(
                       fontSize: 14,
                       color: black,
@@ -160,7 +175,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ),
                     color: Colors.white,
                     width: 280.w,
-                    height: 600.h,
+                    height: 650.h,
                     child: Column(
                       children: [
                         // profile list
@@ -270,74 +285,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           ),
                           leading: SvgPicture.asset(
                             'assets/images/update-icon.svg',
-                            width: 30.w,
-                            fit: BoxFit.scaleDown,
-                            colorFilter: ColorFilter.mode(
-                              orange,
-                              BlendMode.srcIn,
-                            ),
                           ),
                           title: Text(
                             'Update Location',
-                            style: GoogleFonts.syne(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: black,
-                            ),
-                          ),
-                          visualDensity: VisualDensity.compact,
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                        ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
-                        // awards list
-                        ListTile(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AwardsScreen(),
-                            ),
-                          ),
-                          leading: SvgPicture.asset('assets/images/medal.svg'),
-                          title: Text(
-                            'Awards',
-                            style: GoogleFonts.syne(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: black,
-                            ),
-                          ),
-                          visualDensity: VisualDensity.compact,
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                        ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
-                        // loyalty points
-                        ListTile(
-                          onTap: () {
-                            showToastSuccess(
-                                'switching to fleet', FToast().init(context),
-                                seconds: 1);
-                            Navigator.of(context).push(
-                              // MaterialPageRoute(
-                              //   builder: (context) => const OnboardingFleetScreen(
-                              //     fleet: 'Fleet',
-                              //   ),
-                              // ),
-                              MaterialPageRoute(
-                                builder: (context) => const BottomNavBarFleet(),
-                              ),
-                            );
-                          },
-                          leading: const Icon(
-                            Icons.switch_access_shortcut_rounded,
-                            color: orange,
-                          ),
-                          title: Text(
-                            'Switch To Fleet',
                             style: GoogleFonts.syne(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -420,25 +370,113 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           dense: true,
                         ),
                         SizedBox(
+                          height: 12.h,
+                        ),
+                        // awards list
+                        ListTile(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AwardsScreen(),
+                            ),
+                          ),
+                          leading: SvgPicture.asset('assets/images/medal.svg'),
+                          title: Text(
+                            'Awards',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        // loyalty points
+                        ListTile(
+                          onTap: () {
+                            showToastSuccess(
+                                'switching to fleet', FToast().init(context),
+                                seconds: 1);
+                            Navigator.of(context).push(
+                              // MaterialPageRoute(
+                              //   builder: (context) => const OnboardingFleetScreen(
+                              //     fleet: 'Fleet',
+                              //   ),
+                              // ),
+                              MaterialPageRoute(
+                                builder: (context) => const BottomNavBarFleet(),
+                              ),
+                            );
+                          },
+                          leading: const Icon(
+                            Icons.switch_access_shortcut_rounded,
+                            color: orange,
+                          ),
+                          title: Text(
+                            'Switch To Fleet',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        // legal tile
+                        ListTile(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const LegalScreen(),
+                            ),
+                          ),
+                          leading: SvgPicture.asset(
+                            'assets/images/legal-icon.svg',
+                            colorFilter:
+                            const ColorFilter.mode(orange, BlendMode.srcIn),
+                          ),
+                          title: Text(
+                            'Legal',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
+                        SizedBox(
                           height: 40.h,
                         ),
                         // log out tile
                         ListTile(
                           onTap: () {
                             showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                side: const BorderSide(
-                                  color: orange,
-                                  width: 2,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
                                 ),
                               ),
                               backgroundColor: orange.withOpacity(0.8),
                               context: context,
                               builder: (context) => Container(
                                 height: 250.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    topRight: Radius.circular(30),
+                                  ),
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 22, vertical: 22),

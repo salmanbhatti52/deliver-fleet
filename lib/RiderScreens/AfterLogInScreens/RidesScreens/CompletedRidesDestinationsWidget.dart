@@ -104,12 +104,15 @@ class _CompletedRidesDestinationsWidgetState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Dropoff Location ${'1'}',
+                    'Destination',
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: grey,
                     ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
                   ),
                   Container(
                     color: Colors.transparent,
@@ -119,8 +122,8 @@ class _CompletedRidesDestinationsWidgetState
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
                         color: black,
                       ),
                     ),
@@ -148,7 +151,7 @@ class _CompletedRidesDestinationsWidgetState
                     ),
                     Expanded(
                       child: Text(
-                        widget.distance,
+                        '${widget.distance} $distance',
                         style: GoogleFonts.inter(
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
@@ -180,23 +183,18 @@ class _CompletedRidesDestinationsWidgetState
                 ),
                 Column(
                   children: [
-                    // SvgPicture.asset(
-                    //   'assets/images/dollar-circle.svg',
-                    //   colorFilter:
-                    //       const ColorFilter.mode(grey, BlendMode.srcIn),
-                    // ),
                     Text(
                       '$currency ',
                       // ${widget.inProgressRidesList2![i].bookings?.total_charges}',
                       // '$currency ${widget.inProgressRidesList2![i].bookings?.bookings_destinations?[i].destin_discounted_charges!}',
                       style: GoogleFonts.inter(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: grey,
                       ),
                     ),
                     SizedBox(
-                      height: 6.h,
+                      height: 3.h,
                     ),
                     Expanded(
                       child: Text(

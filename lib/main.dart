@@ -72,11 +72,12 @@ class _MyAppState extends State<MyApp> {
     return ScreenUtilInit(
       designSize: const Size(390, 844),
       builder: (context, child) => const MaterialApp(
-          // locale: DevicePreview.locale(context),
-          // builder: DevicePreview.appBuilder,
-          debugShowCheckedModeBanner: false,
-          title: 'Deliver Rider',
-          home: CustomSplash()),
+        // locale: DevicePreview.locale(context),
+        // builder: DevicePreview.appBuilder,
+        debugShowCheckedModeBanner: false,
+        title: 'Deliver Rider',
+        home: CustomSplash(),
+      ),
     );
   }
 }

@@ -38,15 +38,18 @@ class DriverInfoWidgetFleet extends StatelessWidget {
                   width: 4.w,
                 ),
                 Expanded(
-                  child: AutoSizeText(
-                    location,
-                    maxLines: 3,
-                    minFontSize: 10,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.inter(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w400,
-                      color: black,
+                  child: Tooltip(
+                    message: location,
+                    child: AutoSizeText(
+                      location,
+                      maxLines: 3,
+                      minFontSize: 10,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                        color: black,
+                      ),
                     ),
                   ),
                 ),

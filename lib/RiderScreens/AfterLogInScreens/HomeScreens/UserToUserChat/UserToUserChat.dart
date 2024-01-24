@@ -303,7 +303,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
                                   height: MediaQuery.sizeOf(context).height *
                                       0.015),
                               Padding(
-                                padding: const EdgeInsets.only(left: 84),
+                                padding: const EdgeInsets.only(left: 80),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

@@ -17,14 +17,17 @@ class ErrorPage extends StatefulWidget {
 class _ErrorPageState extends State<ErrorPage> {
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    double fontSize = screenHeight * 0.02;
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
         elevation: 0.0,
+        leadingWidth: 65,
         backgroundColor: Colors.transparent,
-        leadingWidth: 70,
         leading: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          padding: const EdgeInsets.only(top: 4, bottom: 4, left: 20),
           child: GestureDetector(
             onTap: () => Navigator.of(context).pop(),
             child: backArrowWithContainer(context),

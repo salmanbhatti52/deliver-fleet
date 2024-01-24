@@ -13,8 +13,9 @@ import '../../../services/API_services.dart';
 
 class VehicleDetailsWigdetFleet extends StatefulWidget {
   final GetFleetVehicleByIdModel getFleetVehicleByIdModel;
+  final int? usersFleetVehiclesAssigned;
   const VehicleDetailsWigdetFleet(
-      {super.key, required this.getFleetVehicleByIdModel});
+      {super.key, required this.getFleetVehicleByIdModel, this.usersFleetVehiclesAssigned});
 
   @override
   State<VehicleDetailsWigdetFleet> createState() =>
@@ -23,6 +24,7 @@ class VehicleDetailsWigdetFleet extends StatefulWidget {
 
 class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
   bool isLoading = false;
+  int? userFleetId;
 
   @override
   void initState() {
@@ -30,7 +32,10 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
     super.initState();
     setState(() {
       isLoading = true;
+      userFleetId = widget.getFleetVehicleByIdModel.users_fleet_vehicles_id;
     });
+    print('userFleetId: $userFleetId');
+    print('usersFleetVehiclesAssigned3: ${widget.usersFleetVehiclesAssigned}');
     init();
   }
 
@@ -69,7 +74,7 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
         ? spinKitRotatingCircle
         : Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            height: 260.h,
+            height: 280.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: white,
@@ -104,11 +109,11 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                       ),
                     ),
                     Text(
-                      widget.getFleetVehicleByIdModel.vehicle_assigned_to!
-                                  .users_fleet_id !=
-                              -1
-                          ? '${widget.getFleetVehicleByIdModel.vehicle_assigned_to!.first_name!} ${widget.getFleetVehicleByIdModel.vehicle_assigned_to!.last_name!}'
-                          : 'Not assigned',
+                      widget.usersFleetVehiclesAssigned == -1
+                          ? 'Not Assigned'
+                          : widget.usersFleetVehiclesAssigned != -1
+                              ? '${widget.getFleetVehicleByIdModel.users_fleet!.first_name!} ${widget.getFleetVehicleByIdModel.users_fleet!.last_name!}'
+                              : '',
                       style: GoogleFonts.syne(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -132,11 +137,11 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                       ),
                     ),
                     Text(
-                      widget.getFleetVehicleByIdModel.vehicle_assigned_to!
-                                  .users_fleet_id ==
-                              -1
+                      widget.usersFleetVehiclesAssigned == -1
                           ? 'Active'
-                          : 'In Use',
+                          : widget.usersFleetVehiclesAssigned != -1
+                              ? 'In Use'
+                              : '',
                       style: GoogleFonts.syne(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -170,27 +175,30 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                   ],
                 ),
                 SizedBox(
-                  height: 30.h,
+                  height: 40.h,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Stack(
-                      alignment: Alignment.topCenter,
                       clipBehavior: Clip.none,
+                      alignment: Alignment.topCenter,
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 22),
-                          width: 95.w,
-                          height: 95.h,
+                          width: 120.w,
+                          height: 100.h,
                           decoration: BoxDecoration(
                             color: lightGrey,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Center(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                                 Text(
                                   widget.getFleetVehicleByIdModel
                                       .trips_completed!,
@@ -199,6 +207,9 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                                     fontWeight: FontWeight.w700,
                                     color: black,
                                   ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
                                 ),
                                 Text(
                                   'Trips',
@@ -213,10 +224,10 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                           ),
                         ),
                         Positioned(
-                          top: -25,
+                          top: -20,
                           child: Container(
-                            width: 45.w,
-                            height: 45.h,
+                            width: 50.w,
+                            height: 50.h,
                             decoration: BoxDecoration(
                               color: white,
                               border: Border.all(color: lightGrey),
@@ -230,22 +241,28 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
                     Stack(
                       alignment: Alignment.topCenter,
                       clipBehavior: Clip.none,
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 22),
-                          width: 95.w,
-                          height: 95.h,
+                          width: 120.w,
+                          height: 100.h,
                           decoration: BoxDecoration(
                             color: lightGrey,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Center(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                                 Text(
                                   widget.getFleetVehicleByIdModel
                                       .distance_covered!,
@@ -254,6 +271,9 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                                     fontWeight: FontWeight.w700,
                                     color: black,
                                   ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
                                 ),
                                 Text(
                                   'Distance ($distanceUnit)',
@@ -268,10 +288,10 @@ class _VehicleDetailsWigdetFleetState extends State<VehicleDetailsWigdetFleet> {
                           ),
                         ),
                         Positioned(
-                          top: -25,
+                          top: -20,
                           child: Container(
-                            width: 45.w,
-                            height: 45.h,
+                            width: 50.w,
+                            height: 50.h,
                             decoration: BoxDecoration(
                               color: white,
                               border: Border.all(color: lightGrey),

@@ -36,31 +36,7 @@ class _RidesScreenState extends State<RidesScreen>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        // backgroundColor: white,
-        drawer: const DrawerWidget(),
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          leading: Builder(builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 20),
-              child: GestureDetector(
-                onTap: () => Scaffold.of(context).openDrawer(),
-                child: drawerContainer(context),
-              ),
-            );
-          }),
-          centerTitle: true,
-          title: Text(
-            'Rides',
-            style: GoogleFonts.syne(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: black,
-            ),
-          ),
-        ),
+        backgroundColor: white,
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 22.w),
@@ -70,23 +46,23 @@ class _RidesScreenState extends State<RidesScreen>
                   height: 20.h,
                 ),
                 Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.fromLTRB(3, 5, 3, 5),
                   width: double.infinity,
-                  height: 70.h,
+                  height: 60.h,
                   decoration: BoxDecoration(
                     color: white,
-                    borderRadius: BorderRadius.circular(19),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      width: 1,
+                      color: lightGrey.withOpacity(0.5),
+                    ),
                   ),
                   child: TabBar(
-                    unselectedLabelColor: black,
-                    // physics: NeverScrollableScrollPhysics(),
-
                     labelColor: white,
-
                     controller: tabController,
+                    unselectedLabelColor: black,
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(19),
-                      // color: statusOfRide != 1 ? lightGrey : null,
                       gradient: const LinearGradient(
                         colors: [
                           Color(0xffFF6302),
@@ -100,22 +76,24 @@ class _RidesScreenState extends State<RidesScreen>
                       Text(
                         'In Progress',
                         style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w500,
                           fontSize: 14,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       Text(
                         'Completed',
                         style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w500,
                           fontSize: 14,
+                          fontWeight: FontWeight.w400,
+
                         ),
                       ),
                       Text(
                         'Cancelled',
                         style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w500,
                           fontSize: 14,
+                          fontWeight: FontWeight.w400,
+
                         ),
                       ),
                     ],
@@ -273,10 +251,10 @@ class _RidesScreenState extends State<RidesScreen>
                   child: TabBarView(
                     physics: const NeverScrollableScrollPhysics(),
                     controller: tabController,
-                    children: [
+                    children: const [
                       InProgressScreen(),
-                      const CompletedRidesScreen(),
-                      const CencelledRidesScreen(),
+                      CompletedRidesScreen(),
+                      CencelledRidesScreen(),
                     ],
                   ),
                 ),
