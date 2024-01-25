@@ -3,9 +3,17 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Constants/back-arrow-with-container.dart';
+import '../../models/API models/API response.dart';
+import '../../models/API models/GetAllNotificationsModel.dart';
+import '../../models/API models/ReadNotificationsModel.dart';
+import '../../services/API_services.dart';
+import '../../utilities/showToast.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

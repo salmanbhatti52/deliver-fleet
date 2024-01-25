@@ -292,7 +292,7 @@ class _DriverDetailsFleetState extends State<DriverDetailsFleet>
                   controller: tabController,
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    const HistoryOfSelectedDriver(),
+                    HistoryOfSelectedDriver(),
                     ReviewsOfSelectedDriver(
                       userIDOfSelectedDriver: widget.userIDOfSelectedDriver,
                     ),

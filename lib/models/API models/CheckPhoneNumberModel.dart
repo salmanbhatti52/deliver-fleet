@@ -21,7 +21,7 @@ class CheckPhoneNumberModel {
 
   factory CheckPhoneNumberModel.fromJson(Map<String, dynamic> json) => CheckPhoneNumberModel(
     status:   json["status"],
-    message : json["message"],
+    message : json["message"] != null ? json["message"] : null,
     data:     json["data"] != null ? Data.fromJson(json["data"]) : null,
   );
 

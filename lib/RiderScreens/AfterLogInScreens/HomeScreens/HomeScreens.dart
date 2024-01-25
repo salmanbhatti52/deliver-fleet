@@ -3,7 +3,9 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:deliver_partner/Constants/buttonContainer.dart';
+import 'package:deliver_partner/Constants/drawer_container.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/modalBottomSheetOnHome.dart';
+import 'package:deliver_partner/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -85,7 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } else {
-      print('object error getting requests  ${getAllClientRequestsResponse.status!}        ${getAllClientRequestsResponse.message!}');
+      print('object error getting requests  ' +
+          getAllClientRequestsResponse.status!.toString() +
+          '        ' +
+          getAllClientRequestsResponse.message!.toString());
       showToastError('No ride requests yet', FToast().init(context));
     }
 
@@ -174,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: white,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 14,
                   ),
@@ -197,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(45),
                                     child: Image.network(
-                                      'https://deliver.eigix.net/public/$profilePicture',
+                                      'https://deliver.eigix.net/public/${profilePicture}',
                                       fit: BoxFit.cover,
                                       errorBuilder: (BuildContext context,
                                           Object exception,
@@ -399,15 +404,15 @@ class _HomeScreenState extends State<HomeScreen> {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       ' AIzaSyAk-CA4yYf-txNZvvwmCshykjpLiASEkcw', // Your Google Map Key
-      const PointLatLng(30.2399443, 71.4853788),
-      const PointLatLng(31.410483, 72.484598),
+      PointLatLng(30.2399443, 71.4853788),
+      PointLatLng(31.410483, 72.484598),
     );
     if (result.points.isNotEmpty) {
-      for (var point in result.points) {
-        polylineCoordinates.add(
+      result.points.forEach(
+        (PointLatLng point) => polylineCoordinates.add(
           LatLng(point.latitude, point.longitude),
-        );
-      }
+        ),
+      );
       setState(() {});
     }
   }

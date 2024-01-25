@@ -1355,7 +1355,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
               ),
       );
     }
-    return const SizedBox();
+    return SizedBox();
   }
 
   bool isChatStarting = false;

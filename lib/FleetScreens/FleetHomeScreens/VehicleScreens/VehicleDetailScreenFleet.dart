@@ -185,7 +185,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
                                 requestedVehicleById:
                                     _getVehicleFleetByIdResponse.data!,
                               )
-                            : const Text('data'),
+                            : Text('data'),
                       ],
                     ),
                   ),

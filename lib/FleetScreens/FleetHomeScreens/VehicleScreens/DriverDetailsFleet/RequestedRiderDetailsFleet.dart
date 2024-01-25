@@ -169,7 +169,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                                     width: 134.w,
                                     height: 45.h,
                                     child: isAccepting
-                                        ? const SpinKitFadingCircle(
+                                        ? SpinKitFadingCircle(
                                             color: orange,
                                             size: 50.0,
                                           )
@@ -315,7 +315,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                                 width: 134.w,
                                 height: 45.h,
                                 child: isDeactivate
-                                    ? const SpinKitFadingCircle(
+                                    ? SpinKitFadingCircle(
                                         color: orange,
                                         size: 50.0,
                                       )

@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Constants/Colors.dart';
+import '../Constants/back-arrow-with-container.dart';
 import '../Constants/buttonContainer.dart';
 import 'package:google_maps_webservice_ex/places.dart';
 import '../Constants/camera-icon.dart';
@@ -281,7 +282,6 @@ class _VerifyDrivingLicenseManuallyState
                                   enableBorder: enableBorder,
                                   onChanged: (value) {
                                     searchAddressPlaces(value!);
-                                    return null;
                                   },
                                   validator: (val) {
                                     if (val!.isEmpty) {
@@ -296,9 +296,9 @@ class _VerifyDrivingLicenseManuallyState
                                 Padding(
                                   padding: const EdgeInsets.only(top: 40),
                                   child: Container(
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                       color: white,
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(10),
                                         bottomRight: Radius.circular(10),
                                       ),

@@ -1,5 +1,8 @@
+import 'package:deliver_partner/Constants/FacebookButton.dart';
+import 'package:deliver_partner/Constants/GoogleButton.dart';
 import 'package:deliver_partner/PrivacyPolicy.dart';
 import 'package:deliver_partner/TermsAndConditions.dart';
+import 'package:deliver_partner/VerifyYourself.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
@@ -12,9 +15,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Constants/Colors.dart';
 import 'Constants/buttonContainer.dart';
+import 'FleetScreens/BottomNavBarFleet.dart';
 import 'LogInScreen.dart';
 import 'RiderScreens/VerifyDrivingLisecnseManually.dart';
 import 'models/API models/API response.dart';

@@ -71,7 +71,7 @@ class _ReviewsOfSelectedDriverState extends State<ReviewsOfSelectedDriver> {
             : ListView.builder(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(top: 14),
+                padding: EdgeInsets.only(top: 14),
                 itemCount: getAllRatingsList!.length,
                 itemBuilder: (context, index) {
                   final item = getAllRatingsList![index];

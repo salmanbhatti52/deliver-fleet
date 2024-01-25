@@ -2,10 +2,14 @@ import 'dart:core';
 
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:deliver_partner/Constants/drawer_container.dart';
+import 'package:deliver_partner/ErrorPage.dart';
+import 'package:deliver_partner/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +20,7 @@ import '../../models/API models/API response.dart';
 import '../../models/API models/GetAllRatingsModel.dart';
 import '../../models/API models/LogInModel.dart';
 import '../../services/API_services.dart';
+import '../../utilities/showToast.dart';
 
 class RankingScreen extends StatefulWidget {
   const RankingScreen({super.key});
@@ -64,7 +69,7 @@ class _RankingScreenState extends State<RankingScreen> {
         getAllRatingsList!.addAll(_allRatingsResponse.data!);
       }
     } else {
-      print('object rating : ${_allRatingsResponse.status!.toString()}');
+      print('object rating : ${_allRatingsResponse!.status!.toString()}');
       // showToastError('something went wrong!', FToast().init(context));
     }
     for (GetAllRatingsModel model in getAllRatingsList!) {

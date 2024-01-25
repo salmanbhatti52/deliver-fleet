@@ -85,7 +85,7 @@ class _CardWidgetState extends State<CardWidget> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Column(
+                              Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -112,19 +112,19 @@ class _CardWidgetState extends State<CardWidget> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 10,
                               ),
                               Expanded(
                                 child: Row(
                                   children: [
-                                    const VerticalDivider(
+                                    VerticalDivider(
                                       color: Color(0xFF757575),
                                       width: 2,
                                       thickness: 2,
                                       indent: 2,
                                     ),
-                                    const SizedBox(
+                                    SizedBox(
                                       width: 4,
                                     ),
                                     Expanded(
@@ -134,14 +134,14 @@ class _CardWidgetState extends State<CardWidget> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          const Text(
+                                          Text(
                                             'Complaint ID :${'3456'}',
                                             style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 18),
                                           ),
-                                          const Text(
+                                          Text(
                                             'Status',
                                             style: TextStyle(
                                                 color: Color(0xFF757575),
@@ -152,11 +152,11 @@ class _CardWidgetState extends State<CardWidget> {
                                             width: 80,
                                             height: 20,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFFCFD8DC),
+                                              color: Color(0xFFCFD8DC),
                                               borderRadius:
                                                   BorderRadius.circular(20),
                                             ),
-                                            child: const Center(
+                                            child: Center(
                                               child: Text(
                                                 'CLOSED',
                                                 style: TextStyle(
@@ -166,7 +166,7 @@ class _CardWidgetState extends State<CardWidget> {
                                               ),
                                             ),
                                           ),
-                                          const Text(
+                                          Text(
                                             'Subject : ${'Mobile App DevelopmentMobile App '}',
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
@@ -183,10 +183,10 @@ class _CardWidgetState extends State<CardWidget> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 10,
                               ),
-                              const IconButton(
+                              IconButton(
                                 onPressed: null,
                                 icon: Icon(
                                   Icons.arrow_forward_ios_rounded,

@@ -358,7 +358,10 @@ class _RequestRideFromFleetActiveState
         gotoNextScreen(context);
       } else {
         showToastError(requestBikeResponse!.message, FToast().init(context));
-        print('object request error:  ${requestBikeResponse!.status!}    ${requestBikeResponse!.message}');
+        print('object request error:  ' +
+            requestBikeResponse!.status!.toString() +
+            '    ' +
+            requestBikeResponse!.message.toString());
       }
     }
     setState(() {

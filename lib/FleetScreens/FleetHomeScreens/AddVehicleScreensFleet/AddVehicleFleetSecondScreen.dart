@@ -518,7 +518,10 @@ class _AddVehicleFleetSecondScreenState
           ),
         );
       } else {
-        print('error${addVehicleResponse!.status}   ${addVehicleResponse!.message!}');
+        print('error' +
+            addVehicleResponse!.status.toString() +
+            '   ' +
+            addVehicleResponse!.message!.toString());
         showToastError(addVehicleResponse!.status, FToast().init(context));
       }
     }

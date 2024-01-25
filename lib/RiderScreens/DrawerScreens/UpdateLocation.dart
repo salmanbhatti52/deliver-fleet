@@ -187,7 +187,7 @@ class _UpdateLocationState extends State<UpdateLocation> {
                       Lottie.asset(
                         'assets/images/animation_lmoizymy.json',
                       ),
-                      const Spacer(),
+                      Spacer(),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 30.0),
                         child: isUpdatingLocation
@@ -221,10 +221,13 @@ class _UpdateLocationState extends State<UpdateLocation> {
     };
     updateLocationResponse =
         await service.updateLocationOneTimeAPI(updateLocationData);
-    print('object update loaction map:   $updateLocationData');
+    print('object update loaction map:   ' + updateLocationData.toString());
     if (updateLocationResponse!.status!.toLowerCase() == 'success') {
       if (updateLocationResponse!.data != null) {
-        print('object update loaction:   ${updateLocationResponse!.data!.latitude}    ${updateLocationResponse!.data!.longitude}');
+        print('object update loaction:   ' +
+            updateLocationResponse!.data!.latitude.toString() +
+            '    ' +
+            updateLocationResponse!.data!.longitude.toString());
         showToastSuccess(
             'location is updated successfully', FToast().init(context),
             seconds: 1);

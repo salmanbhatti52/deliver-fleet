@@ -1,3 +1,4 @@
+import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/LogInScreen.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
@@ -12,11 +13,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Constants/Colors.dart';
 import '../Constants/back-arrow-with-container.dart';
+import '../Constants/buttonConatinerWithBorder.dart';
 import '../Constants/buttonContainer.dart';
 import '../models/API models/API response.dart';
 import '../models/API models/AddVehicleModel.dart';
 import '../services/API_services.dart';
 import '../utilities/showToast.dart';
+import 'BottomNavBar.dart';
+import 'RequestRideFromFleetActive.dart';
 
 class RideDetailsAfterLogInSecondScreen extends StatefulWidget {
   final Map addBikeData;
@@ -529,7 +533,10 @@ class _RideDetailsAfterLogInSecondScreenState
           ),
         );
       } else {
-        print('error   ${addVehicleResponse!.status}  ${addVehicleResponse!.message}');
+        print('error   ' +
+            addVehicleResponse!.status.toString() +
+            '  ' +
+            addVehicleResponse!.message.toString());
         showToastError(addVehicleResponse!.status, FToast().init(context));
       }
     }

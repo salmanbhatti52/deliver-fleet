@@ -117,7 +117,7 @@ class CongratulationsScreenDriving extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const LogInScreen(
+                            builder: (context) => LogInScreen(
                               userType: 'Rider',
                             ),
                           ),

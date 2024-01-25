@@ -62,7 +62,7 @@ class _UpcomingDeadlinesWidgetState extends State<UpcomingDeadlinesWidget> {
               )
             ],
           ),
-          const Icon(
+          Icon(
             Icons.arrow_forward_ios_rounded,
             color: grey,
           )

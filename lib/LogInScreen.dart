@@ -1,14 +1,17 @@
 import 'dart:io';
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
+import 'package:deliver_partner/VerifyYourself.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
+import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:device_info/device_info.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:deliver_partner/Constants/back-arrow-with-container.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -17,9 +20,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'Constants/Colors.dart';
+import 'Constants/FacebookButton.dart';
+import 'Constants/GoogleButton.dart';
 import 'Constants/PageLoadingKits.dart';
 import 'Constants/buttonContainer.dart';
 import 'EmailVerificationScreen.dart';
+import 'ForgetPassword.dart';
+import 'RegisterScreen.dart';
 import 'models/API models/CheckPhoneNumberModel.dart';
 import 'RiderScreens/RideDetailsAfterLogIn.dart';
 import 'models/API models/API response.dart';
@@ -867,6 +874,7 @@ class _LogInScreenState extends State<LogInScreen> {
         } else if (widget.userType == 'Fleet') {
           Navigator.of(context).push(
             MaterialPageRoute(
+              builder: (context) => const BottomNavBarFleet(),
               builder: (context) => const BottomNavBarFleet(),
             ),
           );

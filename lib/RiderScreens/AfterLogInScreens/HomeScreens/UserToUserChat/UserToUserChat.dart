@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/models/API%20models/GetAllUserToUsreChatModel.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -12,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../Constants/back-arrow-with-container.dart';
@@ -49,7 +51,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    chatRefreshTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+    chatRefreshTimer = Timer.periodic(Duration(seconds: 2), (timer) {
       init();
     });
     init();

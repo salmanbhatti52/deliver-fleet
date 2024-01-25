@@ -5,11 +5,14 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:deliver_partner/Constants/back-arrow-with-container.dart';
+import '../Constants/Colors.dart';
 import '../Constants/buttonContainer.dart';
 import '../LogInScreen.dart';
+import '../RegisterScreen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final String rider;
@@ -77,7 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       home: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          backgroundColor: const Color(0xffFBC403),
+          backgroundColor: Color(0xffFBC403),
           leadingWidth: 70,
           leading: Padding(
             padding: const EdgeInsets.only(top: 8.0, left: 20),

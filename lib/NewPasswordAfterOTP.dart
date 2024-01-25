@@ -253,7 +253,10 @@ class _NewPasswordAfterOTPState extends State<NewPasswordAfterOTP> {
           ),
         );
       } else {
-        print('reset password:  ${resetResponse!.message!}    ${resetResponse!.status!}');
+        print('reset password:  ' +
+            resetResponse!.message!.toString() +
+            '    ' +
+            resetResponse!.status!.toString());
         showToastError(resetResponse!.status, FToast().init(context));
       }
       setState(() {

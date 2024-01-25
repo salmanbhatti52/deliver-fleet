@@ -7,7 +7,7 @@ class LocalAuthenticationApi {
   Future<bool> canBiometric() async {
     try {
       return await _authentication.canCheckBiometrics;
-    } on PlatformException {
+    } on PlatformException catch (e) {
       return false;
     }
   }
@@ -25,7 +25,7 @@ class LocalAuthenticationApi {
             biometricOnly: true,
           ),
           localizedReason: 'Face ID is required to proceed');
-    } on PlatformException {
+    } on PlatformException catch (e) {
       return false;
     }
   }

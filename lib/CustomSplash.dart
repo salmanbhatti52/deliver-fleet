@@ -3,11 +3,13 @@ import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomSplash extends StatefulWidget {
-  const CustomSplash({super.key});
+  const CustomSplash({Key? key}) : super(key: key);
 
   @override
   State<CustomSplash> createState() => _CustomSplashState();
