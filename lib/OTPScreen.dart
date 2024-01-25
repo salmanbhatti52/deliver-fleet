@@ -350,10 +350,7 @@ class _OTPScreenState extends State<OTPScreen> {
           ),
         );
       } else {
-        print('error' +
-            _otpResponse!.message!.toString() +
-            '   ' +
-            _otpResponse!.status!.toString());
+        print('error${_otpResponse!.message!}   ${_otpResponse!.status!}');
         showToastError(_otpResponse!.message!, FToast().init(context));
       }
     }

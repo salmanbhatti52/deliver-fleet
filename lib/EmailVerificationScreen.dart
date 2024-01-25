@@ -1,18 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/LogInScreen.dart';
 import 'package:deliver_partner/RegisterScreen.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 // import 'package:flutter_gif/flutter_gif.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
@@ -29,10 +24,7 @@ import 'FleetScreens/BottomNavBarFleet.dart';
 import 'RiderScreens/BottomNavBar.dart';
 import 'RiderScreens/DrivingLicensePictureVerification.dart';
 import 'RiderScreens/RideDetailsAfterLogIn.dart';
-import 'RiderScreens/VerifyDrivingLisecnseManually.dart';
-import 'models/API models/API response.dart';
 import 'models/API models/CheckPhoneNumberModel.dart';
-import 'models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   final String userType;
@@ -298,29 +290,15 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           }
         } else {
           if (widget.userType == "Fleet") {
-            if (checkPhoneNumberModel.data!.usersFleetId!.toInt() != null) {
-              setState(() {
-                isVerifying = false;
-              });
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const BottomNavBarFleet(),
-                  ),
-                  (Route<dynamic> route) => false);
-            } else {
-              setState(() {
-                isVerifying = false;
-              });
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => RegisterScreen(
-                        userType: widget.userType,
-                        phoneNumber: widget.phoneNumber.toString(),
-                        deviceID: widget.deviceID.toString()),
-                  ),
-                  (Route<dynamic> route) => false);
-            }
-          }
+            setState(() {
+              isVerifying = false;
+            });
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const BottomNavBarFleet(),
+                ),
+                (Route<dynamic> route) => false);
+                    }
         }
       } else if (checkPhoneNumberModel.status == "error" &&
           checkPhoneNumberModel.message ==

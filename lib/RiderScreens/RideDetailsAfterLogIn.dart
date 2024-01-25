@@ -6,7 +6,6 @@ import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/Constants/buttonConatinerWithBorder.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
 import 'package:deliver_partner/widgets/customDialogForImage.dart';
-import 'package:deliver_partner/widgets/warningOnRidesDetailsScreen.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

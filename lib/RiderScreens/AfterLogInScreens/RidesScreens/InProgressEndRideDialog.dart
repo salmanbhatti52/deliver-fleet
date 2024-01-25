@@ -374,7 +374,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => BottomNavBar(),
+            builder: (context) => const BottomNavBar(),
           ),
         );
       }

@@ -13,7 +13,6 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Constants/back-arrow-with-container.dart';
-import 'EmailVerificationScreen.dart';
 import 'models/API models/API response.dart';
 
 class VerifyYourself extends StatefulWidget {

@@ -1333,6 +1333,6 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
               ),
       );
     }
-    return SizedBox();
+    return const SizedBox();
   }
 }

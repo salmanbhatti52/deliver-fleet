@@ -191,7 +191,7 @@ class _EditProfileFleetState extends State<EditProfileFleet> {
         showToastError("You didn't Take Any Picture", FToast().init(context));
       }
     } catch (e) {
-      showToastError("CATCH " + e.toString(), FToast().init(context));
+      showToastError("CATCH $e", FToast().init(context));
     }
   }
 

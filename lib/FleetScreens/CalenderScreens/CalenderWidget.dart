@@ -21,10 +21,10 @@ class _CalenderWidgetState extends State<CalenderWidget> {
           canMarkersOverflow: true,
           todayDecoration: BoxDecoration(
               color: orange, borderRadius: BorderRadius.circular(5)),
-          selectedDecoration: BoxDecoration(
+          selectedDecoration: const BoxDecoration(
             color: grey,
           ),
-          todayTextStyle: TextStyle(
+          todayTextStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18.0,
               color: Colors.white)),
@@ -52,7 +52,7 @@ class _CalenderWidgetState extends State<CalenderWidget> {
                 borderRadius: BorderRadius.circular(10.0)),
             child: Text(
               date.day.toString(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             )),
         todayBuilder: (context, date, events) => Container(
             margin: const EdgeInsets.all(4.0),
@@ -62,7 +62,7 @@ class _CalenderWidgetState extends State<CalenderWidget> {
                 borderRadius: BorderRadius.circular(10.0)),
             child: Text(
               date.day.toString(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             )),
       ),
     );

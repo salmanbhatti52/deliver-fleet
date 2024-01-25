@@ -87,7 +87,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (getAdminResponse!.status!.toLowerCase() == 'success') {
       getAdminList!.addAll(getAdminResponse!.data!);
       print(
-          'object getting all adimns:    ' + getAdminResponse!.data.toString());
+          'object getting all adimns:    ${getAdminResponse!.data}');
     } else {}
 
     saveInfo = false;

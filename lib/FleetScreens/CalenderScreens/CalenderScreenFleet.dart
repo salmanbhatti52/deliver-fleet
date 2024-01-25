@@ -19,14 +19,14 @@ class _CalenderScreenFleetState extends State<CalenderScreenFleet> {
     return Scaffold(
       backgroundColor: white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 22),
+        padding: const EdgeInsets.symmetric(horizontal: 22),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 20.h,
             ),
-            CalenderWidget(),
+            const CalenderWidget(),
             SizedBox(
               height: 20.h,
             ),
@@ -44,7 +44,7 @@ class _CalenderScreenFleetState extends State<CalenderScreenFleet> {
                 itemCount: 10,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return UpcomingDeadlinesWidget();
+                  return const UpcomingDeadlinesWidget();
                 },
               ),
             ),

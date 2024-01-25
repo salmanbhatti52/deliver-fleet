@@ -16,7 +16,7 @@ class _SpendingScreenFleetState extends State<SpendingScreenFleet> {
     return Scaffold(
       backgroundColor: white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 22.0),
+        padding: const EdgeInsets.symmetric(horizontal: 22.0),
         child: Column(
           children: [
             SizedBox(

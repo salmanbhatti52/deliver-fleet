@@ -112,7 +112,7 @@ class _DrivingLicensePictureVerificationState
         showToastError("You didn't take any picture", FToast().init(context));
       }
     } catch (e) {
-      showToastError("CATCH " + e.toString(), FToast().init(context));
+      showToastError("CATCH $e", FToast().init(context));
     }
   }
 
@@ -346,8 +346,8 @@ class _DrivingLicensePictureVerificationState
       verifyResponse = await service.verifyDrivingLicenseAPI(widget.licenseMap);
       if (verifyResponse!.status!.toLowerCase() == 'success') {
         SharedPreferences sharedPref = await SharedPreferences.getInstance();
-        userID = (sharedPref.getInt('userID') ?? null);
-        deviceIDInfo = (sharedPref.getString('deviceIDInfo') ?? null);
+        userID = (sharedPref.getInt('userID'));
+        deviceIDInfo = (sharedPref.getString('deviceIDInfo'));
         print("userId value is = $userID");
         print("deviceIDInfo = $deviceIDInfo");
         if (userID != null) {

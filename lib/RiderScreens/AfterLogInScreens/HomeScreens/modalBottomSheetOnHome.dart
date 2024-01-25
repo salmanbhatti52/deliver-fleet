@@ -415,7 +415,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
                         ),
                       ),
                 isRejectingRide
-                    ? Padding(
+                    ? const Padding(
                         padding: EdgeInsets.only(right: 35.0),
                         child: SpinKitDoubleBounce(
                           color: orange,

@@ -1,21 +1,12 @@
-import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/models/API%20models/API%20response.dart';
-import 'package:deliver_partner/models/API%20models/LogInModel.dart';
 import 'package:deliver_partner/models/NotificationSettingModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../Constants/Colors.dart';
 import '../../../Constants/back-arrow-with-container.dart';
-import '../../services/API_services.dart';
-import '../../utilities/showToast.dart';
 
 String? notificationStatus = "Yes";
 

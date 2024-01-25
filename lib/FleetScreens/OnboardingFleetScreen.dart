@@ -11,7 +11,6 @@ import 'package:deliver_partner/Constants/back-arrow-with-container.dart';
 import '../Constants/Colors.dart';
 import '../Constants/buttonContainer.dart';
 import '../LogInScreen.dart';
-import '../RegisterScreen.dart';
 
 class OnboardingFleetScreen extends StatefulWidget {
   final String fleet;
@@ -38,8 +37,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
           deviceName = build.model;
           deviceVersion = build.version.toString();
           identifier = build.androidId;
-          print('device id for android while registering:  ' +
-              identifier.toString());
+          print('device id for android while registering:  $identifier');
         });
         //UUID for Android
       } else if (Platform.isIOS) {
@@ -72,7 +70,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
       home: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          backgroundColor: Color(0xffFBC403),
+          backgroundColor: const Color(0xffFBC403),
           leadingWidth: 70,
           leading: Padding(
             padding: const EdgeInsets.only(top: 8.0, left: 20),

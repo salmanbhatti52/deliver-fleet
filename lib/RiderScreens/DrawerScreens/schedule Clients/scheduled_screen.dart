@@ -6,9 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import '../../../Constants/Colors.dart';
-import '../../../Constants/PageLoadingKits.dart';
 import '../../../Constants/SeeDetailsOnCompletedRidesButton.dart';
 import '../../../Constants/details-button.dart';
 import '../../../Constants/ratingContainerOnCompletedRides.dart';
@@ -19,7 +17,6 @@ import '../../../models/API models/ScheduledRiderModel.dart';
 import '../../../models/API models/ShowBookingsModel.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
-import '../../AfterLogInScreens/HomeScreens/modalBottomSheetEndRide.dart';
 import '../../AfterLogInScreens/RidesScreens/CompletedRidesDestinationsWidget.dart';
 import '../../BottomNavBar.dart';
 
@@ -623,7 +620,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
           widget.scheduledRiderModel.bookings_destinations_id.toString(),
       "bookings_destinations_status_id": statusID.toString()
     };
-    print('object start ride data:    ' + startRideData.toString());
+    print('object start ride data:    $startRideData');
     pickedResponse = await service.startRideRequest(startRideData);
 
     if (pickedResponse!.status!.toLowerCase() == "success") {
@@ -632,10 +629,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
       }
     } else {
       showToastError(pickedResponse!.message, FToast().init(context));
-      print('object error starting ride:   ' +
-          pickedResponse!.message!.toString() +
-          '   ' +
-          pickedResponse!.status!.toString());
+      print('object error starting ride:   ${pickedResponse!.message!}   ${pickedResponse!.status!}');
     }
     setState(() {
       isParcelPicked = false;
@@ -662,7 +656,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
             widget.scheduledRiderModel.bookings_destinations_id.toString(),
         "bookings_destinations_status_id": startRideID.toString()
       };
-      print('object start ride data:    ' + startRideData.toString());
+      print('object start ride data:    $startRideData');
       startRideResponse = await service.startRideRequest(startRideData);
 
       if (startRideResponse!.status!.toLowerCase() == "success") {
@@ -693,10 +687,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
         }
       } else {
         showToastError(startRideResponse!.message, FToast().init(context));
-        print('object error starting ride:   ' +
-            startRideResponse!.message!.toString() +
-            '   ' +
-            startRideResponse!.status!.toString());
+        print('object error starting ride:   ${startRideResponse!.message!}   ${startRideResponse!.status!}');
       }
       setState(() {
         isRideStarting = false;

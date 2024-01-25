@@ -1,6 +1,5 @@
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/RidesScreens/InProgressEndRideDialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,7 +13,6 @@ import '../../../Constants/PageLoadingKits.dart';
 import '../../../models/API models/API response.dart';
 import '../../../models/API models/GetAllSystemDataModel.dart';
 import '../../../models/API models/InProgressRidesModel.dart';
-import '../../../models/API models/ShowBookingsModel.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
 import '../HomeScreens/UserToUserChat/UserToUserChat.dart';
@@ -24,11 +22,11 @@ class InProgressDetails extends StatefulWidget {
   final String userID;
   final List<InProgressRidesModel>? inProgressRidesList2;
   const InProgressDetails({
-    Key? key,
+    super.key,
     this.inProgressRidesList,
     this.inProgressRidesList2,
     required this.userID,
-  }) : super(key: key);
+  });
 
   @override
   State<InProgressDetails> createState() => _InProgressDetailsState();
@@ -105,7 +103,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
           ?.users_customers?.users_customers_id
           .toString(),
     };
-    print('object start suer to uer chat data:  ' + startChatData.toString());
+    print('object start suer to uer chat data:  $startChatData');
     startUserToUserChatResponse =
         await service.startUserToUserChatAPI(startChatData);
     if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
@@ -130,8 +128,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
         ),
       );
     } else {
-      print(' error starting chat:  ' +
-          startUserToUserChatResponse!.message!.toString());
+      print(' error starting chat:  ${startUserToUserChatResponse!.message!}');
       // showToastError('error occurred,try again', FToast().init(context),
       //     seconds: 2);
       Navigator.of(context).push(
