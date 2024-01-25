@@ -875,7 +875,6 @@ class _LogInScreenState extends State<LogInScreen> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const BottomNavBarFleet(),
-              builder: (context) => const BottomNavBarFleet(),
             ),
           );
         }
