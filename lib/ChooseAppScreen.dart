@@ -46,7 +46,7 @@ class _ChooseAppScreenState extends State<ChooseAppScreen> {
               style: GoogleFonts.syne(
                 fontWeight: FontWeight.w700,
                 color: black,
-                fontSize: MediaQuery.of(context).size.width * 0.04,
+                fontSize: MediaQuery.of(context).size.height * 0.023,
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.08),

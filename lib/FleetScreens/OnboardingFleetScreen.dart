@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:deliver_partner/tempLoginFleet.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +14,8 @@ import '../Constants/Colors.dart';
 import '../Constants/buttonContainer.dart';
 import '../LogInScreen.dart';
 import '../RegisterScreen.dart';
+import '../tempRegisterFleet.dart';
+import '../widgets/apiButton.dart';
 
 class OnboardingFleetScreen extends StatefulWidget {
   final String fleet;
@@ -38,8 +42,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
           deviceName = build.model;
           deviceVersion = build.version.toString();
           identifier = build.androidId;
-          print('device id for android while registering:  ' +
-              identifier.toString());
+          print('device id for android while registering:  $identifier');
         });
         //UUID for Android
       } else if (Platform.isIOS) {
@@ -57,22 +60,75 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
     }
   }
 
+  bool systemSettings = false;
+  String? loginType;
+
+  Future<String?> fetchSystemSettingsDescription28() async {
+    const String apiUrl = 'https://deliver.eigix.net/api/get_all_system_data';
+    setState(() {
+      systemSettings = true;
+    });
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        // If the call to the server was successful, parse the JSON
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        // Find the setting with system_settings_id equal to 26
+        final setting40 = data['data'].firstWhere(
+            (setting) => setting['system_settings_id'] == 40,
+            orElse: () => null);
+        setState(() {
+          systemSettings = false;
+        });
+        if (setting40 != null) {
+          // Extract and return the description if setting 28 exists
+          loginType = setting40['description'];
+
+          return loginType;
+        } else {
+          throw Exception('System setting with ID 40 not found');
+        }
+      } else {
+        // If the server did not return a 200 OK response,
+        // throw an exception.
+        throw Exception('Failed to fetch system settings');
+      }
+    } catch (e) {
+      // Catch any exception that might occur during the process
+      print('Error fetching system settings: $e');
+      return null;
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    fetchSystemSettingsDescription28();
     _deviceDetails();
   }
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    double fontSize = screenHeight * 0.02;
     print('app mode in fleet:  ${widget.fleet}');
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    if (systemSettings == true) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: orange,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          backgroundColor: Color(0xffFBC403),
+          backgroundColor: const Color(0xffFBC403),
           leadingWidth: 70,
           leading: Padding(
             padding: const EdgeInsets.only(top: 8.0, left: 20),
@@ -86,7 +142,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
           children: [
             Container(
               width: double.infinity,
-              height: 250.h,
+              height: MediaQuery.of(context).size.height * 0.21,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
@@ -104,18 +160,20 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
                 child: SvgPicture.asset(
                   'assets/images/logo.svg',
                   fit: BoxFit.scaleDown,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width * 0.7,
                 ),
               ),
             ),
             SizedBox(
-              height: 30.h,
+              height: MediaQuery.of(context).size.height * 0.1,
             ),
             SvgPicture.asset(
               'assets/images/onboarding-pic.svg',
               fit: BoxFit.scaleDown,
             ),
-            SizedBox(
-              height: 40.h,
+            const SizedBox(
+              height: 40,
             ),
             AnimatedTextKit(
               animatedTexts: [
@@ -139,15 +197,25 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
             ),
             const Spacer(),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => LogInScreen(
-                      userType: widget.fleet,
-                      deviceID: identifier.toString(),
-                    ),
-                  ),
-                );
+              onTap: () async {
+                // await fetchSystemSettingsDescription28();
+                loginType == "Email"
+                    ? Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => TempLoginFleet(
+                              userType: widget.fleet,
+                              deviceID: identifier.toString(),
+                              phoneNumber: "1234"),
+                        ),
+                      )
+                    : Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LogInScreen(
+                            userType: widget.fleet,
+                            deviceID: identifier.toString(),
+                          ),
+                        ),
+                      );
                 _deviceDetails();
               },
               child: buttonContainer(
@@ -155,8 +223,8 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
                 'Continue',
               ),
             ),
-            SizedBox(
-              height: 30.h,
+            const SizedBox(
+              height: 30,
             ),
             // Padding(
             //   padding: EdgeInsets.only(bottom: 20.0.h),
@@ -198,7 +266,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
             // ),
           ],
         ),
-      ),
-    );
+      );
+    }
   }
 }

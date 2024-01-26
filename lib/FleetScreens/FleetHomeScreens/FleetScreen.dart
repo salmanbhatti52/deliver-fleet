@@ -35,10 +35,8 @@ class _FleetScreenState extends State<FleetScreen>
             height: 20.h,
           ),
           Container(
-            padding: const EdgeInsets.all(3),
-            // margin: EdgeInsets.symmetric(horizontal: 22),
-            width: 235.w,
-            height: 45.h,
+            width: MediaQuery.of(context).size.width * 0.55,
+            height: MediaQuery.of(context).size.height * 0.06,
             decoration: BoxDecoration(
               color: white,
               borderRadius: BorderRadius.circular(10),
@@ -46,7 +44,8 @@ class _FleetScreenState extends State<FleetScreen>
             child: TabBar(
               unselectedLabelColor: black,
               // physics: NeverScrollableScrollPhysics(),
-
+              // labelPadding: const EdgeInsets.symmetric(horizontal: 12),
+              indicatorSize: TabBarIndicatorSize.label,
               labelColor: white,
 
               controller: tabController,
@@ -94,3 +93,68 @@ class _FleetScreenState extends State<FleetScreen>
     );
   }
 }
+
+      // Padding(
+      //         padding: const EdgeInsets.symmetric(horizontal: 10),
+      //         child: Container(
+      //             width: size.width * 0.55,
+      //             height: size.height * 0.06,
+      //             decoration: BoxDecoration(
+      //               color: whiteColor,
+      //               borderRadius: BorderRadius.circular(10),
+      //               border: Border.all(
+      //                 color: borderColor,
+      //                 width: 1,
+      //               ),
+      //             ),
+      //             child: Padding(
+      //               padding:
+      //                   const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+      //               child: DefaultTabController(
+      //                 length: 2,
+      //                 child: TabBar(
+      //                   controller: tabController,
+      //                   indicator: BoxDecoration(
+      //                     gradient: LinearGradient(
+      //                       begin: Alignment.centerRight,
+      //                       end: Alignment.centerLeft,
+      //                       stops: const [0.1, 1.5],
+      //                       colors: [
+      //                         orangeColor,
+      //                         yellowColor,
+      //                       ],
+      //                     ),
+      //                     borderRadius: BorderRadius.circular(10),
+      //                   ),
+      //                   labelColor: whiteColor,
+      //                   labelStyle: TextStyle(
+      //                     color: whiteColor,
+      //                     fontSize: 14,
+      //                     fontFamily: 'Syne-Medium',
+      //                   ),
+      //                   unselectedLabelColor: const Color(0xFF4D4D4D),
+      //                   unselectedLabelStyle: const TextStyle(
+      //                     color: Color(0xFF4D4D4D),
+      //                     fontSize: 14,
+      //                     fontFamily: 'Syne-Regular',
+      //                   ),
+      //                   tabs: const [
+      //                     Tab(text: "Scooter"),
+      //                     Tab(text: "Driver's"),
+      //                   ],
+      //                 ),
+      //               ),
+      //             )),
+      //       ),
+      //       Container(
+      //         color: transparentColor,
+      //         width: size.width,
+      //         height: size.height * 0.72,
+      //         child: TabBarView(
+      //           controller: tabController,
+      //           children: const [
+      //             ScooterScreen(),
+      //             DriversScreen(),
+      //           ],
+      //         ),
+      //       ),

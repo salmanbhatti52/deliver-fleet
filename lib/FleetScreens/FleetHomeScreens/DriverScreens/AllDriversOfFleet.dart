@@ -60,9 +60,11 @@ class _AllDriversOfFleetState extends State<AllDriversOfFleet> {
     //   showToastError(_getAllRidersResponse.message, FToast().init(context));
     // }
 
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override

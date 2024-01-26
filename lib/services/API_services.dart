@@ -26,12 +26,13 @@ import '../models/APIModelsFleet/GetAllRidersModel.dart';
 import '../models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
 import '../models/APIModelsFleet/GetFleetVehicleRequestByIdModel.dart';
 import '../models/APIModelsFleet/UploadCACCertificateModel.dart';
+import '../models/tempLoginModel.dart';
 
 class ApiServices {
   /// Sign-up API:
 
   Future<APIResponse<APIResponse>> signUpAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/signup_fleet';
+    String API = 'https://deliver.eigix.net/api/email_signup_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -50,6 +51,42 @@ class ApiServices {
   }
 
   /// LogIn API:
+//Temp Login API Function
+  Future<APIResponse<TempLoginModel>> tempLoginAPI(Map data) async {
+    String API = 'https://deliver.eigix.net/api/email_login_fleet';
+
+    try {
+      var response = await http.post(Uri.parse(API), body: data);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+
+        if (jsonData['data'] != null) {
+          final itemCat = TempLoginModel.fromJson(jsonData['data']);
+
+          return APIResponse<TempLoginModel>(
+              data: itemCat,
+              status: jsonData['status'],
+              message: jsonData['message']);
+        } else {
+          return APIResponse<TempLoginModel>(
+              data: TempLoginModel(),
+              status: jsonData['status'],
+              message: jsonData['message']);
+        }
+      }
+
+      return APIResponse<TempLoginModel>(
+        status: APIResponse.fromMap(json.decode(response.body)).status,
+        message: APIResponse.fromMap(json.decode(response.body)).message,
+      );
+    } catch (error) {
+      return APIResponse<TempLoginModel>(
+        status: error.toString(),
+        message: error.toString(),
+      );
+    }
+  }
 
   Future<APIResponse<LogInModel>> logInAPI(Map data) async {
     String API = 'https://deliver.eigix.net/api/login_fleet';

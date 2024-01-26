@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:deliver_partner/temploginReider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,7 @@ import '../Constants/Colors.dart';
 import '../Constants/buttonContainer.dart';
 import '../LogInScreen.dart';
 import '../RegisterScreen.dart';
+import '../widgets/apiButton.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final String rider;
@@ -59,11 +62,54 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
+  bool systemSettings = false;
+  String? loginType;
+
+  Future<String?> fetchSystemSettingsDescription28() async {
+    const String apiUrl = 'https://deliver.eigix.net/api/get_all_system_data';
+    setState(() {
+      systemSettings = true;
+    });
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        // If the call to the server was successful, parse the JSON
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        // Find the setting with system_settings_id equal to 26
+        final setting40 = data['data'].firstWhere(
+            (setting) => setting['system_settings_id'] == 40,
+            orElse: () => null);
+        setState(() {
+          systemSettings = false;
+        });
+        if (setting40 != null) {
+          // Extract and return the description if setting 28 exists
+          loginType = setting40['description'];
+
+          return loginType;
+        } else {
+          throw Exception('System setting with ID 40 not found');
+        }
+      } else {
+        // If the server did not return a 200 OK response,
+        // throw an exception.
+        throw Exception('Failed to fetch system settings');
+      }
+    } catch (e) {
+      // Catch any exception that might occur during the process
+      print('Error fetching system settings: $e');
+      return null;
+    }
+  }
+
   @override
   void initState() {
     setState(() {
       getsDeviceID = true;
     });
+    fetchSystemSettingsDescription28();
     // TODO: implement initState
     super.initState();
     _deviceDetails();
@@ -75,12 +121,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     print('app mode in rider:  ${widget.rider}');
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    if (systemSettings == true) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: orange,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          backgroundColor: Color(0xffFBC403),
+          backgroundColor: const Color(0xffFBC403),
           leadingWidth: 70,
           leading: Padding(
             padding: const EdgeInsets.only(top: 8.0, left: 20),
@@ -158,16 +211,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ],
             ),
             const Spacer(),
+            // loginType == null ? apiButton(context):
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => LogInScreen(
-                      userType: widget.rider,
-                      deviceID: identifier.toString(),
-                    ),
-                  ),
-                );
+              onTap: () async {
+                loginType == "Email"
+                    ? Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => TempLoginRider(
+                            userType: widget.rider,
+                            deviceID: identifier.toString(),
+                            phoneNumber: "123",
+                          ),
+                        ),
+                      )
+                    : Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LogInScreen(
+                            userType: widget.rider,
+                            deviceID: identifier.toString(),
+                          ),
+                        ),
+                      );
               },
               child: buttonContainer1(
                 context,
@@ -181,7 +245,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             // Other commented code
           ],
         ),
-      ),
-    );
+      );
+    }
   }
 }
