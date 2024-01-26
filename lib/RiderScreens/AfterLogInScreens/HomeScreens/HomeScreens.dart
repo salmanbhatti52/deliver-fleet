@@ -7,7 +7,8 @@ import 'package:deliver_partner/Constants/drawer_container.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/modalBottomSheetOnHome.dart';
 import 'package:deliver_partner/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart'
+    show SystemChrome, SystemUiMode, rootBundle;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -87,10 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } else {
-      print('object error getting requests  ' +
-          getAllClientRequestsResponse.status!.toString() +
-          '        ' +
-          getAllClientRequestsResponse.message!.toString());
+      print(
+          'object error getting requests  ${getAllClientRequestsResponse.status!}        ${getAllClientRequestsResponse.message!}');
       showToastError('No ride requests yet', FToast().init(context));
     }
 
@@ -179,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: white,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 14,
                   ),
@@ -202,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(45),
                                     child: Image.network(
-                                      'https://deliver.eigix.net/public/${profilePicture}',
+                                      'https://deliver.eigix.net/public/$profilePicture',
                                       fit: BoxFit.cover,
                                       errorBuilder: (BuildContext context,
                                           Object exception,
@@ -404,15 +403,15 @@ class _HomeScreenState extends State<HomeScreen> {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       ' AIzaSyAk-CA4yYf-txNZvvwmCshykjpLiASEkcw', // Your Google Map Key
-      PointLatLng(30.2399443, 71.4853788),
-      PointLatLng(31.410483, 72.484598),
+      const PointLatLng(30.2399443, 71.4853788),
+      const PointLatLng(31.410483, 72.484598),
     );
     if (result.points.isNotEmpty) {
-      result.points.forEach(
-        (PointLatLng point) => polylineCoordinates.add(
+      for (var point in result.points) {
+        polylineCoordinates.add(
           LatLng(point.latitude, point.longitude),
-        ),
-      );
+        );
+      }
       setState(() {});
     }
   }
@@ -432,110 +431,106 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     LatLng initialPosition =
         LatLng(double.parse(userLatitude!), double.parse(userLongitude!));
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: white,
-        body: isHomeLoading
-            ? spinKitRotatingCircle
-            : Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    onCameraMove: _onCameraMove(
-                        CameraPosition(
-                            target: LatLng(double.parse(userLatitude!),
-                                double.parse(userLongitude!))),
-                        LatLng(double.parse(userLatitude!),
-                            double.parse(userLongitude!))),
-                    initialCameraPosition: CameraPosition(
-                      target: initialPosition,
-                      zoom: 15.5,
-                    ),
-                    mapType: MapType.normal,
-                    polylines: {
-                      Polyline(
-                        polylineId: const PolylineId("route"),
-                        points: polylineCoordinates,
-                        color: orange,
-                        geodesic: true,
-                        patterns: [
-                          PatternItem.dash(40),
-                          PatternItem.gap(10),
-                        ],
-                        width: 6,
-                      ),
-                    },
-                    compassEnabled: true,
-                    markers: getMarkers(),
-                    scrollGesturesEnabled: true,
-                    buildingsEnabled: true,
+    return Scaffold(
+      body: isHomeLoading
+          ? spinKitRotatingCircle
+          : Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  onCameraMove: _onCameraMove(
+                      CameraPosition(
+                          target: LatLng(double.parse(userLatitude!),
+                              double.parse(userLongitude!))),
+                      LatLng(double.parse(userLatitude!),
+                          double.parse(userLongitude!))),
+                  initialCameraPosition: CameraPosition(
+                    target: initialPosition,
+                    zoom: 15.5,
                   ),
-                  // Positioned(
-                  //   child: Padding(
-                  //     padding: EdgeInsets.only(right: 22.0.w, bottom: 130.h),
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.end,
-                  //       children: [
-                  //         GestureDetector(
-                  //           onTap: () {},
-                  //           child: Container(
-                  //             width: 40.w,
-                  //             height: 40.h,
-                  //             decoration: const BoxDecoration(
-                  //               color: orange,
-                  //               shape: BoxShape.circle,
-                  //             ),
-                  //             child: SvgPicture.asset(
-                  //               'assets/images/circle-pointer.svg',
-                  //               colorFilter: const ColorFilter.mode(
-                  //                   white, BlendMode.srcIn),
-                  //               fit: BoxFit.scaleDown,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         SizedBox(
-                  //           height: 40.h,
-                  //         ),
-                  //         GestureDetector(
-                  //           // onTap: () {
-                  //           //   showModalBottomSheet(
-                  //           //     backgroundColor: white,
-                  //           //     shape: RoundedRectangleBorder(
-                  //           //       borderRadius: BorderRadius.vertical(
-                  //           //         top: Radius.circular(20),
-                  //           //       ),
-                  //           //     ),
-                  //           //     isScrollControlled: true,
-                  //           //     context: context,
-                  //           //     builder: (context) => ModalBottomSheetOnHome(
-                  //           //         // clientData: getAllClientRequestsList[0],
-                  //           //         ),
-                  //           //   );
-                  //           // },
-                  //           child: Container(
-                  //             width: 40.w,
-                  //             height: 40.h,
-                  //             decoration: const BoxDecoration(
-                  //               color: orange,
-                  //               shape: BoxShape.circle,
-                  //             ),
-                  //             child: SvgPicture.asset(
-                  //               'assets/images/flag-map-icon.svg',
-                  //               colorFilter: const ColorFilter.mode(
-                  //                   white, BlendMode.srcIn),
-                  //               fit: BoxFit.scaleDown,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-      ),
+                  mapType: MapType.normal,
+                  polylines: {
+                    Polyline(
+                      polylineId: const PolylineId("route"),
+                      points: polylineCoordinates,
+                      color: orange,
+                      geodesic: true,
+                      patterns: [
+                        PatternItem.dash(40),
+                        PatternItem.gap(10),
+                      ],
+                      width: 6,
+                    ),
+                  },
+                  compassEnabled: true,
+                  markers: getMarkers(),
+                  scrollGesturesEnabled: true,
+                  buildingsEnabled: true,
+                ),
+                // Positioned(
+                //   child: Padding(
+                //     padding: EdgeInsets.only(right: 22.0.w, bottom: 130.h),
+                //     child: Column(
+                //       mainAxisAlignment: MainAxisAlignment.end,
+                //       children: [
+                //         GestureDetector(
+                //           onTap: () {},
+                //           child: Container(
+                //             width: 40.w,
+                //             height: 40.h,
+                //             decoration: const BoxDecoration(
+                //               color: orange,
+                //               shape: BoxShape.circle,
+                //             ),
+                //             child: SvgPicture.asset(
+                //               'assets/images/circle-pointer.svg',
+                //               colorFilter: const ColorFilter.mode(
+                //                   white, BlendMode.srcIn),
+                //               fit: BoxFit.scaleDown,
+                //             ),
+                //           ),
+                //         ),
+                //         SizedBox(
+                //           height: 40.h,
+                //         ),
+                //         GestureDetector(
+                //           // onTap: () {
+                //           //   showModalBottomSheet(
+                //           //     backgroundColor: white,
+                //           //     shape: RoundedRectangleBorder(
+                //           //       borderRadius: BorderRadius.vertical(
+                //           //         top: Radius.circular(20),
+                //           //       ),
+                //           //     ),
+                //           //     isScrollControlled: true,
+                //           //     context: context,
+                //           //     builder: (context) => ModalBottomSheetOnHome(
+                //           //         // clientData: getAllClientRequestsList[0],
+                //           //         ),
+                //           //   );
+                //           // },
+                //           child: Container(
+                //             width: 40.w,
+                //             height: 40.h,
+                //             decoration: const BoxDecoration(
+                //               color: orange,
+                //               shape: BoxShape.circle,
+                //             ),
+                //             child: SvgPicture.asset(
+                //               'assets/images/flag-map-icon.svg',
+                //               colorFilter: const ColorFilter.mode(
+                //                   white, BlendMode.srcIn),
+                //               fit: BoxFit.scaleDown,
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
     );
   }
 }

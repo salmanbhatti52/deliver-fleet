@@ -802,10 +802,12 @@ class _TempLoginRiderState extends State<TempLoginRider> {
           tempLoginModel.status!.toString(), FToast().init(context),
           seconds: 1);
       if (widget.userType == "Rider") {
-        Navigator.of(context).push(
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const BottomNavBar(),
           ),
+          (Route<dynamic> route) =>
+              false, // This condition determines which routes to remove
         );
       } else {
         showToastSuccess(

@@ -810,11 +810,12 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
           tempLoginModel.status!.toString(), FToast().init(context),
           seconds: 1);
       if (widget.userType == "Fleet") {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const BottomNavBarFleet(),
-          ),
-        );
+        Navigator.of(context).pushAndRemoveUntil(
+  MaterialPageRoute(
+    builder: (context) => const BottomNavBarFleet(),
+  ),
+  (Route<dynamic> route) => false, // This condition determines which routes to remove
+);
       } else {
         showToastSuccess(
             tempLoginModel.message!.toString(), FToast().init(context),

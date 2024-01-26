@@ -14,20 +14,10 @@ import 'Constants/Colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   HttpOverrides.global = MyHttpOverrides();
-  await Future.delayed(const Duration(seconds: 5));
-  WidgetsFlutterBinding.ensureInitialized();
+  // await Future.delayed(const Duration(seconds: 5));
   await Firebase.initializeApp();
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: white,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: white,
-      systemNavigationBarDividerColor: lightGrey,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ),
-  );
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   runApp(const MyApp());
   // runApp(
@@ -71,13 +61,25 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(390, 844),
-      builder: (context, child) => const MaterialApp(
-        // locale: DevicePreview.locale(context),
-        // builder: DevicePreview.appBuilder,
-        debugShowCheckedModeBanner: false,
-        title: 'Deliver Rider',
-        home: CustomSplash(),
-      ),
+      builder: (context, child) {
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          statusBarColor:
+              Colors.transparent, // Set your preferred status bar color
+          statusBarBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.dark,
+          systemNavigationBarColor:
+              Colors.white, // Set your preferred system navigation bar color
+          systemNavigationBarDividerColor: Colors
+              .grey, // Set your preferred system navigation bar divider color
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ));
+
+        return const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Deliver Rider',
+          home: CustomSplash(),
+        );
+      },
     );
   }
 }

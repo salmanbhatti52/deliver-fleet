@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomSplash extends StatefulWidget {
-  const CustomSplash({Key? key}) : super(key: key);
+  const CustomSplash({super.key});
 
   @override
   State<CustomSplash> createState() => _CustomSplashState();
@@ -85,43 +85,41 @@ class _CustomSplashState extends State<CustomSplash> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          backgroundColor: const Color(0xFFFBF9F7),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/images/logo.svg',
-                  width: 300,
-                  height: 125,
-                ),
-                Container(
-                  color: Colors.transparent,
-                  child: DefaultTextStyle(
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Color(0xFF000000),
-                      fontSize: 32,
-                      fontFamily: 'Inter-Light',
-                    ),
-                    child: AnimatedTextKit(
-                      repeatForever: false,
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          'We Get It There',
-                          speed: const Duration(milliseconds: 200),
-                        ),
-                      ],
-                      onTap: () {},
-                    ),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      backgroundColor: const Color(0xFFFBF9F7),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/images/logo.svg',
+              width: 300,
+              height: 125,
             ),
-          ),
-        ));
+            Container(
+              color: Colors.transparent,
+              child: DefaultTextStyle(
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Color(0xFF000000),
+                  fontSize: 32,
+                  fontFamily: 'Inter-Light',
+                ),
+                child: AnimatedTextKit(
+                  repeatForever: false,
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'We Get It There',
+                      speed: const Duration(milliseconds: 200),
+                    ),
+                  ],
+                  onTap: () {},
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
