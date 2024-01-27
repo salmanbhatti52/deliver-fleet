@@ -71,10 +71,12 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
       showToastError(getUserProfileResponse!.message, FToast().init(context));
     }
 
-    setState(() {
-      isLoading = false;
-      // gettingCategory = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+        // gettingCategory = false;
+      });
+    }
   }
 
   @override

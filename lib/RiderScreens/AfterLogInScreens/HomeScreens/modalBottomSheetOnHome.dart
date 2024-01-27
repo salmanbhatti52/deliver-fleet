@@ -45,7 +45,8 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('bookingDestinationsList length:${widget.bookingDestinationsList!.length}');
+    print(
+        'bookingDestinationsList length:${widget.bookingDestinationsList!.length}');
 
     scrollController = PageController();
 
@@ -254,7 +255,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
           SizedBox(
             height: widget.customersModel.scheduled == "Yes"
                 ? MediaQuery.sizeOf(context).height * 0.4
-                : MediaQuery.sizeOf(context).height / 2.9,
+                : MediaQuery.sizeOf(context).height / 2.8,
             child: ModalSheetRideData(
               // scrollController: nextPageScrollController,
               deliveryType: '${widget.customersModel.delivery_type}',
@@ -415,7 +416,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
                         ),
                       ),
                 isRejectingRide
-                    ? Padding(
+                    ? const Padding(
                         padding: EdgeInsets.only(right: 35.0),
                         child: SpinKitDoubleBounce(
                           color: orange,
@@ -567,7 +568,8 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
         ),
       );
     } else {
-      print('error starting chat: ${startUserToUserChatResponse!.message!.toString()}');
+      print(
+          'error starting chat: ${startUserToUserChatResponse!.message!.toString()}');
       // showToastError('error occurred,try again', FToast().init(context),
       //     seconds: 2);
       Navigator.of(context).push(

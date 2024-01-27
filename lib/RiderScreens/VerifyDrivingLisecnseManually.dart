@@ -20,8 +20,9 @@ import 'DrivingLicensePictureVerification.dart';
 class VerifyDrivingLicenseManually extends StatefulWidget {
   final String email;
   final String userType;
-  const VerifyDrivingLicenseManually(
-      {super.key, required this.email, required this.userType});
+  final String? deviceID;
+   VerifyDrivingLicenseManually(
+      {super.key, required this.email, required this.userType,  this.deviceID});
 
   @override
   State<VerifyDrivingLicenseManually> createState() =>
@@ -305,8 +306,8 @@ class _VerifyDrivingLicenseManuallyState
                                     ),
                                     width:
                                         MediaQuery.of(context).size.width * 0.8,
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.2,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.2,
                                     child: ListView.separated(
                                       itemCount: addressPredictions.length,
                                       itemBuilder: (context, index) {
@@ -315,14 +316,15 @@ class _VerifyDrivingLicenseManuallyState
                                         return ListTile(
                                           title: Text(prediction.name),
                                           subtitle: Text(
-                                              prediction.formattedAddress ?? ''),
+                                              prediction.formattedAddress ??
+                                                  ''),
                                           onTap: () {
                                             addressController.text =
                                                 prediction.formattedAddress!;
-                                            final double lat =
-                                                prediction.geometry!.location.lat;
-                                            final double lng =
-                                                prediction.geometry!.location.lng;
+                                            final double lat = prediction
+                                                .geometry!.location.lat;
+                                            final double lng = prediction
+                                                .geometry!.location.lng;
                                             const double zoomLevel = 15.0;
                                             onAddressLocationSelected(
                                                 LatLng(lat, lng), zoomLevel);
@@ -449,6 +451,7 @@ class _VerifyDrivingLicenseManuallyState
               licenseMap: licenseMap,
               profileImage: imagePath != null ? imagePath! : null,
               userType: widget.userType,
+              deviceID: widget.deviceID,
             ),
           ),
         );

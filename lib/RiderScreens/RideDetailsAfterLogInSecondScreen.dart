@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/LogInScreen.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,7 +14,8 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../Constants/Colors.dart';
 import '../Constants/back-arrow-with-container.dart';
 import '../Constants/buttonConatinerWithBorder.dart';
@@ -18,6 +23,7 @@ import '../Constants/buttonContainer.dart';
 import '../models/API models/API response.dart';
 import '../models/API models/AddVehicleModel.dart';
 import '../services/API_services.dart';
+import '../tempLoginFleet.dart';
 import '../utilities/showToast.dart';
 import 'BottomNavBar.dart';
 import 'RequestRideFromFleetActive.dart';
@@ -57,10 +63,53 @@ class _RideDetailsAfterLogInSecondScreenState
     print("parentID $parentID");
   }
 
+  bool systemSettings = false;
+  String? loginType;
+
+  Future<String?> fetchSystemSettingsDescription28() async {
+    const String apiUrl = 'https://deliver.eigix.net/api/get_all_system_data';
+    setState(() {
+      systemSettings = true;
+    });
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        // If the call to the server was successful, parse the JSON
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        // Find the setting with system_settings_id equal to 26
+        final setting40 = data['data'].firstWhere(
+            (setting) => setting['system_settings_id'] == 40,
+            orElse: () => null);
+        setState(() {
+          systemSettings = false;
+        });
+        if (setting40 != null) {
+          // Extract and return the description if setting 28 exists
+          loginType = setting40['description'];
+
+          return loginType;
+        } else {
+          throw Exception('System setting with ID 40 not found');
+        }
+      } else {
+        // If the server did not return a 200 OK response,
+        // throw an exception.
+        throw Exception('Failed to fetch system settings');
+      }
+    } catch (e) {
+      // Catch any exception that might occur during the process
+      print('Error fetching system settings: $e');
+      return null;
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    fetchSystemSettingsDescription28();
     sharePref();
     expDateOfVehicleController = TextEditingController();
     expDateOfInsuranceController = TextEditingController();
@@ -249,9 +298,16 @@ class _RideDetailsAfterLogInSecondScreenState
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    if (systemSettings == true) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: orange,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.transparent,
@@ -473,8 +529,9 @@ class _RideDetailsAfterLogInSecondScreenState
                       isAddingBike
                           ? apiButton(context)
                           : GestureDetector(
-                              onTap: () {
-                                addBike(context);
+                              onTap: () async {
+                                await _deviceDetails();
+                                await addBike(context);
                               },
                               child: buttonContainer(context, 'NEXT'),
                             ),
@@ -488,14 +545,45 @@ class _RideDetailsAfterLogInSecondScreenState
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
+  }
+
+  String deviceName = '';
+  String deviceVersion = '';
+  String identifier = '';
+
+  Future<void> _deviceDetails() async {
+    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    try {
+      if (Platform.isAndroid) {
+        var build = await deviceInfoPlugin.androidInfo;
+        setState(() {
+          deviceName = build.model;
+          deviceVersion = build.version.toString();
+          identifier = build.androidId;
+          print('device id for android while registering:  $identifier');
+        });
+        //UUID for Android
+      } else if (Platform.isIOS) {
+        var data = await deviceInfoPlugin.iosInfo;
+        setState(() {
+          deviceName = data.name;
+          deviceVersion = data.systemVersion;
+          identifier = data.identifierForVendor;
+        }); //UUID for iOS
+      }
+    } on PlatformException catch (e) {
+      debugPrint() {
+        return e.toString();
+      }
+    }
   }
 
   ApiServices get service => GetIt.I<ApiServices>();
   bool isAddingBike = false;
   APIResponse<AddVehicleModel>? addVehicleResponse;
-  addBike(BuildContext context) async {
+  Future<void> addBike(BuildContext context) async {
     if (_key.currentState!.validate()) {
       setState(() {
         isAddingBike = true;
@@ -527,16 +615,31 @@ class _RideDetailsAfterLogInSecondScreenState
         //         : const BottomNavBarFleet(),
         //   ),
         // );
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => LogInScreen(userType: widget.userType),
-          ),
-        );
+        loginType == "Email"
+            ? Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TempLoginFleet(
+                      userType: widget.userFleetId,
+                      deviceID: identifier.toString(),
+                      phoneNumber: "1234"),
+                ),
+              )
+            : Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => LogInScreen(
+                    userType: widget.userFleetId,
+                    deviceID: identifier.toString(),
+                  ),
+                ),
+              );
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => LogInScreen(userType: widget.userType),
+        //   ),
+        // );
       } else {
-        print('error   ' +
-            addVehicleResponse!.status.toString() +
-            '  ' +
-            addVehicleResponse!.message.toString());
+        print(
+            'error   ${addVehicleResponse!.status}  ${addVehicleResponse!.message}');
         showToastError(addVehicleResponse!.status, FToast().init(context));
       }
     }

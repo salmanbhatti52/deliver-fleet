@@ -677,12 +677,11 @@ class _TempRegisterRiderState extends State<TempRegisterRider> {
         if (widget.userType == "Rider") {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => TempLoginRider(
-                  userType: widget.userType,
-                  deviceID: widget.deviceID,
-                  phoneNumber: widget.phoneNumber
-                  // deviceID: widget.deviceID,
-                  ),
+              builder: (context) => VerifyDrivingLicenseManually(
+                email: emailController.text,
+                userType: widget.userType,
+                // deviceID: widget.deviceID,
+              ),
             ),
           );
         } else {

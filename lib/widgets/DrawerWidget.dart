@@ -63,7 +63,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
     userLastName = (sharedPreferences.getString('userLastName') ?? '');
     userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
-    print('sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
+    print(
+        'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
     setState(() {
       isLoading = false;
     });
@@ -99,7 +100,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ? spinKitRotatingCircle
         : Drawer(
             width: 280.w,
-            backgroundColor: white,
+            backgroundColor: Colors.white,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,11 +112,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     width: 85.w,
                     height: 85.h,
                     decoration: BoxDecoration(
-                      color: Colors.transparent,
+                      color: white,
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
                         width: 1,
-                        color: lightGrey.withOpacity(0.8),
+                        color: white,
                       ),
                     ),
                     child: ClipRRect(
@@ -124,16 +125,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
                           // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
                           fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context,
-                              Object exception, StackTrace? stackTrace) {
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
                             return SizedBox(
                                 child: Image.asset(
-                                  'assets/images/place-holder.png',
-                                  fit: BoxFit.scaleDown,
-                                ));
+                              'assets/images/place-holder.png',
+                              fit: BoxFit.scaleDown,
+                            ));
                           },
-                          loadingBuilder: (BuildContext context,
-                              Widget child,
+                          loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) {
                               return child;
@@ -141,13 +141,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             return Center(
                               child: CircularProgressIndicator(
                                 color: orange,
-                                value:
-                                loadingProgress.expectedTotalBytes !=
-                                    null
-                                    ? loadingProgress
-                                    .cumulativeBytesLoaded /
-                                    loadingProgress
-                                        .expectedTotalBytes!
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
                                     : null,
                               ),
                             );
@@ -169,13 +166,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   SizedBox(
                     height: 40.h,
                   ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: 30.w,
-                    ),
-                    color: Colors.white,
-                    width: 280.w,
-                    height: 650.h,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 34, top: 10),
                     child: Column(
                       children: [
                         // profile list
@@ -186,7 +178,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               builder: (context) => const ProfileScreen(),
                             ),
                           ),
-                          leading: SvgPicture.asset('assets/images/profile.svg'),
+                          leading:
+                              SvgPicture.asset('assets/images/profile.svg'),
                           title: Text(
                             'Profile',
                             style: GoogleFonts.syne(
@@ -328,8 +321,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               builder: (context) => const NotificationScreen(),
                             ),
                           ),
-                          leading:
-                              SvgPicture.asset('assets/images/notification.svg'),
+                          leading: SvgPicture.asset(
+                              'assets/images/notification.svg'),
                           title: Text(
                             'Notifications',
                             style: GoogleFonts.syne(
@@ -441,7 +434,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           leading: SvgPicture.asset(
                             'assets/images/legal-icon.svg',
                             colorFilter:
-                            const ColorFilter.mode(orange, BlendMode.srcIn),
+                                const ColorFilter.mode(orange, BlendMode.srcIn),
                           ),
                           title: Text(
                             'Legal',
@@ -497,16 +490,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                     ),
                                     GestureDetector(
                                       onTap: () async {
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ChooseAppScreen(),
-                                            ),
-                                            (route) => false);
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const ChooseAppScreen(),
+                                                ),
+                                                (route) => false);
                                         // await sharedPreferences.setString(
                                         //     'isLogin', 'false');
                                         SharedPreferences sharedPref =
-                                            await SharedPreferences.getInstance();
+                                            await SharedPreferences
+                                                .getInstance();
                                         await sharedPref.clear();
                                         setState(() {});
                                       },

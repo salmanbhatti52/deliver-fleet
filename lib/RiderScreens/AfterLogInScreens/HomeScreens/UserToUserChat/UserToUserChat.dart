@@ -51,7 +51,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    chatRefreshTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+    chatRefreshTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
       init();
     });
     init();
@@ -83,7 +83,9 @@ class _UserToUserChatState extends State<UserToUserChat> {
         print(
             'object getting all msgs success:   ${getAllUserToUserMessagesResponse.data}');
         getAllUserToUserChatList.addAll(getAllUserToUserMessagesResponse.data!);
-        setState(() {});
+        if(mounted){
+          setState(() {});
+        }
       }
     } else {
       print(

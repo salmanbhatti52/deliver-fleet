@@ -572,14 +572,17 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                     isRegistering
                         ? apiButton(context)
                         : GestureDetector(
-                            onTap: () => checkmark == false
-                                ? ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Please ensure that you agree to terms and conditions to proceed further'),
-                                    ),
-                                  )
-                                : registerMethod(context),
+                            onTap: () {
+                              print('object user type: ${widget.userType}');
+                              checkmark == false
+                                  ? ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Please ensure that you agree to terms and conditions to proceed further'),
+                                      ),
+                                    )
+                                  : registerMethod(context);
+                            },
                             child: buttonContainer(context, 'Sign Up'),
                           ),
                     SizedBox(
@@ -657,10 +660,11 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
       _signupResponse = await service.signUpAPI(signupData);
       if (_signupResponse!.status!.toLowerCase() == 'success') {
         print('object device id: ${widget.deviceID}');
+
         showToastSuccess(
             _signupResponse!.message!.toString(), FToast().init(context),
             seconds: 1);
-        if (widget.userType == "Rider") {
+        if (widget.userType == "Fleet") {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => TempLoginFleet(

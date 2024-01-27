@@ -152,13 +152,13 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
         ),
         height: widget.bookingModel.scheduled == "Yes"
             ? MediaQuery.sizeOf(context).height * 0.685
-            : MediaQuery.sizeOf(context).height * 0.635,
+            : MediaQuery.sizeOf(context).height * 0.645,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(
                 children: [
                   SizedBox(
-                    height: 15.h,
+                    height: 13.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1355,7 +1355,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
               ),
       );
     }
-    return SizedBox();
+    return const SizedBox();
   }
 
   bool isChatStarting = false;

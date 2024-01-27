@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'package:deliver_partner/temploginReider.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:deliver_partner/widgets/customDialogForImage.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,14 @@ class DrivingLicensePictureVerification extends StatefulWidget {
   final Map licenseMap;
   File? profileImage;
   final String userType;
+  final String? deviceID;
 
   DrivingLicensePictureVerification(
       {super.key,
       required this.licenseMap,
       this.profileImage,
-      required this.userType});
+      required this.userType,
+      this.deviceID});
 
   @override
   State<DrivingLicensePictureVerification> createState() =>
@@ -56,10 +59,54 @@ class _DrivingLicensePictureVerificationState
     parentId = sharedPref.getString('userEmail');
   }
 
+  bool systemSettings = false;
+  String? loginType;
+
+  Future<String?> fetchSystemSettingsDescription28() async {
+    const String apiUrl = 'https://deliver.eigix.net/api/get_all_system_data';
+    setState(() {
+      systemSettings = true;
+    });
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        // If the call to the server was successful, parse the JSON
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        // Find the setting with system_settings_id equal to 26
+        final setting40 = data['data'].firstWhere(
+            (setting) => setting['system_settings_id'] == 40,
+            orElse: () => null);
+        setState(() {
+          systemSettings = false;
+        });
+        if (setting40 != null) {
+          // Extract and return the description if setting 28 exists
+          loginType = setting40['description'];
+          print("loginType $loginType");
+
+          return loginType;
+        } else {
+          throw Exception('System setting with ID 40 not found');
+        }
+      } else {
+        // If the server did not return a 200 OK response,
+        // throw an exception.
+        throw Exception('Failed to fetch system settings');
+      }
+    } catch (e) {
+      // Catch any exception that might occur during the process
+      print('Error fetching system settings: $e');
+      return null;
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    fetchSystemSettingsDescription28();
     // gifController = FlutterGifController(vsync: this);
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   gifController.repeat(
@@ -112,7 +159,7 @@ class _DrivingLicensePictureVerificationState
         showToastError("You didn't take any picture", FToast().init(context));
       }
     } catch (e) {
-      showToastError("CATCH " + e.toString(), FToast().init(context));
+      showToastError("CATCH $e", FToast().init(context));
     }
   }
 
@@ -172,9 +219,16 @@ class _DrivingLicensePictureVerificationState
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    if (systemSettings == true) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: orange,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
         backgroundColor: white,
         appBar: AppBar(
           elevation: 0.0,
@@ -325,8 +379,8 @@ class _DrivingLicensePictureVerificationState
             )),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   bool isVerifying = false;
@@ -345,9 +399,9 @@ class _DrivingLicensePictureVerificationState
 
       verifyResponse = await service.verifyDrivingLicenseAPI(widget.licenseMap);
       if (verifyResponse!.status!.toLowerCase() == 'success') {
-        SharedPreferences sharedPref = await SharedPreferences.getInstance();
-        userID = (sharedPref.getInt('userID') ?? null);
-        deviceIDInfo = (sharedPref.getString('deviceIDInfo') ?? null);
+        await SharedPreferences.getInstance();
+        userID = (sharedPreferences.getInt('userID'));
+        deviceIDInfo = (sharedPreferences.getString('deviceIDInfo'));
         print("userId value is = $userID");
         print("deviceIDInfo = $deviceIDInfo");
         if (userID != null) {
@@ -362,14 +416,34 @@ class _DrivingLicensePictureVerificationState
               (route) => false);
         } else {
           showToastSuccess(verifyResponse!.message, FToast().init(context));
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => LogInScreen(
-                  userType: 'Rider',
-                  deviceID: deviceIDInfo,
-                ),
-              ),
-              (route) => false);
+          loginType == "Email"
+              ? Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => TempLoginRider(
+                        userType: 'Rider',
+                        deviceID: widget.deviceID.toString(),
+                        phoneNumber: "1234"),
+                  ), (route) {
+                  return false;
+                })
+              : Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => LogInScreen(
+                      userType: 'Rider',
+                      deviceID: widget.deviceID.toString(),
+                    ),
+                  ),
+                );
+          // ignore: use_build_context_synchronously
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => TempLoginRider(
+          //         userType: 'Rider',
+          //         deviceID: deviceIDInfo!,
+          //         phoneNumber: "1234"),
+          //   ),
+          // );
         }
       } else {
         showToastError(verifyResponse!.message, FToast().init(context));

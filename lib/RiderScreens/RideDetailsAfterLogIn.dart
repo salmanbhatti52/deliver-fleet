@@ -24,6 +24,7 @@ import '../Constants/camera-icon.dart';
 import '../models/API models/API response.dart';
 import '../models/API models/GetAllVehicalsModel.dart';
 import '../services/API_services.dart';
+import '../temploginReider.dart';
 import '../utilities/showToast.dart';
 import 'RequestRideFromFleetActive.dart';
 import 'RideDetailsAfterLogInSecondScreen.dart';
@@ -65,7 +66,7 @@ class _RideDetailsAfterLogInScreenState
   String? selectedValue;
   int userID = -1;
 
-  late SharedPreferences sharedPreferences;
+  // late SharedPreferences sharedPreferences;
   bool isLoading = false;
 
   String? parentID;

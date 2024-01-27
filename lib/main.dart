@@ -74,10 +74,13 @@ class _MyAppState extends State<MyApp> {
           systemNavigationBarIconBrightness: Brightness.dark,
         ));
 
-        return const MaterialApp(
+        return MaterialApp(
+          theme: ThemeData(
+            useMaterial3: false,
+          ),
           debugShowCheckedModeBanner: false,
           title: 'Deliver Rider',
-          home: CustomSplash(),
+          home: const CustomSplash(),
         );
       },
     );

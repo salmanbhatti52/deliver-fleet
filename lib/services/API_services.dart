@@ -36,13 +36,25 @@ class ApiServices {
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
-
-        return APIResponse<APIResponse>(
-            status: jsonData['status'], message: jsonData['message']);
+        if (jsonData is Map &&
+            jsonData.containsKey('status') &&
+            jsonData.containsKey('message')) {
+          return APIResponse<APIResponse>(
+              status: jsonData['status'], message: jsonData['message']);
+        }
+      }
+      if (value.body is Map) {
+        final jsonData = json.decode(value.body);
+        if (jsonData.containsKey('status') && jsonData.containsKey('message')) {
+          return APIResponse<APIResponse>(
+            status: APIResponse.fromMap(jsonData).status,
+            message: APIResponse.fromMap(jsonData).message,
+          );
+        }
       }
       return APIResponse<APIResponse>(
-        status: APIResponse.fromMap(json.decode(value.body)).status,
-        message: APIResponse.fromMap(json.decode(value.body)).message,
+        status: 'Error',
+        message: 'Unexpected server response',
       );
     }).onError((error, stackTrace) => APIResponse<APIResponse>(
           status: error.toString(),
