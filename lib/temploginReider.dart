@@ -52,6 +52,11 @@ class TempLoginRider extends StatefulWidget {
   State<TempLoginRider> createState() => _TempLoginRiderState();
 }
 
+void initializeSharedPreferences() async {
+  sharedPreferences = await SharedPreferences.getInstance();
+  // You can do additional setup here if needed
+}
+
 class _TempLoginRiderState extends State<TempLoginRider> {
   final GlobalKey<FormState> _key = GlobalKey();
   // late TextEditingController firstNameController;
@@ -124,6 +129,7 @@ class _TempLoginRiderState extends State<TempLoginRider> {
     // confirmPasswordController = TextEditingController();
     // phoneNumberController = TextEditingController();
     // fleetCodeController = TextEditingController();
+    initializeSharedPreferences();
   }
 
   @override

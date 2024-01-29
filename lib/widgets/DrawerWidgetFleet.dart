@@ -144,8 +144,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                   height: 80.h,
                 ),
                 Container(
-                  width: 85.w,
-                  height: 85.h,
+                  width: 75.w,
+                  height: 100.h,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(15),
@@ -157,8 +157,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
-                        // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                        // 'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
+                        'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {
@@ -197,13 +197,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    left: 32.w,
-                  ),
-                  color: white,
-                  width: 280.w,
-                  height: 550.h,
+                Padding(
+                  padding: const EdgeInsets.only(left: 54, top: 20),
                   child: Column(
                     children: [
                       SizedBox(
@@ -435,10 +430,10 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => SupportScreen(
-                                getAdminImage: '$getAdminImage',
-                                getAdminName: '$getAdminName',
-                                getAdminAddress: '$getAdminAddress',
-                                getAdminId: '$getAdminId',
+                              getAdminImage: '$getAdminImage',
+                              getAdminName: '$getAdminName',
+                              getAdminAddress: '$getAdminAddress',
+                              getAdminId: '$getAdminId',
                             ),
                           ),
                         ),
