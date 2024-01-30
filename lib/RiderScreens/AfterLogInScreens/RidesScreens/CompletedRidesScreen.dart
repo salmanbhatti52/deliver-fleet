@@ -65,9 +65,11 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
           'object massage:  ${completedRidesResponse!.message}   ${completedRidesResponse!.status}');
       showToastError(completedRidesResponse!.message!, FToast().init(context));
     }
-    setState(() {
-      isPageLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isPageLoading = false;
+      });
+    }
   }
 
   @override
