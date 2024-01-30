@@ -60,9 +60,11 @@ class _CencelledRidesScreenState extends State<CencelledRidesScreen> {
         cancelledRidesList = canceledRidesResponse!.data!;
       }
     } else {}
-    setState(() {
-      isPageLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isPageLoading = false;
+      });
+    }
   }
 
   @override

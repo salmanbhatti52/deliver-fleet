@@ -25,7 +25,7 @@ class _ErrorPageState extends State<ErrorPage> {
       appBar: AppBar(
         elevation: 0.0,
         leadingWidth: 65,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         leading: Padding(
           padding: const EdgeInsets.only(top: 4, bottom: 4, left: 20),
           child: GestureDetector(

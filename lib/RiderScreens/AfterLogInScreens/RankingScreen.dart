@@ -84,9 +84,7 @@ class _RankingScreenState extends State<RankingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
         backgroundColor: white,
         body: isRankingLoading
             ? spinKitRotatingCircle
@@ -410,7 +408,6 @@ class _RankingScreenState extends State<RankingScreen> {
                   ),
                 ),
               ),
-      ),
-    );
+      );
   }
 }

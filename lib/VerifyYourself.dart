@@ -35,15 +35,10 @@ class _VerifyYourselfState extends State<VerifyYourself> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         leadingWidth: 70,
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 20),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: backArrowWithContainer(context),
-          ),
-        ),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SafeArea(
         child: Padding(

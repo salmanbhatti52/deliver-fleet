@@ -125,86 +125,83 @@ class _UpdateLocationState extends State<UpdateLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: white,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          centerTitle: true,
-          title: Text(
-            'Update Location',
-            style: GoogleFonts.syne(
-              fontWeight: FontWeight.w700,
-              color: black,
-              fontSize: 20,
-            ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
+    return Scaffold(
+      backgroundColor: white,
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        centerTitle: true,
+        title: Text(
+          'Update Location',
+          style: GoogleFonts.syne(
+            fontWeight: FontWeight.w700,
+            color: black,
+            fontSize: 20,
           ),
         ),
-        body: isPageLoading
-            ? spinKitRotatingCircle
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 40.h,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: backArrowWithContainer(context),
+          ),
+        ),
+      ),
+      body: isPageLoading
+          ? spinKitRotatingCircle
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    Text(
+                      'Hi there! ${getUserProfileResponse!.data!.first_name} ${getUserProfileResponse!.data!.last_name}',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.syne(
+                        fontWeight: FontWeight.w700,
+                        color: orange,
+                        fontSize: 18,
                       ),
-                      Text(
-                        'Hi there! ${getUserProfileResponse!.data!.first_name} ${getUserProfileResponse!.data!.last_name}',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w700,
-                          color: orange,
-                          fontSize: 18,
-                        ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Text(
+                      'Update your location to get nearest requests',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.syne(
+                        fontWeight: FontWeight.w700,
+                        color: grey,
+                        fontSize: 18,
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Text(
-                        'Update your location to get nearest requests',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w700,
-                          color: grey,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Lottie.asset(
-                        'assets/images/animation_lmoizymy.json',
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30.0),
-                        child: isUpdatingLocation
-                            ? apiButton(context)
-                            : GestureDetector(
-                                onTap: () => hasPermission
-                                    ? updateLocationMethod(context)
-                                    : _getCurrentPosition(),
-                                child:
-                                    buttonContainer(context, 'Update Location'),
-                              ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Lottie.asset(
+                      'assets/images/animation_lmoizymy.json',
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30.0),
+                      child: isUpdatingLocation
+                          ? apiButton(context)
+                          : GestureDetector(
+                              onTap: () => hasPermission
+                                  ? updateLocationMethod(context)
+                                  : _getCurrentPosition(),
+                              child:
+                                  buttonContainer(context, 'Update Location'),
+                            ),
+                    ),
+                  ],
                 ),
               ),
-      ),
+            ),
     );
   }
 
@@ -221,13 +218,11 @@ class _UpdateLocationState extends State<UpdateLocation> {
     };
     updateLocationResponse =
         await service.updateLocationOneTimeAPI(updateLocationData);
-    print('object update loaction map:   ' + updateLocationData.toString());
+    print('object update loaction map:   $updateLocationData');
     if (updateLocationResponse!.status!.toLowerCase() == 'success') {
       if (updateLocationResponse!.data != null) {
-        print('object update loaction:   ' +
-            updateLocationResponse!.data!.latitude.toString() +
-            '    ' +
-            updateLocationResponse!.data!.longitude.toString());
+        print(
+            'object update loaction:   ${updateLocationResponse!.data!.latitude}    ${updateLocationResponse!.data!.longitude}');
         showToastSuccess(
             'location is updated successfully', FToast().init(context),
             seconds: 1);

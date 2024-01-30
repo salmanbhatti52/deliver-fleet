@@ -81,9 +81,7 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
         key: _key,
         backgroundColor: white,
         body: isLoading
@@ -317,8 +315,7 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
                   ),
                 ),
               ),
-      ),
-    );
+      );
   }
 
   bool isUpdating = false;

@@ -86,8 +86,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (getAdminResponse!.status!.toLowerCase() == 'success') {
       getAdminList!.addAll(getAdminResponse!.data!);
-      print(
-          'object getting all adimns:    ' + getAdminResponse!.data.toString());
+      print('object getting all adimns:    ${getAdminResponse!.data}');
     } else {}
 
     saveInfo = false;
@@ -226,493 +225,487 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: white,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          centerTitle: true,
-          title: Text(
-            'Edit Profile',
-            style: GoogleFonts.syne(
-              fontWeight: FontWeight.w700,
-              color: black,
-              fontSize: 20,
-            ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
+    return Scaffold(
+      backgroundColor: white,
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        centerTitle: true,
+        title: Text(
+          'Edit Profile',
+          style: GoogleFonts.syne(
+            fontWeight: FontWeight.w700,
+            color: black,
+            fontSize: 20,
           ),
         ),
-        body: isPageLoading
-            ? spinKitRotatingCircle
-            : GlowingOverscrollIndicator(
-                axisDirection: AxisDirection.down,
-                color: orange,
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 22.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                width: 150.w,
-                                height: 150.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: orange,
-                                    width: 4.5,
-                                  ),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: imagePath != null
-                                      ? Image.file(
-                                          imagePath!,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.network(
-                                          'https://deliver.eigix.net/public/${widget.image}',
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context,
-                                              Object exception,
-                                              StackTrace? stackTrace) {
-                                            return SizedBox(
-                                              child: Image.asset(
-                                                'assets/images/place-holder.png',
-                                                fit: BoxFit.cover,
-                                              ),
-                                            );
-                                          },
-                                          loadingBuilder: (BuildContext context,
-                                              Widget child,
-                                              ImageChunkEvent?
-                                                  loadingProgress) {
-                                            if (loadingProgress == null) {
-                                              return child;
-                                            }
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                color: orange,
-                                                value: loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null
-                                                    ? loadingProgress
-                                                            .cumulativeBytesLoaded /
-                                                        loadingProgress
-                                                            .expectedTotalBytes!
-                                                    : null,
-                                              ),
-                                            );
-                                          },
-                                        ),
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: backArrowWithContainer(context),
+          ),
+        ),
+      ),
+      body: isPageLoading
+          ? spinKitRotatingCircle
+          : GlowingOverscrollIndicator(
+              axisDirection: AxisDirection.down,
+              color: orange,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 22.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 150.w,
+                              height: 150.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: orange,
+                                  width: 4.5,
                                 ),
                               ),
-                              Positioned(
-                                right: -7,
-                                bottom: -10,
-                                child: GestureDetector(
-                                  onTap: () => showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CustomDialogBox(
-                                            name: 'Profile Picture',
-                                            onCameraBTNPressed: () {
-                                              imageSelection(
-                                                  ImageSource.camera, 0);
-                                            },
-                                            onGalleryBTNPressed: () {
-                                              imageSelection(
-                                                  ImageSource.gallery, 0);
-                                            });
-                                      }),
-                                  child: cameraIcon(context),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: imagePath != null
+                                    ? Image.file(
+                                        imagePath!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.network(
+                                        'https://deliver.eigix.net/public/${widget.image}',
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace? stackTrace) {
+                                          return SizedBox(
+                                            child: Image.asset(
+                                              'assets/images/place-holder.png',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
+                                        },
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              color: orange,
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                              ),
+                            ),
+                            Positioned(
+                              right: -7,
+                              bottom: -10,
+                              child: GestureDetector(
+                                onTap: () => showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CustomDialogBox(
+                                          name: 'Profile Picture',
+                                          onCameraBTNPressed: () {
+                                            imageSelection(
+                                                ImageSource.camera, 0);
+                                          },
+                                          onGalleryBTNPressed: () {
+                                            imageSelection(
+                                                ImageSource.gallery, 0);
+                                          });
+                                    }),
+                                child: cameraIcon(context),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                      ),
+                      Text(
+                        'First Name',
+                        style: GoogleFonts.syne(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: black),
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormFieldWidget(
+                            controller: firstNameController,
+                            textInputType: TextInputType.name,
+                            enterTextStyle: enterTextStyle,
+                            cursorColor: orange,
+                            hintText: widget.firstName,
+                            border: border,
+                            hintStyle: hintStyle,
+                            focusedBorder: focusedBorder,
+                            obscureText: null,
+                            contentPadding: contentPadding,
+                            enableBorder: enableBorder,
+                            length: -1),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        'Last Name',
+                        style: GoogleFonts.syne(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: black),
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormFieldWidget(
+                            controller: lastNameController,
+                            textInputType: TextInputType.name,
+                            enterTextStyle: enterTextStyle,
+                            cursorColor: orange,
+                            hintText: widget.lastName,
+                            border: border,
+                            hintStyle: hintStyle,
+                            focusedBorder: focusedBorder,
+                            obscureText: null,
+                            contentPadding: contentPadding,
+                            enableBorder: enableBorder,
+                            length: -1),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        'Phone Number',
+                        style: GoogleFonts.syne(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: black),
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormFieldWidget(
+                            controller: phoneNumberController,
+                            textInputType: TextInputType.name,
+                            enterTextStyle: enterTextStyle,
+                            cursorColor: orange,
+                            hintText: widget.phoneNumber,
+                            border: border,
+                            hintStyle: hintStyle,
+                            focusedBorder: focusedBorder,
+                            obscureText: null,
+                            contentPadding: contentPadding,
+                            enableBorder: enableBorder,
+                            length: 15),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        'Address',
+                        style: GoogleFonts.syne(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: black),
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormFieldWidget(
+                            controller: addressController,
+                            textInputType: TextInputType.name,
+                            enterTextStyle: enterTextStyle,
+                            cursorColor: orange,
+                            hintText: widget.address,
+                            border: border,
+                            hintStyle: hintStyle,
+                            focusedBorder: focusedBorder,
+                            obscureText: null,
+                            contentPadding: contentPadding,
+                            enableBorder: enableBorder,
+                            length: -1),
+                      ),
+                      SizedBox(
+                        height: 25.h,
+                      ),
+                      Text(
+                        'Driving License',
+                        style: GoogleFonts.syne(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 20.0.h),
+                        child: SizedBox(
+                          height: 150.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CustomDialogBox(
+                                                name: 'Front',
+                                                onCameraBTNPressed: () {
+                                                  imageSelection(
+                                                      ImageSource.camera, 1);
+                                                },
+                                                onGalleryBTNPressed: () {
+                                                  imageSelection(
+                                                      ImageSource.gallery, 1);
+                                                });
+                                          }),
+                                      child: Container(
+                                        width: 170.w,
+                                        height: 110.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: imagePathFront != null
+                                                ? Image.file(
+                                                    imagePathFront!,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Image.network(
+                                                    'https://deliver.eigix.net/public/${widget.frontImage}',
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder:
+                                                        (BuildContext context,
+                                                            Object exception,
+                                                            StackTrace?
+                                                                stackTrace) {
+                                                      return SizedBox(
+                                                        child: Image.asset(
+                                                            'assets/images/place-holder.png'),
+                                                      );
+                                                    },
+                                                    loadingBuilder: (BuildContext
+                                                            context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                            loadingProgress) {
+                                                      if (loadingProgress ==
+                                                          null) {
+                                                        return child;
+                                                      }
+                                                      return Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: orange,
+                                                          value: loadingProgress
+                                                                      .expectedTotalBytes !=
+                                                                  null
+                                                              ? loadingProgress
+                                                                      .cumulativeBytesLoaded /
+                                                                  loadingProgress
+                                                                      .expectedTotalBytes!
+                                                              : null,
+                                                        ),
+                                                      );
+                                                    },
+                                                  )),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Front',
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.syne(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: orange,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 7.w,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CustomDialogBox(
+                                                name: 'Back',
+                                                onCameraBTNPressed: () {
+                                                  imageSelection(
+                                                      ImageSource.camera, 2);
+                                                },
+                                                onGalleryBTNPressed: () {
+                                                  imageSelection(
+                                                      ImageSource.gallery, 2);
+                                                });
+                                          }),
+                                      child: Container(
+                                        width: 170.w,
+                                        height: 110.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: imagePathForBack != null
+                                                ? Image.file(
+                                                    imagePathForBack!,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Image.network(
+                                                    'https://deliver.eigix.net/public/${widget.backImage}',
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder:
+                                                        (BuildContext context,
+                                                            Object exception,
+                                                            StackTrace?
+                                                                stackTrace) {
+                                                      return SizedBox(
+                                                        child: Image.asset(
+                                                            'assets/images/place-holder.png'),
+                                                      );
+                                                    },
+                                                    loadingBuilder: (BuildContext
+                                                            context,
+                                                        Widget child,
+                                                        ImageChunkEvent?
+                                                            loadingProgress) {
+                                                      if (loadingProgress ==
+                                                          null) {
+                                                        return child;
+                                                      }
+                                                      return Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: orange,
+                                                          value: loadingProgress
+                                                                      .expectedTotalBytes !=
+                                                                  null
+                                                              ? loadingProgress
+                                                                      .cumulativeBytesLoaded /
+                                                                  loadingProgress
+                                                                      .expectedTotalBytes!
+                                                              : null,
+                                                        ),
+                                                      );
+                                                    },
+                                                  )),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Back',
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.syne(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: orange,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 50.h,
-                        ),
-                        Text(
-                          'First Name',
-                          style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: black),
-                        ),
-                        SizedBox(
-                          height: 7.h,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormFieldWidget(
-                              controller: firstNameController,
-                              textInputType: TextInputType.name,
-                              enterTextStyle: enterTextStyle,
-                              cursorColor: orange,
-                              hintText: widget.firstName,
-                              border: border,
-                              hintStyle: hintStyle,
-                              focusedBorder: focusedBorder,
-                              obscureText: null,
-                              contentPadding: contentPadding,
-                              enableBorder: enableBorder,
-                              length: -1),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Last Name',
-                          style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: black),
-                        ),
-                        SizedBox(
-                          height: 7.h,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormFieldWidget(
-                              controller: lastNameController,
-                              textInputType: TextInputType.name,
-                              enterTextStyle: enterTextStyle,
-                              cursorColor: orange,
-                              hintText: widget.lastName,
-                              border: border,
-                              hintStyle: hintStyle,
-                              focusedBorder: focusedBorder,
-                              obscureText: null,
-                              contentPadding: contentPadding,
-                              enableBorder: enableBorder,
-                              length: -1),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Phone Number',
-                          style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: black),
-                        ),
-                        SizedBox(
-                          height: 7.h,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormFieldWidget(
-                              controller: phoneNumberController,
-                              textInputType: TextInputType.name,
-                              enterTextStyle: enterTextStyle,
-                              cursorColor: orange,
-                              hintText: widget.phoneNumber,
-                              border: border,
-                              hintStyle: hintStyle,
-                              focusedBorder: focusedBorder,
-                              obscureText: null,
-                              contentPadding: contentPadding,
-                              enableBorder: enableBorder,
-                              length: 15),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Address',
-                          style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: black),
-                        ),
-                        SizedBox(
-                          height: 7.h,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormFieldWidget(
-                              controller: addressController,
-                              textInputType: TextInputType.name,
-                              enterTextStyle: enterTextStyle,
-                              cursorColor: orange,
-                              hintText: widget.address,
-                              border: border,
-                              hintStyle: hintStyle,
-                              focusedBorder: focusedBorder,
-                              obscureText: null,
-                              contentPadding: contentPadding,
-                              enableBorder: enableBorder,
-                              length: -1),
-                        ),
-                        SizedBox(
-                          height: 25.h,
-                        ),
-                        Text(
-                          'Driving License',
-                          style: GoogleFonts.syne(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: black,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Padding(
+                      ),
+                      // Visibility(
+                      //   visible: saveInfo,
+                      //   child: Column(
+                      //     children: [
+                      //       Text(
+                      //         '* You can not directly update your profile info. If you \n want to update details, contact support now.',
+                      //         textAlign: TextAlign.center,
+                      //         style: GoogleFonts.inter(
+                      //           fontSize: 14,
+                      //           fontWeight: FontWeight.w400,
+                      //           color: black,
+                      //         ),
+                      //       ),
+                      //       SizedBox(
+                      //         height: 30.h,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
                           padding: EdgeInsets.only(bottom: 20.0.h),
-                          child: SizedBox(
-                            height: 150.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return CustomDialogBox(
-                                                  name: 'Front',
-                                                  onCameraBTNPressed: () {
-                                                    imageSelection(
-                                                        ImageSource.camera, 1);
-                                                  },
-                                                  onGalleryBTNPressed: () {
-                                                    imageSelection(
-                                                        ImageSource.gallery, 1);
-                                                  });
-                                            }),
-                                        child: Container(
-                                          width: 170.w,
-                                          height: 110.h,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: imagePathFront != null
-                                                  ? Image.file(
-                                                      imagePathFront!,
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : Image.network(
-                                                      'https://deliver.eigix.net/public/${widget.frontImage}',
-                                                      fit: BoxFit.cover,
-                                                      errorBuilder:
-                                                          (BuildContext context,
-                                                              Object exception,
-                                                              StackTrace?
-                                                                  stackTrace) {
-                                                        return SizedBox(
-                                                          child: Image.asset(
-                                                              'assets/images/place-holder.png'),
-                                                        );
-                                                      },
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent?
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) {
-                                                          return child;
-                                                        }
-                                                        return Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            color: orange,
-                                                            value: loadingProgress
-                                                                        .expectedTotalBytes !=
-                                                                    null
-                                                                ? loadingProgress
-                                                                        .cumulativeBytesLoaded /
-                                                                    loadingProgress
-                                                                        .expectedTotalBytes!
-                                                                : null,
-                                                          ),
-                                                        );
-                                                      },
-                                                    )),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Front',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.syne(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: orange,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                          child: isUpdating
+                              ? apiButton(context)
+                              : GestureDetector(
+                                  onTap: () {
+                                    updateProfileMethod(context);
+                                  },
+                                  child: buttonContainer(context,
+                                      saveInfo ? 'CONTACT SUPPORT' : 'SAVE'),
                                 ),
-                                SizedBox(
-                                  width: 7.w,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return CustomDialogBox(
-                                                  name: 'Back',
-                                                  onCameraBTNPressed: () {
-                                                    imageSelection(
-                                                        ImageSource.camera, 2);
-                                                  },
-                                                  onGalleryBTNPressed: () {
-                                                    imageSelection(
-                                                        ImageSource.gallery, 2);
-                                                  });
-                                            }),
-                                        child: Container(
-                                          width: 170.w,
-                                          height: 110.h,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: imagePathForBack != null
-                                                  ? Image.file(
-                                                      imagePathForBack!,
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : Image.network(
-                                                      'https://deliver.eigix.net/public/${widget.backImage}',
-                                                      fit: BoxFit.cover,
-                                                      errorBuilder:
-                                                          (BuildContext context,
-                                                              Object exception,
-                                                              StackTrace?
-                                                                  stackTrace) {
-                                                        return SizedBox(
-                                                          child: Image.asset(
-                                                              'assets/images/place-holder.png'),
-                                                        );
-                                                      },
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent?
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) {
-                                                          return child;
-                                                        }
-                                                        return Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            color: orange,
-                                                            value: loadingProgress
-                                                                        .expectedTotalBytes !=
-                                                                    null
-                                                                ? loadingProgress
-                                                                        .cumulativeBytesLoaded /
-                                                                    loadingProgress
-                                                                        .expectedTotalBytes!
-                                                                : null,
-                                                          ),
-                                                        );
-                                                      },
-                                                    )),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Back',
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.syne(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: orange,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                         ),
-                        // Visibility(
-                        //   visible: saveInfo,
-                        //   child: Column(
-                        //     children: [
-                        //       Text(
-                        //         '* You can not directly update your profile info. If you \n want to update details, contact support now.',
-                        //         textAlign: TextAlign.center,
-                        //         style: GoogleFonts.inter(
-                        //           fontSize: 14,
-                        //           fontWeight: FontWeight.w400,
-                        //           color: black,
-                        //         ),
-                        //       ),
-                        //       SizedBox(
-                        //         height: 30.h,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 20.0.h),
-                            child: isUpdating
-                                ? apiButton(context)
-                                : GestureDetector(
-                                    onTap: () {
-                                      updateProfileMethod(context);
-                                    },
-                                    child: buttonContainer(context,
-                                        saveInfo ? 'CONTACT SUPPORT' : 'SAVE'),
-                                  ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-      ),
+            ),
     );
   }
 
@@ -720,6 +713,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late APIResponse<LogInModel>? updateResponse;
 
   updateProfileMethod(BuildContext context) async {
+    sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       isUpdating = true;
     });
@@ -746,8 +740,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ? startSupportChat()
           : setState(() {
               saveInfo = true;
+              // print("updateResponse ${updateResponse!.data!.profile_pic}");
             });
+    } else if (updateResponse!.status!.toLowerCase() == 'success') {
+      if (updateResponse!.data != null) {
+        await sharedPreferences.setString(
+            'userProfilePic', updateResponse!.data!.profile_pic!);
+      }
     }
+
     setState(() {
       isUpdating = false;
     });

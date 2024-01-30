@@ -72,7 +72,7 @@ class _LegalScreenState extends State<LegalScreen> {
       backgroundColor: white,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         leadingWidth: 70,
         centerTitle: true,
         title: Text(
@@ -83,13 +83,8 @@ class _LegalScreenState extends State<LegalScreen> {
             fontSize: 20,
           ),
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 20),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: backArrowWithContainer(context),
-          ),
-        ),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: isLoading
           ? Center(

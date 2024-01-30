@@ -22,6 +22,7 @@ import '../../../Constants/Colors.dart';
 import '../../../Constants/PageLoadingKits.dart';
 import '../../../models/API models/API response.dart';
 import '../../../models/API models/GetAllSystemDataModel.dart';
+import '../../../models/API models/LogInModel.dart';
 import '../../../models/API models/ShowBookingsModel.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
@@ -50,7 +51,44 @@ class _HomeScreenState extends State<HomeScreen> {
       isHomeLoading = true;
     });
     init();
+
+    init2();
     // loadCustomMarker();
+  }
+
+  late APIResponse<LogInModel>? getUserProfileResponse;
+  bool isLoading = false;
+  init2() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    userID = (sharedPreferences.getInt('userID') ?? -1);
+    Map data = {
+      "users_fleet_id": userID.toString(),
+    };
+    setState(() {
+      isLoading = true;
+    });
+
+    getUserProfileResponse = await service.getUserProfileAPI(data);
+
+    if (getUserProfileResponse!.status!.toLowerCase() == 'success') {
+      if (getUserProfileResponse!.data != null) {
+        // showToastSuccess('Loading user data', FToast().init(context));
+        print(
+            "getUserProfileResponse ${getUserProfileResponse!.data!.profile_pic}");
+        if (getUserProfileResponse!.data != null) {
+          await sharedPreferences.setString(
+              'userProfilePic', getUserProfileResponse!.data!.profile_pic!);
+        }
+      }
+    } else {
+      print("${getUserProfileResponse!.message}");
+      // showToastError(getUserProfileResponse!.message, FToast().init(context));
+    }
+
+    setState(() {
+      isLoading = false;
+      // gettingCategory = false;
+    });
   }
 
   late APIResponse<List<ShowBookingsModel>> getAllClientRequestsResponse;
@@ -429,6 +467,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isLargeScreen = screenSize.width > 600;
     LatLng initialPosition =
         LatLng(double.parse(userLatitude!), double.parse(userLongitude!));
     return Scaffold(

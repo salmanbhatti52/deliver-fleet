@@ -53,8 +53,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       isLoading = true;
       // gettingCategory = true;
     });
+
     sharedPrefs();
-    // init();
   }
 
   sharedPrefs() async {
@@ -63,36 +63,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
     userLastName = (sharedPreferences.getString('userLastName') ?? '');
     userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
+
     print(
         'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
     setState(() {
       isLoading = false;
     });
   }
-
-  // late APIResponse<LogInModel>? getUserProfileResponse;
-  //
-  // init() async {
-  //
-  //   Map data = {
-  //     "users_fleet_id": userID.toString(),
-  //   };
-  //
-  //   getUserProfileResponse = await service.getUserProfileAPI(data);
-  //
-  //   if (getUserProfileResponse!.status!.toLowerCase() == 'success') {
-  //     if (getUserProfileResponse!.data != null) {
-  //       // showToastSuccess('Loading user data', FToast().init(context));
-  //     }
-  //   } else {
-  //     showToastError(getUserProfileResponse!.message, FToast().init(context));
-  //   }
-  //
-  //   setState(() {
-  //     isLoading = false;
-  //     // gettingCategory = false;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

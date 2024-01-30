@@ -88,231 +88,228 @@ class _OTPScreenState extends State<OTPScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: backArrowWithContainer(context),
           ),
         ),
-        body: GlowingOverscrollIndicator(
-          color: orange,
-          axisDirection: AxisDirection.down,
-          child: LayoutBuilder(
-            builder: (context, constraints) => SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.minHeight),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 30.h,
+      ),
+      body: GlowingOverscrollIndicator(
+        color: orange,
+        axisDirection: AxisDirection.down,
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.minHeight),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    SvgPicture.asset('assets/images/logo.svg'),
+                    SizedBox(
+                      height: 50.h,
+                    ),
+                    Text(
+                      'Forgot \n Password?',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.syne(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        color: orange,
                       ),
-                      SvgPicture.asset('assets/images/logo.svg'),
-                      SizedBox(
-                        height: 50.h,
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Text(
+                      'Enter 4 digit code received on \n  ${widget.email}',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.syne(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: black,
                       ),
-                      Text(
-                        'Forgot \n Password?',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.syne(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                          color: orange,
-                        ),
+                    ),
+                    SizedBox(
+                      height: 75.h,
+                    ),
+                    OtpTextField(
+                      fillColor: mildGrey,
+                      filled: true,
+                      keyboardType: TextInputType.number,
+                      borderWidth: 0.0,
+                      borderRadius: BorderRadius.circular(10.0),
+                      fieldWidth: 50.h,
+
+                      clearText: true,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(1),
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      textStyle: GoogleFonts.inter(
+                        color: black,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w300,
                       ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Text(
-                        'Enter 4 digit code received on \n  ${widget.email}',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.syne(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: black,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 75.h,
-                      ),
-                      OtpTextField(
+                      decoration: InputDecoration(
                         fillColor: mildGrey,
                         filled: true,
-                        keyboardType: TextInputType.number,
-                        borderWidth: 0.0,
-                        borderRadius: BorderRadius.circular(10.0),
-                        fieldWidth: 50.h,
-
-                        clearText: true,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(1),
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        textStyle: GoogleFonts.inter(
+                        counterText: '',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                          // borderSide: BorderSide(
+                          //   color: Colors.transparent,
+                          // ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            10,
+                          ),
+                          borderSide: const BorderSide(
+                            color: mildGrey,
+                          ),
+                        ),
+                        focusColor: mildGrey,
+                        hintText: '0',
+                        hintStyle: GoogleFonts.inter(
                           color: black,
                           fontSize: 13,
                           fontWeight: FontWeight.w300,
                         ),
-                        decoration: InputDecoration(
-                          fillColor: mildGrey,
-                          filled: true,
-                          counterText: '',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ),
-                            // borderSide: BorderSide(
-                            //   color: Colors.transparent,
-                            // ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ),
-                            borderSide: const BorderSide(
-                              color: mildGrey,
-                            ),
-                          ),
-                          focusColor: mildGrey,
-                          hintText: '0',
-                          hintStyle: GoogleFonts.inter(
-                            color: black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        numberOfFields: 4,
-                        borderColor: mildGrey,
-                        showCursor: false,
-                        showFieldAsBox: true,
+                      ),
+                      numberOfFields: 4,
+                      borderColor: mildGrey,
+                      showCursor: false,
+                      showFieldAsBox: true,
 
-                        hasCustomInputDecoration: true,
-                        onCodeChanged: (String code) {
-                          setState(() {
-                            isSubmitted = false;
-                            userTypedOtp = '';
-                          });
-                        },
-                        onSubmit: (String verificationCode) {
-                          setState(() {
-                            isSubmitted = true;
-                            userTypedOtp = verificationCode;
-                          });
-                        }, // end onSubmit
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25.0.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 89.w,
-                              height: 20.h,
-                              child: Text(
-                                'OTP valid for',
-                                style: GoogleFonts.syne(
-                                  fontSize: 14,
-                                  color: black,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                      hasCustomInputDecoration: true,
+                      onCodeChanged: (String code) {
+                        setState(() {
+                          isSubmitted = false;
+                          userTypedOtp = '';
+                        });
+                      },
+                      onSubmit: (String verificationCode) {
+                        setState(() {
+                          isSubmitted = true;
+                          userTypedOtp = verificationCode;
+                        });
+                      }, // end onSubmit
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.0.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 89.w,
+                            height: 20.h,
+                            child: Text(
+                              'OTP valid for',
+                              style: GoogleFonts.syne(
+                                fontSize: 14,
+                                color: black,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                isTimerCompleted
-                                    ? SvgPicture.asset(
-                                        'assets/images/timer-icon.svg',
-                                        colorFilter: const ColorFilter.mode(
-                                            grey, BlendMode.srcIn),
-                                      )
-                                    : SvgPicture.asset(
-                                        'assets/images/timer-icon.svg',
-                                        // colorFilter:
-                                        // ColorFilter.mode(grey, BlendMode.srcIn),
-                                      ),
-                                SizedBox(
-                                  width: 5.w,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              isTimerCompleted
+                                  ? SvgPicture.asset(
+                                      'assets/images/timer-icon.svg',
+                                      colorFilter: const ColorFilter.mode(
+                                          grey, BlendMode.srcIn),
+                                    )
+                                  : SvgPicture.asset(
+                                      'assets/images/timer-icon.svg',
+                                      // colorFilter:
+                                      // ColorFilter.mode(grey, BlendMode.srcIn),
+                                    ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                isTimerCompleted && resending
+                                    ? '00:00'
+                                    : timerText,
+                                style: GoogleFonts.inter(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: black,
                                 ),
-                                Text(
-                                  isTimerCompleted && resending
-                                      ? '00:00'
-                                      : timerText,
-                                  style: GoogleFonts.inter(
-                                    fontWeight: FontWeight.w500,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    resending
+                        ? const CircularProgressIndicator(
+                            color: orange,
+                          )
+                        : RichText(
+                            text: TextSpan(
+                              text: 'Did\'nt received code?    ',
+                              style: GoogleFonts.syne(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                color: grey,
+                              ),
+                              children: [
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      isTimerCompleted
+                                          ? resendCode(context)
+                                          : null;
+                                    },
+                                  text: 'RESEND CODE',
+                                  style: GoogleFonts.syne(
+                                    decoration: TextDecoration.underline,
                                     fontSize: 16,
-                                    color: black,
+                                    fontWeight: FontWeight.w600,
+                                    color: isTimerCompleted ? orange : grey,
                                   ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      resending
-                          ? const CircularProgressIndicator(
-                              color: orange,
-                            )
-                          : RichText(
-                              text: TextSpan(
-                                text: 'Did\'nt received code?    ',
-                                style: GoogleFonts.syne(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: grey,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        isTimerCompleted
-                                            ? resendCode(context)
-                                            : null;
-                                      },
-                                    text: 'RESEND CODE',
-                                    style: GoogleFonts.syne(
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: isTimerCompleted ? orange : grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                          ),
+                    SizedBox(
+                      height: 80.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20.0.h),
+                      child: isVerifying
+                          ? apiButton(context)
+                          : GestureDetector(
+                              onTap: () => verifyOTPmethod(context),
+                              child: buttonContainer(context, 'NEXT'),
                             ),
-                      SizedBox(
-                        height: 80.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 20.0.h),
-                        child: isVerifying
-                            ? apiButton(context)
-                            : GestureDetector(
-                                onTap: () => verifyOTPmethod(context),
-                                child: buttonContainer(context, 'NEXT'),
-                              ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -350,10 +347,7 @@ class _OTPScreenState extends State<OTPScreen> {
           ),
         );
       } else {
-        print('error' +
-            _otpResponse!.message!.toString() +
-            '   ' +
-            _otpResponse!.status!.toString());
+        print('error${_otpResponse!.message!}   ${_otpResponse!.status!}');
         showToastError(_otpResponse!.message!, FToast().init(context));
       }
     }

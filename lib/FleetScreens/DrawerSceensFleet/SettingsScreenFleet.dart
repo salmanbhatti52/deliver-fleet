@@ -42,13 +42,15 @@ class _SettingsScreenFleetState extends State<SettingsScreenFleet> {
     notificationSwitch();
   }
 
-  NotificationSettingModel notificationSettingModel = NotificationSettingModel();
+  NotificationSettingModel notificationSettingModel =
+      NotificationSettingModel();
 
   notificationSwitch() async {
     try {
       SharedPreferences sharedPref = await SharedPreferences.getInstance();
       userID = sharedPref.getInt('userID')!;
-      String apiUrl = "https://deliver.eigix.net/api/update_notification_switch_fleet";
+      String apiUrl =
+          "https://deliver.eigix.net/api/update_notification_switch_fleet";
       print("apiUrl: $apiUrl");
       print("userId: $userID");
       print("notifications: $notificationStatus");
@@ -95,7 +97,7 @@ class _SettingsScreenFleetState extends State<SettingsScreenFleet> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         leadingWidth: 70,
         centerTitle: true,
         title: Text(
@@ -106,60 +108,53 @@ class _SettingsScreenFleetState extends State<SettingsScreenFleet> {
             fontSize: 20,
           ),
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 20),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: backArrowWithContainer(context),
-          ),
-        ),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22.w),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Enable Notifications',
-                        style: GoogleFonts.syne(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: black,
-                        ),
-                      ),
-                      FlutterSwitch(
-                        width: 35,
-                        height: 20,
-                        activeColor: black,
-                        inactiveColor: white,
-                        activeToggleBorder: Border.all(color: black, width: 2),
-                        inactiveToggleBorder:
-                        Border.all(color: black, width: 2),
-                        inactiveSwitchBorder:
-                        Border.all(color: black, width: 2),
-                        toggleSize: 12,
-                        value: notificationStatus == "Yes"
-                            ? switchStatus = true
-                            : switchStatus = false,
-                        borderRadius: 50,
-                        onToggle: (val) {
-                          setState(() {
-                            switchStatus = val;
-                            checkSwitch();
-                            print("switchStatus onToggle: $switchStatus");
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+        padding: EdgeInsets.symmetric(horizontal: 22.w),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 40.h,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Enable Notifications',
+                  style: GoogleFonts.syne(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: black,
+                  ),
+                ),
+                FlutterSwitch(
+                  width: 35,
+                  height: 20,
+                  activeColor: black,
+                  inactiveColor: white,
+                  activeToggleBorder: Border.all(color: black, width: 2),
+                  inactiveToggleBorder: Border.all(color: black, width: 2),
+                  inactiveSwitchBorder: Border.all(color: black, width: 2),
+                  toggleSize: 12,
+                  value: notificationStatus == "Yes"
+                      ? switchStatus = true
+                      : switchStatus = false,
+                  borderRadius: 50,
+                  onToggle: (val) {
+                    setState(() {
+                      switchStatus = val;
+                      checkSwitch();
+                      print("switchStatus onToggle: $switchStatus");
+                    });
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 

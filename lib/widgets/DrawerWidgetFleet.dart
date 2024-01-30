@@ -46,60 +46,21 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
   late SharedPreferences sharedPreferences;
   bool isLoading = false;
 
-  String? getAdminId;
-  String? getAdminName;
-  String? getAdminImage;
-  String? getAdminAddress;
-
-  GetSupportAdminModel getSupportAdminModel = GetSupportAdminModel();
-
-  getSupportAdmin() async {
-    try {
-      String apiUrl = "https://deliver.eigix.net/api/get_admin_list";
-      print("apiUrl: $apiUrl");
-      final response = await http.get(
-        Uri.parse(apiUrl),
-        headers: {
-          'Accept': 'application/json',
-        },
-      );
-      final responseString = response.body;
-      print("response: $responseString");
-      print("statusCode: ${response.statusCode}");
-      if (response.statusCode == 200) {
-        getSupportAdminModel = getSupportAdminModelFromJson(responseString);
-        setState(() {});
-        print('getSupportAdminModel status: ${getSupportAdminModel.status}');
-        print(
-            'getSupportAdminModel length: ${getSupportAdminModel.data!.length}');
-        for (int i = 0; i < getSupportAdminModel.data!.length; i++) {
-          getAdminId = "${getSupportAdminModel.data![i].usersSystemId}";
-          getAdminName = "${getSupportAdminModel.data![i].firstName}";
-          getAdminImage = "${getSupportAdminModel.data![i].userImage}";
-          getAdminAddress = "${getSupportAdminModel.data![i].address}";
-        }
-      }
-    } catch (e) {
-      print('Something went wrong = ${e.toString()}');
-      return null;
-    }
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    setState(() {
-      isLoading = true;
-      getSupportAdmin();
-      // gettingCategory = true;
-    });
+    // setState(() {
+    //   isLoading = true;
+    //   getSupportAdmin();
+    //   // gettingCategory = true;
+    // });
+    init2();
     init();
   }
 
-  late APIResponse<LogInModel>? getUserProfileResponse;
-
-  init() async {
+  APIResponse<LogInModel>? getUserProfileResponse;
+  init2() async {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
     userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
@@ -107,6 +68,11 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
     userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
     print(
         'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
+  }
+
+  init() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    userID = (sharedPreferences.getInt('userID') ?? -1);
 
     Map data = {
       "users_fleet_id": userID.toString(),
@@ -122,87 +88,105 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
       showToastError(getUserProfileResponse!.message, FToast().init(context));
     }
 
-    setState(() {
-      isLoading = false;
-      // gettingCategory = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+        // gettingCategory = false;
+      });
+    }
   }
 
   @override
   Widget build(
     BuildContext context,
   ) {
+    final screenSize = MediaQuery.of(context).size;
+    final isLargeScreen = screenSize.width > 600;
     return isLoading
         ? spinKitRotatingCircle
         : Drawer(
-            width: 280.w,
+            width: isLargeScreen ? 380 : 240,
             backgroundColor: white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 80.h,
+                const SizedBox(
+                  height: 80,
                 ),
                 Container(
-                  width: 75.w,
-                  height: 100.h,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      width: 1,
-                      color: lightGrey.withOpacity(0.8),
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        width: 1,
+                        color: lightGrey.withOpacity(0.8),
+                      ),
                     ),
-                  ),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        // 'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
-                        'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
-                        fit: BoxFit.cover,
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          return SizedBox(
-                              child: Image.asset(
-                            'assets/images/place-holder.png',
-                            fit: BoxFit.scaleDown,
-                          ));
-                        },
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: orange,
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                      )),
-                ),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: userProfilePic != null
+                            ? Image.network(
+                                'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
+                                // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                                fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return SizedBox(
+                                      child: Image.asset(
+                                    'assets/images/place-holder.png',
+                                    fit: BoxFit.scaleDown,
+                                  ));
+                                },
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: orange,
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  );
+                                },
+                              )
+                            : SizedBox(
+                                child: Image.asset(
+                                'assets/images/place-holder.png',
+                                fit: BoxFit.scaleDown,
+                              )))),
                 SizedBox(
                   height: 20.h,
                 ),
-                Text(
-                  '$userFirstName $userLastName',
-                  // '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
-                  style: GoogleFonts.syne(
-                    fontSize: 14,
-                    color: black,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                userFirstName != null && userLastName != null
+                    ? Text(
+                        '$userFirstName $userLastName',
+                        // '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
+                        style: GoogleFonts.syne(
+                          fontSize: 14,
+                          color: black,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )
+                    : const SizedBox(),
                 Padding(
-                  padding: const EdgeInsets.only(left: 54, top: 20),
+                  padding: const EdgeInsets.only(
+                    left: 30,
+                  ),
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 50.h,
+                        height: isLargeScreen ? 32 : 22,
                       ),
                       // profile list
                       ListTile(
@@ -234,7 +218,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         dense: true,
                       ),
                       SizedBox(
-                        height: 12.h,
+                        height: isLargeScreen ? 12 : 6,
                       ),
                       // ListTile(
                       //   onTap: () => Navigator.of(context).push(
@@ -262,7 +246,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                       //   dense: true,
                       // ),
                       // SizedBox(
-                      //   height: 12.h,
+                      //   height: isLargeScreen ? 12 : 6,,
                       // ),
 
                       // loyalty points
@@ -322,7 +306,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         dense: true,
                       ),
                       SizedBox(
-                        height: 12.h,
+                        height: isLargeScreen ? 12 : 6,
                       ),
                       // available jobs list
                       // ListTile(
@@ -369,7 +353,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         dense: true,
                       ),
                       SizedBox(
-                        height: 12.h,
+                        height: isLargeScreen ? 12 : 6,
                       ),
                       // settings tile
                       ListTile(
@@ -396,7 +380,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         dense: true,
                       ),
                       SizedBox(
-                        height: 12.h,
+                        height: isLargeScreen ? 12 : 6,
                       ),
                       // legal tile
                       ListTile(
@@ -423,18 +407,18 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         dense: true,
                       ),
                       SizedBox(
-                        height: 12.h,
+                        height: isLargeScreen ? 12 : 6,
                       ),
                       // settings tile
                       ListTile(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => SupportScreen(
-                              getAdminImage: '$getAdminImage',
-                              getAdminName: '$getAdminName',
-                              getAdminAddress: '$getAdminAddress',
-                              getAdminId: '$getAdminId',
-                            ),
+                            builder: (context) => const SupportScreen(
+                                // getAdminImage: '$getAdminImage',
+                                // getAdminName: '$getAdminName',
+                                // getAdminAddress: '$getAdminAddress',
+                                // getAdminId: '$getAdminId',
+                                ),
                           ),
                         ),
                         leading: SvgPicture.asset(
@@ -455,7 +439,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                         dense: true,
                       ),
                       SizedBox(
-                        height: 12.h,
+                        height: isLargeScreen ? 12 : 6,
                       ),
                       // log out tile
                       ListTile(

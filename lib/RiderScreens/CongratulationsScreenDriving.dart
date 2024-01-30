@@ -27,111 +27,109 @@ class CongratulationsScreenDriving extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: SafeArea(
-          child: GlowingOverscrollIndicator(
-            axisDirection: AxisDirection.down,
-            color: orange,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 50.h,
+    return Scaffold(
+      body: SafeArea(
+        child: GlowingOverscrollIndicator(
+          axisDirection: AxisDirection.down,
+          color: orange,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  Text(
+                    'Congratulations!',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.syne(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20,
+                      color: orange,
                     ),
-                    Text(
-                      'Congratulations!',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.syne(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                        color: orange,
-                      ),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  Text(
+                    'Your driving license\n has been successfully verified',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.syne(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w400,
+                      color: grey,
                     ),
-                    SizedBox(
-                      height: 30.h,
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
                     ),
-                    Text(
-                      'Your driving license\n has been successfully verified',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.syne(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w400,
-                        color: grey,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Container(
-                      width: 120,
-                      height: 120,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: ClipOval(
-                        child: profileImage == null
-                            ? Image.asset('assets/images/place-holder.png')
-                            : Image.file(
-                                profileImage!,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    ColumnWithAllDetailsOfRiders(
-                      address: licenseMap['address'],
-                      cnic: licenseMap['national_identification_no'],
-                      licenseNumber: licenseMap['driving_license_no'],
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
-                    Text(
-                      'Driving License Images ',
-                      textAlign: TextAlign.start,
-                      style: GoogleFonts.syne(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: black,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    picturesOfDricingLicense(
-                      context,
-                      licenseFrontImage,
-                      licenseBackImage,
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 20.0.h),
-                      child: GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => LogInScreen(
-                              userType: 'Rider',
+                    child: ClipOval(
+                      child: profileImage == null
+                          ? Image.asset('assets/images/place-holder.png')
+                          : Image.file(
+                              profileImage!,
+                              fit: BoxFit.cover,
                             ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  ColumnWithAllDetailsOfRiders(
+                    address: licenseMap['address'],
+                    cnic: licenseMap['national_identification_no'],
+                    licenseNumber: licenseMap['driving_license_no'],
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  Text(
+                    'Driving License Images ',
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.syne(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  picturesOfDricingLicense(
+                    context,
+                    licenseFrontImage,
+                    licenseBackImage,
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 20.0.h),
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => LogInScreen(
+                            userType: 'Rider',
                           ),
                         ),
-                        child: buttonContainer(context, 'NEXT'),
                       ),
+                      child: buttonContainer(context, 'NEXT'),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ),
     );
+  
   }
 }

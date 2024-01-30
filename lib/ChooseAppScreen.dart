@@ -26,7 +26,7 @@ class _ChooseAppScreenState extends State<ChooseAppScreen> {
     return Scaffold(
       // appBar: AppBar(
       //   elevation: 0.0,
-      //   backgroundColor: Colors.transparent,
+      //   backgroundColor: Colors.white,
       //   leadingWidth: 70,
       //   leading: Padding(
       //     padding: const EdgeInsets.only(top: 8.0, left: 20),

@@ -44,13 +44,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     notificationSwitch();
   }
 
-  NotificationSettingModel notificationSettingModel = NotificationSettingModel();
+  NotificationSettingModel notificationSettingModel =
+      NotificationSettingModel();
 
   notificationSwitch() async {
     try {
       SharedPreferences sharedPref = await SharedPreferences.getInstance();
       userID = sharedPref.getInt('userID')!;
-      String apiUrl = "https://deliver.eigix.net/api/update_notification_switch_fleet";
+      String apiUrl =
+          "https://deliver.eigix.net/api/update_notification_switch_fleet";
       print("apiUrl: $apiUrl");
       print("userId: $userID");
       print("notifications: $notificationStatus");
@@ -138,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         leadingWidth: 70,
         centerTitle: true,
         title: Text(
@@ -149,13 +151,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             fontSize: 20,
           ),
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 20),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: backArrowWithContainer(context),
-          ),
-        ),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 22.w),
@@ -181,10 +178,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   activeColor: black,
                   inactiveColor: white,
                   activeToggleBorder: Border.all(color: black, width: 2),
-                  inactiveToggleBorder:
-                  Border.all(color: black, width: 2),
-                  inactiveSwitchBorder:
-                  Border.all(color: black, width: 2),
+                  inactiveToggleBorder: Border.all(color: black, width: 2),
+                  inactiveSwitchBorder: Border.all(color: black, width: 2),
                   toggleSize: 12,
                   value: notificationStatus == "Yes"
                       ? switchStatus = true
@@ -376,7 +371,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 //       home: Scaffold(
 //         appBar: AppBar(
 //           elevation: 0.0,
-//           backgroundColor: Colors.transparent,
+//           backgroundColor: Colors.white,
 //           leadingWidth: 70,
 //           leading: Padding(
 //             padding: const EdgeInsets.only(top: 8.0, left: 20),

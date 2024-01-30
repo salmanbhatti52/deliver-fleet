@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/models/APIModelsFleet/GetAllSupportAdmin.dart';
 import 'package:deliver_partner/models/APIModelsFleet/GetSupportChatModel.dart';
 import 'package:deliver_partner/models/APIModelsFleet/SendSupportChatModel.dart';
 import 'package:intl/intl.dart';
@@ -39,35 +40,78 @@ class _SupportScreenState extends State<SupportScreen> {
   bool isLoading = false;
 
   StartSupportChatModel startSupportChatModel = StartSupportChatModel();
+  String? getAdminId;
+  String? getAdminName;
+  String? getAdminImage;
+  String? getAdminAddress;
+
+  GetSupportAdminModel getSupportAdminModel = GetSupportAdminModel();
+  bool load = false;
+  getSupportAdmin() async {
+    String apiUrl = "https://deliver.eigix.net/api/get_admin_list";
+    print("apiUrl: $apiUrl");
+    setState(() {
+      load = true;
+    });
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+    final responseString = response.body;
+    print("response: $responseString");
+    print("statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      getSupportAdminModel = getSupportAdminModelFromJson(responseString);
+      setState(() {});
+      print('getSupportAdminModel status: ${getSupportAdminModel.status}');
+      print(
+          'getSupportAdminModel length: ${getSupportAdminModel.data!.length}');
+      for (int i = 0; i < getSupportAdminModel.data!.length; i++) {
+        getAdminId = "${getSupportAdminModel.data![i].usersSystemId}";
+        getAdminName = "${getSupportAdminModel.data![i].name}";
+        getAdminImage = "${getSupportAdminModel.data![i].profilePic}";
+        getAdminAddress = "${getSupportAdminModel.data![i].address}";
+      }
+    }
+    setState(() {
+      load = false;
+    });
+    // } catch (e) {
+    //   print('Something went wrong = ${e.toString()}');
+    //   return null;
+    // }
+  }
 
   startSupportChat() async {
-    try {
-      SharedPreferences sharedPref = await SharedPreferences.getInstance();
-      userID = sharedPref.getInt('userID') ?? -1;
-      String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
-      print("apiUrlStartChat: $apiUrl");
-      print("userID: $userID");
-      print("OtherUserId: ${widget.getAdminId}");
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          "request_type": " startChat",
-          "users_type": "Rider",
-          "other_users_type": "Admin",
-          "users_id": userID.toString(),
-          "other_users_id": widget.getAdminId
-        },
-      );
-      final responseString = jsonDecode(response.body);
-      print("response: $responseString");
-      print("status: ${responseString['status']}");
-    } catch (e) {
-      print('Something went wrong = ${e.toString()}');
-      return null;
-    }
+    // try{
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    userID = sharedPref.getInt('userID') ?? -1;
+    String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
+    print("apiUrlStartChat: $apiUrl");
+    print("userID: $userID");
+    print("OtherUserId: ${widget.getAdminId}");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        "request_type": " startChat",
+        "users_type": "Rider",
+        "other_users_type": "Admin",
+        "users_id": userID.toString(),
+        "other_users_id": widget.getAdminId
+      },
+    );
+    final responseString = jsonDecode(response.body);
+    print("response: $responseString");
+    print("status: ${responseString['status']}");
+    // } catch (e) {
+    //   print('Something went wrong = ${e.toString()}');
+    //   return null;
+    // }
   }
 
   GetSupportChatModel getSupportChatModel = GetSupportChatModel();
@@ -185,6 +229,7 @@ class _SupportScreenState extends State<SupportScreen> {
     super.initState();
     startSupportChat();
     getSupportChat();
+    getSupportAdmin();
     onPageEnter();
     print("getAdminId: ${widget.getAdminId}");
     print("getAdminName: ${widget.getAdminName}");
@@ -201,11 +246,16 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: Scaffold(
+    if (load == true) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: orange,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
         backgroundColor: const Color(0xFFFBF9F7),
         appBar: AppBar(
           backgroundColor: const Color(0xFFFBF9F7),
@@ -679,7 +729,7 @@ class _SupportScreenState extends State<SupportScreen> {
                           disabledElevation: 0,
                           highlightElevation: 0,
                           foregroundColor: Colors.transparent,
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: Colors.white,
                           child: SvgPicture.asset(
                             'assets/images/send-icon.svg',
                             fit: BoxFit.scaleDown,
@@ -694,7 +744,7 @@ class _SupportScreenState extends State<SupportScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

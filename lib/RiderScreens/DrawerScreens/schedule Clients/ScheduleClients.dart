@@ -72,49 +72,48 @@ class _ScheduleClientsState extends State<ScheduleClients> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: white,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          centerTitle: true,
-          title: Text(
-            'Schedule Rides',
-            style: GoogleFonts.syne(
-              fontWeight: FontWeight.w700,
-              color: black,
-              fontSize: 20,
-            ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
+    return Scaffold(
+      backgroundColor: white,
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        centerTitle: true,
+        title: Text(
+          'Schedule Rides',
+          style: GoogleFonts.syne(
+            fontWeight: FontWeight.w700,
+            color: black,
+            fontSize: 20,
           ),
         ),
-        body: isPageLoading
-            ? spinKitRotatingCircle
-            : scheduledRidesList!.isEmpty
-                ? Center(
-                    child: Lottie.asset('assets/images/no-data.json'),
-                  )
-                : ListView.builder(
-                    itemCount: scheduledRidesList!.length,
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (context, index) {
-                      return ScheduledScreen(
-                        scheduledRiderModel: scheduledRidesList![index],
-                      );
-                    },
-                  ),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.black),
+        // leading: Padding(
+        //   padding: const EdgeInsets.only(top: 8.0, left: 20),
+        //   child: GestureDetector(
+        //     onTap: () => Navigator.of(context).pop(),
+        //     child: backArrowWithContainer(context),
+        //   ),
+        // ),
       ),
+      body: isPageLoading
+          ? spinKitRotatingCircle
+          : scheduledRidesList!.isEmpty
+              ? Center(
+                  child: Lottie.asset('assets/images/no-data.json'),
+                )
+              : ListView.builder(
+                  itemCount: scheduledRidesList!.length,
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) {
+                    return ScheduledScreen(
+                      scheduledRiderModel: scheduledRidesList![index],
+                    );
+                  },
+                ),
     );
   }
 }

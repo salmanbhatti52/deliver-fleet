@@ -62,11 +62,11 @@ class _VehicleScreenFleetState extends State<VehicleScreenFleet> {
     //   showToastError('something went wrong!', FToast().init(context));
     // }
 
-   if(mounted){
-     setState(() {
-      isLoading = false;
-    });
-   }
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override

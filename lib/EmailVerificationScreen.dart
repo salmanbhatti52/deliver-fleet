@@ -212,101 +212,78 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       smsCode: otpController.text,
     );
     try {
-    await auth.signInWithCredential(credential).then((value) async {
-      if (buttonTimer != null && buttonTimer!.isActive) {
-        buttonTimer!.cancel();
-      }
-      print('User Login In Successful ${value.user}');
-      await checkNumber();
-      if (checkPhoneNumberModel.status == "success") {
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        await sharedPreferences.setInt(
-            'userID', checkPhoneNumberModel.data!.usersFleetId!.toInt());
-        await sharedPreferences.setString(
-            'userEmail', checkPhoneNumberModel.data!.email.toString());
-        await sharedPreferences.setString(
-            'userFirstName', checkPhoneNumberModel.data!.firstName.toString());
-        await sharedPreferences.setString(
-            'userLastName', checkPhoneNumberModel.data!.lastName.toString());
-        await sharedPreferences.setString('userProfilePic',
-            checkPhoneNumberModel.data!.profilePic.toString());
-        await sharedPreferences.setString(
-            'userLatitude', widget.latitude.toString());
-        await sharedPreferences.setString(
-            'userLongitude', widget.longitude.toString());
-        await sharedPreferences.setString(
-            'deviceIDInfo', checkPhoneNumberModel.data!.oneSignalId.toString());
-        await sharedPreferences.setString(
-            'userType', checkPhoneNumberModel.data!.userType.toString());
-        await sharedPreferences.setString(
-            'parentID', checkPhoneNumberModel.data!.parentId.toString());
-        await sharedPreferences.setString('isLogIn', 'true');
-        print("sharedPref lat: ${widget.latitude.toString()}");
-        print("sharedPref long: ${widget.longitude.toString()}");
-        final pic = sharedPreferences.getString('userProfilePic');
-        print('pic: $pic');
-        print(
-            "sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
-        print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
-        fleetId = sharedPreferences.getInt('userID');
-        parentId = sharedPreferences.getString('userEmail');
-        print("fleetId $fleetId");
-        print("parentId $parentId");
-        print("badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
-        if (widget.userType == "Rider") {
-          if (checkPhoneNumberModel.data?.usersFleetId!.toInt() != null) {
-            if (checkPhoneNumberModel.data?.badgeVerified == "No") {
-              setState(() {
-                isVerifying = false;
-              });
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => RideDetailsAfterLogInScreen(
-                      userType: 'Rider',
-                      userFleetId: fleetId.toString(),
-                      parentID: parentId.toString(),
+      await auth.signInWithCredential(credential).then((value) async {
+        if (buttonTimer != null && buttonTimer!.isActive) {
+          buttonTimer!.cancel();
+        }
+        print('User Login In Successful ${value.user}');
+        await checkNumber();
+        if (checkPhoneNumberModel.status == "success") {
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+          await sharedPreferences.setInt(
+              'userID', checkPhoneNumberModel.data!.usersFleetId!.toInt());
+          await sharedPreferences.setString(
+              'userEmail', checkPhoneNumberModel.data!.email.toString());
+          await sharedPreferences.setString('userFirstName',
+              checkPhoneNumberModel.data!.firstName.toString());
+          await sharedPreferences.setString(
+              'userLastName', checkPhoneNumberModel.data!.lastName.toString());
+          await sharedPreferences.setString('userProfilePic',
+              checkPhoneNumberModel.data!.profilePic.toString());
+          await sharedPreferences.setString(
+              'userLatitude', widget.latitude.toString());
+          await sharedPreferences.setString(
+              'userLongitude', widget.longitude.toString());
+          await sharedPreferences.setString('deviceIDInfo',
+              checkPhoneNumberModel.data!.oneSignalId.toString());
+          await sharedPreferences.setString(
+              'userType', checkPhoneNumberModel.data!.userType.toString());
+          await sharedPreferences.setString(
+              'parentID', checkPhoneNumberModel.data!.parentId.toString());
+          await sharedPreferences.setString('isLogIn', 'true');
+          print("sharedPref lat: ${widget.latitude.toString()}");
+          print("sharedPref long: ${widget.longitude.toString()}");
+          final pic = sharedPreferences.getString('userProfilePic');
+          print('pic: $pic');
+          print(
+              "sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
+          print(
+              "sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
+          fleetId = sharedPreferences.getInt('userID');
+          parentId = sharedPreferences.getString('userEmail');
+          print("fleetId $fleetId");
+          print("parentId $parentId");
+          print("badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
+          if (widget.userType == "Rider") {
+            if (checkPhoneNumberModel.data?.usersFleetId!.toInt() != null) {
+              if (checkPhoneNumberModel.data?.badgeVerified == "No") {
+                setState(() {
+                  isVerifying = false;
+                });
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => RideDetailsAfterLogInScreen(
+                        userType: 'Rider',
+                        userFleetId: fleetId.toString(),
+                        parentID: parentId.toString(),
+                      ),
                     ),
-                  ),
-                  (route) => false);
-              showToastSuccess(
-                  'Badge is not verified. PLease add vehicle or request a bike to verify badge.',
-                  FToast().init(context),
-                  seconds: 3);
-            } else {
-              setState(() {
-                isVerifying = false;
-              });
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const BottomNavBar(),
-                  ),
-                  (Route<dynamic> route) => false);
-            }
-          } else {
-            setState(() {
-              isVerifying = false;
-            });
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => RegisterScreen(
-                      userType: widget.userType,
-                      phoneNumber: widget.phoneNumber.toString(),
-                      deviceID: widget.deviceID.toString()),
-                ),
-                (Route<dynamic> route) => false);
-          }
-        } else {
-          if (widget.userType == "Fleet") {
-            if (checkPhoneNumberModel.data!.usersFleetId!.toInt() != null) {
-              setState(() {
-                isVerifying = false;
-              });
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const BottomNavBarFleet(),
-                  ),
-                  (Route<dynamic> route) => false);
+                    (route) => false);
+                showToastSuccess(
+                    'Badge is not verified. PLease add vehicle or request a bike to verify badge.',
+                    FToast().init(context),
+                    seconds: 3);
+              } else {
+                setState(() {
+                  isVerifying = false;
+                });
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const BottomNavBar(),
+                    ),
+                    (Route<dynamic> route) => false);
+              }
             } else {
               setState(() {
                 isVerifying = false;
@@ -320,40 +297,65 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   ),
                   (Route<dynamic> route) => false);
             }
+          } else {
+            if (widget.userType == "Fleet") {
+              if (checkPhoneNumberModel.data!.usersFleetId!.toInt() != null) {
+                setState(() {
+                  isVerifying = false;
+                });
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const BottomNavBarFleet(),
+                    ),
+                    (Route<dynamic> route) => false);
+              } else {
+                setState(() {
+                  isVerifying = false;
+                });
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => RegisterScreen(
+                          userType: widget.userType,
+                          phoneNumber: widget.phoneNumber.toString(),
+                          deviceID: widget.deviceID.toString()),
+                    ),
+                    (Route<dynamic> route) => false);
+              }
+            }
           }
+        } else if (checkPhoneNumberModel.status == "error" &&
+            checkPhoneNumberModel.message ==
+                "Your account is not approved yet.") {
+          Navigator.pop(context);
+          showToastSuccess(
+              'Your account is not approved yet.', FToast().init(context),
+              seconds: 3);
+        } else if (checkPhoneNumberModel.status == "error" &&
+            checkPhoneNumberModel.message == "Phone number does not exist.") {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => RegisterScreen(
+                    userType: widget.userType,
+                    phoneNumber: widget.phoneNumber.toString(),
+                    deviceID: widget.deviceID.toString()),
+              ),
+              (Route<dynamic> route) => false);
+        } else if (checkPhoneNumberModel.status == "error" &&
+            checkPhoneNumberModel.message ==
+                "Your account is in deleted state.") {
+          Navigator.pop(context);
+          showToastSuccess(
+              'Your account is in deleted state.', FToast().init(context),
+              seconds: 3);
         }
-      } else if (checkPhoneNumberModel.status == "error" &&
-          checkPhoneNumberModel.message ==
-              "Your account is not approved yet.") {
-        Navigator.pop(context);
-        showToastSuccess(
-            'Your account is not approved yet.', FToast().init(context),
-            seconds: 3);
-      } else if (checkPhoneNumberModel.status == "error" &&
-          checkPhoneNumberModel.message == "Phone number does not exist.") {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => RegisterScreen(
-                  userType: widget.userType,
-                  phoneNumber: widget.phoneNumber.toString(),
-                  deviceID: widget.deviceID.toString()),
-            ),
-            (Route<dynamic> route) => false);
-      } else if (checkPhoneNumberModel.status == "error" &&
-          checkPhoneNumberModel.message ==
-              "Your account is in deleted state.") {
-        Navigator.pop(context);
-        showToastSuccess(
-            'Your account is in deleted state.', FToast().init(context),
-            seconds: 3);
-      }
-      setState(() {
-        isVerifying = false;
+        setState(() {
+          isVerifying = false;
+        });
       });
-    });
     } catch (e) {
       print('Something went wrong = ${e.toString()}');
-      showToastError('The provided verification code is invalid or expired', FToast().init(context));
+      showToastError('The provided verification code is invalid or expired',
+          FToast().init(context));
       setState(() {
         isVerifying = false;
       });
@@ -407,340 +409,337 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     var code = "";
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-                timer?.cancel();
-              },
-              child: backArrowWithContainer(context),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+              timer?.cancel();
+            },
+            child: backArrowWithContainer(context),
           ),
         ),
-        body: isLoading
-            ? Center(
-                child: spinKitRotatingCircle,
-              )
-            : GlowingOverscrollIndicator(
-                color: orange,
-                axisDirection: AxisDirection.down,
-                child: LayoutBuilder(
-                  builder: (context, constraints) => SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints(minHeight: constraints.minHeight),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 30.h,
+      ),
+      body: isLoading
+          ? Center(
+              child: spinKitRotatingCircle,
+            )
+          : GlowingOverscrollIndicator(
+              color: orange,
+              axisDirection: AxisDirection.down,
+              child: LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints:
+                        BoxConstraints(minHeight: constraints.minHeight),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          Text(
+                            // 'Email Verification',
+                            'Phone Verification',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.syne(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: black,
                             ),
-                            Text(
-                              // 'Email Verification',
-                              'Phone Verification',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.syne(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                color: black,
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          SvgPicture.asset(
+                              'assets/images/email-number-verify.svg'),
+                          SizedBox(
+                            height: 50.h,
+                          ),
+                          Text(
+                            'VERIFICATION CODE',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.syne(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: orange,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          Text(
+                            'We have sent 6 digit code to\n Your Phone.',
+                            // 'We have sent 4 digit code to\n Your Email.',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: grey,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          // OtpTextField(
+                          //   fillColor: mildGrey,
+                          //
+                          //   filled: true,
+                          //   keyboardType: TextInputType.number,
+                          //   borderWidth: 0.0,
+                          //   borderRadius: BorderRadius.circular(10.0),
+                          //   fieldWidth: 50.h,
+                          //
+                          //   clearText: true,
+                          //   inputFormatters: [
+                          //     LengthLimitingTextInputFormatter(1),
+                          //     FilteringTextInputFormatter.digitsOnly,
+                          //   ],
+                          //   textStyle: GoogleFonts.inter(
+                          //     color: black,
+                          //     fontSize: 13,
+                          //     fontWeight: FontWeight.w300,
+                          //   ),
+                          //   decoration: InputDecoration(
+                          //     fillColor: mildGrey,
+                          //     filled: true,
+                          //     counterText: '',
+                          //     border: OutlineInputBorder(
+                          //       borderRadius: BorderRadius.circular(
+                          //         10,
+                          //       ),
+                          //       // borderSide: BorderSide(
+                          //       //   color: Colors.transparent,
+                          //       // ),
+                          //     ),
+                          //     focusedBorder: OutlineInputBorder(
+                          //       borderRadius: BorderRadius.circular(
+                          //         10,
+                          //       ),
+                          //       borderSide: const BorderSide(
+                          //         color: mildGrey,
+                          //       ),
+                          //     ),
+                          //     focusColor: mildGrey,
+                          //     hintText: '0',
+                          //     hintStyle: GoogleFonts.inter(
+                          //       color: black,
+                          //       fontSize: 13,
+                          //       fontWeight: FontWeight.w300,
+                          //     ),
+                          //   ),
+                          //   numberOfFields: 6,
+                          //   borderColor: mildGrey,
+                          //   showCursor: false,
+                          //   showFieldAsBox: true,
+                          //
+                          //   hasCustomInputDecoration: true,
+                          //   onCodeChanged: (String code) {
+                          //     setState(() {
+                          //       isSubmitted = false;
+                          //       userTypedOtp = '';
+                          //     });
+                          //   },
+                          //   onSubmit: (String verificationCode) {
+                          //     setState(() {
+                          //       isSubmitted = true;
+                          //       userTypedOtp = verificationCode;
+                          //     });
+                          //   }, // end onSubmit
+                          // ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 15),
+                            child: Pinput(
+                              length: 6,
+                              controller: otpController,
+                              keyboardType: TextInputType.number,
+                              defaultPinTheme: PinTheme(
+                                width: 60,
+                                height: 48,
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontFamily: 'Inter-Regular',
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: const Color(0xffF2F0EE),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 30.h,
-                            ),
-                            SvgPicture.asset(
-                                'assets/images/email-number-verify.svg'),
-                            SizedBox(
-                              height: 50.h,
-                            ),
-                            Text(
-                              'VERIFICATION CODE',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.syne(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                color: orange,
+                              focusedPinTheme: PinTheme(
+                                width: 60,
+                                height: 48,
+                                textStyle: const TextStyle(
+                                  color: black,
+                                  fontSize: 14,
+                                  fontFamily: 'Inter-Regular',
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: const Color(0xffF2F0EE),
+                                  border: Border.all(
+                                    color: orange,
+                                  ),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 4.h,
-                            ),
-                            Text(
-                              'We have sent 6 digit code to\n Your Phone.',
-                              // 'We have sent 4 digit code to\n Your Email.',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.syne(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: grey,
+                              submittedPinTheme: PinTheme(
+                                width: 60,
+                                height: 48,
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontFamily: 'Inter-Regular',
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: const Color(0xffF2F0EE),
+                                  border: Border.all(
+                                    color: orange,
+                                  ),
+                                ),
                               ),
+                              onChanged: (value) {
+                                code = value;
+                              },
                             ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            // OtpTextField(
-                            //   fillColor: mildGrey,
-                            //
-                            //   filled: true,
-                            //   keyboardType: TextInputType.number,
-                            //   borderWidth: 0.0,
-                            //   borderRadius: BorderRadius.circular(10.0),
-                            //   fieldWidth: 50.h,
-                            //
-                            //   clearText: true,
-                            //   inputFormatters: [
-                            //     LengthLimitingTextInputFormatter(1),
-                            //     FilteringTextInputFormatter.digitsOnly,
-                            //   ],
-                            //   textStyle: GoogleFonts.inter(
-                            //     color: black,
-                            //     fontSize: 13,
-                            //     fontWeight: FontWeight.w300,
-                            //   ),
-                            //   decoration: InputDecoration(
-                            //     fillColor: mildGrey,
-                            //     filled: true,
-                            //     counterText: '',
-                            //     border: OutlineInputBorder(
-                            //       borderRadius: BorderRadius.circular(
-                            //         10,
-                            //       ),
-                            //       // borderSide: BorderSide(
-                            //       //   color: Colors.transparent,
-                            //       // ),
-                            //     ),
-                            //     focusedBorder: OutlineInputBorder(
-                            //       borderRadius: BorderRadius.circular(
-                            //         10,
-                            //       ),
-                            //       borderSide: const BorderSide(
-                            //         color: mildGrey,
-                            //       ),
-                            //     ),
-                            //     focusColor: mildGrey,
-                            //     hintText: '0',
-                            //     hintStyle: GoogleFonts.inter(
-                            //       color: black,
-                            //       fontSize: 13,
-                            //       fontWeight: FontWeight.w300,
-                            //     ),
-                            //   ),
-                            //   numberOfFields: 6,
-                            //   borderColor: mildGrey,
-                            //   showCursor: false,
-                            //   showFieldAsBox: true,
-                            //
-                            //   hasCustomInputDecoration: true,
-                            //   onCodeChanged: (String code) {
-                            //     setState(() {
-                            //       isSubmitted = false;
-                            //       userTypedOtp = '';
-                            //     });
-                            //   },
-                            //   onSubmit: (String verificationCode) {
-                            //     setState(() {
-                            //       isSubmitted = true;
-                            //       userTypedOtp = verificationCode;
-                            //     });
-                            //   }, // end onSubmit
-                            // ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
-                              child: Pinput(
-                                length: 6,
-                                controller: otpController,
-                                keyboardType: TextInputType.number,
-                                defaultPinTheme: PinTheme(
-                                  width: 60,
-                                  height: 48,
-                                  textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Regular',
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: const Color(0xffF2F0EE),
-                                  ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'OTP valid for',
+                                style: GoogleFonts.syne(
+                                  fontSize: 14,
+                                  color: black,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                focusedPinTheme: PinTheme(
-                                  width: 60,
-                                  height: 48,
-                                  textStyle: const TextStyle(
-                                    color: black,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Regular',
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: const Color(0xffF2F0EE),
-                                    border: Border.all(
-                                      color: orange,
-                                    ),
-                                  ),
-                                ),
-                                submittedPinTheme: PinTheme(
-                                  width: 60,
-                                  height: 48,
-                                  textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontFamily: 'Inter-Regular',
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: const Color(0xffF2F0EE),
-                                    border: Border.all(
-                                      color: orange,
-                                    ),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  code = value;
-                                },
                               ),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'OTP valid for',
-                                  style: GoogleFonts.syne(
-                                    fontSize: 14,
-                                    color: black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    secondsRemaining == 0
-                                        ? SvgPicture.asset(
-                                            'assets/images/timer-icon.svg',
-                                            colorFilter: const ColorFilter.mode(
-                                                grey, BlendMode.srcIn),
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/timer-icon.svg',
-                                            // colorFilter:
-                                            // ColorFilter.mode(grey, BlendMode.srcIn),
-                                          ),
-                                    SizedBox(
-                                      width: 5.w,
-                                    ),
-                                    Text(
-                                      getTimerText(),
-                                      style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        color: black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 40.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Don't Receive the Code? ",
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    color: black,
-                                    fontSize: 14,
-                                    fontFamily: 'Syne-Regular',
-                                  ),
-                                ),
-                                secondsRemaining == 0
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            secondsRemaining = 20;
-                                            startTimer();
-                                          });
-                                          verifyPhoneNumber();
-                                        },
-                                        child: const Text(
-                                          'Resend Code',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: orange,
-                                            fontSize: 16,
-                                            fontFamily: 'Syne-SemiBold',
-                                          ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  secondsRemaining == 0
+                                      ? SvgPicture.asset(
+                                          'assets/images/timer-icon.svg',
+                                          colorFilter: const ColorFilter.mode(
+                                              grey, BlendMode.srcIn),
+                                        )
+                                      : SvgPicture.asset(
+                                          'assets/images/timer-icon.svg',
+                                          // colorFilter:
+                                          // ColorFilter.mode(grey, BlendMode.srcIn),
                                         ),
-                                      )
-                                    : const Text(
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    getTimerText(),
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                      color: black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Don't Receive the Code? ",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: black,
+                                  fontSize: 14,
+                                  fontFamily: 'Syne-Regular',
+                                ),
+                              ),
+                              secondsRemaining == 0
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          secondsRemaining = 20;
+                                          startTimer();
+                                        });
+                                        verifyPhoneNumber();
+                                      },
+                                      child: const Text(
                                         'Resend Code',
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
-                                          color: grey,
+                                          color: orange,
                                           fontSize: 16,
                                           fontFamily: 'Syne-SemiBold',
                                         ),
                                       ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 80.h,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 20.0.h),
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (!isButtonDisabled) {
+                                    )
+                                  : const Text(
+                                      'Resend Code',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        color: grey,
+                                        fontSize: 16,
+                                        fontFamily: 'Syne-SemiBold',
+                                      ),
+                                    ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 80.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 20.0.h),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (!isButtonDisabled) {
+                                  setState(() {
+                                    isButtonDisabled = true;
+                                  });
+                                  buttonTimer = Timer(
+                                      const Duration(seconds: 5), () async {
                                     setState(() {
-                                      isButtonDisabled = true;
+                                      isButtonDisabled = false;
                                     });
-                                    buttonTimer = Timer(
-                                        const Duration(seconds: 5), () async {
-                                      setState(() {
-                                        isButtonDisabled = false;
-                                      });
-                                      await verifyOTPCode();
-                                    });
-                                  }
-                                },
-                                // => isVerifying
-                                //     ? apiButton(context)
-                                //     : verifyOTPmethod(context),
-                                child: isButtonDisabled
-                                    ? apiButton(context)
-                                    : isVerifying
-                                        ? apiButton(context)
-                                        : buttonContainer(context, 'VERIFY'),
-                              ),
+                                    await verifyOTPCode();
+                                  });
+                                }
+                              },
+                              // => isVerifying
+                              //     ? apiButton(context)
+                              //     : verifyOTPmethod(context),
+                              child: isButtonDisabled
+                                  ? apiButton(context)
+                                  : isVerifying
+                                      ? apiButton(context)
+                                      : buttonContainer(context, 'VERIFY'),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ),
-      ),
+            ),
     );
   }
 

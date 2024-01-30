@@ -95,131 +95,128 @@ class _UploadCACScreenState extends State<UploadCACScreen>
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: isPageLoading
-          ? apiButton(context)
-          : Scaffold(
-              backgroundColor: white,
-              appBar: AppBar(
-                elevation: 0.0,
-                backgroundColor: Colors.transparent,
-                leadingWidth: 70,
-                leading: Padding(
-                  padding: const EdgeInsets.only(top: 8.0, left: 20),
-                  child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: backArrowWithContainer(context),
-                  ),
-                ),
-              ),
-              body: GlowingOverscrollIndicator(
-                axisDirection: AxisDirection.down,
-                color: orange,
-                child: LayoutBuilder(
-                  builder: (context, constraints) => SingleChildScrollView(
-                      child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 22.0.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 40.h,
-                        ),
-                        Center(
-                          child: Text(
-                            'Upload CAC Certificate',
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.syne(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                              color: black,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          'Upload your CAC certificate to verify your\n business',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.syne(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: grey,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 100.h,
-                        ),
-                        Text(
-                          'Click to upload',
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: black,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        GestureDetector(
-                          onTap: () => showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomDialogBox(
-                                    name: 'Back',
-                                    onCameraBTNPressed: () {
-                                      imageSelection(ImageSource.camera, 0);
-                                    },
-                                    onGalleryBTNPressed: () {
-                                      imageSelection(ImageSource.gallery, 0);
-                                    });
-                              }),
-                          child: imagePath != null
-                              ? SizedBox(
-                                  width: double.infinity,
-                                  height: 200.h,
-                                  child: Image.file(
-                                    imagePath!,
-                                    fit: BoxFit.cover,
-                                  ))
-                              : SvgPicture.asset(
-                                  'assets/images/upload-pic.svg',
-                                  fit: BoxFit.scaleDown,
-                                ),
-                        ),
-                        SizedBox(
-                          height: 200.h,
-                        ),
-                        isUploading
-                            ? apiButton(context)
-                            : GestureDetector(
-                                onTap: () => uploadCertificate(context),
-                                child: buttonContainer(context, 'UPLOAD'),
-                              ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 20.h,
-                          ),
-                          child: GestureDetector(
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BottomNavBarFleet(),
-                              ),
-                            ),
-                            child: buttonContainerWithBorder(
-                                context, 'SKIP FOR NOW'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )),
+    return isPageLoading
+        ? apiButton(context)
+        : Scaffold(
+            backgroundColor: white,
+            appBar: AppBar(
+              elevation: 0.0,
+              backgroundColor: Colors.white,
+              leadingWidth: 70,
+              leading: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 20),
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: backArrowWithContainer(context),
                 ),
               ),
             ),
-    );
+            body: GlowingOverscrollIndicator(
+              axisDirection: AxisDirection.down,
+              color: orange,
+              child: LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                    child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 22.0.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 40.h,
+                      ),
+                      Center(
+                        child: Text(
+                          'Upload CAC Certificate',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.syne(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                            color: black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Text(
+                        'Upload your CAC certificate to verify your\n business',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.syne(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: grey,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 100.h,
+                      ),
+                      Text(
+                        'Click to upload',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      GestureDetector(
+                        onTap: () => showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialogBox(
+                                  name: 'Back',
+                                  onCameraBTNPressed: () {
+                                    imageSelection(ImageSource.camera, 0);
+                                  },
+                                  onGalleryBTNPressed: () {
+                                    imageSelection(ImageSource.gallery, 0);
+                                  });
+                            }),
+                        child: imagePath != null
+                            ? SizedBox(
+                                width: double.infinity,
+                                height: 200.h,
+                                child: Image.file(
+                                  imagePath!,
+                                  fit: BoxFit.cover,
+                                ))
+                            : SvgPicture.asset(
+                                'assets/images/upload-pic.svg',
+                                fit: BoxFit.scaleDown,
+                              ),
+                      ),
+                      SizedBox(
+                        height: 200.h,
+                      ),
+                      isUploading
+                          ? apiButton(context)
+                          : GestureDetector(
+                              onTap: () => uploadCertificate(context),
+                              child: buttonContainer(context, 'UPLOAD'),
+                            ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 20.h,
+                        ),
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const BottomNavBarFleet(),
+                            ),
+                          ),
+                          child: buttonContainerWithBorder(
+                              context, 'SKIP FOR NOW'),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+              ),
+            ),
+          );
   }
 
   bool isUploading = false;

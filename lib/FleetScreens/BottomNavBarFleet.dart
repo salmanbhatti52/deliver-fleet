@@ -43,52 +43,11 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
     });
   }
 
-  // bool get isIos =>
-  //     foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS;
-
   @override
   Widget build(BuildContext context) {
-    // if (isIos) {
-    //   return CupertinoTabScaffold(
-    //       tabBar: CupertinoTabBar(
-    //         currentIndex: _currentIndex,
-    //         height: 70.h,
-    //         iconSize: 20.sp,
-    //         inactiveColor: grey,
-    //         activeColor: orange,
-    //         backgroundColor: lightWhite,
-    //         items: [
-    //           BottomNavigationBarItem(
-    //             icon: SvgPicture.asset('assets/images/home-grey.svg'),
-    //             activeIcon: SvgPicture.asset('assets/images/home-orange.svg'),
-    //             label: 'Fleet',
-    //           ),
-    //           BottomNavigationBarItem(
-    //             icon: SvgPicture.asset('assets/images/ride-grey.svg'),
-    //             activeIcon: SvgPicture.asset('assets/images/ride-orange.svg'),
-    //             label: 'Calender',
-    //           ),
-    //           BottomNavigationBarItem(
-    //             icon: SvgPicture.asset('assets/images/rank-grey.svg'),
-    //             activeIcon: SvgPicture.asset('assets/images/rank-orange.svg'),
-    //             label: 'Spending',
-    //           ),
-    //           BottomNavigationBarItem(
-    //             icon: SvgPicture.asset('assets/images/rider-grey.svg'),
-    //             activeIcon: SvgPicture.asset('assets/images/rider-orange.svg'),
-    //             label: 'Profile',
-    //           ),
-    //         ],
-    //         onTap: onTap,
-    //       ),
-    //       tabBuilder: (context, index) {
-    //         return CupertinoTabView(
-    //           builder: (context) {
-    //             return _pages[_currentIndex];
-    //           },
-    //         );
-    //       });
-    // } else {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return WillPopScope(
       onWillPop: () async {
         if (_currentIndex == 0) {
@@ -105,24 +64,23 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
         key: key,
         appBar: AppBar(
           elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
+          backgroundColor: Colors.white,
+          leadingWidth: 70.w,
           actions: [
             Builder(builder: (context) {
               return Padding(
-                padding: const EdgeInsets.only(top: 8.0, right: 20),
+                padding: const EdgeInsets.only(right: 15),
                 child: _currentIndex == 0
                     ? GestureDetector(
                         onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const AddVehicleFleetFirstScreen(
-                              userType: 'Fleet',
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const AddVehicleFleetFirstScreen(
+                                  userType: 'Fleet',
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        child: addContainer(context),
-                      )
+                        child: const Icon(Icons.add, color: Colors.black))
                     : _currentIndex == 1
                         ? GestureDetector(
                             child: addContainer(context),
@@ -132,7 +90,7 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
             }),
             _currentIndex == 3
                 ? Padding(
-                    padding: const EdgeInsets.only(top: 8, right: 20),
+                    padding: EdgeInsets.only(right: 20.w),
                     child: GestureDetector(
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -146,10 +104,13 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
           ],
           leading: Builder(builder: (context) {
             return Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 20),
+              padding: const EdgeInsets.only(left: 15),
               child: GestureDetector(
                 onTap: () => Scaffold.of(context).openDrawer(),
-                child: drawerContainer(context),
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                ),
               ),
             );
           }),
@@ -158,35 +119,35 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
               ? Text(
                   'Fleet',
                   style: GoogleFonts.syne(
-                    fontSize: 22,
+                    fontSize: screenWidth > 600 ? 32 : 22,
                     fontWeight: FontWeight.w700,
-                    color: black,
+                    color: Colors.black,
                   ),
                 )
               : _currentIndex == 1
                   ? Text(
                       'Calender',
                       style: GoogleFonts.syne(
-                        fontSize: 22,
+                        fontSize: screenWidth > 600 ? 32 : 22,
                         fontWeight: FontWeight.w700,
-                        color: black,
+                        color: Colors.black,
                       ),
                     )
                   : _currentIndex == 2
                       ? Text(
                           'Spending',
                           style: GoogleFonts.syne(
-                            fontSize: 22,
+                            fontSize: screenWidth > 600 ? 32 : 22,
                             fontWeight: FontWeight.w700,
-                            color: black,
+                            color: Colors.black,
                           ),
                         )
                       : Text(
                           'Profile',
                           style: GoogleFonts.syne(
-                            fontSize: 22,
+                            fontSize: screenWidth > 600 ? 32 : 22,
                             fontWeight: FontWeight.w700,
-                            color: black,
+                            color: Colors.black,
                           ),
                         ),
         ),
@@ -243,11 +204,11 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
               showUnselectedLabels: true,
               showSelectedLabels: true,
               iconSize: 20.sp,
-              selectedItemColor: black,
+              selectedItemColor: Colors.black,
               unselectedItemColor: grey,
               selectedLabelStyle: GoogleFonts.syne(
                 fontWeight: FontWeight.w500,
-                fontSize: 12.sp,
+                fontSize: screenWidth > 600 ? 22 : 12,
               ),
               unselectedLabelStyle: GoogleFonts.syne(
                 fontWeight: FontWeight.w400,
@@ -255,7 +216,7 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
               ),
             ),
             Positioned(
-              top: -40,
+              top: -40.h,
               child: GestureDetector(
                 // onTap: () {
                 //   Navigator.of(
@@ -276,8 +237,8 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
                   child: SvgPicture.asset(
                     'assets/images/nav-button.svg',
                     fit: BoxFit.scaleDown,
-                    width: 25,
-                    height: 25,
+                    width: 25.w,
+                    height: 25.h,
                   ),
                 ),
               ),
@@ -286,6 +247,5 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
         ),
       ),
     );
-    // }
   }
 }
