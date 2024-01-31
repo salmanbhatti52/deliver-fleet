@@ -18,6 +18,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'Constants/Colors.dart';
 import 'Constants/buttonContainer.dart';
@@ -516,64 +517,64 @@ class _TempRegisterRiderState extends State<TempRegisterRider> {
                           SizedBox(
                             width: 10.w,
                           ),
-                          Expanded(
-                            child: RichText(
-                              text: TextSpan(
-                                text: 'I agree to the ',
-                                style: GoogleFonts.inter(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                  color: black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const TermsAndConditions(),
-                                          ),
-                                        );
-                                      },
-                                    text: 'Terms and Conditions ',
-                                    style: GoogleFonts.inter(
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400,
-                                      color: black,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: 'and ',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400,
-                                      color: black,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PrivacyPolicy(),
-                                          ),
-                                        );
-                                      },
-                                    text: 'Privacy Policy ',
-                                    style: GoogleFonts.inter(
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400,
-                                      color: black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                         Expanded(
+  child: RichText(
+    text: TextSpan(
+      text: 'I agree to the ',
+      style: GoogleFonts.inter(
+        fontSize: 13,
+        fontWeight: FontWeight.w400,
+        color: black,
+      ),
+      children: [
+        TextSpan(
+          recognizer: TapGestureRecognizer()
+            ..onTap = () async {
+              const url = 'https://deliver.eigix.net/users/terms_and_conditions';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
+          text: 'Terms and Conditions ',
+          style: GoogleFonts.inter(
+            decoration: TextDecoration.underline,
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+            color: black,
+          ),
+        ),
+        TextSpan(
+          text: 'and ',
+          style: GoogleFonts.inter(
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+            color: black,
+          ),
+        ),
+        TextSpan(
+          recognizer: TapGestureRecognizer()
+            ..onTap = () async {
+              const url = 'https://deliver.eigix.net/users/privacy_policy';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
+          text: 'Privacy Policy ',
+          style: GoogleFonts.inter(
+            decoration: TextDecoration.underline,
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+            color: black,
+          ),
+        ),
+      ],
+    ),
+  ),
+),
                         ],
                       ),
                       SizedBox(

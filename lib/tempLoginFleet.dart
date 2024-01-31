@@ -23,7 +23,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'Constants/Colors.dart';
 import 'Constants/buttonContainer.dart';
 import 'FleetScreens/BottomNavBarFleet.dart';
@@ -144,527 +144,529 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        backgroundColor: white,
-        body: LayoutBuilder(
-          builder: (context, constraints) => SafeArea(
-            child: GlowingOverscrollIndicator(
-              axisDirection: AxisDirection.down,
-              color: orange,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.w,
-                    vertical: 30,
-                  ),
-                  child: Column(
-                    children: [
-                      Form(
-                        key: _key,
-                        child: ConstrainedBox(
-                          constraints:
-                              BoxConstraints(minHeight: constraints.minHeight),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 20.h,
+    return Scaffold(
+      backgroundColor: white,
+      body: LayoutBuilder(
+        builder: (context, constraints) => SafeArea(
+          child: GlowingOverscrollIndicator(
+            axisDirection: AxisDirection.down,
+            color: orange,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40.w,
+                  vertical: 30,
+                ),
+                child: Column(
+                  children: [
+                    Form(
+                      key: _key,
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: constraints.minHeight),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            SvgPicture.asset('assets/images/logo.svg'),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Text(
+                              'Fleet Login',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.inter(
+                                fontSize: 30,
+                                color: orange,
+                                fontWeight: FontWeight.w500,
                               ),
-                              SvgPicture.asset('assets/images/logo.svg'),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              Text(
-                                'Fleet Login',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.inter(
-                                  fontSize: 30,
-                                  color: orange,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 30.h,
-                              ),
-                              // SizedBox(
-                              //   width: 296.w,
-                              //   // height: 50.h,
+                            ),
+                            SizedBox(
+                              height: 30.h,
+                            ),
+                            // SizedBox(
+                            //   width: 296.w,
+                            //   // height: 50.h,
 
-                              //   child: TextFormFieldWidget(
-                              //     validator: (val) {
-                              //       if (val!.isEmpty) {
-                              //         return 'name cannot be empty';
-                              //       }
-                              //       return null;
-                              //     },
-                              //     controller: firstNameController,
-                              //     textInputType: TextInputType.name,
-                              //     enterTextStyle: enterTextStyle,
-                              //     cursorColor: orange,
-                              //     hintText: 'First Name',
-                              //     border: border,
-                              //     hintStyle: hintStyle,
-                              //     focusedBorder: focusedBorder,
-                              //     contentPadding: contentPadding,
-                              //     obscureText: null,
-                              //     enableBorder: enableBorder,
-                              //     length: -1,
-                              //   ),
-                              // ),
+                            //   child: TextFormFieldWidget(
+                            //     validator: (val) {
+                            //       if (val!.isEmpty) {
+                            //         return 'name cannot be empty';
+                            //       }
+                            //       return null;
+                            //     },
+                            //     controller: firstNameController,
+                            //     textInputType: TextInputType.name,
+                            //     enterTextStyle: enterTextStyle,
+                            //     cursorColor: orange,
+                            //     hintText: 'First Name',
+                            //     border: border,
+                            //     hintStyle: hintStyle,
+                            //     focusedBorder: focusedBorder,
+                            //     contentPadding: contentPadding,
+                            //     obscureText: null,
+                            //     enableBorder: enableBorder,
+                            //     length: -1,
+                            //   ),
+                            // ),
 
-                              // SizedBox(
-                              //   height: 20.h,
-                              // ),
-                              // SizedBox(
-                              //   width: 296.w,
-                              //   child: TextFormFieldWidget(
-                              //     validator: (val) {
-                              //       if (val!.isEmpty) {
-                              //         return 'name cannot be empty';
-                              //       }
-                              //       return null;
-                              //     },
-                              //     controller: lastNameController,
-                              //     textInputType: TextInputType.name,
-                              //     enterTextStyle: enterTextStyle,
-                              //     cursorColor: orange,
-                              //     hintText: 'Last Name',
-                              //     border: border,
-                              //     hintStyle: hintStyle,
-                              //     focusedBorder: focusedBorder,
-                              //     contentPadding: contentPadding,
-                              //     obscureText: null,
-                              //     enableBorder: enableBorder,
-                              //     length: -1,
-                              //   ),
-                              // ),
+                            // SizedBox(
+                            //   height: 20.h,
+                            // ),
+                            // SizedBox(
+                            //   width: 296.w,
+                            //   child: TextFormFieldWidget(
+                            //     validator: (val) {
+                            //       if (val!.isEmpty) {
+                            //         return 'name cannot be empty';
+                            //       }
+                            //       return null;
+                            //     },
+                            //     controller: lastNameController,
+                            //     textInputType: TextInputType.name,
+                            //     enterTextStyle: enterTextStyle,
+                            //     cursorColor: orange,
+                            //     hintText: 'Last Name',
+                            //     border: border,
+                            //     hintStyle: hintStyle,
+                            //     focusedBorder: focusedBorder,
+                            //     contentPadding: contentPadding,
+                            //     obscureText: null,
+                            //     enableBorder: enableBorder,
+                            //     length: -1,
+                            //   ),
+                            // ),
 
-                              // SizedBox(
-                              //   height: 20.h,
-                              // ),
-                              // SizedBox(
-                              //   width: 296.w,
-                              //   child: TextFormFieldWidget(
-                              //     validator: (val) {
-                              //       if (val!.isEmpty) {
-                              //         return 'phone number cannot be empty';
-                              //       }
-                              //       return null;
-                              //     },
-                              //     controller: phoneNumberController,
-                              //     textInputType: TextInputType.number,
-                              //     enterTextStyle: enterTextStyle,
-                              //     cursorColor: orange,
-                              //     hintText: '123 456 789',
-                              //     border: border,
-                              //     hintStyle: hintStyle,
-                              //     focusedBorder: focusedBorder,
-                              //     obscureText: null,
-                              //     contentPadding: contentPadding,
-                              //     enableBorder: enableBorder,
-                              //     prefixIcon: GestureDetector(
-                              //       onTap: () async {
-                              //         final code = await countryPicker
-                              //             .showPicker(context: context);
-                              //         setState(() {
-                              //           countryCode = code;
-                              //         });
-                              //       },
-                              //       child: Row(
-                              //         mainAxisSize: MainAxisSize.min,
-                              //         children: [
-                              //           Padding(
-                              //             padding:
-                              //                 const EdgeInsets.only(left: 20),
-                              //             child: Container(
-                              //               child: countryCode != null
-                              //                   ? Image.asset(
-                              //                       countryCode!.flagUri,
-                              //                       package: countryCode!
-                              //                           .flagImagePackage,
-                              //                       width: 25,
-                              //                       height: 20,
-                              //                     )
-                              //                   : Image.asset(
-                              //                       'assets/images/flag-icon.png',
-                              //                       width: 20,
-                              //                       height: 20,
-                              //                       color: orange,
-                              //                       fit: BoxFit.scaleDown,
-                              //                     ),
-                              //             ),
-                              //           ),
-                              //           Padding(
-                              //             padding:
-                              //                 const EdgeInsets.only(left: 10),
-                              //             child: Text(
-                              //               countryCode?.dialCode ?? "+234",
-                              //               textAlign: TextAlign.center,
-                              //               style: hintStyle,
-                              //             ),
-                              //           ),
-                              //           SizedBox(width: 10.w),
-                              //           Text(
-                              //             '|',
-                              //             style: hintStyle,
-                              //           ),
-                              //           SizedBox(width: 10.w),
-                              //         ],
-                              //       ),
-                              //     ),
-                              //     length: 15,
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   height: 20.h,
-                              // ),
-                              SizedBox(
-                                width: 296.w,
-                                child: TextFormFieldWidget(
-                                  validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return 'email cannot be empty';
-                                    }
-                                    return null;
+                            // SizedBox(
+                            //   height: 20.h,
+                            // ),
+                            // SizedBox(
+                            //   width: 296.w,
+                            //   child: TextFormFieldWidget(
+                            //     validator: (val) {
+                            //       if (val!.isEmpty) {
+                            //         return 'phone number cannot be empty';
+                            //       }
+                            //       return null;
+                            //     },
+                            //     controller: phoneNumberController,
+                            //     textInputType: TextInputType.number,
+                            //     enterTextStyle: enterTextStyle,
+                            //     cursorColor: orange,
+                            //     hintText: '123 456 789',
+                            //     border: border,
+                            //     hintStyle: hintStyle,
+                            //     focusedBorder: focusedBorder,
+                            //     obscureText: null,
+                            //     contentPadding: contentPadding,
+                            //     enableBorder: enableBorder,
+                            //     prefixIcon: GestureDetector(
+                            //       onTap: () async {
+                            //         final code = await countryPicker
+                            //             .showPicker(context: context);
+                            //         setState(() {
+                            //           countryCode = code;
+                            //         });
+                            //       },
+                            //       child: Row(
+                            //         mainAxisSize: MainAxisSize.min,
+                            //         children: [
+                            //           Padding(
+                            //             padding:
+                            //                 const EdgeInsets.only(left: 20),
+                            //             child: Container(
+                            //               child: countryCode != null
+                            //                   ? Image.asset(
+                            //                       countryCode!.flagUri,
+                            //                       package: countryCode!
+                            //                           .flagImagePackage,
+                            //                       width: 25,
+                            //                       height: 20,
+                            //                     )
+                            //                   : Image.asset(
+                            //                       'assets/images/flag-icon.png',
+                            //                       width: 20,
+                            //                       height: 20,
+                            //                       color: orange,
+                            //                       fit: BoxFit.scaleDown,
+                            //                     ),
+                            //             ),
+                            //           ),
+                            //           Padding(
+                            //             padding:
+                            //                 const EdgeInsets.only(left: 10),
+                            //             child: Text(
+                            //               countryCode?.dialCode ?? "+234",
+                            //               textAlign: TextAlign.center,
+                            //               style: hintStyle,
+                            //             ),
+                            //           ),
+                            //           SizedBox(width: 10.w),
+                            //           Text(
+                            //             '|',
+                            //             style: hintStyle,
+                            //           ),
+                            //           SizedBox(width: 10.w),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //     length: 15,
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   height: 20.h,
+                            // ),
+                            SizedBox(
+                              width: 296.w,
+                              child: TextFormFieldWidget(
+                                validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'email cannot be empty';
+                                  }
+                                  return null;
+                                },
+                                controller: emailController,
+                                textInputType: TextInputType.emailAddress,
+                                enterTextStyle: enterTextStyle,
+                                cursorColor: orange,
+                                hintText: 'Email ID',
+                                border: border,
+                                hintStyle: hintStyle,
+                                focusedBorder: focusedBorder,
+                                contentPadding: contentPadding,
+                                obscureText: null,
+                                enableBorder: enableBorder,
+                                length: -1,
+                              ),
+                            ),
+
+                            // SizedBox(
+                            //   width: 296.w,
+                            //   child: TextFormFieldWidget(
+                            //     validator: (val) {
+                            //       if (val!.isEmpty) {
+                            //         return 'NIN cannot be empty';
+                            //       }
+                            //       return null;
+                            //     },
+                            //     controller: nINController,
+                            //     textInputType: TextInputType.text,
+                            //     enterTextStyle: enterTextStyle,
+                            //     cursorColor: orange,
+                            //     hintText: 'National Identification Number',
+                            //     border: border,
+                            //     hintStyle: hintStyle,
+                            //     focusedBorder: focusedBorder,
+                            //     contentPadding: contentPadding,
+                            //     obscureText: null,
+                            //     enableBorder: enableBorder,
+                            //     length: -1,
+                            //   ),
+                            // ),
+
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            SizedBox(
+                              width: 296.w,
+                              child: TextFormFieldWidget(
+                                validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'password cannot be empty';
+                                  }
+                                  return null;
+                                },
+                                suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      passwordHidden = !passwordHidden;
+                                    });
                                   },
-                                  controller: emailController,
-                                  textInputType: TextInputType.emailAddress,
-                                  enterTextStyle: enterTextStyle,
-                                  cursorColor: orange,
-                                  hintText: 'Email ID',
-                                  border: border,
-                                  hintStyle: hintStyle,
-                                  focusedBorder: focusedBorder,
-                                  contentPadding: contentPadding,
-                                  obscureText: null,
-                                  enableBorder: enableBorder,
-                                  length: -1,
+                                  child: passwordHidden
+                                      ? SvgPicture.asset(
+                                          'assets/images/pass-hide-icon.svg',
+                                          fit: BoxFit.scaleDown,
+                                        )
+                                      : SvgPicture.asset(
+                                          'assets/images/pass-icon.svg',
+                                          // colorFilter:
+                                          // ColorFilter.mode(orange, BlendMode.srcIn),
+                                          fit: BoxFit.scaleDown,
+                                        ),
                                 ),
+                                controller: passwordController,
+                                textInputType: TextInputType.visiblePassword,
+                                enterTextStyle: enterTextStyle,
+                                cursorColor: orange,
+                                hintText: 'Password',
+                                border: border,
+                                hintStyle: hintStyle,
+                                focusedBorder: focusedBorder,
+                                obscureText: passwordHidden,
+                                contentPadding: contentPadding,
+                                enableBorder: enableBorder,
+                                length: -1,
                               ),
-
-                              // SizedBox(
-                              //   width: 296.w,
-                              //   child: TextFormFieldWidget(
-                              //     validator: (val) {
-                              //       if (val!.isEmpty) {
-                              //         return 'NIN cannot be empty';
-                              //       }
-                              //       return null;
-                              //     },
-                              //     controller: nINController,
-                              //     textInputType: TextInputType.text,
-                              //     enterTextStyle: enterTextStyle,
-                              //     cursorColor: orange,
-                              //     hintText: 'National Identification Number',
-                              //     border: border,
-                              //     hintStyle: hintStyle,
-                              //     focusedBorder: focusedBorder,
-                              //     contentPadding: contentPadding,
-                              //     obscureText: null,
-                              //     enableBorder: enableBorder,
-                              //     length: -1,
-                              //   ),
-                              // ),
-
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              SizedBox(
-                                width: 296.w,
-                                child: TextFormFieldWidget(
-                                  validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return 'password cannot be empty';
-                                    }
-                                    return null;
-                                  },
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        passwordHidden = !passwordHidden;
-                                      });
-                                    },
-                                    child: passwordHidden
-                                        ? SvgPicture.asset(
-                                            'assets/images/pass-hide-icon.svg',
-                                            fit: BoxFit.scaleDown,
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/pass-icon.svg',
-                                            // colorFilter:
-                                            // ColorFilter.mode(orange, BlendMode.srcIn),
-                                            fit: BoxFit.scaleDown,
-                                          ),
-                                  ),
-                                  controller: passwordController,
-                                  textInputType: TextInputType.visiblePassword,
-                                  enterTextStyle: enterTextStyle,
-                                  cursorColor: orange,
-                                  hintText: 'Password',
-                                  border: border,
-                                  hintStyle: hintStyle,
-                                  focusedBorder: focusedBorder,
-                                  obscureText: passwordHidden,
-                                  contentPadding: contentPadding,
-                                  enableBorder: enableBorder,
-                                  length: -1,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              // SizedBox(
-                              //   width: 296.w,
-                              //   child: TextFormFieldWidget(
-                              //     validator: (val) {
-                              //       if (val!.isEmpty) {
-                              //         return 'password cannot be empty';
-                              //       } else if (passwordController.text != val) {
-                              //         return 'enter correct password';
-                              //       }
-                              //       return null;
-                              //     },
-                              //     controller: confirmPasswordController,
-                              //     textInputType: TextInputType.visiblePassword,
-                              //     enterTextStyle: enterTextStyle,
-                              //     cursorColor: orange,
-                              //     hintText: 'Confirm Password',
-                              //     border: border,
-                              //     hintStyle: hintStyle,
-                              //     focusedBorder: focusedBorder,
-                              //     obscureText: newPasswordHidden,
-                              //     contentPadding: contentPadding,
-                              //     suffixIcon: GestureDetector(
-                              //       onTap: () {
-                              //         setState(() {
-                              //           newPasswordHidden = !newPasswordHidden;
-                              //         });
-                              //       },
-                              //       child: newPasswordHidden
-                              //           ? SvgPicture.asset(
-                              //               'assets/images/pass-hide-icon.svg',
-                              //               fit: BoxFit.scaleDown,
-                              //             )
-                              //           : SvgPicture.asset(
-                              //               'assets/images/pass-icon.svg',
-                              //               // colorFilter:
-                              //               // ColorFilter.mode(orange, BlendMode.srcIn),
-                              //               fit: BoxFit.scaleDown,
-                              //             ),
-                              //     ),
-                              //     enableBorder: enableBorder,
-                              //     length: -1,
-                              //   ),
-                              // ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            // SizedBox(
+                            //   width: 296.w,
+                            //   child: TextFormFieldWidget(
+                            //     validator: (val) {
+                            //       if (val!.isEmpty) {
+                            //         return 'password cannot be empty';
+                            //       } else if (passwordController.text != val) {
+                            //         return 'enter correct password';
+                            //       }
+                            //       return null;
+                            //     },
+                            //     controller: confirmPasswordController,
+                            //     textInputType: TextInputType.visiblePassword,
+                            //     enterTextStyle: enterTextStyle,
+                            //     cursorColor: orange,
+                            //     hintText: 'Confirm Password',
+                            //     border: border,
+                            //     hintStyle: hintStyle,
+                            //     focusedBorder: focusedBorder,
+                            //     obscureText: newPasswordHidden,
+                            //     contentPadding: contentPadding,
+                            //     suffixIcon: GestureDetector(
+                            //       onTap: () {
+                            //         setState(() {
+                            //           newPasswordHidden = !newPasswordHidden;
+                            //         });
+                            //       },
+                            //       child: newPasswordHidden
+                            //           ? SvgPicture.asset(
+                            //               'assets/images/pass-hide-icon.svg',
+                            //               fit: BoxFit.scaleDown,
+                            //             )
+                            //           : SvgPicture.asset(
+                            //               'assets/images/pass-icon.svg',
+                            //               // colorFilter:
+                            //               // ColorFilter.mode(orange, BlendMode.srcIn),
+                            //               fit: BoxFit.scaleDown,
+                            //             ),
+                            //     ),
+                            //     enableBorder: enableBorder,
+                            //     length: -1,
+                            //   ),
+                            // ),
+                          ],
                         ),
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      // widget.userType == 'Rider'
-                      //     ? SizedBox(
-                      //         width: 296.w,
-                      //         child: TextFormFieldWidget(
-                      //           // validator: (val) {
-                      //           //   if (val!.isEmpty) {
-                      //           //     return 'fleet code cannot be empty';
-                      //           //   }
-                      //           // },
-                      //           controller: fleetCodeController,
-                      //           textInputType: TextInputType.text,
-                      //           enterTextStyle: enterTextStyle,
-                      //           cursorColor: orange,
-                      //           hintText: 'Fleet Code',
-                      //           border: border,
-                      //           hintStyle: hintStyle,
-                      //           focusedBorder: focusedBorder,
-                      //           contentPadding: contentPadding,
-                      //           obscureText: null,
-                      //           enableBorder: enableBorder,
-                      //           length: -1,
-                      //         ),
-                      //       )
-                      //     : const SizedBox(),
-                      // widget.userType == 'Rider'
-                      //     ? SizedBox(
-                      //         height: 15.h,
-                      //       )
-                      //     : const SizedBox(),
-                      // widget.userType == 'Rider'
-                      //     ? Text(
-                      //         '* Register without fleet code if you have a vehicle',
-                      //         textAlign: TextAlign.center,
-                      //         style: GoogleFonts.inter(
-                      //           fontSize: 16,
-                      //           fontWeight: FontWeight.w400,
-                      //           color: orange,
-                      //         ),
-                      //       )
-                      //     : const SizedBox(),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                checkmark = true;
-                              });
-                            },
-                            child: checkmark == true
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        checkmark = false;
-                                      });
-                                    },
-                                    child: SvgPicture.asset(
-                                        'assets/images/check-icon.svg'),
-                                  )
-                                : SvgPicture.asset(
-                                    'assets/images/uncheck-icon.svg'),
-                          ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Expanded(
-                            child: RichText(
-                              text: TextSpan(
-                                text: 'I agree to the ',
-                                style: GoogleFonts.inter(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                  color: black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const TermsAndConditions(),
-                                          ),
-                                        );
-                                      },
-                                    text: 'Terms and Conditions ',
-                                    style: GoogleFonts.inter(
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400,
-                                      color: black,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: 'and ',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400,
-                                      color: black,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PrivacyPolicy(),
-                                          ),
-                                        );
-                                      },
-                                    text: 'Privacy Policy ',
-                                    style: GoogleFonts.inter(
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400,
-                                      color: black,
-                                    ),
-                                  ),
-                                ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    // widget.userType == 'Rider'
+                    //     ? SizedBox(
+                    //         width: 296.w,
+                    //         child: TextFormFieldWidget(
+                    //           // validator: (val) {
+                    //           //   if (val!.isEmpty) {
+                    //           //     return 'fleet code cannot be empty';
+                    //           //   }
+                    //           // },
+                    //           controller: fleetCodeController,
+                    //           textInputType: TextInputType.text,
+                    //           enterTextStyle: enterTextStyle,
+                    //           cursorColor: orange,
+                    //           hintText: 'Fleet Code',
+                    //           border: border,
+                    //           hintStyle: hintStyle,
+                    //           focusedBorder: focusedBorder,
+                    //           contentPadding: contentPadding,
+                    //           obscureText: null,
+                    //           enableBorder: enableBorder,
+                    //           length: -1,
+                    //         ),
+                    //       )
+                    //     : const SizedBox(),
+                    // widget.userType == 'Rider'
+                    //     ? SizedBox(
+                    //         height: 15.h,
+                    //       )
+                    //     : const SizedBox(),
+                    // widget.userType == 'Rider'
+                    //     ? Text(
+                    //         '* Register without fleet code if you have a vehicle',
+                    //         textAlign: TextAlign.center,
+                    //         style: GoogleFonts.inter(
+                    //           fontSize: 16,
+                    //           fontWeight: FontWeight.w400,
+                    //           color: orange,
+                    //         ),
+                    //       )
+                    //     : const SizedBox(),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              checkmark = true;
+                            });
+                          },
+                          child: checkmark == true
+                              ? GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      checkmark = false;
+                                    });
+                                  },
+                                  child: SvgPicture.asset(
+                                      'assets/images/check-icon.svg'),
+                                )
+                              : SvgPicture.asset(
+                                  'assets/images/uncheck-icon.svg'),
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'I agree to the ',
+                              style: GoogleFonts.inter(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                                color: black,
                               ),
+                              children: [
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      const url =
+                                          'https://deliver.eigix.net/users/terms_and_conditions';
+                                      if (await canLaunch(url)) {
+                                        await launch(url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                  text: 'Terms and Conditions ',
+                                  style: GoogleFonts.inter(
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                    color: black,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'and ',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                    color: black,
+                                  ),
+                                ),
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      const url =
+                                          'https://deliver.eigix.net/users/privacy_policy';
+                                      if (await canLaunch(url)) {
+                                        await launch(url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                  text: 'Privacy Policy ',
+                                  style: GoogleFonts.inter(
+                                    decoration: TextDecoration.underline,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                    color: black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    isRegistering
+                        ? apiButton(context)
+                        : GestureDetector(
+                            onTap: () {
+                              if (_key.currentState!.validate()) {
+                                _getCurrentPosition();
+
+                                print(
+                                    "lat ${_currentPosition!.latitude.toString()}");
+                                print(
+                                    "long ${_currentPosition!.longitude.toString()}");
+                                checkmark == false
+                                    ? ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Please ensure that you agree to terms and conditions to proceed further'),
+                                        ),
+                                      )
+                                    : fleeTempLogin(context);
+                              }
+                            },
+                            child: buttonContainer(context, 'Login'),
+                          ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    RichText(
+                      overflow: TextOverflow.clip,
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: "Don't have an account? ",
+                        style: const TextStyle(
+                          color: orange,
+                          fontSize: 12,
+                          fontFamily: 'Syne-Regular',
+                        ),
+                        children: [
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Handle the tap event, e.g., navigate to a new screen
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TempRegisterFleet(
+                                        userType: widget.userType,
+                                        deviceID: widget.deviceID,
+                                        phoneNumber: "1234"),
+                                  ),
+                                );
+                              },
+                            text: 'Register',
+                            style: const TextStyle(
+                              color: orange,
+                              fontSize: 14,
+                              fontFamily: 'Syne-Bold',
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      isRegistering
-                          ? apiButton(context)
-                          : GestureDetector(
-                              onTap: () {
-                                if (_key.currentState!.validate()) {
-                                  _getCurrentPosition();
-
-                                  print(
-                                      "lat ${_currentPosition!.latitude.toString()}");
-                                  print(
-                                      "long ${_currentPosition!.longitude.toString()}");
-                                  checkmark == false
-                                      ? ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Please ensure that you agree to terms and conditions to proceed further'),
-                                          ),
-                                        )
-                                      : fleeTempLogin(context);
-                                }
-                              },
-                              child: buttonContainer(context, 'Login'),
-                            ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      RichText(
-                        overflow: TextOverflow.clip,
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: "Don't have an account? ",
-                          style: const TextStyle(
-                            color: orange,
-                            fontSize: 12,
-                            fontFamily: 'Syne-Regular',
-                          ),
-                          children: [
-                            TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  // Handle the tap event, e.g., navigate to a new screen
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TempRegisterFleet(
-                                          userType: widget.userType,
-                                          deviceID: widget.deviceID,
-                                          phoneNumber: "1234"),
-                                    ),
-                                  );
-                                },
-                              text: 'Register',
-                              style: const TextStyle(
-                                color: orange,
-                                fontSize: 14,
-                                fontFamily: 'Syne-Bold',
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 
   String deviceName = '';
@@ -808,11 +810,12 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
           seconds: 1);
       if (widget.userType == "Fleet") {
         Navigator.of(context).pushAndRemoveUntil(
-  MaterialPageRoute(
-    builder: (context) => const BottomNavBarFleet(),
-  ),
-  (Route<dynamic> route) => false, // This condition determines which routes to remove
-);
+          MaterialPageRoute(
+            builder: (context) => const BottomNavBarFleet(),
+          ),
+          (Route<dynamic> route) =>
+              false, // This condition determines which routes to remove
+        );
       } else {
         showToastSuccess(
             tempLoginModel.message!.toString(), FToast().init(context),
