@@ -64,16 +64,26 @@ class _SupportScreenState extends State<SupportScreen> {
     print("statusCode: ${response.statusCode}");
     if (response.statusCode == 200) {
       getSupportAdminModel = getSupportAdminModelFromJson(responseString);
-      setState(() {});
+
       print('getSupportAdminModel status: ${getSupportAdminModel.status}');
       print(
           'getSupportAdminModel length: ${getSupportAdminModel.data!.length}');
       for (int i = 0; i < getSupportAdminModel.data!.length; i++) {
-        getAdminId = "${getSupportAdminModel.data![i].usersSystemId}";
-        getAdminName = "${getSupportAdminModel.data![i].name}";
-        getAdminImage = "${getSupportAdminModel.data![i].profilePic}";
-        getAdminAddress = "${getSupportAdminModel.data![i].address}";
+        if (getSupportAdminModel.data![i].usersSystemId != null &&
+            getSupportAdminModel.data![i].name != null &&
+            getSupportAdminModel.data![i].profilePic != null &&
+            getSupportAdminModel.data![i].address != null) {
+          print(
+              'getSupportAdminModel id: ${getSupportAdminModel.data![i].usersSystemId}');
+
+          getAdminId = "${getSupportAdminModel.data![i].usersSystemId}";
+          getAdminName = "${getSupportAdminModel.data![i].name}";
+          getAdminImage = "${getSupportAdminModel.data![i].profilePic}";
+          getAdminAddress = "${getSupportAdminModel.data![i].address}";
+        }
       }
+      await startSupportChat();
+      await getSupportChat();
     }
     setState(() {
       load = false;
@@ -91,7 +101,7 @@ class _SupportScreenState extends State<SupportScreen> {
     String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
     print("apiUrlStartChat: $apiUrl");
     print("userID: $userID");
-    print("OtherUserId: ${widget.getAdminId}");
+    print("OtherUserId: ${getAdminId.toString()}");
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
@@ -102,7 +112,7 @@ class _SupportScreenState extends State<SupportScreen> {
         "users_type": "Rider",
         "other_users_type": "Admin",
         "users_id": userID.toString(),
-        "other_users_id": widget.getAdminId
+        "other_users_id": getAdminId.toString()
       },
     );
     final responseString = jsonDecode(response.body);
@@ -117,45 +127,47 @@ class _SupportScreenState extends State<SupportScreen> {
   GetSupportChatModel getSupportChatModel = GetSupportChatModel();
 
   getSupportChat() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      SharedPreferences sharedPref = await SharedPreferences.getInstance();
-      userID = sharedPref.getInt('userID') ?? -1;
-      String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
-      print("apiUrlGetChat: $apiUrl");
-      print("userID: $userID");
-      print("OtherUserId: ${widget.getAdminId}");
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          "Accept": "application/json",
-        },
-        body: {
-          "request_type": "getMessages",
-          "users_type": "Rider",
-          "other_users_type": "Admin",
-          "users_id": userID.toString(),
-          "other_users_id": widget.getAdminId,
-        },
-      );
-      final responseString = response.body;
-      print("response: ${response.body}");
-      print("status Code getSupportChatModel: ${response.statusCode}");
-      if (response.statusCode == 200) {
-        getSupportChatModel = getSupportChatModelFromJson(responseString);
-        print('getSupportChatModel status: ${getSupportChatModel.status}');
-        print(
-            'getSupportChatModel message: ${getSupportChatModel.data?[0].message}');
+    // try {
+    setState(() {
+      isLoading = true;
+    });
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    userID = sharedPref.getInt('userID') ?? -1;
+    String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
+    print("apiUrlGetChat: $apiUrl");
+    print("userID: $userID");
+    print("OtherUserId: $getAdminId");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        "Accept": "application/json",
+      },
+      body: {
+        "request_type": "getMessages",
+        "users_type": "Rider",
+        "other_users_type": "Admin",
+        "users_id": userID.toString(),
+        "other_users_id": getAdminId.toString(),
+      },
+    );
+    final responseString = response.body;
+    print("response: ${response.body}");
+    print("status Code getSupportChatModel: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      getSupportChatModel = getSupportChatModelFromJson(responseString);
+      print('getSupportChatModel status: ${getSupportChatModel.status}');
+      print(
+          'getSupportChatModel message: ${getSupportChatModel.data?[0].message}');
+      if (mounted) {
         setState(() {
           isLoading = false;
         });
       }
-    } catch (e) {
-      print('Something went wrong = ${e.toString()}');
-      return null;
     }
+    // } catch (e) {
+    //   print('Something went wrong = ${e.toString()}');
+    //   return null;
+    // }
   }
 
   SendSupportChatModel sendSupportChatModel = SendSupportChatModel();
@@ -170,7 +182,7 @@ class _SupportScreenState extends State<SupportScreen> {
       String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
       print("apiUrlSend: $apiUrl");
       print("userID: $userID");
-      print("OtherUserId: ${widget.getAdminId}");
+      print("OtherUserId: $getAdminId");
       print("message: ${messageController.text}");
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -182,7 +194,7 @@ class _SupportScreenState extends State<SupportScreen> {
           "users_type": "Rider",
           "other_users_type": "Admin",
           "users_id": userID.toString(),
-          "other_users_id": widget.getAdminId,
+          "other_users_id": getAdminId.toString(),
           "message_type": "text",
           "message": msg
         },
@@ -227,14 +239,9 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   void initState() {
     super.initState();
-    startSupportChat();
-    getSupportChat();
+
     getSupportAdmin();
     onPageEnter();
-    print("getAdminId: ${widget.getAdminId}");
-    print("getAdminName: ${widget.getAdminName}");
-    print("getAdminImage: ${widget.getAdminImage}");
-    print("getAdminAddress: ${widget.getAdminAddress}");
   }
 
   @override
@@ -316,7 +323,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                       "assets/images/user-profile.png",
                                     ),
                                     image: NetworkImage(
-                                      'https://deliver.eigix.net/public/${widget.getAdminImage}',
+                                      'https://deliver.eigix.net/public/$getAdminImage',
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -340,7 +347,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                 color: Colors.transparent,
                                 width: size.width * 0.55,
                                 child: Text(
-                                  "${widget.getAdminName}",
+                                  "$getAdminName",
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(
                                     color: black,
@@ -361,7 +368,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                     color: Colors.transparent,
                                     width: size.width * 0.5,
                                     child: AutoSizeText(
-                                      "${widget.getAdminAddress}",
+                                      "$getAdminAddress",
                                       textAlign: TextAlign.left,
                                       style: const TextStyle(
                                         color: Color(0xFFBEBEBE),
