@@ -83,7 +83,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
         print(
             'object getting all msgs success:   ${getAllUserToUserMessagesResponse.data}');
         getAllUserToUserChatList.addAll(getAllUserToUserMessagesResponse.data!);
-        if(mounted){
+        if (mounted) {
           setState(() {});
         }
       }
@@ -117,13 +117,8 @@ class _UserToUserChatState extends State<UserToUserChat> {
       appBar: AppBar(
         backgroundColor: white,
         elevation: 0.0,
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 20),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: backArrowWithContainer(context),
-          ),
-        ),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
           'Call and Chat',
           style: GoogleFonts.syne(

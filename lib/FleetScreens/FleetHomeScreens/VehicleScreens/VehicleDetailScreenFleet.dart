@@ -19,7 +19,9 @@ class VehicleDetailScreenFleet extends StatefulWidget {
   final int users_fleet_vehicles_id;
   final int? usersFleetVehiclesAssigned;
   const VehicleDetailScreenFleet(
-      {super.key, required this.users_fleet_vehicles_id, this.usersFleetVehiclesAssigned});
+      {super.key,
+      required this.users_fleet_vehicles_id,
+      this.usersFleetVehiclesAssigned});
 
   @override
   State<VehicleDetailScreenFleet> createState() =>
@@ -79,7 +81,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0.0,
         leadingWidth: 70,
         leading: Padding(
@@ -162,7 +164,8 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
                         VehicleDetailsWigdetFleet(
                           getFleetVehicleByIdModel:
                               _getVehicleFleetByIdResponse.data!,
-                          usersFleetVehiclesAssigned: widget.usersFleetVehiclesAssigned,
+                          usersFleetVehiclesAssigned:
+                              widget.usersFleetVehiclesAssigned,
                         ),
                         SizedBox(height: 20.h),
                         Text(
@@ -185,7 +188,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
                                 requestedVehicleById:
                                     _getVehicleFleetByIdResponse.data!,
                               )
-                            : Text('data'),
+                            : const Text('data'),
                       ],
                     ),
                   ),

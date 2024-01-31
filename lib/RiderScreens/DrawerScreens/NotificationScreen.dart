@@ -85,211 +85,208 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
-          ),
-          centerTitle: true,
-          title: Text(
-            'Notification',
-            style: GoogleFonts.syne(
-              fontWeight: FontWeight.w700,
-              color: black,
-              fontSize: 20,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: backArrowWithContainer(context),
           ),
         ),
-        // backgroundColor: lightWhite,
-        body: SafeArea(
-          child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 30.h),
-              child: GlowingOverscrollIndicator(
-                color: orange,
-                axisDirection: AxisDirection.down,
-                child: RefreshIndicator(
-                  onRefresh: onRefreshReadNotifications,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    // physics: BouncingScrollPhysics(),
-                    itemCount: 10,
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 20.h),
-                            width: 350.w,
-                            height: 70.h,
-                            decoration: BoxDecoration(
-                              color: lightWhite,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: white,
-                                width: 1.5,
+        centerTitle: true,
+        title: Text(
+          'Notification',
+          style: GoogleFonts.syne(
+            fontWeight: FontWeight.w700,
+            color: black,
+            fontSize: 20,
+          ),
+        ),
+      ),
+      // backgroundColor: lightWhite,
+      body: SafeArea(
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 30.h),
+            child: GlowingOverscrollIndicator(
+              color: orange,
+              axisDirection: AxisDirection.down,
+              child: RefreshIndicator(
+                onRefresh: onRefreshReadNotifications,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  // physics: BouncingScrollPhysics(),
+                  itemCount: 10,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(bottom: 20.h),
+                          width: 350.w,
+                          height: 70.h,
+                          decoration: BoxDecoration(
+                            color: lightWhite,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: white,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: ListTile(
+                            // onTap: () {
+                            //   getAllNotificationsList![index]
+                            //               .notifications_type ==
+                            //           'Requested'
+                            //       ? Navigator.of(context).pushReplacement(
+                            //           MaterialPageRoute(
+                            //             builder: (context) =>
+                            //                 RequestRideFromFleetActive(),
+                            //           ),
+                            //         )
+                            //       : getAllNotificationsList![index]!
+                            //                   .notifications_type ==
+                            //               'Accepted'
+                            //           ? Navigator.of(context).push(
+                            //               MaterialPageRoute(
+                            //                 builder: (context) =>
+                            //                     BottomNavBar(),
+                            //               ),
+                            //             )
+                            //           : Navigator.of(context).push(
+                            //               MaterialPageRoute(
+                            //                 builder: (context) =>
+                            //                     RequestRideFromFleetActive(),
+                            //               ),
+                            //             );
+                            // },
+                            leading: SizedBox(
+                              width: 50.w,
+                              height: 50.h,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                // child: getAllNotificationsList![index]
+                                //             .sender!
+                                //             .profile_pic !=
+                                //         null
+                                //     ? Image.network(
+                                //         'https://deliver.eigix.net/public/${getAllNotificationsList![index].sender!.profile_pic}',
+                                //         fit: BoxFit.cover,
+                                //         errorBuilder:
+                                //             (BuildContext context,
+                                //                 Object exception,
+                                //                 StackTrace? stackTrace) {
+                                //           return SizedBox(
+                                //             child: Image.asset(
+                                //               'assets/images/place-holder.png',
+                                //               fit: BoxFit.cover,
+                                //             ),
+                                //           );
+                                //         },
+                                //         loadingBuilder:
+                                //             (BuildContext context,
+                                //                 Widget child,
+                                //                 ImageChunkEvent?
+                                //                     loadingProgress) {
+                                //           if (loadingProgress == null) {
+                                //             return child;
+                                //           }
+                                //           return Center(
+                                //             child:
+                                //                 CircularProgressIndicator(
+                                //               color: orange,
+                                //               value: loadingProgress
+                                //                           .expectedTotalBytes !=
+                                //                       null
+                                //                   ? loadingProgress
+                                //                           .cumulativeBytesLoaded /
+                                //                       loadingProgress
+                                //                           .expectedTotalBytes!
+                                //                   : null,
+                                //             ),
+                                //           );
+                                //         },
+                                //       )
+                                child: SvgPicture.asset(
+                                    'assets/images/system-notification.svg'),
                               ),
                             ),
-                            child: ListTile(
-                              // onTap: () {
-                              //   getAllNotificationsList![index]
-                              //               .notifications_type ==
-                              //           'Requested'
-                              //       ? Navigator.of(context).pushReplacement(
-                              //           MaterialPageRoute(
-                              //             builder: (context) =>
-                              //                 RequestRideFromFleetActive(),
-                              //           ),
-                              //         )
-                              //       : getAllNotificationsList![index]!
-                              //                   .notifications_type ==
-                              //               'Accepted'
-                              //           ? Navigator.of(context).push(
-                              //               MaterialPageRoute(
-                              //                 builder: (context) =>
-                              //                     BottomNavBar(),
-                              //               ),
-                              //             )
-                              //           : Navigator.of(context).push(
-                              //               MaterialPageRoute(
-                              //                 builder: (context) =>
-                              //                     RequestRideFromFleetActive(),
-                              //               ),
-                              //             );
-                              // },
-                              leading: SizedBox(
-                                width: 50.w,
-                                height: 50.h,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  // child: getAllNotificationsList![index]
-                                  //             .sender!
-                                  //             .profile_pic !=
-                                  //         null
-                                  //     ? Image.network(
-                                  //         'https://deliver.eigix.net/public/${getAllNotificationsList![index].sender!.profile_pic}',
-                                  //         fit: BoxFit.cover,
-                                  //         errorBuilder:
-                                  //             (BuildContext context,
-                                  //                 Object exception,
-                                  //                 StackTrace? stackTrace) {
-                                  //           return SizedBox(
-                                  //             child: Image.asset(
-                                  //               'assets/images/place-holder.png',
-                                  //               fit: BoxFit.cover,
-                                  //             ),
-                                  //           );
-                                  //         },
-                                  //         loadingBuilder:
-                                  //             (BuildContext context,
-                                  //                 Widget child,
-                                  //                 ImageChunkEvent?
-                                  //                     loadingProgress) {
-                                  //           if (loadingProgress == null) {
-                                  //             return child;
-                                  //           }
-                                  //           return Center(
-                                  //             child:
-                                  //                 CircularProgressIndicator(
-                                  //               color: orange,
-                                  //               value: loadingProgress
-                                  //                           .expectedTotalBytes !=
-                                  //                       null
-                                  //                   ? loadingProgress
-                                  //                           .cumulativeBytesLoaded /
-                                  //                       loadingProgress
-                                  //                           .expectedTotalBytes!
-                                  //                   : null,
-                                  //             ),
-                                  //           );
-                                  //         },
-                                  //       )
-                                  child: SvgPicture.asset(
-                                      'assets/images/system-notification.svg'),
-                                ),
+                            title: Text(
+                              'Name',
+                              style: GoogleFonts.syne(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: black,
                               ),
-                              title: Text(
-                                'Name',
-                                style: GoogleFonts.syne(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  color: black,
-                                ),
-                              ),
-                              subtitle: AutoSizeText(
-                                'Message',
-                                minFontSize: 12,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.inter(
-                                  color: grey,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                ),
+                            ),
+                            subtitle: AutoSizeText(
+                              'Message',
+                              minFontSize: 12,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(
+                                color: grey,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
                               ),
                             ),
                           ),
-                          // Container(
-                          //   margin: EdgeInsets.only(bottom: 20.h),
-                          //   width: 350.w,
-                          //   height: 70.h,
-                          //   decoration: BoxDecoration(
-                          //     color: lightWhite,
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     border: Border.all(
-                          //       color: white,
-                          //       width: 1.5,
-                          //     ),
-                          //   ),
-                          //   child: ListTile(
-                          //     leading: Container(
-                          //       width: 46.w,
-                          //       height: 46.h,
-                          //       decoration: BoxDecoration(
-                          //         color: orange,
-                          //         shape: BoxShape.circle,
-                          //       ),
-                          //       child: SvgPicture.asset(
-                          //         'assets/images/update-notification.svg',
-                          //         fit: BoxFit.scaleDown,
-                          //       ),
-                          //     ),
-                          //     title: Text(
-                          //       'System',
-                          //       style: GoogleFonts.syne(
-                          //         fontSize: 14,
-                          //         fontWeight: FontWeight.w700,
-                          //         color: black,
-                          //       ),
-                          //     ),
-                          //     subtitle: AutoSizeText(
-                          //       'The notifications about the system would be shown here so that rider could see the updates and many more',
-                          //       minFontSize: 12,
-                          //       maxLines: 3,
-                          //       overflow: TextOverflow.ellipsis,
-                          //       style: GoogleFonts.inter(
-                          //         color: grey,
-                          //         fontWeight: FontWeight.w400,
-                          //         fontSize: 12,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      );
-                    },
-                  ),
+                        ),
+                        // Container(
+                        //   margin: EdgeInsets.only(bottom: 20.h),
+                        //   width: 350.w,
+                        //   height: 70.h,
+                        //   decoration: BoxDecoration(
+                        //     color: lightWhite,
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     border: Border.all(
+                        //       color: white,
+                        //       width: 1.5,
+                        //     ),
+                        //   ),
+                        //   child: ListTile(
+                        //     leading: Container(
+                        //       width: 46.w,
+                        //       height: 46.h,
+                        //       decoration: BoxDecoration(
+                        //         color: orange,
+                        //         shape: BoxShape.circle,
+                        //       ),
+                        //       child: SvgPicture.asset(
+                        //         'assets/images/update-notification.svg',
+                        //         fit: BoxFit.scaleDown,
+                        //       ),
+                        //     ),
+                        //     title: Text(
+                        //       'System',
+                        //       style: GoogleFonts.syne(
+                        //         fontSize: 14,
+                        //         fontWeight: FontWeight.w700,
+                        //         color: black,
+                        //       ),
+                        //     ),
+                        //     subtitle: AutoSizeText(
+                        //       'The notifications about the system would be shown here so that rider could see the updates and many more',
+                        //       minFontSize: 12,
+                        //       maxLines: 3,
+                        //       overflow: TextOverflow.ellipsis,
+                        //       style: GoogleFonts.inter(
+                        //         color: grey,
+                        //         fontWeight: FontWeight.w400,
+                        //         fontSize: 12,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    );
+                  },
                 ),
-              )),
-        ),
+              ),
+            )),
       ),
     );
   }

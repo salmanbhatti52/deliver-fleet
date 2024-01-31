@@ -95,7 +95,7 @@
 //       backgroundColor: white,
 //       appBar: AppBar(
 //         elevation: 0.0,
-//         backgroundColor: Colors.transparent,
+//         backgroundColor: Colors.white,
 //         leadingWidth: 70,
 //         centerTitle: true,
 //         title: Text(

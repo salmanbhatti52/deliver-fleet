@@ -5,33 +5,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'Colors.dart';
 
 Widget drawerContainer(context) {
+  double containerWidth = MediaQuery.of(context).size.width > 600 ? 38 : 30;
+  double containerHeight = MediaQuery.of(context).size.width > 600 ? 38 : 30;
+
   return Container(
-    // margin: EdgeInsets.only(
-    //   top: 10,
-    //   left: 10,
-    // ),
-    width: 38.w,
-    height: 38.h,
+    width: containerWidth,
+    height: containerHeight,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       border: Border.all(
         color: mildGrey,
         width: 1.5,
       ),
-      // boxShadow: [
-      //   BoxShadow(
-      //     blurRadius: 2,
-      //     color: grey,
-      //   ),
-      // ],
-      // boxShadow: [
-      //   BoxShadow(
-      //     color: Colors.grey.withOpacity(0.1),
-      //     spreadRadius: 5,
-      //     blurRadius: 7,
-      //     offset: Offset(0, 3), // changes position of shadow
-      //   ),
-      // ],
     ),
     child: SvgPicture.asset(
       'assets/images/menu-icon.svg',
@@ -41,9 +26,12 @@ Widget drawerContainer(context) {
 }
 
 Widget addContainer(context) {
+  double containerWidth = MediaQuery.of(context).size.width > 600 ? 55 : 45;
+  double containerHeight = MediaQuery.of(context).size.width > 600 ? 38 : 30;
+
   return Container(
-    width: 55.w,
-    height: 38.h,
+    width: containerWidth,
+    height: containerHeight,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       border: Border.all(
@@ -51,9 +39,10 @@ Widget addContainer(context) {
         width: 1.5,
       ),
     ),
-    child: const Icon(
+    child: Icon(
       Icons.add,
       color: black,
+      size: MediaQuery.of(context).size.width > 600 ? 18 : 16,
     ),
   );
 }

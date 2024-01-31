@@ -191,7 +191,7 @@ class _EditProfileFleetState extends State<EditProfileFleet> {
         showToastError("You didn't Take Any Picture", FToast().init(context));
       }
     } catch (e) {
-      showToastError("CATCH " + e.toString(), FToast().init(context));
+      showToastError("CATCH $e", FToast().init(context));
     }
   }
 
@@ -211,269 +211,263 @@ class _EditProfileFleetState extends State<EditProfileFleet> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: white,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          centerTitle: true,
-          title: Text(
-            'Edit Profile',
-            style: GoogleFonts.syne(
-              fontWeight: FontWeight.w700,
-              color: black,
-              fontSize: 20,
-            ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
+    return Scaffold(
+      backgroundColor: white,
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        centerTitle: true,
+        title: Text(
+          'Edit Profile',
+          style: GoogleFonts.syne(
+            fontWeight: FontWeight.w700,
+            color: black,
+            fontSize: 20,
           ),
         ),
-        body: isPageLoading
-            ? spinKitRotatingCircle
-            : GlowingOverscrollIndicator(
-                axisDirection: AxisDirection.down,
-                color: orange,
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 22.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                width: 150.w,
-                                height: 150.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: orange,
-                                    width: 4.5,
-                                  ),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: imagePath != null
-                                      ? Image.file(
-                                          imagePath!,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.network(
-                                          'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic}',
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context,
-                                              Object exception,
-                                              StackTrace? stackTrace) {
-                                            return SizedBox(
-                                              child: Image.asset(
-                                                'assets/images/place-holder.png',
-                                                fit: BoxFit.cover,
-                                              ),
-                                            );
-                                          },
-                                          loadingBuilder: (BuildContext context,
-                                              Widget child,
-                                              ImageChunkEvent?
-                                                  loadingProgress) {
-                                            if (loadingProgress == null) {
-                                              return child;
-                                            }
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                color: orange,
-                                                value: loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null
-                                                    ? loadingProgress
-                                                            .cumulativeBytesLoaded /
-                                                        loadingProgress
-                                                            .expectedTotalBytes!
-                                                    : null,
-                                              ),
-                                            );
-                                          },
-                                        ),
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: backArrowWithContainer(context),
+          ),
+        ),
+      ),
+      body: isPageLoading
+          ? spinKitRotatingCircle
+          : GlowingOverscrollIndicator(
+              axisDirection: AxisDirection.down,
+              color: orange,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 22.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 150.w,
+                              height: 150.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: orange,
+                                  width: 4.5,
                                 ),
                               ),
-                              Positioned(
-                                right: -7,
-                                bottom: -10,
-                                child: GestureDetector(
-                                  onTap: () => showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CustomDialogBox(
-                                            name: 'Profile Picture',
-                                            onCameraBTNPressed: () {
-                                              imageSelection(
-                                                  ImageSource.camera, 0);
-                                            },
-                                            onGalleryBTNPressed: () {
-                                              imageSelection(
-                                                  ImageSource.gallery, 0);
-                                            });
-                                      }),
-                                  child: cameraIcon(context),
-                                ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: imagePath != null
+                                    ? Image.file(
+                                        imagePath!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.network(
+                                        'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic}',
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace? stackTrace) {
+                                          return SizedBox(
+                                            child: Image.asset(
+                                              'assets/images/place-holder.png',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          );
+                                        },
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              color: orange,
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        },
+                                      ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Positioned(
+                              right: -7,
+                              bottom: -10,
+                              child: GestureDetector(
+                                onTap: () => showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CustomDialogBox(
+                                          name: 'Profile Picture',
+                                          onCameraBTNPressed: () {
+                                            imageSelection(
+                                                ImageSource.camera, 0);
+                                          },
+                                          onGalleryBTNPressed: () {
+                                            imageSelection(
+                                                ImageSource.gallery, 0);
+                                          });
+                                    }),
+                                child: cameraIcon(context),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 50.h,
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                      ),
+                      Text(
+                        'First Name',
+                        style: GoogleFonts.syne(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: black),
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormFieldWidget(
+                            controller: firstNameController,
+                            textInputType: TextInputType.name,
+                            enterTextStyle: enterTextStyle,
+                            cursorColor: orange,
+                            hintText: getUserProfileResponse!.data!.first_name!,
+                            border: border,
+                            hintStyle: hintStyle,
+                            focusedBorder: focusedBorder,
+                            obscureText: null,
+                            contentPadding: contentPadding,
+                            enableBorder: enableBorder,
+                            length: -1),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        'Last Name',
+                        style: GoogleFonts.syne(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: black),
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormFieldWidget(
+                            controller: lastNameController,
+                            textInputType: TextInputType.name,
+                            enterTextStyle: enterTextStyle,
+                            cursorColor: orange,
+                            hintText: getUserProfileResponse!.data!.last_name!,
+                            border: border,
+                            hintStyle: hintStyle,
+                            focusedBorder: focusedBorder,
+                            obscureText: null,
+                            contentPadding: contentPadding,
+                            enableBorder: enableBorder,
+                            length: -1),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        'Phone Number',
+                        style: GoogleFonts.syne(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: black),
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormFieldWidget(
+                            controller: phoneNumberController,
+                            textInputType: TextInputType.name,
+                            enterTextStyle: enterTextStyle,
+                            cursorColor: orange,
+                            hintText: getUserProfileResponse!.data!.phone!,
+                            border: border,
+                            hintStyle: hintStyle,
+                            focusedBorder: focusedBorder,
+                            obscureText: null,
+                            contentPadding: contentPadding,
+                            enableBorder: enableBorder,
+                            length: 15),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        'Address',
+                        style: GoogleFonts.syne(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: black),
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextFormFieldWidget(
+                            controller: addressController,
+                            textInputType: TextInputType.name,
+                            enterTextStyle: enterTextStyle,
+                            cursorColor: orange,
+                            hintText: getUserProfileResponse!.data!.address!,
+                            border: border,
+                            hintStyle: hintStyle,
+                            focusedBorder: focusedBorder,
+                            obscureText: null,
+                            contentPadding: contentPadding,
+                            enableBorder: enableBorder,
+                            length: -1),
+                      ),
+                      SizedBox(
+                        height: 50.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Center(
+                          child: isUpdating
+                              ? apiButton(context)
+                              : GestureDetector(
+                                  onTap: () => updateProfileMethod(context),
+                                  child: buttonContainer(context, 'SAVE'),
+                                ),
                         ),
-                        Text(
-                          'First Name',
-                          style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: black),
-                        ),
-                        SizedBox(
-                          height: 7.h,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormFieldWidget(
-                              controller: firstNameController,
-                              textInputType: TextInputType.name,
-                              enterTextStyle: enterTextStyle,
-                              cursorColor: orange,
-                              hintText:
-                                  getUserProfileResponse!.data!.first_name!,
-                              border: border,
-                              hintStyle: hintStyle,
-                              focusedBorder: focusedBorder,
-                              obscureText: null,
-                              contentPadding: contentPadding,
-                              enableBorder: enableBorder,
-                              length: -1),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Last Name',
-                          style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: black),
-                        ),
-                        SizedBox(
-                          height: 7.h,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormFieldWidget(
-                              controller: lastNameController,
-                              textInputType: TextInputType.name,
-                              enterTextStyle: enterTextStyle,
-                              cursorColor: orange,
-                              hintText:
-                                  getUserProfileResponse!.data!.last_name!,
-                              border: border,
-                              hintStyle: hintStyle,
-                              focusedBorder: focusedBorder,
-                              obscureText: null,
-                              contentPadding: contentPadding,
-                              enableBorder: enableBorder,
-                              length: -1),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Phone Number',
-                          style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: black),
-                        ),
-                        SizedBox(
-                          height: 7.h,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormFieldWidget(
-                              controller: phoneNumberController,
-                              textInputType: TextInputType.name,
-                              enterTextStyle: enterTextStyle,
-                              cursorColor: orange,
-                              hintText: getUserProfileResponse!.data!.phone!,
-                              border: border,
-                              hintStyle: hintStyle,
-                              focusedBorder: focusedBorder,
-                              obscureText: null,
-                              contentPadding: contentPadding,
-                              enableBorder: enableBorder,
-                              length: 15),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Address',
-                          style: GoogleFonts.syne(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: black),
-                        ),
-                        SizedBox(
-                          height: 7.h,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormFieldWidget(
-                              controller: addressController,
-                              textInputType: TextInputType.name,
-                              enterTextStyle: enterTextStyle,
-                              cursorColor: orange,
-                              hintText: getUserProfileResponse!.data!.address!,
-                              border: border,
-                              hintStyle: hintStyle,
-                              focusedBorder: focusedBorder,
-                              obscureText: null,
-                              contentPadding: contentPadding,
-                              enableBorder: enableBorder,
-                              length: -1),
-                        ),
-                        SizedBox(
-                          height: 50.h,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Center(
-                            child: isUpdating
-                                ? apiButton(context)
-                                : GestureDetector(
-                                    onTap: () => updateProfileMethod(context),
-                                    child: buttonContainer(context, 'SAVE'),
-                                  ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-      ),
+            ),
     );
   }
 

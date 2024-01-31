@@ -77,94 +77,91 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leadingWidth: 70,
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        leadingWidth: 70,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 8.0, left: 20),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: backArrowWithContainer(context),
           ),
         ),
-        backgroundColor: white,
-        body: SafeArea(
-          child: GlowingOverscrollIndicator(
-            axisDirection: AxisDirection.down,
-            color: orange,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 40.h,
+      ),
+      backgroundColor: white,
+      body: SafeArea(
+        child: GlowingOverscrollIndicator(
+          axisDirection: AxisDirection.down,
+          color: orange,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.w),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  SvgPicture.asset('assets/images/logo.svg'),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  Text(
+                    'Forgot \n Password?',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.syne(
+                      fontWeight: FontWeight.w600,
+                      color: orange,
+                      fontSize: 30,
                     ),
-                    SvgPicture.asset('assets/images/logo.svg'),
-                    SizedBox(
-                      height: 30.h,
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Text(
+                    'Enter your account email.',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.syne(
+                      fontWeight: FontWeight.w400,
+                      color: black,
+                      fontSize: 16,
                     ),
-                    Text(
-                      'Forgot \n Password?',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.syne(
-                        fontWeight: FontWeight.w600,
-                        color: orange,
-                        fontSize: 30,
-                      ),
+                  ),
+                  SizedBox(
+                    height: 90.h,
+                  ),
+                  SizedBox(
+                    width: 296.w,
+                    child: TextFormFieldWidget(
+                      controller: emailController,
+                      textInputType: TextInputType.emailAddress,
+                      enterTextStyle: enterTextStyle,
+                      cursorColor: orange,
+                      hintText: 'Email ID',
+                      border: border,
+                      hintStyle: hintStyle,
+                      focusedBorder: focusedBorder,
+                      obscureText: null,
+                      contentPadding: contentPadding,
+                      enableBorder: enableBorder,
+                      prefixIcon: null,
+                      length: -1,
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Text(
-                      'Enter your account email.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.syne(
-                        fontWeight: FontWeight.w400,
-                        color: black,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 90.h,
-                    ),
-                    SizedBox(
-                      width: 296.w,
-                      child: TextFormFieldWidget(
-                        controller: emailController,
-                        textInputType: TextInputType.emailAddress,
-                        enterTextStyle: enterTextStyle,
-                        cursorColor: orange,
-                        hintText: 'Email ID',
-                        border: border,
-                        hintStyle: hintStyle,
-                        focusedBorder: focusedBorder,
-                        obscureText: null,
-                        contentPadding: contentPadding,
-                        enableBorder: enableBorder,
-                        prefixIcon: null,
-                        length: -1,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 20.h),
-                      child: isForget
-                          ? apiButton(context)
-                          : GestureDetector(
-                              onTap: () => forgetPasswordMethod(context),
-                              child: buttonContainer(context, 'NEXT'),
-                            ),
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 20.h),
+                    child: isForget
+                        ? apiButton(context)
+                        : GestureDetector(
+                            onTap: () => forgetPasswordMethod(context),
+                            child: buttonContainer(context, 'NEXT'),
+                          ),
+                  ),
+                ],
               ),
             ),
           ),

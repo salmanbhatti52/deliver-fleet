@@ -128,9 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
         backgroundColor: white,
         body: LayoutBuilder(
           builder: (context, constraints) => SafeArea(
@@ -602,8 +600,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   bool isRegistering = false;

@@ -13,20 +13,17 @@ class AllRidersScreen extends StatefulWidget {
 class _AllRidersScreenState extends State<AllRidersScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: white,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          leadingWidth: 70,
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 50.0, left: 20),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: backArrowWithContainer(context),
-            ),
+    return Scaffold(
+      backgroundColor: white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        leadingWidth: 70,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 50.0, left: 20),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: backArrowWithContainer(context),
           ),
         ),
       ),

@@ -10,9 +10,7 @@ class CardWidget extends StatefulWidget {
 class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
         backgroundColor: Colors.grey,
         body: SafeArea(
           child: Column(
@@ -208,8 +206,7 @@ class _CardWidgetState extends State<CardWidget> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
 

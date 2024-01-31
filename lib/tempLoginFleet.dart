@@ -144,9 +144,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
         backgroundColor: white,
         body: LayoutBuilder(
           builder: (context, constraints) => SafeArea(
@@ -666,8 +664,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   String deviceName = '';

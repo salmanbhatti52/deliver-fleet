@@ -56,7 +56,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
 
-    print("UserID ${userID}");
+    print("UserID $userID");
 
     Map data = {
       "users_fleet_id": userID.toString(),
@@ -76,15 +76,17 @@ class _InProgressScreenState extends State<InProgressScreen> {
         inProgressRidesList = inProgressResponse!.data!;
       }
     } else {
-      print('object in rpogress ride:        ' +
-          inProgressResponse!.message.toString() +
-          '      ' +
-          inProgressResponse!.status!.toString());
-      showToastError(inProgressResponse!.message!, FToast().init(context));
+      print(
+          'object in progress ride:${inProgressResponse!.message} ${inProgressResponse!.status!}');
+      if (mounted) {
+        showToastError(inProgressResponse!.message!, FToast().init(context));
+      }
     }
-    setState(() {
-      isPageLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isPageLoading = false;
+      });
+    }
   }
 
   @override
@@ -110,7 +112,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
                         height: 10.h,
                       ),
                       Text(
-                        '${formattedTime.toString()}',
+                        formattedTime.toString(),
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,

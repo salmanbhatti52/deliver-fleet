@@ -276,9 +276,7 @@ class _LogInScreenState extends State<LogInScreen> {
     var size = MediaQuery.of(context).size;
 
     print('user type on login screen :  ${widget.userType}');
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
         backgroundColor: white,
         appBar: AppBar(
           elevation: 0.0,
@@ -785,8 +783,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                 ),
         ),
-      ),
-    );
+      );
   }
 
   /// LogIn Button API Method:
