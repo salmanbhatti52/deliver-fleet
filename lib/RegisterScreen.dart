@@ -530,7 +530,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const TermsAndConditions(),
+                                                const TermsConditionsPage(),
                                           ),
                                         );
                                       },
@@ -553,10 +553,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   TextSpan(
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        Navigator.of(context).push(
+                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const PrivacyPolicy(),
+                                                const TermsConditionsPage(),
                                           ),
                                         );
                                       },

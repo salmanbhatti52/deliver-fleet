@@ -50,25 +50,29 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // setState(() {
-    //   isLoading = true;
-    //   getSupportAdmin();
-    //   // gettingCategory = true;
-    // });
-    init2();
+    setState(() {
+      isLoading = true;
+      // gettingCategory = true;
+    });
+
+    sharedPrefs();
+  }
+
+  sharedPrefs() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    userID = (sharedPreferences.getInt('userID') ?? -1);
+    userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
+    userLastName = (sharedPreferences.getString('userLastName') ?? '');
+    userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
+
+    print(
+        'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
+    setState(() {
+      isLoading = false;
+    });
   }
 
   APIResponse<LogInModel>? getUserProfileResponse;
-  init2() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    userID = (sharedPreferences.getInt('userID') ?? -1);
-    userFirstName = (sharedPreferences.getString('userFirstName'));
-    userLastName = (sharedPreferences.getString('userLastName'));
-    userProfilePic = (sharedPreferences.getString('userProfilePic'));
-    print(
-        'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
-    await init();
-  }
 
   init() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -112,67 +116,59 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
             height: 80,
           ),
           Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  width: 1,
-                  color: lightGrey.withOpacity(0.8),
-                ),
+            width: 85.w,
+            height: 85.h,
+            decoration: BoxDecoration(
+              color: white,
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                width: 1,
+                color: white,
               ),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: userProfilePic != null
-                      ? Image.network(
-                          'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
-                          // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
-                          fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
-                            return SizedBox(
-                                child: Image.asset(
-                              'assets/images/place-holder.png',
-                              fit: BoxFit.scaleDown,
-                            ));
-                          },
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: orange,
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                        )
-                      : SizedBox(
-                          child: Image.asset(
-                          'assets/images/place-holder.png',
-                          fit: BoxFit.scaleDown,
-                        )))),
+            ),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
+                  // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return SizedBox(
+                        child: Image.asset(
+                      'assets/images/place-holder.png',
+                      fit: BoxFit.scaleDown,
+                    ));
+                  },
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: orange,
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                )),
+          ),
           SizedBox(
             height: 20.h,
           ),
-          userFirstName != null && userLastName != null
-              ? Text(
-                  '$userFirstName $userLastName',
-                  // '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
-                  style: GoogleFonts.syne(
-                    fontSize: 14,
-                    color: black,
-                    fontWeight: FontWeight.w700,
-                  ),
-                )
-              : const SizedBox(),
+          Text(
+            '$userFirstName $userLastName',
+            // '${getUserProfileResponse!.data!.first_name!} ${getUserProfileResponse!.data!.last_name!}',
+            style: GoogleFonts.syne(
+              fontSize: 14,
+              color: black,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(
               left: 30,

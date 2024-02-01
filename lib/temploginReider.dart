@@ -549,17 +549,23 @@ class _TempLoginRiderState extends State<TempLoginRider> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                      try {
-                                        String url =
-                                            'https://deliver.eigix.net/users/terms_and_conditions';
-                                        if (await canLaunch(url)) {
-                                          await launch(url);
-                                        } else {
-                                          throw 'Could not launch $url';
-                                        }
-                                      } catch (e) {
-                                        print('Error launching URL: $e');
-                                      }
+                                         Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TermsConditionsPage(),
+                                          ),
+                                        );
+                                      // try {
+                                      //   String url =
+                                      //       'https://deliver.eigix.net/users/terms_and_conditions';
+                                      //   if (await canLaunch(url)) {
+                                      //     await launch(url);
+                                      //   } else {
+                                      //     throw 'Could not launch $url';
+                                      //   }
+                                      // } catch (e) {
+                                      //   print('Error launching URL: $e');
+                                      // }
                                     },
                                   text: 'Terms and Conditions ',
                                   style: GoogleFonts.inter(
@@ -580,17 +586,23 @@ class _TempLoginRiderState extends State<TempLoginRider> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                      try {
-                                        const url =
-                                            'https://deliver.eigix.net/users/privacy_policy';
-                                        if (await canLaunch(url)) {
-                                          await launch(url);
-                                        } else {
-                                          throw 'Could not launch $url';
-                                        }
-                                      } catch (e) {
-                                        print('Error launching URL: $e');
-                                      }
+                                         Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TermsConditionsPage(),
+                                          ),
+                                        );
+                                      // try {
+                                      //   const url =
+                                      //       'https://deliver.eigix.net/users/privacy_policy';
+                                      //   if (await canLaunch(url)) {
+                                      //     await launch(url);
+                                      //   } else {
+                                      //     throw 'Could not launch $url';
+                                      //   }
+                                      // } catch (e) {
+                                      //   print('Error launching URL: $e');
+                                      // }
                                     },
                                   text: 'Privacy Policy ',
                                   style: GoogleFonts.inter(

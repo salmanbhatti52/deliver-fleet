@@ -520,13 +520,19 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                      const url =
-                                          'https://deliver.eigix.net/users/terms_and_conditions';
-                                      if (await canLaunch(url)) {
-                                        await launch(url);
-                                      } else {
-                                        throw 'Could not launch $url';
-                                      }
+                                         Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TermsConditionsPage(),
+                                          ),
+                                        );
+                                      // const url =
+                                      //     'https://deliver.eigix.net/users/terms_and_conditions';
+                                      // if (await canLaunch(url)) {
+                                      //   await launch(url);
+                                      // } else {
+                                      //   throw 'Could not launch $url';
+                                      // }
                                     },
                                   text: 'Terms and Conditions ',
                                   style: GoogleFonts.inter(
@@ -547,13 +553,19 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                      const url =
-                                          'https://deliver.eigix.net/users/privacy_policy';
-                                      if (await canLaunch(url)) {
-                                        await launch(url);
-                                      } else {
-                                        throw 'Could not launch $url';
-                                      }
+                                         Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TermsConditionsPage(),
+                                          ),
+                                        );
+                                      // const url =
+                                      //     'https://deliver.eigix.net/users/privacy_policy';
+                                      // if (await canLaunch(url)) {
+                                      //   await launch(url);
+                                      // } else {
+                                      //   throw 'Could not launch $url';
+                                      // }
                                     },
                                   text: 'Privacy Policy ',
                                   style: GoogleFonts.inter(
