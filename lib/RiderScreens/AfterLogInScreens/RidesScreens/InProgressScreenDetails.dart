@@ -24,11 +24,11 @@ class InProgressDetails extends StatefulWidget {
   final String userID;
   final List<InProgressRidesModel>? inProgressRidesList2;
   const InProgressDetails({
-    Key? key,
+    super.key,
     this.inProgressRidesList,
     this.inProgressRidesList2,
     required this.userID,
-  }) : super(key: key);
+  });
 
   @override
   State<InProgressDetails> createState() => _InProgressDetailsState();
@@ -64,9 +64,11 @@ class _InProgressDetailsState extends State<InProgressDetails> {
         _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
         for (GetAllSystemDataModel model in _getSystemDataList!) {
           if (model.type == 'system_currency') {
-            setState(() {
-              currency = model.description!;
-            });
+            if (mounted) {
+              setState(() {
+                currency = model.description!;
+              });
+            }
           } else if (model.type == 'distance_unit') {
             setState(() {
               distance = model.description!;
@@ -105,7 +107,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
           ?.users_customers?.users_customers_id
           .toString(),
     };
-    print('object start suer to uer chat data:  ' + startChatData.toString());
+    print('object start suer to uer chat data:  $startChatData');
     startUserToUserChatResponse =
         await service.startUserToUserChatAPI(startChatData);
     if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
@@ -130,8 +132,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
         ),
       );
     } else {
-      print(' error starting chat:  ' +
-          startUserToUserChatResponse!.message!.toString());
+      print(' error starting chat:  ${startUserToUserChatResponse!.message!}');
       // showToastError('error occurred,try again', FToast().init(context),
       //     seconds: 2);
       Navigator.of(context).push(
@@ -245,24 +246,25 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                               SizedBox(
                                 height: 4.h,
                               ),
-                              widget.inProgressRidesList!.bookings!.scheduled == "Yes"
+                              widget.inProgressRidesList!.bookings!.scheduled ==
+                                      "Yes"
                                   ? Text(
-                                '${widget.inProgressRidesList!.bookings!.bookings_types!.name!} (Scheduled Ride)',
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: grey,
-                                ),
-                              )
+                                      '${widget.inProgressRidesList!.bookings!.bookings_types!.name!} (Scheduled Ride)',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: grey,
+                                      ),
+                                    )
                                   : Text(
-                                widget.inProgressRidesList!.bookings!
-                                    .bookings_types!.name!,
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: grey,
-                                ),
-                              ),
+                                      widget.inProgressRidesList!.bookings!
+                                          .bookings_types!.name!,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: grey,
+                                      ),
+                                    ),
                               SizedBox(
                                 height: 5.h,
                               ),
@@ -303,8 +305,8 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              _makePhoneCall(
-                                  widget.inProgressRidesList!.bookings!.users_customers!.phone!);
+                              _makePhoneCall(widget.inProgressRidesList!
+                                  .bookings!.users_customers!.phone!);
                             },
                             child: Column(
                               children: [

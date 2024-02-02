@@ -85,10 +85,12 @@ class _HomeScreenState extends State<HomeScreen> {
       // showToastError(getUserProfileResponse!.message, FToast().init(context));
     }
 
-    setState(() {
-      isLoading = false;
-      // gettingCategory = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+        // gettingCategory = false;
+      });
+    }
   }
 
   late APIResponse<List<ShowBookingsModel>> getAllClientRequestsResponse;
@@ -139,9 +141,11 @@ class _HomeScreenState extends State<HomeScreen> {
         _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
         for (GetAllSystemDataModel model in _getSystemDataList!) {
           if (model.type == 'system_currency') {
-            setState(() {
-              currency = model.description!;
-            });
+            if (mounted) {
+              setState(() {
+                currency = model.description!;
+              });
+            }
           }
         }
       }
@@ -150,16 +154,20 @@ class _HomeScreenState extends State<HomeScreen> {
     addCustomIcon();
     // getPolyPoints();
 
-    setState(() {
-      isHomeLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isHomeLoading = false;
+      });
+    }
   }
 
   /// Add custom icon method:
   void addCustomIcon() async {
     customMarkerIcon = await getBitmapDescriptorFromAssetBytes(
         "assets/images/custom-icon.png", 300);
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {

@@ -56,6 +56,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
     });
 
     sharedPrefs();
+    init();
   }
 
   sharedPrefs() async {
@@ -67,7 +68,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
 
     print(
         'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
-    await init();
+
     setState(() {
       isLoading = false;
     });

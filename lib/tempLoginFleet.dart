@@ -544,12 +544,12 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                         Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const TermsConditionsPage(),
-                                          ),
-                                        );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const TermsConditionsPage(),
+                                        ),
+                                      );
                                       // const url =
                                       //     'https://deliver.eigix.net/users/terms_and_conditions';
                                       // if (await canLaunch(url)) {
@@ -577,12 +577,12 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                         Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const TermsConditionsPage(),
-                                          ),
-                                        );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const TermsConditionsPage(),
+                                        ),
+                                      );
                                       // const url =
                                       //     'https://deliver.eigix.net/users/privacy_policy';
                                       // if (await canLaunch(url)) {
@@ -611,23 +611,40 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                     isRegistering
                         ? apiButton(context)
                         : GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               if (_key.currentState!.validate()) {
-                                _getCurrentPosition();
-
-                                print(
-                                    "lat ${_currentPosition!.latitude.toString()}");
-                                print(
-                                    "long ${_currentPosition!.longitude.toString()}");
-                                checkmark == false
-                                    ? ScaffoldMessenger.of(context)
-                                        .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Please ensure that you agree to terms and conditions to proceed further'),
-                                        ),
-                                      )
-                                    : fleeTempLogin(context);
+                                await _getCurrentPosition();
+                                if (_currentPosition == null ||
+                                    _currentPosition?.latitude == null ||
+                                    _currentPosition?.longitude == null) {
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) {
+                                  //     return AlertDialog(
+                                  //       title: const Text('Location Error'),
+                                  //       content: const Text(
+                                  //           'Please turn on your location'),
+                                  //       actions: <Widget>[
+                                  //         TextButton(
+                                  //           child: const Text('OK'),
+                                  //           onPressed: () {
+                                  //             Navigator.of(context).pop();
+                                  //           },
+                                  //         ),
+                                  //       ],
+                                  //     );
+                                  //   },
+                                  // );
+                                } else if (!checkmark) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Please ensure that you agree to terms and conditions to proceed further'),
+                                    ),
+                                  );
+                                } else {
+                                  fleeTempLogin(context);
+                                }
                               }
                             },
                             child: buttonContainer(context, 'Login'),

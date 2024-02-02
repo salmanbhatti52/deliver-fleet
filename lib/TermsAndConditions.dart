@@ -83,7 +83,7 @@ class _TermsConditionsPageState extends State<TermsConditionsPage> {
             fontSize: 20,
           ),
         ),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: isLoading
