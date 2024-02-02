@@ -123,6 +123,13 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: true,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(
+            color: Colors.black), // This will change the color of the icons
+      ),
       backgroundColor: white,
       body: LayoutBuilder(
         builder: (context, constraints) => SafeArea(
@@ -133,7 +140,6 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 40.w,
-                  vertical: 30,
                 ),
                 child: Column(
                   children: [
@@ -146,12 +152,9 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              height: 20.h,
-                            ),
                             SvgPicture.asset('assets/images/logo.svg'),
-                            SizedBox(
-                              height: 20.h,
+                            const SizedBox(
+                              height: 20,
                             ),
                             Text(
                               'Create Fleet Profile',
@@ -298,9 +301,11 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                             SizedBox(
                               width: 296.w,
                               child: TextFormFieldWidget(
-                                validator: (val) {
-                                  if (val!.isEmpty) {
-                                    return 'email cannot be empty';
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email';
+                                  } else if (!isValidEmail(value)) {
+                                    return 'Please enter a valid email';
                                   }
                                   return null;
                                 },
@@ -520,12 +525,12 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                         Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const TermsConditionsPage(),
-                                          ),
-                                        );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const TermsConditionsPage(),
+                                        ),
+                                      );
                                       // const url =
                                       //     'https://deliver.eigix.net/users/terms_and_conditions';
                                       // if (await canLaunch(url)) {
@@ -553,12 +558,12 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                         Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const TermsConditionsPage(),
-                                          ),
-                                        );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const TermsConditionsPage(),
+                                        ),
+                                      );
                                       // const url =
                                       //     'https://deliver.eigix.net/users/privacy_policy';
                                       // if (await canLaunch(url)) {
@@ -647,6 +652,13 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
         ),
       ),
     );
+  }
+
+  bool isValidEmail(String email) {
+    final RegExp regex = RegExp(
+      r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)*\w+[\w-]$',
+    );
+    return regex.hasMatch(email);
   }
 
   bool isRegistering = false;

@@ -145,6 +145,12 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: true,
+        backgroundColor: white,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
       backgroundColor: white,
       body: LayoutBuilder(
         builder: (context, constraints) => SafeArea(
@@ -155,7 +161,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 40.w,
-                  vertical: 30,
+              
                 ),
                 child: Column(
                   children: [
@@ -168,9 +174,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              height: 20.h,
-                            ),
+                           
                             SvgPicture.asset('assets/images/logo.svg'),
                             SizedBox(
                               height: 20.h,
@@ -322,9 +326,11 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                             SizedBox(
                               width: 296.w,
                               child: TextFormFieldWidget(
-                                validator: (val) {
-                                  if (val!.isEmpty) {
-                                    return 'email cannot be empty';
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email';
+                                  } else if (!isValidEmail(value)) {
+                                    return 'Please enter a valid email';
                                   }
                                   return null;
                                 },
@@ -613,10 +619,16 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                         : GestureDetector(
                             onTap: () async {
                               if (_key.currentState!.validate()) {
+                                setState(() {
+                                  isRegistering = true;
+                                });
                                 await _getCurrentPosition();
                                 if (_currentPosition == null ||
                                     _currentPosition?.latitude == null ||
                                     _currentPosition?.longitude == null) {
+                                  setState(() {
+                                    isRegistering = false;
+                                  });
                                   // showDialog(
                                   //   context: context,
                                   //   builder: (BuildContext context) {
@@ -696,6 +708,13 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
         ),
       ),
     );
+  }
+
+  bool isValidEmail(String email) {
+    final RegExp regex = RegExp(
+      r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)*\w+[\w-]$',
+    );
+    return regex.hasMatch(email);
   }
 
   String deviceName = '';
@@ -781,7 +800,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
         .then((Position position) {
       setState(() => _currentPosition = position);
     }).catchError((e) {
-      debugPrint(e);
+      debugPrint(e.toString());
     });
   }
 
@@ -809,48 +828,58 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
     final responseString = response.body;
     print("responseSignInApi: $responseString");
     print("status Code SignIn: ${response.statusCode}");
-    print("in 200 SignIn");
-    if (response.statusCode == 200) {
-      tempLoginModel = tempLoginModelFromJson(responseString);
-      sharedPreferences = await SharedPreferences.getInstance();
 
-      print('object device id: ${widget.deviceID}');
-      await sharedPreferences.setInt(
-          'userID', tempLoginModel.data!.usersFleetId);
-      await sharedPreferences.setString(
-          'userEmail', tempLoginModel.data!.email);
-      await sharedPreferences.setString(
-          'userFirstName', tempLoginModel.data!.firstName);
-      await sharedPreferences.setString(
-          'userLastName', tempLoginModel.data!.lastName);
-      // await sharedPreferences.setString(
-      //     'userProfilePic', checkPhoneNumberModel.data!.profilePic!);
-      await sharedPreferences.setString(
-          'userLatitude', tempLoginModel.data!.latitude);
-      await sharedPreferences.setString(
-          'userLongitude', tempLoginModel.data!.longitude);
-      await sharedPreferences.setString(
-          'deviceIDInfo', tempLoginModel.data!.oneSignalId);
-      await sharedPreferences.setString(
-          'userType', tempLoginModel.data!.userType);
-      await sharedPreferences.setString('isLogIn', 'true');
-      showToastSuccess(
-          tempLoginModel.status!.toString(), FToast().init(context),
-          seconds: 1);
-      if (widget.userType == "Fleet") {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const BottomNavBarFleet(),
-          ),
-          (Route<dynamic> route) =>
-              false, // This condition determines which routes to remove
-        );
+    if (response.statusCode == 200) {
+      print("in 200 SignIn");
+      tempLoginModel = tempLoginModelFromJson(responseString);
+
+      if (tempLoginModel.status == "success") {
+        sharedPreferences = await SharedPreferences.getInstance();
+        print('object device id: ${widget.deviceID}');
+        await sharedPreferences.setInt(
+            'userID', tempLoginModel.data!.usersFleetId);
+        await sharedPreferences.setString(
+            'userEmail', tempLoginModel.data!.email);
+        await sharedPreferences.setString(
+            'userFirstName', tempLoginModel.data!.firstName);
+        await sharedPreferences.setString(
+            'userLastName', tempLoginModel.data!.lastName);
+        // await sharedPreferences.setString(
+        //     'userProfilePic', checkPhoneNumberModel.data!.profilePic!);
+        await sharedPreferences.setString(
+            'userLatitude', tempLoginModel.data!.latitude);
+        await sharedPreferences.setString(
+            'userLongitude', tempLoginModel.data!.longitude);
+        await sharedPreferences.setString(
+            'deviceIDInfo', tempLoginModel.data!.oneSignalId);
+        await sharedPreferences.setString(
+            'userType', tempLoginModel.data!.userType);
+        await sharedPreferences.setString('isLogIn', 'true');
+        showToastSuccess(
+            tempLoginModel.status!.toString(), FToast().init(context),
+            seconds: 1);
+        if (widget.userType == "Fleet") {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBarFleet(),
+            ),
+            (Route<dynamic> route) =>
+                false, // This condition determines which routes to remove
+          );
+        } else {
+          showToastSuccess(
+              tempLoginModel.message!.toString(), FToast().init(context),
+              seconds: 2);
+        }
       } else {
         showToastSuccess(
             tempLoginModel.message!.toString(), FToast().init(context),
             seconds: 2);
       }
     } else {
+      showToastSuccess(
+          tempLoginModel.message!.toString(), FToast().init(context),
+          seconds: 2);
       print(
           'device id for android while registering: ${tempLoginModel.message!.toString()}');
 
