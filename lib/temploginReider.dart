@@ -169,7 +169,6 @@ class _TempLoginRiderState extends State<TempLoginRider> {
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 40.w,
-               
                 ),
                 child: Column(
                   children: [
@@ -634,16 +633,16 @@ class _TempLoginRiderState extends State<TempLoginRider> {
                         : GestureDetector(
                             onTap: () async {
                               if (_key.currentState!.validate()) {
-                                 setState(() {
-      isRegistering = true;
-    });
+                                setState(() {
+                                  isRegistering = true;
+                                });
                                 await _getCurrentPosition();
                                 if (_currentPosition == null ||
                                     _currentPosition?.latitude == null ||
                                     _currentPosition?.longitude == null) {
-                                       setState(() {
-      isRegistering = false;
-    });
+                                  setState(() {
+                                    isRegistering = false;
+                                  });
                                   // showDialog(
                                   //   context: context,
                                   //   builder: (BuildContext context) {
