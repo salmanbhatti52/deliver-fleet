@@ -186,9 +186,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
                   onTap: () => showDialog(
                       context: context,
                       builder: (context) => InviteRiders(
-                            users_fleet_id: getUserProfileResponse!
-                                .data!.users_fleet_id!
-                                .toString(),
+                            users_fleet_id: userID.toString(),
                           )),
                   leading: Image.asset(
                     'assets/images/icons8-invite-48.png',
