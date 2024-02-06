@@ -107,6 +107,7 @@ class _DrivingLicensePictureVerificationState
     // TODO: implement initState
     super.initState();
     fetchSystemSettingsDescription28();
+    sharedPrefs();
     // gifController = FlutterGifController(vsync: this);
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   gifController.repeat(
@@ -395,13 +396,16 @@ class _DrivingLicensePictureVerificationState
       widget.licenseMap.addAll({
         "driving_license_front_image": base64img,
         "driving_license_back_image": base64imgForBack,
+     
+
       });
 
       verifyResponse = await service.verifyDrivingLicenseAPI(widget.licenseMap);
       if (verifyResponse!.status!.toLowerCase() == 'success') {
-        await SharedPreferences.getInstance();
-        userID = (sharedPreferences.getInt('userID'));
-        deviceIDInfo = (sharedPreferences.getString('deviceIDInfo'));
+        final sharedPreferences = await SharedPreferences
+            .getInstance(); // Initialize sharedPreferences here
+        userID = sharedPreferences.getInt('userID');
+        deviceIDInfo = sharedPreferences.getString('deviceIDInfo');
         print("userId value is = $userID");
         print("deviceIDInfo = $deviceIDInfo");
         if (userID != null) {

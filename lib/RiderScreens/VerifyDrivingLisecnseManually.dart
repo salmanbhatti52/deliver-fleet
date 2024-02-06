@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Constants/Colors.dart';
 import '../Constants/back-arrow-with-container.dart';
 import '../Constants/buttonContainer.dart';
@@ -31,18 +32,22 @@ class VerifyDrivingLicenseManually extends StatefulWidget {
 
 class _VerifyDrivingLicenseManuallyState
     extends State<VerifyDrivingLicenseManually> {
-  late TextEditingController licenseController;
-  late TextEditingController addressController;
+  TextEditingController licenseController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   // late TextEditingController CNICController;
 
   final GlobalKey<FormState> _key = GlobalKey();
+  sharedPrefs() async {
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    fleetId = sharedPref.getInt('userID');
+    parentId = sharedPref.getString('userEmail');
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    licenseController = TextEditingController();
-    addressController = TextEditingController();
+    sharedPrefs();
     // CNICController = TextEditingController();
   }
 
@@ -428,14 +433,19 @@ class _VerifyDrivingLicenseManuallyState
     );
   }
 
-  licenseVerify(BuildContext context) {
+  licenseVerify(BuildContext context) async {
+    await sharedPrefs();
+    print("${parentId.toString()}");
+    print("${addressController.text}");
+    print("${licenseController.text}");
+
     if (_key.currentState!.validate()) {
       if (imagePath == null) {
         showToastError(
             'Please select image to proceed', FToast().init(context));
       } else {
         Map licenseMap = {
-          "email": widget.email,
+          "email": parentId.toString(),
           "address": addressController.text,
           // "national_identification_no": CNICController.text,
           "driving_license_no": licenseController.text,

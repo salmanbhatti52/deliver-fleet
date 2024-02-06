@@ -212,7 +212,7 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
               ),
               unselectedLabelStyle: GoogleFonts.syne(
                 fontWeight: FontWeight.w400,
-                fontSize: 12.sp,
+                fontSize: screenWidth > 600 ? 22 : 12,
               ),
             ),
             Positioned(

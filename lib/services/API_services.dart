@@ -32,7 +32,7 @@ class ApiServices {
   /// Sign-up API:
 
   Future<APIResponse<APIResponse>> signUpAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/email_signup_fleet';
+    String API = 'https://deliver.eigix.net/api/signup_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
