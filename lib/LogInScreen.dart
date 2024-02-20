@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:deliver_partner/VerifyYourself.dart';
+import 'package:deliver_partner/models/API%20models/GetAllSystemDataModel.dart';
+import 'package:deliver_partner/models/send_otp_model.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
@@ -47,13 +49,149 @@ class _LogInScreenState extends State<LogInScreen> {
   bool isLoading = false;
   bool isLoading2 = false;
 
-  ApiServices get service => GetIt.I<ApiServices>();
+  String? pinID;
+
+  String? termiiApiKey;
+  String? pinMessageType;
+  String? pinTo;
+  String? pinFrom;
+  String? pinChannel;
+  String? pinAttempts;
+  String? pinExpiryTime;
+  String? pinLength;
+  String? pinPlaceholder;
+  String? pinMessageText;
+  String? pinType;
 
   final GlobalKey<FormState> _key = GlobalKey();
   final countryPicker = const FlCountryCodePicker();
   CountryCode? countryCode =
       const CountryCode(name: 'Nigeria', code: 'NG', dialCode: '+234');
   TextEditingController contactNumberController = TextEditingController();
+
+  ApiServices get service => GetIt.I<ApiServices>();
+
+  late APIResponse<List<GetAllSystemDataModel>> _getAllSystemDataResponse;
+  List<GetAllSystemDataModel>? _getSystemDataList;
+
+  getSystemData() async {
+    _getAllSystemDataResponse = await service.getALlSystemDataAPI();
+    _getSystemDataList = [];
+
+    if (_getAllSystemDataResponse.status!.toLowerCase() == 'success') {
+      if (_getAllSystemDataResponse.data != null) {
+        _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
+        for (GetAllSystemDataModel model in _getSystemDataList!) {
+          if (model.type == 'termii_api_key') {
+            setState(() {
+              termiiApiKey = model.description!;
+            });
+          }
+          if (model.type == 'message_type') {
+            setState(() {
+              pinMessageType = model.description!;
+            });
+          }
+          if (model.type == 'from') {
+            setState(() {
+              pinFrom = model.description!;
+            });
+          }
+          if (model.type == 'channel') {
+            setState(() {
+              pinChannel = model.description!;
+            });
+          }
+          if (model.type == 'pin_attempts') {
+            setState(() {
+              pinAttempts = model.description!;
+            });
+          }
+          if (model.type == 'pin_time_to_live') {
+            setState(() {
+              pinExpiryTime = model.description!;
+            });
+          }
+          if (model.type == 'pin_length') {
+            setState(() {
+              pinLength = model.description!;
+            });
+          }
+          if (model.type == 'pin_placeholder') {
+            setState(() {
+              pinPlaceholder = model.description!;
+            });
+          }
+          if (model.type == 'message_text') {
+            setState(() {
+              pinMessageText = model.description!;
+            });
+          }
+          if (model.type == 'pin_type') {
+            setState(() {
+              pinType = model.description!;
+            });
+          }
+        }
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  SendOtpModel sendOtpModel = SendOtpModel();
+
+  sendOtp() async {
+    try {
+      String apiUrl = "https://api.ng.termii.com/api/sms/otp/send";
+      debugPrint("apiUrl: $apiUrl");
+      debugPrint("apiKey: $termiiApiKey");
+      debugPrint("messageType: $pinMessageType");
+      debugPrint("to: ${countryCode!.dialCode + contactNumberController.text}");
+      debugPrint("from: $pinFrom");
+      debugPrint("channel: $pinChannel");
+      debugPrint("attempts: $pinAttempts");
+      debugPrint("expiryTime: $pinExpiryTime");
+      debugPrint("length: $pinLength");
+      debugPrint("placeholder: $pinPlaceholder");
+      debugPrint("messageText: $pinMessageText");
+      debugPrint("pinType: $pinType");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "api_key": termiiApiKey,
+          "message_type": pinMessageType,
+          "to": countryCode!.dialCode + contactNumberController.text,
+          "from": pinFrom,
+          "channel": pinChannel,
+          "pin_attempts": pinAttempts,
+          "pin_time_to_live": pinExpiryTime,
+          "pin_length": pinLength,
+          "pin_placeholder": pinPlaceholder,
+          "message_text": pinMessageText,
+          "pin_type": pinType,
+        },
+      );
+      final responseString = response.body;
+      debugPrint("response: $responseString");
+      debugPrint("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        sendOtpModel = sendOtpModelFromJson(responseString);
+        pinID = sendOtpModel.pinId;
+        debugPrint("pinID: $pinID");
+        setState(() {});
+        debugPrint('sendOtpModel status: ${sendOtpModel.status}');
+      }
+    } catch (e) {
+      debugPrint('Something went wrong = ${e.toString()}');
+      return null;
+    }
+  }
 
   CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
 
@@ -109,6 +247,7 @@ class _LogInScreenState extends State<LogInScreen> {
       isLoading = true;
     });
     init();
+    getSystemData();
   }
 
   String userType = '';
@@ -652,6 +791,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             ? apiButton(context)
                             : GestureDetector(
                                 onTap: () async {
+                                  await sendOtp();
                                   await _getCurrentPosition();
                                   if (_key.currentState!.validate()) {
                                     if (_currentPosition != null) {
@@ -659,6 +799,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               EmailVerificationScreen(
+                                            pinID: "$pinID",
                                             latitude: _currentPosition!.latitude
                                                 .toString(),
                                             longitude: _currentPosition!

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/LogInScreen.dart';
 import 'package:deliver_partner/RegisterScreen.dart';
+import 'package:deliver_partner/models/send_otp_model.dart';
+import 'package:deliver_partner/models/verify_otp_model.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
@@ -11,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 // import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,9 +35,11 @@ import 'RiderScreens/RideDetailsAfterLogIn.dart';
 import 'RiderScreens/VerifyDrivingLisecnseManually.dart';
 import 'models/API models/API response.dart';
 import 'models/API models/CheckPhoneNumberModel.dart';
+import 'models/API models/GetAllSystemDataModel.dart';
 import 'models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
+  final String pinID;
   final String userType;
   final String? deviceID;
   final String? phoneNumber;
@@ -43,6 +48,7 @@ class EmailVerificationScreen extends StatefulWidget {
 
   const EmailVerificationScreen(
       {super.key,
+      required this.pinID,
       required this.phoneNumber,
       required this.longitude,
       required this.latitude,
@@ -56,10 +62,175 @@ class EmailVerificationScreen extends StatefulWidget {
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   bool isLoading = false;
+  String? termiiApiKey;
+  String? pinMessageType;
+  String? pinTo;
+  String? pinFrom;
+  String? pinChannel;
+  String? pinAttempts;
+  String? pinExpiryTime;
+  String? pinLength;
+  String? pinPlaceholder;
+  String? pinMessageText;
+  String? pinType;
+
+  TextEditingController otpController = TextEditingController();
 
   ApiServices get service => GetIt.I<ApiServices>();
 
-  TextEditingController otpController = TextEditingController();
+  late APIResponse<List<GetAllSystemDataModel>> _getAllSystemDataResponse;
+  List<GetAllSystemDataModel>? _getSystemDataList;
+
+  getSystemData() async {
+    _getAllSystemDataResponse = await service.getALlSystemDataAPI();
+    _getSystemDataList = [];
+
+    if (_getAllSystemDataResponse.status!.toLowerCase() == 'success') {
+      if (_getAllSystemDataResponse.data != null) {
+        _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
+        for (GetAllSystemDataModel model in _getSystemDataList!) {
+          if (model.type == 'termii_api_key') {
+            setState(() {
+              termiiApiKey = model.description!;
+            });
+          }
+          if (model.type == 'message_type') {
+            setState(() {
+              pinMessageType = model.description!;
+            });
+          }
+          if (model.type == 'from') {
+            setState(() {
+              pinFrom = model.description!;
+            });
+          }
+          if (model.type == 'channel') {
+            setState(() {
+              pinChannel = model.description!;
+            });
+          }
+          if (model.type == 'pin_attempts') {
+            setState(() {
+              pinAttempts = model.description!;
+            });
+          }
+          if (model.type == 'pin_time_to_live') {
+            setState(() {
+              pinExpiryTime = model.description!;
+            });
+          }
+          if (model.type == 'pin_length') {
+            setState(() {
+              pinLength = model.description!;
+            });
+          }
+          if (model.type == 'pin_placeholder') {
+            setState(() {
+              pinPlaceholder = model.description!;
+            });
+          }
+          if (model.type == 'message_text') {
+            setState(() {
+              pinMessageText = model.description!;
+            });
+          }
+          if (model.type == 'pin_type') {
+            setState(() {
+              pinType = model.description!;
+            });
+          }
+        }
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  SendOtpModel sendOtpModel = SendOtpModel();
+
+  sendOtp() async {
+    try {
+      String apiUrl = "https://api.ng.termii.com/api/sms/otp/send";
+      debugPrint("apiUrl: $apiUrl");
+      debugPrint("apiKey: $termiiApiKey");
+      debugPrint("messageType: $pinMessageType");
+      debugPrint("to: ${widget.phoneNumber}");
+      debugPrint("from: $pinFrom");
+      debugPrint("channel: $pinChannel");
+      debugPrint("attempts: $pinAttempts");
+      debugPrint("expiryTime: $pinExpiryTime");
+      debugPrint("length: $pinLength");
+      debugPrint("placeholder: $pinPlaceholder");
+      debugPrint("messageText: $pinMessageText");
+      debugPrint("pinType: $pinType");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "api_key": termiiApiKey,
+          "message_type": pinMessageType,
+          "to": widget.phoneNumber,
+          "from": pinFrom,
+          "channel": pinChannel,
+          "pin_attempts": pinAttempts,
+          "pin_time_to_live": pinExpiryTime,
+          "pin_length": pinLength,
+          "pin_placeholder": pinPlaceholder,
+          "message_text": pinMessageText,
+          "pin_type": pinType,
+        },
+      );
+      final responseString = response.body;
+      debugPrint("response: $responseString");
+      debugPrint("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        sendOtpModel = sendOtpModelFromJson(responseString);
+        setState(() {});
+        debugPrint('sendOtpModel status: ${sendOtpModel.status}');
+      }
+    } catch (e) {
+      debugPrint('Something went wrong = ${e.toString()}');
+      return null;
+    }
+  }
+
+  VerifyOtpModel verifyOtpModel = VerifyOtpModel();
+
+  verifyOtp() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      String apiUrl = "https://api.ng.termii.com/api/sms/otp/verify";
+      debugPrint("apiUrl: $apiUrl");
+      debugPrint("pinId: ${widget.pinID}");
+      debugPrint("pin: ${otpController.text}");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "api_key": termiiApiKey,
+          "pin_id": widget.pinID,
+          "pin": otpController.text,
+        },
+      );
+      final responseString = response.body;
+      debugPrint("response: $responseString");
+      debugPrint("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        verifyOtpModel = verifyOtpModelFromJson(responseString);
+      }
+    } catch (e) {
+      debugPrint('Something went wrong = ${e.toString()}');
+      return null;
+    }
+  }
 
   // late FlutterGifController gifController;
 
@@ -93,272 +264,38 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
 
   checkNumber() async {
-    // try {
-    print("one_signal_id ${widget.deviceID}");
-    print("user_type ${widget.userType}");
-    print("phone ${widget.phoneNumber}");
-    print("latitude ${widget.latitude}");
-    print("longitude ${widget.longitude}");
-    String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
-    print("contactNumber: ${widget.phoneNumber}");
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        "one_signal_id": widget.deviceID,
-        "user_type": widget.userType,
-        "phone": widget.phoneNumber,
-        "latitude": widget.latitude,
-        "longitude": widget.longitude,
-      },
-    );
-    final responseString = response.body;
-    print("response: $responseString");
-    print("statusCode: ${response.statusCode}");
-    if (response.statusCode == 200) {
-      print("hello1");
-      checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
-      setState(() {});
-      print("hello2");
-      // if (checkPhoneNumberModel.data != null) {
-      //   SharedPreferences sharedPref = await SharedPreferences.getInstance();
-      //   await sharedPref.setInt('userID', checkPhoneNumberModel.data?.usersFleetId?.toInt() ?? 0);
-      //   await sharedPref.setString('userEmail', checkPhoneNumberModel.data?.email ?? "");
-      //   await sharedPref.setString('userLatitude', widget.latitude.toString());
-      //   await sharedPref.setString('userLongitude', widget.longitude.toString());
-      //   await sharedPref.setString('deviceIDInfo', checkPhoneNumberModel.data?.oneSignalId ?? "");
-      //   await sharedPref.setString('userType', checkPhoneNumberModel.data?.userType ?? "");
-      //   await sharedPref.setString('parentID', checkPhoneNumberModel.data?.parentId.toString() ?? "");
-      //   print("sharedPref userId: ${checkPhoneNumberModel.data?.usersFleetId?.toString() ?? ""}");
-      //   print("sharedPref email: ${checkPhoneNumberModel.data?.email ?? ""}");
-      //   print("sharedPref lat: ${widget.latitude.toString()}");
-      //   print("sharedPref long: ${widget.longitude.toString()}");
-      //   print("sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
-      //   print("sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
-      //   print("sharedPref parentId: ${checkPhoneNumberModel.data?.parentId ?? ""}");
-      //   setState(() {
-      //     isVerifying = false;
-      //   });
-      // } else {
-      //   print("checkPhoneNumberModel.data is null");
-      //   setState(() {
-      //     isVerifying = false;
-      //   });
-      // }
-    }
-    // } catch (e) {
-    //   print('Something went wrong = ${e.toString()}');
-    //   return null;
-    // }
-  }
-
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  String verifyId = '';
-
-  Future<void> verifyPhoneNumber() async {
-    if (widget.phoneNumber != null) {
-      print("phoneNumber: ${widget.phoneNumber!}");
-    }
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '${widget.phoneNumber}',
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        // await auth.signInWithCredential(credential);
-      },
-      verificationFailed: (FirebaseAuthException e) async {
-        if (e.code == 'invalid-phone-number') {
-          showToastError(
-              'The provided phone number is invalid', FToast().init(context));
-          print('The provided phone number is invalid.');
-          setState(() {
-            isVerifying = false;
-          });
-        } else {
-          // showToastError('Verification failed: ${e.message}', FToast().init(context));
-          print('Verification failed: ${e.message}');
-          setState(() {
-            isVerifying = false;
-          });
-        }
-      },
-      codeSent: (String verificationId, int? resendToken) async {
-        verifyId = verificationId;
-        String smsCode = otpController.text;
-
-        // Create a PhoneAuthCredential with the code
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: verificationId, smsCode: smsCode);
-
-        // Sign the user in (or link) with the credential
-        // await _auth.signInWithCredential(credential);
-      },
-      timeout: const Duration(seconds: 120),
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
-  }
-
-  bool isButtonDisabled = false;
-  Timer? buttonTimer;
-  bool isVerifying = false;
-
-  Future<void> verifyOTPCode() async {
-    print("verificationId: $verifyId");
-    setState(() {
-      isVerifying = true;
-    });
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-      verificationId: verifyId,
-      smsCode: otpController.text,
-    );
     try {
-      await auth.signInWithCredential(credential).then((value) async {
-        if (buttonTimer != null && buttonTimer!.isActive) {
-          buttonTimer!.cancel();
-        }
-        print('User Login In Successful ${value.user}');
-        await checkNumber();
-        if (checkPhoneNumberModel.status == "success") {
-          SharedPreferences sharedPreferences =
-              await SharedPreferences.getInstance();
-          await sharedPreferences.setInt(
-              'userID', checkPhoneNumberModel.data!.usersFleetId!.toInt());
-          await sharedPreferences.setString(
-              'userEmail', checkPhoneNumberModel.data!.email.toString());
-          await sharedPreferences.setString('userFirstName',
-              checkPhoneNumberModel.data!.firstName.toString());
-          await sharedPreferences.setString(
-              'userLastName', checkPhoneNumberModel.data!.lastName.toString());
-          await sharedPreferences.setString('userProfilePic',
-              checkPhoneNumberModel.data!.profilePic.toString());
-          await sharedPreferences.setString(
-              'userLatitude', widget.latitude.toString());
-          await sharedPreferences.setString(
-              'userLongitude', widget.longitude.toString());
-          await sharedPreferences.setString('deviceIDInfo',
-              checkPhoneNumberModel.data!.oneSignalId.toString());
-          await sharedPreferences.setString(
-              'userType', checkPhoneNumberModel.data!.userType.toString());
-          await sharedPreferences.setString(
-              'parentID', checkPhoneNumberModel.data!.parentId.toString());
-          await sharedPreferences.setString('isLogIn', 'true');
-          print("sharedPref lat: ${widget.latitude.toString()}");
-          print("sharedPref long: ${widget.longitude.toString()}");
-          final pic = sharedPreferences.getString('userProfilePic');
-          print('pic: $pic');
-          print(
-              "sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId ?? ""}");
-          print(
-              "sharedPref type: ${checkPhoneNumberModel.data?.userType ?? ""}");
-          fleetId = sharedPreferences.getInt('userID');
-          parentId = sharedPreferences.getString('userEmail');
-          print("fleetId $fleetId");
-          print("parentId $parentId");
-          print("badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
-          if (widget.userType == "Rider") {
-            if (checkPhoneNumberModel.data?.usersFleetId!.toInt() != null) {
-              if (checkPhoneNumberModel.data?.badgeVerified == "No") {
-                setState(() {
-                  isVerifying = false;
-                });
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => RideDetailsAfterLogInScreen(
-                        userType: 'Rider',
-                        userFleetId: fleetId.toString(),
-                        parentID: parentId.toString(),
-                      ),
-                    ),
-                    (route) => false);
-                showToastSuccess(
-                    'Badge is not verified. PLease add vehicle or request a bike to verify badge.',
-                    FToast().init(context),
-                    seconds: 3);
-              } else {
-                setState(() {
-                  isVerifying = false;
-                });
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const BottomNavBar(),
-                    ),
-                    (Route<dynamic> route) => false);
-              }
-            } else {
-              setState(() {
-                isVerifying = false;
-              });
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => RegisterScreen(
-                        userType: widget.userType,
-                        phoneNumber: widget.phoneNumber.toString(),
-                        deviceID: widget.deviceID.toString()),
-                  ),
-                  (Route<dynamic> route) => false);
-            }
-          } else {
-            if (widget.userType == "Fleet") {
-              if (checkPhoneNumberModel.data!.usersFleetId!.toInt() != null) {
-                setState(() {
-                  isVerifying = false;
-                });
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const BottomNavBarFleet(),
-                    ),
-                    (Route<dynamic> route) => false);
-              } else {
-                setState(() {
-                  isVerifying = false;
-                });
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => RegisterScreen(
-                          userType: widget.userType,
-                          phoneNumber: widget.phoneNumber.toString(),
-                          deviceID: widget.deviceID.toString()),
-                    ),
-                    (Route<dynamic> route) => false);
-              }
-            }
-          }
-        } else if (checkPhoneNumberModel.status == "error" &&
-            checkPhoneNumberModel.message ==
-                "Your account is not approved yet.") {
-          Navigator.pop(context);
-          showToastSuccess(
-              'Your account is not approved yet.', FToast().init(context),
-              seconds: 3);
-        } else if (checkPhoneNumberModel.status == "error" &&
-            checkPhoneNumberModel.message == "Phone number does not exist.") {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => RegisterScreen(
-                    userType: widget.userType,
-                    phoneNumber: widget.phoneNumber.toString(),
-                    deviceID: widget.deviceID.toString()),
-              ),
-              (Route<dynamic> route) => false);
-        } else if (checkPhoneNumberModel.status == "error" &&
-            checkPhoneNumberModel.message ==
-                "Your account is in deleted state.") {
-          Navigator.pop(context);
-          showToastSuccess(
-              'Your account is in deleted state.', FToast().init(context),
-              seconds: 3);
-        }
-        setState(() {
-          isVerifying = false;
-        });
-      });
+      print("apiUrl: https://deliver.eigix.net/api/check_phone_exist_fleet");
+      print("one_signal_id ${widget.deviceID}");
+      print("user_type ${widget.userType}");
+      print("phone ${widget.phoneNumber}");
+      print("latitude ${widget.latitude}");
+      print("longitude ${widget.longitude}");
+      String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
+      print("contactNumber: ${widget.phoneNumber}");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "one_signal_id": widget.deviceID,
+          "user_type": widget.userType,
+          "phone": widget.phoneNumber,
+          "latitude": widget.latitude,
+          "longitude": widget.longitude,
+        },
+      );
+      final responseString = response.body;
+      print("response: $responseString");
+      print("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        checkPhoneNumberModel = checkPhoneNumberModelFromJson(responseString);
+        setState(() {});
+      }
     } catch (e) {
       print('Something went wrong = ${e.toString()}');
-      showToastError('The provided verification code is invalid or expired',
-          FToast().init(context));
-      setState(() {
-        isVerifying = false;
-      });
+      return null;
     }
   }
 
@@ -394,8 +331,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     super.initState();
     startTimer();
     loaderTimer();
+    getSystemData();
     isLoading = true;
-    verifyPhoneNumber();
     print("phoneNumber: ${widget.phoneNumber}");
   }
 
@@ -680,7 +617,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                           secondsRemaining = 20;
                                           startTimer();
                                         });
-                                        verifyPhoneNumber();
+                                        sendOtp();
                                       },
                                       child: const Text(
                                         'Resend Code',
@@ -709,28 +646,194 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                           Padding(
                             padding: EdgeInsets.only(bottom: 20.0.h),
                             child: GestureDetector(
-                              onTap: () {
-                                if (!isButtonDisabled) {
-                                  setState(() {
-                                    isButtonDisabled = true;
-                                  });
-                                  buttonTimer = Timer(
-                                      const Duration(seconds: 5), () async {
-                                    setState(() {
-                                      isButtonDisabled = false;
-                                    });
-                                    await verifyOTPCode();
-                                  });
+                              onTap: () async {
+                                if (otpController.text.isNotEmpty) {
+                                  await verifyOtp();
+                                  if (verifyOtpModel.verified == true) {
+                                    await checkNumber();
+                                    if (checkPhoneNumberModel.status ==
+                                        "success") {
+                                      SharedPreferences sharedPreferences =
+                                          await SharedPreferences.getInstance();
+                                      await sharedPreferences.setInt(
+                                          'userID',
+                                          checkPhoneNumberModel
+                                              .data!.usersFleetId!
+                                              .toInt());
+                                      await sharedPreferences.setString(
+                                          'userEmail',
+                                          checkPhoneNumberModel.data!.email
+                                              .toString());
+                                      await sharedPreferences.setString(
+                                          'userFirstName',
+                                          checkPhoneNumberModel.data!.firstName
+                                              .toString());
+                                      await sharedPreferences.setString(
+                                          'userLastName',
+                                          checkPhoneNumberModel.data!.lastName
+                                              .toString());
+                                      await sharedPreferences.setString(
+                                          'userProfilePic',
+                                          checkPhoneNumberModel.data!.profilePic
+                                              .toString());
+                                      await sharedPreferences.setString(
+                                          'userLatitude',
+                                          widget.latitude.toString());
+                                      await sharedPreferences.setString(
+                                          'userLongitude',
+                                          widget.longitude.toString());
+                                      await sharedPreferences.setString(
+                                          'deviceIDInfo',
+                                          checkPhoneNumberModel
+                                              .data!.oneSignalId
+                                              .toString());
+                                      await sharedPreferences.setString(
+                                          'userType',
+                                          checkPhoneNumberModel.data!.userType
+                                              .toString());
+                                      await sharedPreferences.setString(
+                                          'parentID',
+                                          checkPhoneNumberModel.data!.parentId
+                                              .toString());
+                                      await sharedPreferences.setString(
+                                          'isLogIn', 'true');
+                                      print(
+                                          "sharedPref lat: ${widget.latitude.toString()}");
+                                      print(
+                                          "sharedPref long: ${widget.longitude.toString()}");
+                                      print(
+                                          "sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId}");
+                                      print(
+                                          "sharedPref type: ${checkPhoneNumberModel.data?.userType}");
+                                      fleetId =
+                                          sharedPreferences.getInt('userID');
+                                      parentId = sharedPreferences
+                                          .getString('userEmail');
+                                      final pic = sharedPreferences
+                                          .getString('userProfilePic');
+                                      print("fleetId $fleetId");
+                                      print("parentId $parentId");
+                                      print('pic: $pic');
+                                      print(
+                                          "badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
+                                      if (widget.userType == "Rider") {
+                                        if (checkPhoneNumberModel
+                                                .data?.usersFleetId!
+                                                .toInt() !=
+                                            null) {
+                                          if (checkPhoneNumberModel
+                                                  .data?.badgeVerified ==
+                                              "No") {
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          RideDetailsAfterLogInScreen(
+                                                        userType: 'Rider',
+                                                        userFleetId:
+                                                            fleetId.toString(),
+                                                        parentID:
+                                                            parentId.toString(),
+                                                      ),
+                                                    ),
+                                                    (route) => false);
+                                            showToastSuccess(
+                                              'Badge is not verified. PLease add vehicle or request a bike to verify badge.',
+                                              FToast().init(context),
+                                              seconds: 3,
+                                            );
+                                          } else {
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const BottomNavBar(),
+                                                    ),
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                          }
+                                        } else {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RegisterScreen(
+                                                      userType: widget.userType,
+                                                      phoneNumber: widget
+                                                          .phoneNumber
+                                                          .toString(),
+                                                      deviceID: widget.deviceID
+                                                          .toString(),
+                                                    ),
+                                                  ),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        }
+                                      } else {
+                                        if (widget.userType == "Fleet") {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const BottomNavBarFleet(),
+                                                  ),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        }
+                                      }
+                                    } else if (checkPhoneNumberModel.status ==
+                                            "error" &&
+                                        checkPhoneNumberModel.message ==
+                                            "Your account is not approved yet.") {
+                                      Navigator.pop(context);
+                                      showToastSuccess(
+                                        'Your account is not approved yet.',
+                                        FToast().init(context),
+                                        seconds: 3,
+                                      );
+                                    } else if (checkPhoneNumberModel.status ==
+                                            "error" &&
+                                        checkPhoneNumberModel.message ==
+                                            "Phone number does not exist.") {
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterScreen(
+                                              userType: widget.userType,
+                                              phoneNumber:
+                                                  widget.phoneNumber.toString(),
+                                              deviceID:
+                                                  widget.deviceID.toString(),
+                                            ),
+                                          ),
+                                          (Route<dynamic> route) => false);
+                                    }
+                                  } else {
+                                    showToastError(
+                                        "The provided verification code is invalid or expired",
+                                        FToast().init(context));
+                                  }
+                                } else {
+                                  showToastError(
+                                      "Please enter the verification code",
+                                      FToast().init(context));
                                 }
                               },
-                              // => isVerifying
-                              //     ? apiButton(context)
-                              //     : verifyOTPmethod(context),
-                              child: isButtonDisabled
+                              child: isLoading
                                   ? apiButton(context)
-                                  : isVerifying
-                                      ? apiButton(context)
-                                      : buttonContainer(context, 'VERIFY'),
+                                  : buttonContainer(context, 'VERIFY'),
                             ),
                           ),
                         ],
