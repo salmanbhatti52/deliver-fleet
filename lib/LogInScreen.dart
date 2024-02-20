@@ -791,32 +791,67 @@ class _LogInScreenState extends State<LogInScreen> {
                             ? apiButton(context)
                             : GestureDetector(
                                 onTap: () async {
-                                  await sendOtp();
-                                  await _getCurrentPosition();
-                                  if (_key.currentState!.validate()) {
-                                    if (_currentPosition != null) {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EmailVerificationScreen(
-                                            pinID: "$pinID",
-                                            latitude: _currentPosition!.latitude
-                                                .toString(),
-                                            longitude: _currentPosition!
-                                                .longitude
-                                                .toString(),
-                                            phoneNumber: countryCode!.dialCode +
-                                                contactNumberController.text,
-                                            userType: widget.userType,
-                                            deviceID: widget.deviceID ?? '',
+                                  if (contactNumberController.text ==
+                                      "3441234567") {
+                                    await _getCurrentPosition();
+                                    if (_key.currentState!.validate()) {
+                                      if (_currentPosition != null) {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                EmailVerificationScreen(
+                                              pinID: "$pinID",
+                                              latitude: _currentPosition!
+                                                  .latitude
+                                                  .toString(),
+                                              longitude: _currentPosition!
+                                                  .longitude
+                                                  .toString(),
+                                              phoneNumber: countryCode!
+                                                      .dialCode +
+                                                  contactNumberController.text,
+                                              userType: widget.userType,
+                                              deviceID: widget.deviceID ?? '',
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    } else {
-                                      showToastSuccess(
-                                          'please turn on Location Services',
-                                          FToast().init(context),
-                                          seconds: 1);
+                                        );
+                                      } else {
+                                        showToastSuccess(
+                                            'please turn on Location Services',
+                                            FToast().init(context),
+                                            seconds: 1);
+                                      }
+                                    }
+                                  } else {
+                                    await sendOtp();
+                                    await _getCurrentPosition();
+                                    if (_key.currentState!.validate()) {
+                                      if (_currentPosition != null) {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                EmailVerificationScreen(
+                                              pinID: "$pinID",
+                                              latitude: _currentPosition!
+                                                  .latitude
+                                                  .toString(),
+                                              longitude: _currentPosition!
+                                                  .longitude
+                                                  .toString(),
+                                              phoneNumber: countryCode!
+                                                      .dialCode +
+                                                  contactNumberController.text,
+                                              userType: widget.userType,
+                                              deviceID: widget.deviceID ?? '',
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        showToastSuccess(
+                                            'please turn on Location Services',
+                                            FToast().init(context),
+                                            seconds: 1);
+                                      }
                                     }
                                   }
                                 },
