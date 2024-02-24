@@ -16,9 +16,11 @@ import 'package:deliver_partner/Constants/back-arrow-with-container.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -50,6 +52,11 @@ class _LogInScreenState extends State<LogInScreen> {
   bool isLoading = false;
   bool isLoading2 = false;
 
+
+  String? currentLat;
+  String? currentLng;
+  LatLng? currentLocation;
+
   String? pinID;
 
   String? termiiApiKey;
@@ -67,7 +74,7 @@ class _LogInScreenState extends State<LogInScreen> {
   final GlobalKey<FormState> _key = GlobalKey();
   final countryPicker = const FlCountryCodePicker();
   CountryCode? countryCode =
-      const CountryCode(name: 'Nigeria', code: 'NG', dialCode: '+234');
+  const CountryCode(name: 'Nigeria', code: 'NG', dialCode: '+234');
   TextEditingController contactNumberController = TextEditingController();
 
   ApiServices get service => GetIt.I<ApiServices>();
@@ -204,8 +211,8 @@ class _LogInScreenState extends State<LogInScreen> {
       print("one_signal_id ${widget.deviceID}");
       print("user_type ${widget.userType}");
       print("phone ${countryCode!.dialCode + contactNumberController.text}");
-      print("latitude ${_currentPosition!.latitude.toString()}");
-      print("longitude ${_currentPosition!.longitude.toString()}");
+      print("latitude $currentLat");
+      print("longitude $currentLng");
       String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -216,8 +223,8 @@ class _LogInScreenState extends State<LogInScreen> {
           "one_signal_id": widget.deviceID,
           "user_type": widget.userType,
           "phone": countryCode!.dialCode + contactNumberController.text,
-          "latitude": _currentPosition!.latitude.toString(),
-          "longitude": _currentPosition!.longitude.toString(),
+          "latitude": currentLat,
+          "longitude": currentLng,
         },
       );
       final responseString = response.body;
@@ -247,6 +254,7 @@ class _LogInScreenState extends State<LogInScreen> {
     setState(() {
       isLoading = true;
     });
+    locationPermission();
     init();
     getSystemData();
   }
@@ -257,7 +265,7 @@ class _LogInScreenState extends State<LogInScreen> {
     _deviceDetails();
 
     ///for location
-    _getCurrentPosition();
+    getCurrentLocation();
 
     /// for email and password
     // getEmailAndPassword();
@@ -288,7 +296,8 @@ class _LogInScreenState extends State<LogInScreen> {
           deviceVersion = build.version.toString();
           identifier = build.androidId;
           print(
-              'device id for android while registering: ${identifier.toString()}');
+              'device id for android while registering: ${identifier
+                  .toString()}');
         });
         //UUID for Android
       } else if (Platform.isIOS) {
@@ -308,7 +317,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
   /// Location permission methods for longitude and latitude:
 
-  locationPermission() async {
+  void locationPermission() async {
     PermissionStatus status = await Permission.location.request();
 
     if (status.isGranted) {
@@ -323,7 +332,10 @@ class _LogInScreenState extends State<LogInScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         elevation: 0,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.transparent,
         duration: const Duration(seconds: 5),
@@ -365,14 +377,23 @@ class _LogInScreenState extends State<LogInScreen> {
                   fontFamily: 'Syne-Regular',
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              SizedBox(height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.01),
               GestureDetector(
                 onTap: () {
                   openAppSettings();
                 },
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.04,
-                  width: MediaQuery.of(context).size.width * 0.33,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.04,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.33,
                   decoration: BoxDecoration(
                     color: const Color(0xFF36454F),
                     borderRadius: BorderRadius.circular(10),
@@ -438,21 +459,48 @@ class _LogInScreenState extends State<LogInScreen> {
   // }
 
   // String? _currentAddress;
-  var hasPermission = false;
-  Position? _currentPosition;
 
-  Future<void> _getCurrentPosition() async {
-    // hasPermission = await locationPermission();
-    // if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
+  // var hasPermission = false;
+  // Position? _currentPosition;
+  //
+  // Future<void> _getCurrentPosition() async {
+  //   // hasPermission = await locationPermission();
+  //   // if (!hasPermission) return;
+  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+  //       .then((Position position) {
+  //     setState(() => _currentPosition = position);
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
 
   /// Location permission methods for longitude and latitude:
+
+  Future<void> getCurrentLocation() async {
+    final Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    );
+
+    final List<Placemark> placemarks =
+    await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    if (placemarks.isNotEmpty) {
+      final Placemark currentPlace = placemarks.first;
+      final String currentAddress =
+          "${currentPlace.name}, ${currentPlace.locality}, ${currentPlace
+          .country}";
+
+      setState(() {
+        currentLocation = LatLng(position.latitude, position.longitude);
+        currentLat = position.latitude.toString();
+        currentLng = position.longitude.toString();
+        debugPrint("currentLat: $currentLat");
+        debugPrint("currentLng: $currentLng");
+        debugPrint("currentPickupLocation: $currentAddress");
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -497,13 +545,21 @@ class _LogInScreenState extends State<LogInScreen> {
   );
 
   final contentPadding =
-      const EdgeInsets.symmetric(horizontal: 14, vertical: 16);
+  const EdgeInsets.symmetric(horizontal: 14, vertical: 16);
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
-    var size = MediaQuery.of(context).size;
+    final double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    var size = MediaQuery
+        .of(context)
+        .size;
 
     print('user type on login screen :  ${widget.userType}');
     return Scaffold(
@@ -524,528 +580,519 @@ class _LogInScreenState extends State<LogInScreen> {
         child: isLoading
             ? spinKitRotatingCircle
             : GlowingOverscrollIndicator(
-                axisDirection: AxisDirection.down,
-                color: orange,
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _key,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1,
-                        ),
-                        SvgPicture.asset(
-                          'assets/images/logo.svg',
-                          height: size.height * 0.15,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Text(
-                          'LOGIN',
-                          style: GoogleFonts.syne(
-                            fontWeight: FontWeight.w700,
-                            color: orange,
-                            fontSize: size.width * 0.08,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
-                        ),
-                        Text(
-                          'as ${widget.userType}',
-                          style: GoogleFonts.syne(
-                            fontWeight: FontWeight.w700,
-                            color: orange,
-                            fontSize: size.width * 0.04,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.08,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.1),
-                          child: TextFormField(
-                            controller: contactNumberController,
-                            cursorColor: orange,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(15),
-                            ],
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Contact Number is required!';
-                              } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                                return 'Contact Number must contain only digits';
-                              } else if (value.length < 10 ||
-                                  value.length > 15) {
-                                return 'Contact Number must be between 10 and 15 digits';
-                              }
-                              return null;
-                            },
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontFamily: 'Inter-Regular',
-                            ),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color(0xffF2F0EE),
-                              errorStyle: const TextStyle(
-                                color: red,
-                                fontSize: 10,
-                                fontFamily: 'Inter-Bold',
-                              ),
-                              border: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                borderSide: BorderSide.none,
-                              ),
-                              enabledBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                borderSide: BorderSide.none,
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: orange,
-                                ),
-                              ),
-                              focusedErrorBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                borderSide: BorderSide.none,
-                              ),
-                              errorBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                borderSide: BorderSide(
-                                  color: red,
-                                  width: 1,
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: screenWidth * 0.04,
-                                vertical: screenHeight * 0.02,
-                              ),
-                              hintText: "Contact Number",
-                              hintStyle: TextStyle(
-                                color: const Color(0xFF191919).withOpacity(0.5),
-                                fontSize: 12,
-                                fontFamily: 'Inter-Light',
-                              ),
-                              prefixIcon: GestureDetector(
-                                onTap: () async {
-                                  final code = await countryPicker.showPicker(
-                                      context: context);
-                                  setState(() {
-                                    countryCode = code;
-                                  });
-                                  print('countryName: ${countryCode!.name}');
-                                  print('countryCode: ${countryCode!.code}');
-                                  print(
-                                      'countryDialCode: ${countryCode!.dialCode}');
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 20),
-                                      child: Container(
-                                        child: countryCode != null
-                                            ? Image.asset(
-                                                countryCode!.flagUri,
-                                                package: countryCode!
-                                                    .flagImagePackage,
-                                                width: 25,
-                                                height: 20,
-                                              )
-                                            : SvgPicture.asset(
-                                                'assets/images/flag-icon.svg',
-                                              ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        countryCode?.dialCode ?? "+234",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: const Color(0xFF191919)
-                                              .withOpacity(0.5),
-                                          fontSize: 12,
-                                          fontFamily: 'Inter-Light',
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                0.02),
-                                    Text(
-                                      '|',
-                                      style: TextStyle(
-                                        color: const Color(0xFF191919)
-                                            .withOpacity(0.5),
-                                        fontSize: 12,
-                                        fontFamily: 'Inter-SemiBold',
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                0.02),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        // AutofillGroup(
-                        //   child: Column(
-                        //     children: [
-                        //       SizedBox(
-                        //         width: 296.w,
-                        //         child: TextFormFieldWidget(
-                        //           autofillHints: AutofillHints.email,
-                        //           controller: emailController,
-                        //           textInputType: TextInputType.emailAddress,
-                        //           enterTextStyle: enterTextStyle,
-                        //           cursorColor: orange,
-                        //           hintText: 'Email ID',
-                        //           border: border,
-                        //           hintStyle: hintStyle,
-                        //           focusedBorder: focusedBorder,
-                        //           obscureText: null,
-                        //           contentPadding: contentPadding,
-                        //           enableBorder: enableBorder,
-                        //           prefixIcon: null,
-                        //           validator: (val) {
-                        //             if (val!.isEmpty) {
-                        //               return 'email cannot be empty';
-                        //             }
-                        //             return null;
-                        //           },
-                        //           length: -1,
-                        //         ),
-                        //       ),
-                        //       SizedBox(
-                        //         height: 25.h,
-                        //       ),
-                        //       SizedBox(
-                        //         width: 296.w,
-                        //         child: TextFormFieldWidget(
-                        //           autofillHints: AutofillHints.password,
-                        //           validator: (val) {
-                        //             if (val!.isEmpty) {
-                        //               return 'password cannot be empty';
-                        //             }
-                        //             return null;
-                        //           },
-                        //           suffixIcon: GestureDetector(
-                        //             onTap: () {
-                        //               setState(() {
-                        //                 passwordHidden = !passwordHidden;
-                        //               });
-                        //             },
-                        //             child: passwordHidden
-                        //                 ? SvgPicture.asset(
-                        //                     'assets/images/pass-hide-icon.svg',
-                        //                     fit: BoxFit.scaleDown,
-                        //                   )
-                        //                 : SvgPicture.asset(
-                        //                     'assets/images/pass-icon.svg',
-                        //                     // colorFilter:
-                        //                     // ColorFilter.mode(orange, BlendMode.srcIn),
-                        //                     fit: BoxFit.scaleDown,
-                        //                   ),
-                        //           ),
-                        //           controller: passwordController,
-                        //           textInputType:
-                        //               TextInputType.visiblePassword,
-                        //           enterTextStyle: enterTextStyle,
-                        //           cursorColor: orange,
-                        //           hintText: 'Password',
-                        //           border: border,
-                        //           hintStyle: hintStyle,
-                        //           focusedBorder: focusedBorder,
-                        //           obscureText: passwordHidden,
-                        //           contentPadding: contentPadding,
-                        //           enableBorder: enableBorder,
-                        //           length: -1,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     Row(
-                        //       children: [
-                        //         GestureDetector(
-                        //           onTap: () {
-                        //             setState(() {
-                        //               rememberMe = !rememberMe;
-                        //               TextInput.finishAutofillContext(
-                        //                   shouldSave: rememberMe);
-                        //               // getEmailAndPassword();
-                        //             });
-                        //           },
-                        //           child: rememberMe
-                        //               ? SvgPicture.asset(
-                        //                   'assets/images/switch-on.svg')
-                        //               : SvgPicture.asset(
-                        //                   'assets/images/switch-off.svg'),
-                        //         ),
-                        //         SizedBox(
-                        //           width: 9.w,
-                        //         ),
-                        //         Text(
-                        //           'Remember me',
-                        //           style: GoogleFonts.syne(
-                        //             fontSize: 12,
-                        //             fontWeight: FontWeight.w400,
-                        //             color: black,
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //     GestureDetector(
-                        //       onTap: () => Navigator.of(context).push(
-                        //         MaterialPageRoute(
-                        //           builder: (context) => ForgetPassword(
-                        //             userType: widget.userType,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //       child: Text(
-                        //         'Forgot Password?',
-                        //         style: GoogleFonts.syne(
-                        //           decoration: TextDecoration.underline,
-                        //           fontSize: 12,
-                        //           fontWeight: FontWeight.w400,
-                        //           color: black,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        // GestureDetector(
-                        //   onTap: () => Navigator.of(context).push(
-                        //     MaterialPageRoute(
-                        //       builder: (context) => VerifyYourself(
-                        //           email: emailController.text,
-                        //           appMode: widget.userType),
-                        //     ),
-                        //   ),
-                        //   child: RichText(
-                        //     text: TextSpan(
-                        //       text: 'Did\'nt verify email?',
-                        //       style: GoogleFonts.syne(
-                        //         fontSize: 13,
-                        //         fontWeight: FontWeight.w400,
-                        //         color: grey,
-                        //       ),
-                        //       children: [
-                        //         TextSpan(
-                        //           text: '  Verify Now',
-                        //           style: GoogleFonts.syne(
-                        //             decoration: TextDecoration.underline,
-                        //             fontSize: 14,
-                        //             fontWeight: FontWeight.w500,
-                        //             color: orange,
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        isLoggingIn
-                            ? apiButton(context)
-                            : GestureDetector(
-                                onTap: () async {
-                                  if (contactNumberController.text ==
-                                      "3441234567") {
-                                    await _getCurrentPosition();
-                                    if (_key.currentState!.validate()) {
-                                      if (_currentPosition != null) {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                EmailVerificationScreen(
-                                              pinID: "$pinID",
-                                              latitude: _currentPosition!
-                                                  .latitude
-                                                  .toString(),
-                                              longitude: _currentPosition!
-                                                  .longitude
-                                                  .toString(),
-                                              phoneNumber: countryCode!
-                                                      .dialCode +
-                                                  contactNumberController.text,
-                                              userType: widget.userType,
-                                              deviceID: widget.deviceID ?? '',
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        showToastSuccess(
-                                            'please turn on Location Services',
-                                            FToast().init(context),
-                                            seconds: 1);
-                                      }
-                                    }
-                                  } else {
-                                    await sendOtp();
-                                    await _getCurrentPosition();
-                                    if (_key.currentState!.validate()) {
-                                      if (_currentPosition != null) {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                EmailVerificationScreen(
-                                              pinID: "$pinID",
-                                              latitude: _currentPosition!
-                                                  .latitude
-                                                  .toString(),
-                                              longitude: _currentPosition!
-                                                  .longitude
-                                                  .toString(),
-                                              phoneNumber: countryCode!
-                                                      .dialCode +
-                                                  contactNumberController.text,
-                                              userType: widget.userType,
-                                              deviceID: widget.deviceID ?? '',
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        showToastSuccess(
-                                            'please turn on Location Services',
-                                            FToast().init(context),
-                                            seconds: 1);
-                                      }
-                                    }
-                                  }
-                                },
-                                child: buttonContainer1(context, 'LOGIN'),
-                              ),
-                        // const Spacer(),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        // Text(
-                        //   'OR',
-                        //   style: GoogleFonts.syne(
-                        //     fontSize: 18,
-                        //     fontWeight: FontWeight.w600,
-                        //     color: grey,
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: 15.h,
-                        // ),
-                        // GestureDetector(
-                        //   onTap: null,
-                        //   child: facebookButton(context),
-                        // ),
-                        // SizedBox(
-                        //   height: 20.h,
-                        // ),
-                        // GestureDetector(
-                        //   onTap: null,
-                        //   child: googleButton(context),
-                        // ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(bottom: 20.0.h, top: 20.h),
-                        //   child: GestureDetector(
-                        //     onTap: () => Navigator.of(context).push(
-                        //       MaterialPageRoute(
-                        //         builder: (context) => LogInScreen(
-                        //           userType: widget.userType,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     child: RichText(
-                        //       text: TextSpan(
-                        //         text: 'Have an account already? ',
-                        //         style: GoogleFonts.syne(
-                        //           fontSize: 13,
-                        //           fontWeight: FontWeight.w400,
-                        //           color: grey,
-                        //         ),
-                        //         children: [
-                        //           TextSpan(
-                        //             text: 'Login',
-                        //             style: GoogleFonts.syne(
-                        //               decoration: TextDecoration.underline,
-                        //               fontSize: 14,
-                        //               fontWeight: FontWeight.w500,
-                        //               color: orange,
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(bottom: 20.0.h),
-                        //   child: GestureDetector(
-                        //     onTap: () => Navigator.of(context).push(
-                        //       MaterialPageRoute(
-                        //         builder: (context) => RegisterScreen(
-                        //           userType: widget.userType,
-                        //           deviceID: widget.deviceID ?? '',
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     child: RichText(
-                        //       text: TextSpan(
-                        //         text: 'don\'t have an account already? ',
-                        //         style: GoogleFonts.syne(
-                        //           fontSize: 13,
-                        //           fontWeight: FontWeight.w400,
-                        //           color: grey,
-                        //         ),
-                        //         children: [
-                        //           TextSpan(
-                        //             text: 'Register',
-                        //             style: GoogleFonts.syne(
-                        //               decoration: TextDecoration.underline,
-                        //               fontSize: 14,
-                        //               fontWeight: FontWeight.w500,
-                        //               color: orange,
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
+          axisDirection: AxisDirection.down,
+          color: orange,
+          child: SingleChildScrollView(
+            child: Form(
+              key: _key,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.1,
+                  ),
+                  SvgPicture.asset(
+                    'assets/images/logo.svg',
+                    height: size.height * 0.15,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    'LOGIN',
+                    style: GoogleFonts.syne(
+                      fontWeight: FontWeight.w700,
+                      color: orange,
+                      fontSize: size.width * 0.08,
                     ),
                   ),
-                ),
+                  SizedBox(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.01,
+                  ),
+                  Text(
+                    'as ${widget.userType}',
+                    style: GoogleFonts.syne(
+                      fontWeight: FontWeight.w700,
+                      color: orange,
+                      fontSize: size.width * 0.04,
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.08,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.1),
+                    child: TextFormField(
+                      controller: contactNumberController,
+                      cursorColor: orange,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(15),
+                      ],
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Contact Number is required!';
+                        } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                          return 'Contact Number must contain only digits';
+                        } else if (value.length < 10 ||
+                            value.length > 15) {
+                          return 'Contact Number must be between 10 and 15 digits';
+                        }
+                        return null;
+                      },
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontFamily: 'Inter-Regular',
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color(0xffF2F0EE),
+                        errorStyle: const TextStyle(
+                          color: red,
+                          fontSize: 10,
+                          fontFamily: 'Inter-Bold',
+                        ),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: orange,
+                          ),
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide(
+                            color: red,
+                            width: 1,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.04,
+                          vertical: screenHeight * 0.02,
+                        ),
+                        hintText: "Contact Number",
+                        hintStyle: TextStyle(
+                          color: const Color(0xFF191919).withOpacity(0.5),
+                          fontSize: 12,
+                          fontFamily: 'Inter-Light',
+                        ),
+                        prefixIcon: GestureDetector(
+                          onTap: () async {
+                            final code = await countryPicker.showPicker(
+                                context: context);
+                            setState(() {
+                              countryCode = code;
+                            });
+                            print('countryName: ${countryCode!.name}');
+                            print('countryCode: ${countryCode!.code}');
+                            print(
+                                'countryDialCode: ${countryCode!.dialCode}');
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Container(
+                                  child: countryCode != null
+                                      ? Image.asset(
+                                    countryCode!.flagUri,
+                                    package: countryCode!
+                                        .flagImagePackage,
+                                    width: 25,
+                                    height: 20,
+                                  )
+                                      : SvgPicture.asset(
+                                    'assets/images/flag-icon.svg',
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  countryCode?.dialCode ?? "+234",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: const Color(0xFF191919)
+                                        .withOpacity(0.5),
+                                    fontSize: 12,
+                                    fontFamily: 'Inter-Light',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                  width:
+                                  MediaQuery
+                                      .sizeOf(context)
+                                      .width *
+                                      0.02),
+                              Text(
+                                '|',
+                                style: TextStyle(
+                                  color: const Color(0xFF191919)
+                                      .withOpacity(0.5),
+                                  fontSize: 12,
+                                  fontFamily: 'Inter-SemiBold',
+                                ),
+                              ),
+                              SizedBox(
+                                  width:
+                                  MediaQuery
+                                      .sizeOf(context)
+                                      .width *
+                                      0.02),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // AutofillGroup(
+                  //   child: Column(
+                  //     children: [
+                  //       SizedBox(
+                  //         width: 296.w,
+                  //         child: TextFormFieldWidget(
+                  //           autofillHints: AutofillHints.email,
+                  //           controller: emailController,
+                  //           textInputType: TextInputType.emailAddress,
+                  //           enterTextStyle: enterTextStyle,
+                  //           cursorColor: orange,
+                  //           hintText: 'Email ID',
+                  //           border: border,
+                  //           hintStyle: hintStyle,
+                  //           focusedBorder: focusedBorder,
+                  //           obscureText: null,
+                  //           contentPadding: contentPadding,
+                  //           enableBorder: enableBorder,
+                  //           prefixIcon: null,
+                  //           validator: (val) {
+                  //             if (val!.isEmpty) {
+                  //               return 'email cannot be empty';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           length: -1,
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         height: 25.h,
+                  //       ),
+                  //       SizedBox(
+                  //         width: 296.w,
+                  //         child: TextFormFieldWidget(
+                  //           autofillHints: AutofillHints.password,
+                  //           validator: (val) {
+                  //             if (val!.isEmpty) {
+                  //               return 'password cannot be empty';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           suffixIcon: GestureDetector(
+                  //             onTap: () {
+                  //               setState(() {
+                  //                 passwordHidden = !passwordHidden;
+                  //               });
+                  //             },
+                  //             child: passwordHidden
+                  //                 ? SvgPicture.asset(
+                  //                     'assets/images/pass-hide-icon.svg',
+                  //                     fit: BoxFit.scaleDown,
+                  //                   )
+                  //                 : SvgPicture.asset(
+                  //                     'assets/images/pass-icon.svg',
+                  //                     // colorFilter:
+                  //                     // ColorFilter.mode(orange, BlendMode.srcIn),
+                  //                     fit: BoxFit.scaleDown,
+                  //                   ),
+                  //           ),
+                  //           controller: passwordController,
+                  //           textInputType:
+                  //               TextInputType.visiblePassword,
+                  //           enterTextStyle: enterTextStyle,
+                  //           cursorColor: orange,
+                  //           hintText: 'Password',
+                  //           border: border,
+                  //           hintStyle: hintStyle,
+                  //           focusedBorder: focusedBorder,
+                  //           obscureText: passwordHidden,
+                  //           contentPadding: contentPadding,
+                  //           enableBorder: enableBorder,
+                  //           length: -1,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Row(
+                  //       children: [
+                  //         GestureDetector(
+                  //           onTap: () {
+                  //             setState(() {
+                  //               rememberMe = !rememberMe;
+                  //               TextInput.finishAutofillContext(
+                  //                   shouldSave: rememberMe);
+                  //               // getEmailAndPassword();
+                  //             });
+                  //           },
+                  //           child: rememberMe
+                  //               ? SvgPicture.asset(
+                  //                   'assets/images/switch-on.svg')
+                  //               : SvgPicture.asset(
+                  //                   'assets/images/switch-off.svg'),
+                  //         ),
+                  //         SizedBox(
+                  //           width: 9.w,
+                  //         ),
+                  //         Text(
+                  //           'Remember me',
+                  //           style: GoogleFonts.syne(
+                  //             fontSize: 12,
+                  //             fontWeight: FontWeight.w400,
+                  //             color: black,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     GestureDetector(
+                  //       onTap: () => Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //           builder: (context) => ForgetPassword(
+                  //             userType: widget.userType,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       child: Text(
+                  //         'Forgot Password?',
+                  //         style: GoogleFonts.syne(
+                  //           decoration: TextDecoration.underline,
+                  //           fontSize: 12,
+                  //           fontWeight: FontWeight.w400,
+                  //           color: black,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  // GestureDetector(
+                  //   onTap: () => Navigator.of(context).push(
+                  //     MaterialPageRoute(
+                  //       builder: (context) => VerifyYourself(
+                  //           email: emailController.text,
+                  //           appMode: widget.userType),
+                  //     ),
+                  //   ),
+                  //   child: RichText(
+                  //     text: TextSpan(
+                  //       text: 'Did\'nt verify email?',
+                  //       style: GoogleFonts.syne(
+                  //         fontSize: 13,
+                  //         fontWeight: FontWeight.w400,
+                  //         color: grey,
+                  //       ),
+                  //       children: [
+                  //         TextSpan(
+                  //           text: '  Verify Now',
+                  //           style: GoogleFonts.syne(
+                  //             decoration: TextDecoration.underline,
+                  //             fontSize: 14,
+                  //             fontWeight: FontWeight.w500,
+                  //             color: orange,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  isLoggingIn
+                      ? apiButton(context)
+                      : GestureDetector(
+                    onTap: () async {
+                      if (contactNumberController.text ==
+                          "3441234567") {
+                        await getCurrentLocation();
+                        if (_key.currentState!.validate()) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EmailVerificationScreen(
+                                    pinID: "$pinID",
+                                    latitude: currentLat,
+                                    longitude: currentLng,
+                                    phoneNumber: countryCode!
+                                        .dialCode +
+                                        contactNumberController.text,
+                                    userType: widget.userType,
+                                    deviceID: widget.deviceID ?? '',
+                                  ),
+                            ),
+                          );
+                        }
+                      } else {
+                        await sendOtp();
+                        await getCurrentLocation();
+                        if (_key.currentState!.validate()) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EmailVerificationScreen(
+                                    pinID: "$pinID",
+                                    latitude: currentLat,
+                                    longitude: currentLng,
+                                    phoneNumber: countryCode!
+                                        .dialCode +
+                                        contactNumberController.text,
+                                    userType: widget.userType,
+                                    deviceID: widget.deviceID ?? '',
+                                  ),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: buttonContainer1(context, 'LOGIN'),
+                  ),
+                  // const Spacer(),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  // Text(
+                  //   'OR',
+                  //   style: GoogleFonts.syne(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: grey,
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 15.h,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: null,
+                  //   child: facebookButton(context),
+                  // ),
+                  // SizedBox(
+                  //   height: 20.h,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: null,
+                  //   child: googleButton(context),
+                  // ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(bottom: 20.0.h, top: 20.h),
+                  //   child: GestureDetector(
+                  //     onTap: () => Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => LogInScreen(
+                  //           userType: widget.userType,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     child: RichText(
+                  //       text: TextSpan(
+                  //         text: 'Have an account already? ',
+                  //         style: GoogleFonts.syne(
+                  //           fontSize: 13,
+                  //           fontWeight: FontWeight.w400,
+                  //           color: grey,
+                  //         ),
+                  //         children: [
+                  //           TextSpan(
+                  //             text: 'Login',
+                  //             style: GoogleFonts.syne(
+                  //               decoration: TextDecoration.underline,
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.w500,
+                  //               color: orange,
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(bottom: 20.0.h),
+                  //   child: GestureDetector(
+                  //     onTap: () => Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => RegisterScreen(
+                  //           userType: widget.userType,
+                  //           deviceID: widget.deviceID ?? '',
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     child: RichText(
+                  //       text: TextSpan(
+                  //         text: 'don\'t have an account already? ',
+                  //         style: GoogleFonts.syne(
+                  //           fontSize: 13,
+                  //           fontWeight: FontWeight.w400,
+                  //           color: grey,
+                  //         ),
+                  //         children: [
+                  //           TextSpan(
+                  //             text: 'Register',
+                  //             style: GoogleFonts.syne(
+                  //               decoration: TextDecoration.underline,
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.w500,
+                  //               color: orange,
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
               ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -1066,8 +1113,8 @@ class _LogInScreenState extends State<LogInScreen> {
         "user_type": widget.userType,
         // "email": emailController.text,
         // "password": passwordController.text,
-        "latitude": _currentPosition!.latitude.toString(),
-        "longitude": _currentPosition!.longitude.toString(),
+        "latitude": currentLat,
+        "longitude": currentLng,
       };
       print('map log in : ${loginData.toString()}');
       _loginResponse = await service.logInAPI(loginData);
@@ -1079,7 +1126,7 @@ class _LogInScreenState extends State<LogInScreen> {
         };
 
         _getAllVehicleFleetResponse =
-            await service.getAllVehiclesFleetApi(userData);
+        await service.getAllVehiclesFleetApi(userData);
 
         if (_getAllVehicleFleetResponse.status!.toLowerCase() == 'success') {}
 
@@ -1124,11 +1171,13 @@ class _LogInScreenState extends State<LogInScreen> {
           } else {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => RideDetailsAfterLogInScreen(
-                  userType: widget.userType,
-                  userFleetId: _loginResponse!.data!.users_fleet_id!.toString(),
-                  parentID: _loginResponse!.data!.parent_id!.toString(),
-                ),
+                builder: (context) =>
+                    RideDetailsAfterLogInScreen(
+                      userType: widget.userType,
+                      userFleetId: _loginResponse!.data!.users_fleet_id!
+                          .toString(),
+                      parentID: _loginResponse!.data!.parent_id!.toString(),
+                    ),
               ),
             );
           }
@@ -1153,7 +1202,7 @@ class _LogInScreenState extends State<LogInScreen> {
     }
   }
 
-  /// Remember Me Method:
+/// Remember Me Method:
 
 // void _RemeberMeMethod(bool value) {
 //   rememberMe = value;

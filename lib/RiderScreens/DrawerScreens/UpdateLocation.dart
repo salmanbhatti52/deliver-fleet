@@ -4,9 +4,11 @@ import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +28,10 @@ class UpdateLocation extends StatefulWidget {
 }
 
 class _UpdateLocationState extends State<UpdateLocation> {
+  String? currentLat;
+  String? currentLng;
+  LatLng? currentLocation;
+
   ApiServices get service => GetIt.I<ApiServices>();
 
   int userID = -1;
@@ -200,21 +206,43 @@ class _UpdateLocationState extends State<UpdateLocation> {
 
   // String? _currentAddress;
 
-  var hasPermission = false;
-  Position? _currentPosition;
-
-  Future<void> _getCurrentPosition() async {
-    // hasPermission = await locationPermission();
-    // if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
+  // var hasPermission = false;
+  // Position? _currentPosition;
+  //
+  // Future<void> _getCurrentPosition() async {
+  //   // hasPermission = await locationPermission();
+  //   // if (!hasPermission) return;
+  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+  //       .then((Position position) {
+  //     setState(() => _currentPosition = position);
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
 
   /// Location permission methods for longitude and latitude:
+
+  Future<void> getCurrentLocation() async {
+    final Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    );
+
+    final List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    if (placemarks.isNotEmpty) {
+      final Placemark currentPlace = placemarks.first;
+      final String currentAddress =
+          "${currentPlace.name}, ${currentPlace.locality}, ${currentPlace.country}";
+
+      setState(() {
+        currentLocation = LatLng(position.latitude, position.longitude);
+        currentLat = position.latitude.toString();
+        currentLng = position.longitude.toString();
+        debugPrint("currentPickUpLocation: $currentAddress");
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -284,9 +312,10 @@ class _UpdateLocationState extends State<UpdateLocation> {
                       child: isUpdatingLocation
                           ? apiButton(context)
                           : GestureDetector(
-                              onTap: () => hasPermission
-                                  ? updateLocationMethod(context)
-                                  : _getCurrentPosition(),
+                              onTap: () async {
+                                await getCurrentLocation();
+                                await updateLocationMethod(context);
+                              },
                               child:
                                   buttonContainer(context, 'Update Location'),
                             ),
@@ -307,8 +336,8 @@ class _UpdateLocationState extends State<UpdateLocation> {
     });
     Map updateLocationData = {
       "users_fleet_id": userID.toString(),
-      "latitude": _currentPosition!.latitude.toString(),
-      "longitude": _currentPosition!.longitude.toString(),
+      "latitude": currentLat,
+      "longitude": currentLng,
     };
     updateLocationResponse =
         await service.updateLocationOneTimeAPI(updateLocationData);
