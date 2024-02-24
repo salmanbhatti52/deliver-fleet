@@ -28,6 +28,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -62,11 +63,13 @@ void initializeSharedPreferences() async {
 
 class _TempLoginRiderState extends State<TempLoginRider> {
   final GlobalKey<FormState> _key = GlobalKey();
+
   // late TextEditingController firstNameController;
   // late TextEditingController lastNameController;
   TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+
   // late TextEditingController confirmPasswordController;
   // late TextEditingController phoneNumberController;
   // late TextEditingController fleetCodeController;
@@ -766,51 +769,141 @@ class _TempLoginRiderState extends State<TempLoginRider> {
   }
 
   /// Location permission methods for longitude and latitude:
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //     content: Text(
-      //         )));
-      showToastError(
-          'Location services are disabled. Please enable the services',
-          FToast().init(context),
-          seconds: 4);
-      return false;
+  locationPermission() async {
+    PermissionStatus status = await Permission.location.request();
+
+    if (status.isGranted) {
+      // Permission granted, navigate to the next screen
+    } else if (status.isDenied || status.isPermanentlyDenied) {
+      // Permission denied, show a message and provide information
+      showLocationPermissionSnackBar();
     }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //     const SnackBar(content: Text('Location permissions are denied')));
-        showToastError(
-            'Location permissions are denied', FToast().init(context),
-            seconds: 4);
-        return false;
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //     content: Text(
-      //
-      showToastError(
-          'Location permissions are permanently denied, Enable it from app permission',
-          FToast().init(context),
-          seconds: 4);
-      return false;
-    }
-    return true;
   }
+
+  void showLocationPermissionSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        elevation: 0,
+        width: MediaQuery.of(context).size.width,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        duration: const Duration(seconds: 5),
+        content: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
+              stops: [0.1, 1.5],
+              colors: [
+                orange,
+                lightOrange,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 2,
+                spreadRadius: 2,
+                offset: const Offset(0, 3),
+                color: black.withOpacity(0.2),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 2,
+              color: const Color(0xFF707070).withOpacity(0.5),
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Location permission is required\nto continue.',
+                style: TextStyle(
+                  color: white,
+                  fontSize: 12,
+                  fontFamily: 'Syne-Regular',
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              GestureDetector(
+                onTap: () {
+                  openAppSettings();
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  width: MediaQuery.of(context).size.width * 0.33,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF36454F),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Grant Permission',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: white,
+                        fontSize: 12,
+                        fontFamily: 'Syne-Medium',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Future<bool> _handleLocationPermission() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+  //
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //     //     content: Text(
+  //     //         )));
+  //     showToastError(
+  //         'Location services are disabled. Please enable the services',
+  //         FToast().init(context),
+  //         seconds: 4);
+  //     return false;
+  //   }
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       // ScaffoldMessenger.of(context).showSnackBar(
+  //       //     const SnackBar(content: Text('Location permissions are denied')));
+  //       showToastError(
+  //           'Location permissions are denied', FToast().init(context),
+  //           seconds: 4);
+  //       return false;
+  //     }
+  //   }
+  //   if (permission == LocationPermission.deniedForever) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //     //     content: Text(
+  //     //
+  //     showToastError(
+  //         'Location permissions are permanently denied, Enable it from app permission',
+  //         FToast().init(context),
+  //         seconds: 4);
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   bool hasPermission = false;
   Position? _currentPosition;
 
   Future<void> _getCurrentPosition() async {
-    hasPermission = await _handleLocationPermission();
+    hasPermission = await locationPermission();
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
@@ -823,6 +916,7 @@ class _TempLoginRiderState extends State<TempLoginRider> {
   TempLoginModel tempLoginModel = TempLoginModel();
   late APIResponse<List<GetAllVehiclesFleetModel>> _getAllVehicleFleetResponse;
   APIResponse<TempLoginModel>? loginResponse;
+
   Future<void> fleeTempLogin(BuildContext context) async {
     String apiUrl = "https://deliver.eigix.net/api/email_login_fleet";
     setState(() {

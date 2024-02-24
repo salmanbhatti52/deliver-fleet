@@ -74,11 +74,7 @@ dependencies:
   rename: ^3.0.1
   pinput: ^3.0.1
   flutter_gif: ^0.0.4
-
-
-
-
-
+  permission_handler: ^11.1.0
 
 
 dev_dependencies:
