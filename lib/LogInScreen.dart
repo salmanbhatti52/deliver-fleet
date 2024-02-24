@@ -442,8 +442,8 @@ class _LogInScreenState extends State<LogInScreen> {
   Position? _currentPosition;
 
   Future<void> _getCurrentPosition() async {
-    hasPermission = await locationPermission();
-    if (!hasPermission) return;
+    // hasPermission = await locationPermission();
+    // if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() => _currentPosition = position);
