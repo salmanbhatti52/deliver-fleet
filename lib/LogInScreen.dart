@@ -265,7 +265,7 @@ class _LogInScreenState extends State<LogInScreen> {
     _deviceDetails();
 
     ///for location
-    getCurrentLocation();
+    // getCurrentLocation();
 
     /// for email and password
     // getEmailAndPassword();

@@ -119,7 +119,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
     // });
 
     ///for location
-    _getCurrentPosition();
+    // _getCurrentPosition();
 
     // firstNameController = TextEditingController();
     // lastNameController = TextEditingController();
