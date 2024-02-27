@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:deliver_partner/temploginReider.dart';
+import 'package:deliver_partner/temploginRider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,7 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool systemSettings = false;
   String? loginType;
 
-  Future<String?> fetchSystemSettingsDescription28() async {
+  Future<String?> fetchSystemSettingsDescription20() async {
     const String apiUrl = 'https://deliver.eigix.net/api/get_all_system_data';
     setState(() {
       systemSettings = true;
@@ -77,20 +77,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         // If the call to the server was successful, parse the JSON
         final Map<String, dynamic> data = json.decode(response.body);
 
-        // Find the setting with system_settings_id equal to 26
-        final setting40 = data['data'].firstWhere(
-            (setting) => setting['system_settings_id'] == 40,
+        // Find the setting with system_settings_id equal to 20
+        final setting20 = data['data'].firstWhere(
+            (setting) => setting['system_settings_id'] == 20,
             orElse: () => null);
         setState(() {
           systemSettings = false;
         });
-        if (setting40 != null) {
-          // Extract and return the description if setting 28 exists
-          loginType = setting40['description'];
+        if (setting20 != null) {
+          // Extract and return the description if setting 20 exists
+          loginType = setting20['description'];
 
           return loginType;
         } else {
-          throw Exception('System setting with ID 40 not found');
+          throw Exception('System setting with ID 20 not found');
         }
       } else {
         // If the server did not return a 200 OK response,
@@ -109,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     setState(() {
       getsDeviceID = true;
     });
-    fetchSystemSettingsDescription28();
+    fetchSystemSettingsDescription20();
     // TODO: implement initState
     super.initState();
     _deviceDetails();

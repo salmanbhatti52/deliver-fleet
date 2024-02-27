@@ -1,13 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
-import 'package:http/http.dart' as http;
+
 import 'package:deliver_partner/Constants/FacebookButton.dart';
 import 'package:deliver_partner/Constants/GoogleButton.dart';
 import 'package:deliver_partner/PrivacyPolicy.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
+import 'package:deliver_partner/RiderScreens/RideDetailsAfterLogIn.dart';
 import 'package:deliver_partner/TermsAndConditions.dart';
 import 'package:deliver_partner/VerifyYourself.dart';
+import 'package:deliver_partner/models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
 import 'package:deliver_partner/models/tempLoginModel.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/tempRegisterFleet.dart';
+import 'package:deliver_partner/tempRegisterRider.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
@@ -24,6 +30,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'Constants/Colors.dart';
 import 'Constants/buttonContainer.dart';
@@ -32,22 +39,29 @@ import 'LogInScreen.dart';
 import 'RiderScreens/VerifyDrivingLisecnseManually.dart';
 import 'models/API models/API response.dart';
 
-class TempLoginFleet extends StatefulWidget {
+late SharedPreferences sharedPreferences;
+
+class TempLoginRider extends StatefulWidget {
   final String userType;
   final String deviceID;
   final String phoneNumber;
 
-  const TempLoginFleet(
+  const TempLoginRider(
       {super.key,
       required this.userType,
       required this.phoneNumber,
       required this.deviceID});
 
   @override
-  State<TempLoginFleet> createState() => _TempLoginFleetState();
+  State<TempLoginRider> createState() => _TempLoginRiderState();
 }
 
-class _TempLoginFleetState extends State<TempLoginFleet> {
+void initializeSharedPreferences() async {
+  sharedPreferences = await SharedPreferences.getInstance();
+  // You can do additional setup here if needed
+}
+
+class _TempLoginRiderState extends State<TempLoginRider> {
   final GlobalKey<FormState> _key = GlobalKey();
 
   // late TextEditingController firstNameController;
@@ -60,7 +74,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
   // late TextEditingController phoneNumberController;
   // late TextEditingController fleetCodeController;
   // late TextEditingController nINController;
-  late SharedPreferences sharedPreferences;
+
   bool passwordHidden = true;
   bool newPasswordHidden = true;
   bool isChecked = false;
@@ -112,23 +126,16 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _deviceDetails();
-    // SharedPreferences.getInstance().then((SharedPreferences sp) {
-    //   sharedPreferences = sp;
-    //   // You can now use sharedPreferences throughout your widget
-    // });
-
-    ///for location
-    // _getCurrentPosition();
-
+    _getCurrentPosition();
     // firstNameController = TextEditingController();
     // lastNameController = TextEditingController();
-    emailController = TextEditingController();
+    // emailController = TextEditingController();
     // nINController = TextEditingController();
     // passwordController = TextEditingController();
     // confirmPasswordController = TextEditingController();
     // phoneNumberController = TextEditingController();
     // fleetCodeController = TextEditingController();
+    initializeSharedPreferences();
   }
 
   @override
@@ -155,8 +162,9 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
         appBar: AppBar(
           elevation: 0,
           automaticallyImplyLeading: true,
-          backgroundColor: white,
-          iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(
+              color: Colors.black), // This will change the color of the icons
         ),
         backgroundColor: white,
         body: LayoutBuilder(
@@ -185,7 +193,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                 height: 40.h,
                               ),
                               Text(
-                                'Fleet Login',
+                                'Rider Login',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.inter(
                                   fontSize: 30,
@@ -561,12 +569,16 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                                 const TermsConditionsPage(),
                                           ),
                                         );
-                                        // const url =
-                                        //     'https://deliver.eigix.net/users/terms_and_conditions';
-                                        // if (await canLaunch(url)) {
-                                        //   await launch(url);
-                                        // } else {
-                                        //   throw 'Could not launch $url';
+                                        // try {
+                                        //   String url =
+                                        //       'https://deliver.eigix.net/users/terms_and_conditions';
+                                        //   if (await canLaunch(url)) {
+                                        //     await launch(url);
+                                        //   } else {
+                                        //     throw 'Could not launch $url';
+                                        //   }
+                                        // } catch (e) {
+                                        //   print('Error launching URL: $e');
                                         // }
                                       },
                                     text: 'Terms and Conditions ',
@@ -594,12 +606,16 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                                 const TermsConditionsPage(),
                                           ),
                                         );
-                                        // const url =
-                                        //     'https://deliver.eigix.net/users/privacy_policy';
-                                        // if (await canLaunch(url)) {
-                                        //   await launch(url);
-                                        // } else {
-                                        //   throw 'Could not launch $url';
+                                        // try {
+                                        //   const url =
+                                        //       'https://deliver.eigix.net/users/privacy_policy';
+                                        //   if (await canLaunch(url)) {
+                                        //     await launch(url);
+                                        //   } else {
+                                        //     throw 'Could not launch $url';
+                                        //   }
+                                        // } catch (e) {
+                                        //   print('Error launching URL: $e');
                                         // }
                                       },
                                     text: 'Privacy Policy ',
@@ -690,7 +706,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => TempRegisterFleet(
+                                      builder: (context) => TempRegisterRider(
                                           userType: widget.userType,
                                           deviceID: widget.deviceID,
                                           phoneNumber: "1234"),
@@ -718,13 +734,8 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
     );
   }
 
-  bool isValidEmail(String email) {
-    final RegExp regex = RegExp(
-      r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)*\w+[\w-]$',
-    );
-    return regex.hasMatch(email);
-  }
-
+  bool isRegistering = false;
+  APIResponse<APIResponse>? _signupResponse;
   String deviceName = '';
   String deviceVersion = '';
   String identifier = '';
@@ -755,6 +766,13 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
         return e.toString();
       }
     }
+  }
+
+  bool isValidEmail(String email) {
+    final RegExp regex = RegExp(
+      r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)*\w+[\w-]$',
+    );
+    return regex.hasMatch(email);
   }
 
   /// Location permission methods for longitude and latitude:
@@ -888,7 +906,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
   //   return true;
   // }
 
-  var hasPermission = false;
+  bool hasPermission = false;
   Position? _currentPosition;
 
   Future<void> _getCurrentPosition() async {
@@ -903,7 +921,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
   }
 
   TempLoginModel tempLoginModel = TempLoginModel();
-  bool isRegistering = false;
+  late APIResponse<List<GetAllVehiclesFleetModel>> _getAllVehicleFleetResponse;
   APIResponse<TempLoginModel>? loginResponse;
 
   Future<void> fleeTempLogin(BuildContext context) async {
@@ -928,130 +946,151 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
     print("responseSignInApi: $responseString");
     print("status Code SignIn: ${response.statusCode}");
 
-    if (response.statusCode == 200) {
+    tempLoginModel = tempLoginModelFromJson(responseString);
+    if (tempLoginModel.status == "success") {
+      print("Helllooooo Zainnnnnnnnnnnnnnnnnnnnnnnn");
       print("in 200 SignIn");
-      tempLoginModel = tempLoginModelFromJson(responseString);
+      Map userData = {
+        "users_fleet_id": tempLoginModel.data!.usersFleetId.toString(),
+      };
 
-      if (tempLoginModel.status == "success") {
-        sharedPreferences = await SharedPreferences.getInstance();
-        print('object device id: ${widget.deviceID}');
-        await sharedPreferences.setInt(
-            'userID', tempLoginModel.data!.usersFleetId);
-        await sharedPreferences.setString(
-            'userEmail', tempLoginModel.data!.email);
-        await sharedPreferences.setString(
-            'userFirstName', tempLoginModel.data!.firstName);
-        await sharedPreferences.setString(
-            'userLastName', tempLoginModel.data!.lastName);
-        // await sharedPreferences.setString(
-        //     'userProfilePic', checkPhoneNumberModel.data!.profilePic!);
-        await sharedPreferences.setString(
-            'userLatitude', tempLoginModel.data!.latitude);
-        await sharedPreferences.setString(
-            'userLongitude', tempLoginModel.data!.longitude);
-        await sharedPreferences.setString(
-            'deviceIDInfo', tempLoginModel.data!.oneSignalId);
-        await sharedPreferences.setString(
-            'userType', tempLoginModel.data!.userType);
-        await sharedPreferences.setString('isLogIn', 'true');
-        showToastSuccess(
-            tempLoginModel.status!.toString(), FToast().init(context),
-            seconds: 1);
-        if (widget.userType == "Fleet") {
-          Navigator.of(context).pushAndRemoveUntil(
+      _getAllVehicleFleetResponse =
+          await service.getAllVehiclesFleetApi(userData);
+      sharedPreferences = await SharedPreferences.getInstance();
+      if (_getAllVehicleFleetResponse.status!.toLowerCase() == 'success') {}
+      print('object device id: ${widget.deviceID}');
+
+      await sharedPreferences.setInt(
+          'userID', tempLoginModel.data!.usersFleetId);
+      await sharedPreferences.setString(
+          'parentID', tempLoginModel.data!.parentId.toString());
+      await sharedPreferences.setString(
+          'userEmail', tempLoginModel.data!.email);
+      await sharedPreferences.setString(
+          'userFirstName', tempLoginModel.data!.firstName);
+      await sharedPreferences.setString(
+          'userLastName', tempLoginModel.data!.lastName);
+      // await sharedPreferences.setString(
+      //     'userProfilePic', checkPhoneNumberModel.data!.profilePic!);
+      await sharedPreferences.setString(
+          'userLatitude', tempLoginModel.data!.latitude);
+      await sharedPreferences.setString(
+          'userLongitude', tempLoginModel.data!.longitude);
+      await sharedPreferences.setString(
+          'deviceIDInfo', tempLoginModel.data!.oneSignalId);
+      await sharedPreferences.setString(
+          'userType', tempLoginModel.data!.userType);
+      await sharedPreferences.setString('isLogIn', 'true');
+      showToastSuccess(
+          tempLoginModel.status!.toString(), FToast().init(context),
+          seconds: 1);
+      if (widget.userType == 'Rider') {
+        if (_getAllVehicleFleetResponse.status!.toLowerCase() == 'success') {
+          Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const BottomNavBarFleet(),
+              builder: (context) => const BottomNavBar(),
             ),
-            (Route<dynamic> route) =>
-                false, // This condition determines which routes to remove
           );
         } else {
-          showToastSuccess(
-              tempLoginModel.message!.toString(), FToast().init(context),
-              seconds: 2);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => RideDetailsAfterLogInScreen(
+                userType: widget.userType,
+                userFleetId: tempLoginModel.data!.usersFleetId.toString(),
+                parentID: tempLoginModel.data!.parentId.toString(),
+              ),
+            ),
+          );
         }
-      } else {
-        showToastSuccess(
-            tempLoginModel.message!.toString(), FToast().init(context),
-            seconds: 2);
+      } else if (widget.userType == 'Fleet') {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const BottomNavBarFleet(),
+          ),
+        );
       }
-    } else {
-      showToastSuccess(
-          tempLoginModel.message!.toString(), FToast().init(context),
-          seconds: 2);
-      print(
-          'device id for android while registering: ${tempLoginModel.message!.toString()}');
+    } else if (tempLoginModel.status == "error") {
+      print("Hellooooooooooooooooooooooooooooooooooo");
 
       showToastError(
         tempLoginModel.message!.toString(),
         FToast().init(context),
         seconds: 2,
       );
+      print(
+          'device id for android while registering: ${tempLoginModel.message!.toString()}');
     }
     setState(() {
       isRegistering = false;
     });
   }
 
-  loginMethod(BuildContext context) async {
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
+  registerMethod(BuildContext context) async {
     if (_key.currentState!.validate()) {
       setState(() {
         isRegistering = true;
       });
-      Map LoginData = {
+      Map signupData = {
         "user_type": widget.userType,
         "one_signal_id": widget.deviceID,
+        // "first_name": firstNameController.text,
+        // "last_name": lastNameController.text,
         "phone": widget.phoneNumber,
         "email": emailController.text,
-        "password": passwordController.text,
-        "latitude": _currentPosition!.latitude.toString(),
-        "longitude": _currentPosition!.longitude.toString(),
+        // "national_identification_no": nINController.text,
+        // "password": passwordController.text,
+        // "confirm_password": confirmPasswordController.text,
+        // "parent_id": fleetCodeController.text,
+        "account_type": "SignupWithApp"
       };
 
-      print('device ID for android or Ios is: ${LoginData.toString()}');
+      print('device ID for android or Ios is: ${signupData.toString()}');
 
-      loginResponse = await service.tempLoginAPI(LoginData);
-      if (loginResponse!.status!.toLowerCase() == 'success') {
+      _signupResponse = await service.signUpAPI(signupData);
+      if (_signupResponse!.status!.toLowerCase() == 'success') {
         print('object device id: ${widget.deviceID}');
-        await sharedPreferences.setInt(
-            'userID', loginResponse!.data!.data!.usersFleetId);
-        await sharedPreferences.setString(
-            'userEmail', loginResponse!.data!.data!.email);
-        await sharedPreferences.setString(
-            'userFirstName', loginResponse!.data!.data!.firstName);
-        await sharedPreferences.setString(
-            'userLastName', loginResponse!.data!.data!.lastName);
-        // await sharedPreferences.setString(
-        //     'userProfilePic', checkPhoneNumberModel.data!.profilePic!);
-        await sharedPreferences.setString(
-            'userLatitude', loginResponse!.data!.data!.latitude);
-        await sharedPreferences.setString(
-            'userLongitude', loginResponse!.data!.data!.longitude);
-        await sharedPreferences.setString(
-            'deviceIDInfo', loginResponse!.data!.data!.oneSignalId);
-        await sharedPreferences.setString(
-            'userType', loginResponse!.data!.data!.userType);
-        await sharedPreferences.setString('isLogIn', 'true');
         showToastSuccess(
-            loginResponse!.message!.toString(), FToast().init(context),
+            _signupResponse!.message!.toString(), FToast().init(context),
             seconds: 1);
-        if (widget.userType == "Fleet") {
+        if (widget.userType == "Rider") {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const BottomNavBarFleet(),
+              builder: (context) => VerifyDrivingLicenseManually(
+                email: emailController.text,
+                userType: widget.userType,
+                deviceID: widget.deviceID,
+              ),
             ),
           );
         } else {
           showToastSuccess(
-              loginResponse!.message!.toString(), FToast().init(context),
-              seconds: 2);
+              "You have registered successfully admin approve your account soon...",
+              FToast().init(context),
+              seconds: 1);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => LogInScreen(
+                    userType: widget.userType, deviceID: widget.deviceID),
+              ),
+              (Route<dynamic> route) => false);
         }
       } else {
         print(
-            'device id for android while registering: ${loginResponse!.message!.toString()}');
+            'device id for android while registering: ${_signupResponse!.message!.toString()}');
 
         showToastError(
-          loginResponse!.message!.toString(),
+          _signupResponse!.message!.toString(),
           FToast().init(context),
           seconds: 2,
         );
