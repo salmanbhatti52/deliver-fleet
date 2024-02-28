@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:deliver_partner/temploginRider.dart';
+import 'package:deliver_partner/temploginReider.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:deliver_partner/widgets/customDialogForImage.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +62,7 @@ class _DrivingLicensePictureVerificationState
   bool systemSettings = false;
   String? loginType;
 
-  Future<String?> fetchSystemSettingsDescription20() async {
+  Future<String?> fetchSystemSettingsDescription28() async {
     const String apiUrl = 'https://deliver.eigix.net/api/get_all_system_data';
     setState(() {
       systemSettings = true;
@@ -74,21 +74,21 @@ class _DrivingLicensePictureVerificationState
         // If the call to the server was successful, parse the JSON
         final Map<String, dynamic> data = json.decode(response.body);
 
-        // Find the setting with system_settings_id equal to 20
-        final setting20 = data['data'].firstWhere(
-            (setting) => setting['system_settings_id'] == 20,
+        // Find the setting with system_settings_id equal to 26
+        final setting40 = data['data'].firstWhere(
+            (setting) => setting['system_settings_id'] == 40,
             orElse: () => null);
         setState(() {
           systemSettings = false;
         });
-        if (setting20 != null) {
-          // Extract and return the description if setting 20 exists
-          loginType = setting20['description'];
+        if (setting40 != null) {
+          // Extract and return the description if setting 28 exists
+          loginType = setting40['description'];
           print("loginType $loginType");
 
           return loginType;
         } else {
-          throw Exception('System setting with ID 20 not found');
+          throw Exception('System setting with ID 40 not found');
         }
       } else {
         // If the server did not return a 200 OK response,
@@ -106,7 +106,7 @@ class _DrivingLicensePictureVerificationState
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchSystemSettingsDescription20();
+    fetchSystemSettingsDescription28();
     sharedPrefs();
     // gifController = FlutterGifController(vsync: this);
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -396,9 +396,9 @@ class _DrivingLicensePictureVerificationState
       widget.licenseMap.addAll({
         "driving_license_front_image": base64img,
         "driving_license_back_image": base64imgForBack,
-      });
+     
 
-      print('data: ${widget.licenseMap}');
+      });
 
       verifyResponse = await service.verifyDrivingLicenseAPI(widget.licenseMap);
       if (verifyResponse!.status!.toLowerCase() == 'success') {

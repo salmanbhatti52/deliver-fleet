@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/LogInScreen.dart';
-import 'package:deliver_partner/temploginRider.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:device_info/device_info.dart';
@@ -34,7 +33,6 @@ class RideDetailsAfterLogInSecondScreen extends StatefulWidget {
   final String userType;
   final String parentID;
   final String userFleetId;
-
   const RideDetailsAfterLogInSecondScreen(
       {super.key,
       required this.addBikeData,
@@ -49,11 +47,9 @@ class RideDetailsAfterLogInSecondScreen extends StatefulWidget {
 
 class _RideDetailsAfterLogInSecondScreenState
     extends State<RideDetailsAfterLogInSecondScreen> {
-  int checkmarkFleet = -1;
   late TextEditingController expDateOfVehicleController;
   late TextEditingController expDateOfInsuranceController;
   late TextEditingController expDateOfRoadWorthinessController;
-
   // late TextEditingController costController;
   late TextEditingController manufacturingYearController;
 
@@ -61,7 +57,6 @@ class _RideDetailsAfterLogInSecondScreenState
 
   String? parentID;
   late SharedPreferences sharedPreferences;
-
   sharePref() async {
     sharedPreferences = await SharedPreferences.getInstance();
     parentID = sharedPreferences.getString('parentID')!;
@@ -84,15 +79,15 @@ class _RideDetailsAfterLogInSecondScreenState
         final Map<String, dynamic> data = json.decode(response.body);
 
         // Find the setting with system_settings_id equal to 26
-        final setting20 = data['data'].firstWhere(
+        final setting40 = data['data'].firstWhere(
             (setting) => setting['system_settings_id'] == 40,
             orElse: () => null);
         setState(() {
           systemSettings = false;
         });
-        if (setting20 != null) {
+        if (setting40 != null) {
           // Extract and return the description if setting 28 exists
-          loginType = setting20['description'];
+          loginType = setting40['description'];
 
           return loginType;
         } else {
@@ -172,7 +167,6 @@ class _RideDetailsAfterLogInSecondScreenState
   /// expiry date of vehicle license date picker:
 
   String? vehicleLicenseDate;
-
   Future<void> _vehicleLicenseDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       builder: (context, child) {
@@ -217,7 +211,6 @@ class _RideDetailsAfterLogInSecondScreenState
   /// expiry date of insurance date picker:
 
   String? insuranceExpiryDate;
-
   Future<void> _insuranceExpiryDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       builder: (context, child) {
@@ -262,7 +255,6 @@ class _RideDetailsAfterLogInSecondScreenState
   /// expiry of road worthiness date picker:
 
   String? expiryOfRoadWorthinessDate;
-
   Future<void> _expiryOfRoadWorthinessDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       builder: (context, child) {
@@ -315,243 +307,238 @@ class _RideDetailsAfterLogInSecondScreenState
         ),
       );
     } else {
-      return GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 0.0,
-            backgroundColor: Colors.white,
-            leadingWidth: 70,
-            leading: Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 20),
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: backArrowWithContainer(context),
-              ),
-            ),
-            centerTitle: true,
-            title: Text(
-              'Ride Details',
-              style: GoogleFonts.syne(
-                fontWeight: FontWeight.w700,
-                color: black,
-                fontSize: 20,
-              ),
+      return Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Colors.white,
+          leadingWidth: 70,
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 20),
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: backArrowWithContainer(context),
             ),
           ),
-          body: LayoutBuilder(
-            builder: (context, constraints) => GlowingOverscrollIndicator(
-              axisDirection: AxisDirection.down,
-              color: orange,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.0.w),
-                  child: Form(
-                    key: _key,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20.h,
+          centerTitle: true,
+          title: Text(
+            'Ride Details',
+            style: GoogleFonts.syne(
+              fontWeight: FontWeight.w700,
+              color: black,
+              fontSize: 20,
+            ),
+          ),
+        ),
+        body: LayoutBuilder(
+          builder: (context, constraints) => GlowingOverscrollIndicator(
+            axisDirection: AxisDirection.down,
+            color: orange,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.0.w),
+                child: Form(
+                  key: _key,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        'Enter Ride Details if you have one or \n request a ride from Fleet Manager.',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.syne(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: grey,
                         ),
-                        Text(
-                          'Enter Ride Details if you have one or \n request a ride from Fleet Manager.',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.syne(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: grey,
-                          ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      SvgPicture.asset(
+                        'assets/images/bike.svg',
+                        width: 150.w,
+                        height: 120.h,
+                        fit: BoxFit.scaleDown,
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      SizedBox(
+                        width: 296.w,
+                        child: TextFormFieldWidget(
+                          onTap: () async {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            await _vehicleLicenseDate(context);
+                          },
+                          onSaved: (date) {
+                            vehicleLicenseDate = date;
+                            return null;
+                          },
+                          readOnly: true,
+                          controller: expDateOfVehicleController,
+                          textInputType: TextInputType.datetime,
+                          enterTextStyle: enterTextStyle,
+                          cursorColor: orange,
+                          hintText: 'Expiry date of vehicle license',
+                          border: border,
+                          hintStyle: hintStyle,
+                          focusedBorder: focusedBorder,
+                          obscureText: null,
+                          contentPadding: contentPadding,
+                          enableBorder: enableBorder,
+                          prefixIcon: null,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'exp. date cannot be empty';
+                            }
+                            return null;
+                          },
+                          length: -1,
                         ),
-                        SizedBox(
-                          height: 20.h,
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      SizedBox(
+                        width: 296.w,
+                        child: TextFormFieldWidget(
+                          onTap: () async {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            await _insuranceExpiryDate(context);
+                          },
+                          onSaved: (date) {
+                            insuranceExpiryDate = date;
+                            return null;
+                          },
+                          readOnly: true,
+                          controller: expDateOfInsuranceController,
+                          textInputType: TextInputType.datetime,
+                          enterTextStyle: enterTextStyle,
+                          cursorColor: orange,
+                          hintText: 'Expiry date of insurance',
+                          border: border,
+                          hintStyle: hintStyle,
+                          focusedBorder: focusedBorder,
+                          obscureText: null,
+                          contentPadding: contentPadding,
+                          enableBorder: enableBorder,
+                          prefixIcon: null,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'exp. date cannot be empty';
+                            }
+                            return null;
+                          },
+                          length: -1,
                         ),
-                        SvgPicture.asset(
-                          'assets/images/bike.svg',
-                          width: 150.w,
-                          height: 120.h,
-                          fit: BoxFit.scaleDown,
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      SizedBox(
+                        width: 296.w,
+                        child: TextFormFieldWidget(
+                          onTap: () async {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            await _expiryOfRoadWorthinessDate(context);
+                          },
+                          onSaved: (date) {
+                            expiryOfRoadWorthinessDate = date;
+                            return null;
+                          },
+                          readOnly: true,
+                          controller: expDateOfRoadWorthinessController,
+                          textInputType: TextInputType.datetime,
+                          enterTextStyle: enterTextStyle,
+                          cursorColor: orange,
+                          hintText:
+                              'Certificate of road worthiness expiry date',
+                          border: border,
+                          hintStyle: hintStyle,
+                          focusedBorder: focusedBorder,
+                          obscureText: null,
+                          contentPadding: contentPadding,
+                          enableBorder: enableBorder,
+                          prefixIcon: null,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'exp. date cannot be empty';
+                            }
+                            return null;
+                          },
+                          length: -1,
                         ),
-                        SizedBox(
-                          height: 30.h,
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      // SizedBox(
+                      //   width: 140.w,
+                      //   child: TextFormFieldWidget(
+                      //     controller: costController,
+                      //     textInputType: TextInputType.number,
+                      //     enterTextStyle: enterTextStyle,
+                      //     cursorColor: orange,
+                      //     hintText: '₦ Cost',
+                      //     border: border,
+                      //     hintStyle: hintStyle,
+                      //     focusedBorder: focusedBorder,
+                      //     obscureText: null,
+                      //     contentPadding: contentPadding,
+                      //     enableBorder: enableBorder,
+                      //     prefixIcon: null,
+                      //     validator: (val) {
+                      //       if (val!.isEmpty) {
+                      //         return 'cost cannot be empty';
+                      //       }
+                      //       return null;
+                      //     },
+                      //     length: -1,
+                      //   ),
+                      // ),
+                      SizedBox(
+                        width: 296.w,
+                        child: TextFormFieldWidget(
+                          controller: manufacturingYearController,
+                          textInputType: TextInputType.number,
+                          enterTextStyle: enterTextStyle,
+                          cursorColor: orange,
+                          hintText: 'Manufacturing Year',
+                          border: border,
+                          hintStyle: hintStyle,
+                          focusedBorder: focusedBorder,
+                          obscureText: null,
+                          contentPadding: contentPadding,
+                          enableBorder: enableBorder,
+                          prefixIcon: null,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'year cannot be empty';
+                            }
+                            return null;
+                          },
+                          length: -1,
                         ),
-                        SizedBox(
-                          width: 296.w,
-                          child: TextFormFieldWidget(
-                            onTap: () async {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              await _vehicleLicenseDate(context);
-                            },
-                            onSaved: (date) {
-                              vehicleLicenseDate = date;
-                              return null;
-                            },
-                            readOnly: true,
-                            controller: expDateOfVehicleController,
-                            textInputType: TextInputType.datetime,
-                            enterTextStyle: enterTextStyle,
-                            cursorColor: orange,
-                            hintText: 'Expiry date of vehicle license',
-                            border: border,
-                            hintStyle: hintStyle,
-                            focusedBorder: focusedBorder,
-                            obscureText: null,
-                            contentPadding: contentPadding,
-                            enableBorder: enableBorder,
-                            prefixIcon: null,
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return 'exp. date cannot be empty';
-                              }
-                              return null;
-                            },
-                            length: -1,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        SizedBox(
-                          width: 296.w,
-                          child: TextFormFieldWidget(
-                            onTap: () async {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              await _insuranceExpiryDate(context);
-                            },
-                            onSaved: (date) {
-                              insuranceExpiryDate = date;
-                              return null;
-                            },
-                            readOnly: true,
-                            controller: expDateOfInsuranceController,
-                            textInputType: TextInputType.datetime,
-                            enterTextStyle: enterTextStyle,
-                            cursorColor: orange,
-                            hintText: 'Expiry date of insurance',
-                            border: border,
-                            hintStyle: hintStyle,
-                            focusedBorder: focusedBorder,
-                            obscureText: null,
-                            contentPadding: contentPadding,
-                            enableBorder: enableBorder,
-                            prefixIcon: null,
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return 'exp. date cannot be empty';
-                              }
-                              return null;
-                            },
-                            length: -1,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        SizedBox(
-                          width: 296.w,
-                          child: TextFormFieldWidget(
-                            onTap: () async {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              await _expiryOfRoadWorthinessDate(context);
-                            },
-                            onSaved: (date) {
-                              expiryOfRoadWorthinessDate = date;
-                              return null;
-                            },
-                            readOnly: true,
-                            controller: expDateOfRoadWorthinessController,
-                            textInputType: TextInputType.datetime,
-                            enterTextStyle: enterTextStyle,
-                            cursorColor: orange,
-                            hintText:
-                                'Certificate of road worthiness expiry date',
-                            border: border,
-                            hintStyle: hintStyle,
-                            focusedBorder: focusedBorder,
-                            obscureText: null,
-                            contentPadding: contentPadding,
-                            enableBorder: enableBorder,
-                            prefixIcon: null,
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return 'exp. date cannot be empty';
-                              }
-                              return null;
-                            },
-                            length: -1,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        // SizedBox(
-                        //   width: 140.w,
-                        //   child: TextFormFieldWidget(
-                        //     controller: costController,
-                        //     textInputType: TextInputType.number,
-                        //     enterTextStyle: enterTextStyle,
-                        //     cursorColor: orange,
-                        //     hintText: '₦ Cost',
-                        //     border: border,
-                        //     hintStyle: hintStyle,
-                        //     focusedBorder: focusedBorder,
-                        //     obscureText: null,
-                        //     contentPadding: contentPadding,
-                        //     enableBorder: enableBorder,
-                        //     prefixIcon: null,
-                        //     validator: (val) {
-                        //       if (val!.isEmpty) {
-                        //         return 'cost cannot be empty';
-                        //       }
-                        //       return null;
-                        //     },
-                        //     length: -1,
-                        //   ),
-                        // ),
-                        SizedBox(
-                          width: 296.w,
-                          child: TextFormFieldWidget(
-                            controller: manufacturingYearController,
-                            textInputType: TextInputType.number,
-                            enterTextStyle: enterTextStyle,
-                            cursorColor: orange,
-                            hintText: 'Manufacturing Year',
-                            border: border,
-                            hintStyle: hintStyle,
-                            focusedBorder: focusedBorder,
-                            obscureText: null,
-                            contentPadding: contentPadding,
-                            enableBorder: enableBorder,
-                            prefixIcon: null,
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return 'year cannot be empty';
-                              }
-                              return null;
-                            },
-                            length: -1,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        isAddingBike
-                            ? apiButton(context)
-                            : GestureDetector(
-                                onTap: () async {
-                                  await _deviceDetails();
-                                  await addBike(context);
-                                },
-                                child: buttonContainer(context, 'NEXT'),
-                              ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      isAddingBike
+                          ? apiButton(context)
+                          : GestureDetector(
+                              onTap: () async {
+                                await _deviceDetails();
+                                await addBike(context);
+                              },
+                              child: buttonContainer(context, 'NEXT'),
+                            ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -596,9 +583,7 @@ class _RideDetailsAfterLogInSecondScreenState
   ApiServices get service => GetIt.I<ApiServices>();
   bool isAddingBike = false;
   APIResponse<AddVehicleModel>? addVehicleResponse;
-
   Future<void> addBike(BuildContext context) async {
-    final appMode = checkmarkFleet == 1 ? 'Fleet' : 'Rider';
     if (_key.currentState!.validate()) {
       setState(() {
         isAddingBike = true;
@@ -630,11 +615,11 @@ class _RideDetailsAfterLogInSecondScreenState
         //         : const BottomNavBarFleet(),
         //   ),
         // );
-        loginType == "email"
+        loginType == "Email"
             ? Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => TempLoginRider(
-                      userType: appMode,
+                  builder: (context) => TempLoginFleet(
+                      userType: widget.userFleetId,
                       deviceID: identifier.toString(),
                       phoneNumber: "1234"),
                 ),
@@ -642,7 +627,7 @@ class _RideDetailsAfterLogInSecondScreenState
             : Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => LogInScreen(
-                    userType: appMode,
+                    userType: widget.userFleetId,
                     deviceID: identifier.toString(),
                   ),
                 ),

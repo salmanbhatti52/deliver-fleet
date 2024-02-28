@@ -32,37 +32,6 @@ class ApiServices {
   /// Sign-up API:
 
   Future<APIResponse<APIResponse>> signUpAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/signup_fleet';
-    return http.post(Uri.parse(API), body: data).then((value) {
-      if (value.statusCode == 200) {
-        final jsonData = json.decode(value.body);
-        if (jsonData is Map &&
-            jsonData.containsKey('status') &&
-            jsonData.containsKey('message')) {
-          return APIResponse<APIResponse>(
-              status: jsonData['status'], message: jsonData['message']);
-        }
-      }
-      if (value.body is Map) {
-        final jsonData = json.decode(value.body);
-        if (jsonData.containsKey('status') && jsonData.containsKey('message')) {
-          return APIResponse<APIResponse>(
-            status: APIResponse.fromMap(jsonData).status,
-            message: APIResponse.fromMap(jsonData).message,
-          );
-        }
-      }
-      return APIResponse<APIResponse>(
-        status: 'Error',
-        message: 'Unexpected server response',
-      );
-    }).onError((error, stackTrace) => APIResponse<APIResponse>(
-          status: error.toString(),
-          message: stackTrace.toString(),
-        ));
-  }
-
-  Future<APIResponse<APIResponse>> signUpNewAPI(Map data) async {
     String API = 'https://deliver.eigix.net/api/email_signup_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {

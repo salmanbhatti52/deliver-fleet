@@ -1,5 +1,4 @@
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/DeleteAccountScreen.dart';
 import 'package:deliver_partner/models/API%20models/API%20response.dart';
 import 'package:deliver_partner/models/API%20models/LogInModel.dart';
 import 'package:deliver_partner/models/NotificationSettingModel.dart';
@@ -196,70 +195,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 30.h,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DeleteAccountScreen(),
-                  ),
-                );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Delete Your Account',
-                    style: GoogleFonts.syne(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: black,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 18,
-                    color: black,
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-// APIResponse<LogInModel>? _updateResponse;
-// bool isUpdating = false;
-// updateNotification(BuildContext context) async {
-//   setState(() {
-//     isUpdating = true;
-//   });
-//   Map updateData = {
-//     "users_fleet_id": userID.toString(),
-//     "notifications": isToggled ? 'Yes' : 'No',
-//   };
-//
-//   _updateResponse = await service.updateNotificationStatusApi(updateData);
-//
-//   if (_updateResponse!.status!.toLowerCase() == 'success') {
-//     isToggled
-//         ? showToastSuccess(
-//         'Notifications are enabled', FToast().init(context))
-//         : showToastSuccess(
-//         'Notifications are disabled', FToast().init(context));
-//   } else {
-//     showToastError(_updateResponse!.message!, FToast().init(context));
-//   }
-//   setState(() {
-//     isUpdating = false;
-//   });
-// }
+  // APIResponse<LogInModel>? _updateResponse;
+  // bool isUpdating = false;
+  // updateNotification(BuildContext context) async {
+  //   setState(() {
+  //     isUpdating = true;
+  //   });
+  //   Map updateData = {
+  //     "users_fleet_id": userID.toString(),
+  //     "notifications": isToggled ? 'Yes' : 'No',
+  //   };
+  //
+  //   _updateResponse = await service.updateNotificationStatusApi(updateData);
+  //
+  //   if (_updateResponse!.status!.toLowerCase() == 'success') {
+  //     isToggled
+  //         ? showToastSuccess(
+  //         'Notifications are enabled', FToast().init(context))
+  //         : showToastSuccess(
+  //         'Notifications are disabled', FToast().init(context));
+  //   } else {
+  //     showToastError(_updateResponse!.message!, FToast().init(context));
+  //   }
+  //   setState(() {
+  //     isUpdating = false;
+  //   });
+  // }
 }
+
 
 // import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 // import 'package:deliver_partner/Constants/buttonContainer.dart';

@@ -1,5 +1,4 @@
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/DeleteAccountScreen.dart';
 import 'package:deliver_partner/models/API%20models/API%20response.dart';
 import 'package:deliver_partner/models/API%20models/LogInModel.dart';
 import 'package:deliver_partner/models/NotificationSettingModel.dart';
@@ -152,37 +151,6 @@ class _SettingsScreenFleetState extends State<SettingsScreenFleet> {
                   },
                 ),
               ],
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DeleteAccountScreen(),
-                  ),
-                );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Delete Your Account',
-                    style: GoogleFonts.syne(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: black,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 18,
-                    color: black,
-                  ),
-                ],
-              ),
             ),
           ],
         ),

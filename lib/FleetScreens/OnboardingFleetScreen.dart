@@ -63,7 +63,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
   bool systemSettings = false;
   String? loginType;
 
-  Future<String?> fetchSystemSettingsDescription20() async {
+  Future<String?> fetchSystemSettingsDescription28() async {
     const String apiUrl = 'https://deliver.eigix.net/api/get_all_system_data';
     setState(() {
       systemSettings = true;
@@ -75,20 +75,20 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
         // If the call to the server was successful, parse the JSON
         final Map<String, dynamic> data = json.decode(response.body);
 
-        // Find the setting with system_settings_id equal to 20
-        final setting20 = data['data'].firstWhere(
+        // Find the setting with system_settings_id equal to 26
+        final setting40 = data['data'].firstWhere(
             (setting) => setting['system_settings_id'] == 20,
             orElse: () => null);
         setState(() {
           systemSettings = false;
         });
-        if (setting20 != null) {
-          // Extract and return the description if setting 20 exists
-          loginType = setting20['description'];
+        if (setting40 != null) {
+          // Extract and return the description if setting 28 exists
+          loginType = setting40['description'];
 
           return loginType;
         } else {
-          throw Exception('System setting with ID 20 not found');
+          throw Exception('System setting with ID 40 not found');
         }
       } else {
         // If the server did not return a 200 OK response,
@@ -106,7 +106,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchSystemSettingsDescription20();
+    fetchSystemSettingsDescription28();
     _deviceDetails();
   }
 

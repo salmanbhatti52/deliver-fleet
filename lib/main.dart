@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:deliver_partner/CustomSplash.dart';
 import 'package:deliver_partner/services/API_services.dart';
+import 'package:deliver_partner/utilities/firebase_options.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' as foundation;
@@ -16,7 +17,7 @@ void main() async {
 
   HttpOverrides.global = MyHttpOverrides();
   // await Future.delayed(const Duration(seconds: 5));
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   runApp(const MyApp());
   // runApp(

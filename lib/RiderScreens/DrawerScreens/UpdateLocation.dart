@@ -4,13 +4,10 @@ import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Constants/Colors.dart';
@@ -28,10 +25,6 @@ class UpdateLocation extends StatefulWidget {
 }
 
 class _UpdateLocationState extends State<UpdateLocation> {
-  String? currentLat;
-  String? currentLng;
-  LatLng? currentLocation;
-
   ApiServices get service => GetIt.I<ApiServices>();
 
   int userID = -1;
@@ -74,175 +67,61 @@ class _UpdateLocationState extends State<UpdateLocation> {
   }
 
   /// Location permission methods for longitude and latitude:
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  locationPermission() async {
-    PermissionStatus status = await Permission.location.request();
-
-    if (status.isGranted) {
-      // Permission granted, navigate to the next screen
-    } else if (status.isDenied || status.isPermanentlyDenied) {
-      // Permission denied, show a message and provide information
-      showLocationPermissionSnackBar();
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text(
+      //         )));
+      showToastError(
+          'Location services are disabled. Please enable the services',
+          FToast().init(context),
+          seconds: 4);
+      return false;
     }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text('Location permissions are denied')));
+        showToastError(
+            'Location permissions are denied', FToast().init(context),
+            seconds: 4);
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text(
+      //         )));
+      showToastError(
+          'Location permissions are permanently denied, Enable it from app permission',
+          FToast().init(context),
+          seconds: 4);
+      return false;
+    }
+    return true;
   }
-
-  void showLocationPermissionSnackBar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        elevation: 0,
-        width: MediaQuery.of(context).size.width,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        duration: const Duration(seconds: 5),
-        content: Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.centerRight,
-              end: Alignment.centerLeft,
-              stops: [0.1, 1.5],
-              colors: [
-                orange,
-                lightOrange,
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 2,
-                spreadRadius: 2,
-                offset: const Offset(0, 3),
-                color: black.withOpacity(0.2),
-              ),
-            ],
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              width: 2,
-              color: const Color(0xFF707070).withOpacity(0.5),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Location permission is required\nto continue.',
-                style: TextStyle(
-                  color: white,
-                  fontSize: 12,
-                  fontFamily: 'Syne-Regular',
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              GestureDetector(
-                onTap: () {
-                  openAppSettings();
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.04,
-                  width: MediaQuery.of(context).size.width * 0.33,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF36454F),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Grant Permission',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: white,
-                        fontSize: 12,
-                        fontFamily: 'Syne-Medium',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Future<bool> _handleLocationPermission() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-  //
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //     //     content: Text(
-  //     //         )));
-  //     showToastError(
-  //         'Location services are disabled. Please enable the services',
-  //         FToast().init(context),
-  //         seconds: 4);
-  //     return false;
-  //   }
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       // ScaffoldMessenger.of(context).showSnackBar(
-  //       //     const SnackBar(content: Text('Location permissions are denied')));
-  //       showToastError(
-  //           'Location permissions are denied', FToast().init(context),
-  //           seconds: 4);
-  //       return false;
-  //     }
-  //   }
-  //   if (permission == LocationPermission.deniedForever) {
-  //     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //     //     content: Text(
-  //     //         )));
-  //     showToastError(
-  //         'Location permissions are permanently denied, Enable it from app permission',
-  //         FToast().init(context),
-  //         seconds: 4);
-  //     return false;
-  //   }
-  //   return true;
-  // }
 
   // String? _currentAddress;
-
-  // var hasPermission = false;
-  // Position? _currentPosition;
-  //
-  // Future<void> _getCurrentPosition() async {
-  //   // hasPermission = await locationPermission();
-  //   // if (!hasPermission) return;
-  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-  //       .then((Position position) {
-  //     setState(() => _currentPosition = position);
-  //   }).catchError((e) {
-  //     debugPrint(e);
-  //   });
-  // }
+  var hasPermission = false;
+  Position? _currentPosition;
+  Future<void> _getCurrentPosition() async {
+    hasPermission = await _handleLocationPermission();
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
 
   /// Location permission methods for longitude and latitude:
-
-  Future<void> getCurrentLocation() async {
-    final Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-    );
-
-    final List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-
-    if (placemarks.isNotEmpty) {
-      final Placemark currentPlace = placemarks.first;
-      final String currentAddress =
-          "${currentPlace.name}, ${currentPlace.locality}, ${currentPlace.country}";
-
-      setState(() {
-        currentLocation = LatLng(position.latitude, position.longitude);
-        currentLat = position.latitude.toString();
-        currentLng = position.longitude.toString();
-        debugPrint("currentPickUpLocation: $currentAddress");
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -312,10 +191,9 @@ class _UpdateLocationState extends State<UpdateLocation> {
                       child: isUpdatingLocation
                           ? apiButton(context)
                           : GestureDetector(
-                              onTap: () async {
-                                await getCurrentLocation();
-                                await updateLocationMethod(context);
-                              },
+                              onTap: () => hasPermission
+                                  ? updateLocationMethod(context)
+                                  : _getCurrentPosition(),
                               child:
                                   buttonContainer(context, 'Update Location'),
                             ),
@@ -329,15 +207,14 @@ class _UpdateLocationState extends State<UpdateLocation> {
 
   bool isUpdatingLocation = false;
   APIResponse<LogInModel>? updateLocationResponse;
-
   updateLocationMethod(BuildContext context) async {
     setState(() {
       isUpdatingLocation = true;
     });
     Map updateLocationData = {
       "users_fleet_id": userID.toString(),
-      "latitude": currentLat,
-      "longitude": currentLng,
+      "latitude": _currentPosition!.latitude.toString(),
+      "longitude": _currentPosition!.longitude.toString(),
     };
     updateLocationResponse =
         await service.updateLocationOneTimeAPI(updateLocationData);
