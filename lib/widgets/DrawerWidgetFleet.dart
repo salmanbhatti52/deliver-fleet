@@ -56,12 +56,11 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
     });
 
     sharedPrefs();
-    init();
   }
 
   sharedPrefs() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    
+
     userID = (sharedPreferences.getInt('userID') ?? -1);
     userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
     userLastName = (sharedPreferences.getString('userLastName') ?? '');
@@ -69,6 +68,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
 
     print(
         'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
+    init();
 
     setState(() {
       isLoading = false;

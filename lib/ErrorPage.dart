@@ -65,7 +65,7 @@ class _ErrorPageState extends State<ErrorPage> {
                   ),
                 ),
                 SvgPicture.asset(
-                  'assets/images/404 Error Page not Found with people connecting a plug-pana.svg',
+                  'assets/images/error-icon.svg',
                   height: 450,
                   width: 450,
                 ),

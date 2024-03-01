@@ -77,7 +77,7 @@ class _OnboardingFleetScreenState extends State<OnboardingFleetScreen> {
 
         // Find the setting with system_settings_id equal to 26
         final setting40 = data['data'].firstWhere(
-            (setting) => setting['system_settings_id'] == 40,
+            (setting) => setting['system_settings_id'] == 20,
             orElse: () => null);
         setState(() {
           systemSettings = false;

@@ -161,7 +161,6 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 40.w,
-              
                 ),
                 child: Column(
                   children: [
@@ -174,7 +173,6 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                           
                             SvgPicture.asset('assets/images/logo.svg'),
                             SizedBox(
                               height: 20.h,
@@ -529,13 +527,19 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      'assets/images/check-icon.svg'),
+                                    'assets/images/check-icon.svg',
+                                    width: 20,
+                                    height: 20,
+                                  ),
                                 )
                               : SvgPicture.asset(
-                                  'assets/images/uncheck-icon.svg'),
+                                  'assets/images/uncheck-icon.svg',
+                                  width: 20,
+                                  height: 20,
+                                ),
                         ),
                         SizedBox(
-                          width: 10.w,
+                          width: 13.w,
                         ),
                         Expanded(
                           child: RichText(
@@ -654,6 +658,9 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                           'Please ensure that you agree to terms and conditions to proceed further'),
                                     ),
                                   );
+                                  setState(() {
+                                    isRegistering = false;
+                                  });
                                 } else {
                                   fleeTempLogin(context);
                                 }

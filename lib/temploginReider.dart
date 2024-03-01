@@ -535,10 +535,16 @@ class _TempLoginRiderState extends State<TempLoginRider> {
                                     });
                                   },
                                   child: SvgPicture.asset(
-                                      'assets/images/check-icon.svg'),
+                                    'assets/images/check-icon.svg',
+                                    width: 20,
+                                    height: 20,
+                                  ),
                                 )
                               : SvgPicture.asset(
-                                  'assets/images/uncheck-icon.svg'),
+                                  'assets/images/uncheck-icon.svg',
+                                  width: 20,
+                                  height: 20,
+                                ),
                         ),
                         SizedBox(
                           width: 10.w,
@@ -668,6 +674,9 @@ class _TempLoginRiderState extends State<TempLoginRider> {
                                           'Please ensure that you agree to terms and conditions to proceed further'),
                                     ),
                                   );
+                                  setState(() {
+                                    isRegistering = false;
+                                  });
                                 } else {
                                   fleeTempLogin(context);
                                 }

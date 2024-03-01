@@ -16,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Constants/Colors.dart';
 import '../../../Constants/back-arrow-with-container.dart';
+import '../../../DeleteAccountScreen.dart';
 
 String? notificationStatus = "Yes";
 
@@ -194,6 +195,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
               ],
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DeleteAccountScreen(),
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Delete Your Account',
+                    style: GoogleFonts.syne(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: black,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18,
+                    color: black,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
