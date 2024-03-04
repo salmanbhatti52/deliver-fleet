@@ -76,12 +76,6 @@ dependencies:
   flutter_gif: ^0.0.4
   permission_handler: ^11.3.0
 
-
-
-
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

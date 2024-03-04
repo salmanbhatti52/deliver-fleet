@@ -41,7 +41,6 @@ Widget buttonContainerWithBorder(BuildContext context, String buttonText) {
   );
 }
 
-
 Widget buttonContainerWithBorderBig(BuildContext context, String buttonText) {
   double fontSize = MediaQuery.of(context).size.height * 0.02;
   return Container(

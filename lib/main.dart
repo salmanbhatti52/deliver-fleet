@@ -19,13 +19,13 @@ void main() async {
   // await Future.delayed(const Duration(seconds: 5));
   await Firebase.initializeApp();
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
-  runApp(const MyApp());
-  // runApp(
-  //   DevicePreview(
-  //     enabled: true,
-  //     builder: (context) => const MyApp(),
-  //   ),
-  // );
+  // runApp(const MyApp());
+  runApp(
+    DevicePreview(
+      enabled: true,
+      builder: (context) => const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {

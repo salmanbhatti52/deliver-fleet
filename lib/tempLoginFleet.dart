@@ -511,109 +511,112 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                     SizedBox(
                       height: 15.h,
                     ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              checkmark = true;
-                            });
-                          },
-                          child: checkmark == true
-                              ? GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      checkmark = false;
-                                    });
-                                  },
-                                  child: SvgPicture.asset(
-                                    'assets/images/check-icon.svg',
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                checkmark = true;
+                              });
+                            },
+                            child: checkmark == true
+                                ? GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        checkmark = false;
+                                      });
+                                    },
+                                    child: SvgPicture.asset(
+                                      'assets/images/check-icon.svg',
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                  )
+                                : SvgPicture.asset(
+                                    'assets/images/uncheck-icon.svg',
                                     width: 20,
                                     height: 20,
                                   ),
-                                )
-                              : SvgPicture.asset(
-                                  'assets/images/uncheck-icon.svg',
-                                  width: 20,
-                                  height: 20,
+                          ),
+                          const SizedBox(
+                            width: 13,
+                          ),
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'I agree to the ',
+                                style: GoogleFonts.inter(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
+                                  color: black,
                                 ),
-                        ),
-                        SizedBox(
-                          width: 13.w,
-                        ),
-                        Expanded(
-                          child: RichText(
-                            text: TextSpan(
-                              text: 'I agree to the ',
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400,
-                                color: black,
+                                children: [
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TermsConditionsPage(),
+                                          ),
+                                        );
+                                        // const url =
+                                        //     'https://deliver.eigix.net/users/terms_and_conditions';
+                                        // if (await canLaunch(url)) {
+                                        //   await launch(url);
+                                        // } else {
+                                        //   throw 'Could not launch $url';
+                                        // }
+                                      },
+                                    text: 'Terms and Conditions ',
+                                    style: GoogleFonts.inter(
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400,
+                                      color: black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'and ',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400,
+                                      color: black,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TermsConditionsPage(),
+                                          ),
+                                        );
+                                        // const url =
+                                        //     'https://deliver.eigix.net/users/privacy_policy';
+                                        // if (await canLaunch(url)) {
+                                        //   await launch(url);
+                                        // } else {
+                                        //   throw 'Could not launch $url';
+                                        // }
+                                      },
+                                    text: 'Privacy Policy ',
+                                    style: GoogleFonts.inter(
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400,
+                                      color: black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              children: [
-                                TextSpan(
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () async {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const TermsConditionsPage(),
-                                        ),
-                                      );
-                                      // const url =
-                                      //     'https://deliver.eigix.net/users/terms_and_conditions';
-                                      // if (await canLaunch(url)) {
-                                      //   await launch(url);
-                                      // } else {
-                                      //   throw 'Could not launch $url';
-                                      // }
-                                    },
-                                  text: 'Terms and Conditions ',
-                                  style: GoogleFonts.inter(
-                                    decoration: TextDecoration.underline,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w400,
-                                    color: black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: 'and ',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w400,
-                                    color: black,
-                                  ),
-                                ),
-                                TextSpan(
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () async {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const TermsConditionsPage(),
-                                        ),
-                                      );
-                                      // const url =
-                                      //     'https://deliver.eigix.net/users/privacy_policy';
-                                      // if (await canLaunch(url)) {
-                                      //   await launch(url);
-                                      // } else {
-                                      //   throw 'Could not launch $url';
-                                      // }
-                                    },
-                                  text: 'Privacy Policy ',
-                                  style: GoogleFonts.inter(
-                                    decoration: TextDecoration.underline,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w400,
-                                    color: black,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 40.h,

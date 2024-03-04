@@ -5,9 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../Constants/Colors.dart';
 
 Widget apiButton(context) {
+  double fontSize = MediaQuery.of(context).size.height * 0.02;
+
   return Container(
-    width: 236.w,
-    height: 51.h,
+     width: MediaQuery.of(context).size.width * 0.6, // Adjust width
+    height: MediaQuery.of(context).size.height * 0.065, 
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       gradient: const LinearGradient(
@@ -33,7 +35,7 @@ Widget apiButton(context) {
               'Please Wait...',
               textAlign: TextAlign.center,
               style: GoogleFonts.syne(
-                fontSize: 16,
+                fontSize: fontSize,
                 fontWeight: FontWeight.w500,
                 color: orange,
               ),
