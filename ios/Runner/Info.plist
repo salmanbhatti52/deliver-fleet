@@ -19,11 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-<<<<<<< HEAD
-	<string>1.0.1</string>
-=======
 	<string>1.0.2</string>
->>>>>>> d5ad60f7edb498667e71e88679eec3dea584b02a
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -56,11 +52,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-<<<<<<< HEAD
-	<string>35</string>
-=======
-	<string>11</string>
->>>>>>> d5ad60f7edb498667e71e88679eec3dea584b02a
+	<string>13</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sms</string>
