@@ -60,6 +60,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app needs access to Apple Music to provide personalized music recommendations.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app using camera to capture and upload profile images.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
