@@ -108,6 +108,7 @@ class _DrivingLicensePictureVerificationState
     super.initState();
     fetchSystemSettingsDescription28();
     sharedPrefs();
+    print("widget.licenseMap ${widget.licenseMap}");
     // gifController = FlutterGifController(vsync: this);
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   gifController.repeat(
@@ -396,8 +397,6 @@ class _DrivingLicensePictureVerificationState
       widget.licenseMap.addAll({
         "driving_license_front_image": base64img,
         "driving_license_back_image": base64imgForBack,
-     
-
       });
 
       verifyResponse = await service.verifyDrivingLicenseAPI(widget.licenseMap);
@@ -420,6 +419,9 @@ class _DrivingLicensePictureVerificationState
               (route) => false);
         } else {
           showToastSuccess(verifyResponse!.message, FToast().init(context));
+          print("${verifyResponse!.message}");
+          print("userId value is = $userID");
+
           loginType == "Email"
               ? Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
@@ -451,6 +453,7 @@ class _DrivingLicensePictureVerificationState
         }
       } else {
         showToastError(verifyResponse!.message, FToast().init(context));
+        print("${verifyResponse!.message}");
       }
       setState(() {
         isVerifying = false;

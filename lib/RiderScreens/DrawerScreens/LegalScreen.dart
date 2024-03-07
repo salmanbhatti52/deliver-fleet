@@ -40,9 +40,11 @@ class _LegalScreenState extends State<LegalScreen> {
         _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
         for (GetAllSystemDataModel model in _getSystemDataList!) {
           if (model.type == 'terms_text') {
-            setState(() {
-              termsText = model.description!;
-            });
+            if (mounted) {
+              setState(() {
+                termsText = model.description!;
+              });
+            }
           } else if (model.type == 'privacy_text') {
             setState(() {
               privacyText = model.description!;

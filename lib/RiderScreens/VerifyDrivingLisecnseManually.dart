@@ -48,6 +48,7 @@ class _VerifyDrivingLicenseManuallyState
     // TODO: implement initState
     super.initState();
     sharedPrefs();
+    print(widget.email);
     // CNICController = TextEditingController();
   }
 
@@ -434,10 +435,16 @@ class _VerifyDrivingLicenseManuallyState
   }
 
   licenseVerify(BuildContext context) async {
+    sharedPrefs() async {
+      SharedPreferences sharedPref = await SharedPreferences.getInstance();
+      fleetId = sharedPref.getInt('userID');
+      parentId = sharedPref.getString('userEmail');
+    }
+
     await sharedPrefs();
-    print("${parentId.toString()}");
-    print("${addressController.text}");
-    print("${licenseController.text}");
+    print(parentId.toString());
+    print(addressController.text);
+    print(licenseController.text);
 
     if (_key.currentState!.validate()) {
       if (imagePath == null) {
@@ -445,7 +452,7 @@ class _VerifyDrivingLicenseManuallyState
             'Please select image to proceed', FToast().init(context));
       } else {
         Map licenseMap = {
-          "email": parentId.toString(),
+          "email": widget.email.toString(),
           "address": addressController.text,
           // "national_identification_no": CNICController.text,
           "driving_license_no": licenseController.text,

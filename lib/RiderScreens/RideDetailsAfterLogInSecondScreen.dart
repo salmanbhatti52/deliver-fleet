@@ -626,10 +626,9 @@ class _RideDetailsAfterLogInSecondScreenState
               )
             : Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => LogInScreen(
-                    userType: widget.userFleetId,
-                    deviceID: identifier.toString(),
-                  ),
+                  builder: (context) => widget.userType == 'Rider'
+                      ? const BottomNavBar()
+                      : const BottomNavBarFleet(),
                 ),
               );
         // Navigator.of(context).push(

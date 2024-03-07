@@ -684,7 +684,7 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
 
       print('device ID for android or Ios is: ${signupData.toString()}');
 
-      _signupResponse = await service.signUpAPI(signupData);
+      _signupResponse = await service.emailSignUpAPI(signupData);
       if (_signupResponse!.status!.toLowerCase() == 'success') {
         print('object device id: ${widget.deviceID}');
 
