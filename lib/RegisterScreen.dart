@@ -671,15 +671,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             _signupResponse!.message!.toString(), FToast().init(context),
             seconds: 1);
         if (widget.userType == "Rider") {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => VerifyDrivingLicenseManually(
-                email: emailController.text,
-                userType: widget.userType,
-                // deviceID: widget.deviceID,
+          print(" emailController ${emailController.text}");
+          if (emailController.text.isNotEmpty) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => VerifyDrivingLicenseManually(
+                  email: emailController.text,
+                  userType: widget.userType,
+                  // deviceID: widget.deviceID,
+                ),
               ),
-            ),
-          );
+            );
+          }
         } else {
           showToastSuccess(
               "You have registered successfully admin approve your account soon...",

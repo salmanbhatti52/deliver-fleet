@@ -29,9 +29,74 @@ import '../models/APIModelsFleet/UploadCACCertificateModel.dart';
 import '../models/tempLoginModel.dart';
 
 class ApiServices {
-  /// Sign-up API:
 
-  Future<APIResponse<APIResponse>> signUpAPI(Map data) async {
+
+// New Number Sign up API
+    Future<APIResponse<APIResponse>> signUpAPI(Map data) async {
+    String API = 'https://deliver.eigix.net/api/signup_fleet';
+    return http.post(Uri.parse(API), body: data).then((value) {
+      if (value.statusCode == 200) {
+        final jsonData = json.decode(value.body);
+        if (jsonData is Map &&
+            jsonData.containsKey('status') &&
+            jsonData.containsKey('message')) {
+          return APIResponse<APIResponse>(
+              status: jsonData['status'], message: jsonData['message']);
+        }
+      }
+      if (value.body is Map) {
+        final jsonData = json.decode(value.body);
+        if (jsonData.containsKey('status') && jsonData.containsKey('message')) {
+          return APIResponse<APIResponse>(
+            status: APIResponse.fromMap(jsonData).status,
+            message: APIResponse.fromMap(jsonData).message,
+          );
+        }
+      }
+      return APIResponse<APIResponse>(
+        status: 'Error',
+        message: 'Unexpected server response',
+      );
+    }).onError((error, stackTrace) => APIResponse<APIResponse>(
+          status: error.toString(),
+          message: stackTrace.toString(),
+        ));
+  }
+
+//Number Login API
+    Future<APIResponse<LogInModel>> logInAPI(Map data) async {
+    String API = 'https://deliver.eigix.net/api/login_fleet';
+    return http.post(Uri.parse(API), body: data).then((value) {
+      if (value.statusCode == 200) {
+        final jsonData = json.decode(value.body);
+
+        if (jsonData['data'] != null) {
+          final itemCat = LogInModel.fromJson(jsonData['data']);
+
+          return APIResponse<LogInModel>(
+              data: itemCat,
+              status: jsonData['status'],
+              message: jsonData['message']);
+        } else {
+          return APIResponse<LogInModel>(
+              data: LogInModel(),
+              status: jsonData['status'],
+              message: jsonData['message']);
+        }
+      }
+      return APIResponse<LogInModel>(
+        status: APIResponse.fromMap(json.decode(value.body)).status,
+        message: APIResponse.fromMap(json.decode(value.body)).message,
+      );
+    }).onError((error, stackTrace) => APIResponse<LogInModel>(
+          status: error.toString(),
+          message: stackTrace.toString(),
+        ));
+  }
+
+  /// email Sign-up API:
+
+  Future<APIResponse<APIResponse>> emailSignUpAPI(Map data) async {
     String API = 'https://deliver.eigix.net/api/email_signup_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
@@ -100,35 +165,7 @@ class ApiServices {
     }
   }
 
-  Future<APIResponse<LogInModel>> logInAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/login_fleet';
-    return http.post(Uri.parse(API), body: data).then((value) {
-      if (value.statusCode == 200) {
-        final jsonData = json.decode(value.body);
 
-        if (jsonData['data'] != null) {
-          final itemCat = LogInModel.fromJson(jsonData['data']);
-
-          return APIResponse<LogInModel>(
-              data: itemCat,
-              status: jsonData['status'],
-              message: jsonData['message']);
-        } else {
-          return APIResponse<LogInModel>(
-              data: LogInModel(),
-              status: jsonData['status'],
-              message: jsonData['message']);
-        }
-      }
-      return APIResponse<LogInModel>(
-        status: APIResponse.fromMap(json.decode(value.body)).status,
-        message: APIResponse.fromMap(json.decode(value.body)).message,
-      );
-    }).onError((error, stackTrace) => APIResponse<LogInModel>(
-          status: error.toString(),
-          message: stackTrace.toString(),
-        ));
-  }
 
   /// Update Location one time API:
 
