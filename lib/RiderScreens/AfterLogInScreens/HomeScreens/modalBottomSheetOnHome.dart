@@ -79,7 +79,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
       ),
       height: widget.customersModel.scheduled == "Yes"
           ? MediaQuery.sizeOf(context).height * 0.64
-          : MediaQuery.sizeOf(context).height * 0.6,
+          : MediaQuery.sizeOf(context).height * 0.61,
       child: Column(
         children: [
           Row(
