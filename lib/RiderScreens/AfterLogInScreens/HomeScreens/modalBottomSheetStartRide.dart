@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Constants/Colors.dart';
@@ -430,7 +431,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                             ),
                                           ),
                                           Text(
-                                            '${widget.bookingModel.delivery_time}',
+                                            DateFormat('h:mm a').format(
+                                              DateFormat('HH:mm:ss').parse(widget.bookingModel.delivery_time!),
+                                            ),
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -835,7 +838,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                     ),
                                                                   ),
                                                                   Text(
-                                                                    '${widget.bookingModel.delivery_time}',
+                                                                    DateFormat('h:mm a').format(
+                                                                      DateFormat('HH:mm:ss').parse(widget.bookingModel.delivery_time!),
+                                                                    ),
                                                                     style: GoogleFonts
                                                                         .inter(
                                                                       fontSize:

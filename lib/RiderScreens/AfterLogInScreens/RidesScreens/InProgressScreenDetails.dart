@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Constants/Colors.dart';
@@ -448,7 +449,9 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                                   ),
                                 ),
                                 Text(
-                                  '${widget.inProgressRidesList!.bookings!.delivery_time}',
+                                  DateFormat('h:mm a').format(
+                                    DateFormat('HH:mm:ss').parse(widget.inProgressRidesList!.bookings!.delivery_time!),
+                                  ),
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../../../Constants/Colors.dart';
 import '../../../models/API models/API response.dart';
@@ -78,7 +79,7 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < widget.bookingDestinationsList!.length; i++) {
+    for (int i = 0; i < widget.bookingDestinationsList!.length;) {
       return widget.deliveryType == 'Single'
           ? Container(
               padding: const EdgeInsets.only(right: 10),
@@ -191,7 +192,9 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                                         ),
                                       ),
                                       Text(
-                                        '${widget.customersModel.delivery_time}',
+                                        DateFormat('h:mm a').format(
+                                          DateFormat('HH:mm:ss').parse(widget.customersModel.delivery_time!),
+                                        ),
                                         style: GoogleFonts.inter(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
@@ -525,7 +528,9 @@ class _ModalSheetRideDataState extends State<ModalSheetRideData> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            '${widget.customersModel.delivery_date}',
+                                            DateFormat('h:mm a').format(
+                                              DateFormat('HH:mm:ss').parse(widget.customersModel.delivery_time!),
+                                            ),
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
