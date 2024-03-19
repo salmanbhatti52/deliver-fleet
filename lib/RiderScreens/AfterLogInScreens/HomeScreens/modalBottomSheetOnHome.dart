@@ -1,4 +1,6 @@
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/HomeScreens.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/UserToUserChat/UserToUserChat.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:deliver_partner/models/API%20models/API%20response.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -519,7 +521,11 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
       if (rejectRideResponse!.data != null) {
         showToastSuccess('Ride Request is rejected', FToast().init(context),
             seconds: 1);
-        Navigator.of(context).pop();
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBar(),
+            ),
+                (Route<dynamic> route) => false);
       }
     } else {
       showToastError(rejectRideResponse!.message!, FToast().init(context),
