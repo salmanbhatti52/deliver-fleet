@@ -1,7 +1,7 @@
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/models/API%20models/API%20response.dart';
-import 'package:deliver_partner/models/API%20models/GetBookingDeatinationsStatus.dart';
-import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
+import 'package:deliver_partner/models/API_models/GetBookingDestinationsStatus.dart';
+import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Constants/Colors.dart';
-import '../../../models/API models/GetAllSystemDataModel.dart';
+import '../../../models/API_models/GetAllSystemDataModel.dart';
 import '../../../services/API_services.dart';
 import 'UserToUserChat/UserToUserChat.dart';
 import 'modalBottomSheetEndRide.dart';

@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:deliver_partner/VerifyYourself.dart';
-import 'package:deliver_partner/models/API%20models/GetAllSystemDataModel.dart';
+import 'package:deliver_partner/models/API_models/GetAllSystemDataModel.dart';
 import 'package:deliver_partner/models/send_otp_model.dart';
-import 'package:deliver_partner/models/API%20models/GetAllSystemDataModel.dart';
+import 'package:deliver_partner/models/API_models/GetAllSystemDataModel.dart';
 import 'package:deliver_partner/models/send_otp_model.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
@@ -34,10 +34,10 @@ import 'Constants/buttonContainer.dart';
 import 'EmailVerificationScreen.dart';
 import 'ForgetPassword.dart';
 import 'RegisterScreen.dart';
-import 'models/API models/CheckPhoneNumberModel.dart';
+import 'models/API_models/CheckPhoneNumberModel.dart';
 import 'RiderScreens/RideDetailsAfterLogIn.dart';
-import 'models/API models/API response.dart';
-import 'models/API models/LogInModel.dart';
+import 'models/API_models/API_response.dart';
+import 'models/API_models/LogInModel.dart';
 import 'models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
 
 class LogInScreen extends StatefulWidget {

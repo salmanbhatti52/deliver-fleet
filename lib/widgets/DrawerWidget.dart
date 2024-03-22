@@ -2,7 +2,7 @@ import 'package:deliver_partner/ChooseAppScreen.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/LegalScreen.dart';
-import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,7 +21,7 @@ import '../RiderScreens/DrawerScreens/ScooterDetails/ScooterDetails.dart';
 import '../RiderScreens/DrawerScreens/Settings/SettingsScreen.dart';
 import '../RiderScreens/DrawerScreens/UpdateLocation.dart';
 import '../RiderScreens/DrawerScreens/schedule Clients/ScheduleClients.dart';
-import '../models/API models/API response.dart';
+import '../models/API_models/API_response.dart';
 import '../services/API_services.dart';
 import '../utilities/showToast.dart';
 

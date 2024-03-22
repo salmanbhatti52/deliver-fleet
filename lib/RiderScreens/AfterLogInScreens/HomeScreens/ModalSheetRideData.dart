@@ -1,5 +1,5 @@
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
+import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../Constants/Colors.dart';
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/GetAllSystemDataModel.dart';
+import '../../../models/API_models/API_response.dart';
+import '../../../models/API_models/GetAllSystemDataModel.dart';
 import '../../../services/API_services.dart';
 
 class ModalSheetRideData extends StatefulWidget {

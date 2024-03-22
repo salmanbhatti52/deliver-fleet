@@ -1,6 +1,6 @@
-import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/API_models/LogInModel.dart';
 
-import '../API models/GetAllVehicalsModel.dart';
+import '../API_models/GetAllVehiclesModel.dart';
 
 class UsersFleetVehiclesAssigned {
   int? users_fleet_vehicles_assigned_id,

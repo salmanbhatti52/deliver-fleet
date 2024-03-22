@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../models/API models/InProgressRidesModel.dart';
+import '../../../models/API_models/InProgressRidesModel.dart';
 
 class CancelledRidesWidget extends StatefulWidget {
   final InProgressRidesModel canceledRidesModel;
@@ -153,7 +153,7 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
                                   SizedBox(
                                     width: 200.w,
                                     child: AutoSizeText(
-                                      '${widget.canceledRidesModel.users_fleet_vehicles!.model}',
+                                      '${widget.canceledRidesModel.users_fleet_vehicles!.color}  ${widget.canceledRidesModel.users_fleet_vehicles!.model}',
                                       minFontSize: 13,
                                       maxLines: 2,
                                       style: GoogleFonts.inter(

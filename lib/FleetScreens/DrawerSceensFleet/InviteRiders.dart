@@ -1,6 +1,6 @@
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
-import 'package:deliver_partner/models/API%20models/API%20response.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';

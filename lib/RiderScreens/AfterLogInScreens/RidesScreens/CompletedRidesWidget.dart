@@ -8,7 +8,7 @@ import '../../../Constants/Colors.dart';
 import '../../../Constants/SeeDetailsOnCompletedRidesButton.dart';
 import '../../../Constants/details-button.dart';
 import '../../../Constants/ratingContainerOnCompletedRides.dart';
-import '../../../models/API models/InProgressRidesModel.dart';
+import '../../../models/API_models/InProgressRidesModel.dart';
 import 'CompletedRidesDestinationsWidget.dart';
 
 class CompletedRidesWidget extends StatefulWidget {
@@ -20,8 +20,32 @@ class CompletedRidesWidget extends StatefulWidget {
 }
 
 class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
+  DateTime? timeAdded;
   bool opened = false;
   bool closed = false;
+
+  String formatTimeDifference(DateTime dateTime) {
+    Duration difference = DateTime.now().difference(dateTime);
+
+    if (difference.inDays >= 365) {
+      int years = (difference.inDays / 365).floor();
+      return "${years == 1 ? '1 year' : '$years years'} ago";
+    } else if (difference.inDays >= 30) {
+      int months = (difference.inDays / 30).floor();
+      return "${months == 1 ? '1 month' : '$months months'} ago";
+    } else if (difference.inDays >= 7) {
+      int weeks = (difference.inDays / 7).floor();
+      return "${weeks == 1 ? '1 week' : '$weeks weeks'} ago";
+    } else if (difference.inDays > 0) {
+      return "${difference.inDays == 1 ? '1 day' : '${difference.inDays} days'} ago";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours == 1 ? '1 hour' : '${difference.inHours} hours'} ago";
+    } else if (difference.inMinutes > 0) {
+      return "${difference.inMinutes == 1 ? '1 minute' : '${difference.inMinutes} mins'} ago";
+    } else {
+      return "Just now";
+    }
+  }
 
   @override
   void initState() {
@@ -31,6 +55,7 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
 
   @override
   Widget build(BuildContext context) {
+    timeAdded = DateTime.parse("${widget.completedRidesModel.date_modified}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -165,7 +190,7 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                             SizedBox(
                               width: 200.w,
                               child: AutoSizeText(
-                                '${widget.completedRidesModel.users_fleet_vehicles!.model}',
+                                '${widget.completedRidesModel.users_fleet_vehicles!.color} ${widget.completedRidesModel.users_fleet_vehicles!.model}',
                                 minFontSize: 13,
                                 maxLines: 2,
                                 style: GoogleFonts.inter(
@@ -199,7 +224,7 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AutoSizeText(
-                            'You Completed a ride \n ${widget.completedRidesModel.users_fleet_vehicles!.color} with this client',
+                            'You Completed a ride \n${formatTimeDifference(timeAdded!)} with this client',
                             style: GoogleFonts.inter(
                               fontWeight: FontWeight.w400,
                               color: black,

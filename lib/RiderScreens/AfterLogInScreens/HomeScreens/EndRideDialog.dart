@@ -1,20 +1,19 @@
+import 'package:get_it/get_it.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
+import 'package:deliver_partner/services/API_services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
-import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/GetBookingDeatinationsStatus.dart';
-import '../../../services/API_services.dart';
-import '../../../utilities/showToast.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
+import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
+import 'package:deliver_partner/models/API_models/GetBookingDestinationsStatus.dart';
 
 List<String> endRideIds = [];
 
@@ -178,7 +177,7 @@ class _EndRideDialogState extends State<EndRideDialog> {
                             setState(() {
                               radioButton = 1;
                               deliveredID;
-                              print(
+                              debugPrint(
                                   'object delivered: ${deliveredID.toString()}');
                             });
                           },
@@ -208,7 +207,7 @@ class _EndRideDialogState extends State<EndRideDialog> {
                             setState(() {
                               radioButton = 2;
                               cancelledID;
-                              print(
+                              debugPrint(
                                   'object cancelled: ${cancelledID.toString()}');
                             });
                           },
@@ -238,7 +237,7 @@ class _EndRideDialogState extends State<EndRideDialog> {
                             setState(() {
                               radioButton = 3;
                               lostID;
-                              print('object lost: ${lostID.toString()}');
+                              debugPrint('object lost: ${lostID.toString()}');
                             });
                           },
                           child: Row(
@@ -267,7 +266,7 @@ class _EndRideDialogState extends State<EndRideDialog> {
                             setState(() {
                               radioButton = 4;
                               returnedID;
-                              print(
+                              debugPrint(
                                   'object returned: ${returnedID.toString()}');
                             });
                           },
@@ -297,7 +296,7 @@ class _EndRideDialogState extends State<EndRideDialog> {
                             setState(() {
                               radioButton = 5;
                               damagedID;
-                              print('object damaged: ${damagedID.toString()}');
+                              debugPrint('object damaged: ${damagedID.toString()}');
                             });
                           },
                           child: Row(
@@ -336,12 +335,11 @@ class _EndRideDialogState extends State<EndRideDialog> {
                   )
                 : GestureDetector(
                     onTap: () {
-                      // Navigator.of(context).pop();
                       endRideMethod(
                           context,
                           widget.bookingDestinations.bookings_destinations_id
                               .toString());
-                    },
+                                        },
                     child: buttonContainer(context, 'End Ride'),
                   ),
           ],
@@ -372,14 +370,12 @@ class _EndRideDialogState extends State<EndRideDialog> {
                           ? damagedID.toString()
                           : null,
     };
-    print('object end ride data: ${endRideData.toString()}');
+    debugPrint("end ride data: ${endRideData.toString()}");
 
     endRideResponse = await service.endRideRequest(endRideData);
 
     if (endRideResponse!.status!.toLowerCase() == "success") {
-      print('bookingsDestinationsId: $bookingsDestinationsId');
-      endRideIds.add(bookingsDestinationsId);
-      print('end ride id: $endRideIds');
+      debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
       if (widget.bookingModel.delivery_type == 'Single') {
         Navigator.of(context).pop();
         Navigator.of(context).push(
@@ -388,6 +384,9 @@ class _EndRideDialogState extends State<EndRideDialog> {
           ),
         );
       } else if (widget.bookingModel.delivery_type != 'Single') {
+        debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
+        endRideIds.add(bookingsDestinationsId);
+        debugPrint("endRideIds: $endRideIds");
         if (endRideIds.length == widget.bookingDestinationsList.length) {
           Navigator.of(context).pop();
           Navigator.of(context).push(
@@ -400,10 +399,9 @@ class _EndRideDialogState extends State<EndRideDialog> {
         }
         showToastSuccess('Ride has been ended', FToast().init(context));
       } else {}
-    } else if (endRideResponse!.status!.toLowerCase() != "success") {
-      showToastError(endRideResponse!.message, FToast().init(context));
-      print('object error ending ride: ${endRideResponse!.status!.toString()}');
-    } else {}
+    } else {
+      showToastError("Please select a reason", FToast().init(context));
+    }
     setState(() {
       isRideEnding = false;
     });

@@ -1,6 +1,6 @@
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/models/API%20models/GetAllSystemDataModel.dart';
+import 'package:deliver_partner/models/API_models/GetAllSystemDataModel.dart';
 import 'package:deliver_partner/models/GetFleetVehicleByIdModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../models/API models/API response.dart';
+import '../../../models/API_models/API_response.dart';
 import '../../../services/API_services.dart';
 
 class VehicleDetailsWigdetFleet extends StatefulWidget {

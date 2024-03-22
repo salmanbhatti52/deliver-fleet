@@ -1,6 +1,6 @@
-import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/API_models/LogInModel.dart';
 
-import 'API models/GetAllVehicalsModel.dart';
+import 'API_models/GetAllVehiclesModel.dart';
 
 class GetFleetVehicleByIdModel {
   GetAllVehicalsModel? vehicles;

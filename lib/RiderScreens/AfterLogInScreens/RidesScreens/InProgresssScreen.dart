@@ -13,8 +13,8 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/InProgressRidesModel.dart';
+import '../../../models/API_models/API_response.dart';
+import '../../../models/API_models/InProgressRidesModel.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
 

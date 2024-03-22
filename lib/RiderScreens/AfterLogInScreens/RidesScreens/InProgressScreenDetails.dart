@@ -12,10 +12,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Constants/Colors.dart';
 import '../../../Constants/PageLoadingKits.dart';
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/GetAllSystemDataModel.dart';
-import '../../../models/API models/InProgressRidesModel.dart';
-import '../../../models/API models/ShowBookingsModel.dart';
+import '../../../models/API_models/API_response.dart';
+import '../../../models/API_models/GetAllSystemDataModel.dart';
+import '../../../models/API_models/InProgressRidesModel.dart';
+import '../../../models/API_models/ShowBookingsModel.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
 import '../HomeScreens/UserToUserChat/UserToUserChat.dart';

@@ -33,9 +33,9 @@ import 'RiderScreens/BottomNavBar.dart';
 import 'RiderScreens/DrivingLicensePictureVerification.dart';
 import 'RiderScreens/RideDetailsAfterLogIn.dart';
 import 'RiderScreens/VerifyDrivingLisecnseManually.dart';
-import 'models/API models/API response.dart';
-import 'models/API models/CheckPhoneNumberModel.dart';
-import 'models/API models/GetAllSystemDataModel.dart';
+import 'models/API_models/API_response.dart';
+import 'models/API_models/CheckPhoneNumberModel.dart';
+import 'models/API_models/GetAllSystemDataModel.dart';
 import 'models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
 
 class EmailVerificationScreen extends StatefulWidget {

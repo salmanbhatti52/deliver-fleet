@@ -8,8 +8,8 @@ import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Constants/PageLoadingKits.dart';
 import '../../../Constants/back-arrow-with-container.dart';
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/ScheduledRiderModel.dart';
+import '../../../models/API_models/API_response.dart';
+import '../../../models/API_models/ScheduledRiderModel.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
 

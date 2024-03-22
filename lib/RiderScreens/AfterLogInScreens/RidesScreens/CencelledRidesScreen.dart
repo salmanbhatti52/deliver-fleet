@@ -1,22 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:deliver_partner/services/API_services.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
+import 'package:deliver_partner/models/API_models/InProgressRidesModel.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/RidesScreens/CancelledRidesWidget.dart';
 
-import '../../../Constants/PageLoadingKits.dart';
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/InProgressRidesModel.dart';
-import '../../../services/API_services.dart';
-import 'CancelledRidesWidget.dart';
-
-class CencelledRidesScreen extends StatefulWidget {
-  const CencelledRidesScreen({super.key});
+class CancelledRidesScreen extends StatefulWidget {
+  const CancelledRidesScreen({super.key});
 
   @override
-  State<CencelledRidesScreen> createState() => _CencelledRidesScreenState();
+  State<CancelledRidesScreen> createState() => _CancelledRidesScreenState();
 }
 
-class _CencelledRidesScreenState extends State<CencelledRidesScreen> {
+class _CancelledRidesScreenState extends State<CancelledRidesScreen> {
   ApiServices get service => GetIt.I<ApiServices>();
 
   int userID = -1;
