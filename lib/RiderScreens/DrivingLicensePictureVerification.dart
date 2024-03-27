@@ -75,15 +75,15 @@ class _DrivingLicensePictureVerificationState
         final Map<String, dynamic> data = json.decode(response.body);
 
         // Find the setting with system_settings_id equal to 26
-        final setting40 = data['data'].firstWhere(
-            (setting) => setting['system_settings_id'] == 40,
+        final setting20 = data['data'].firstWhere(
+            (setting) => setting['system_settings_id'] == 20,
             orElse: () => null);
         setState(() {
           systemSettings = false;
         });
-        if (setting40 != null) {
+        if (setting20 != null) {
           // Extract and return the description if setting 28 exists
-          loginType = setting40['description'];
+          loginType = setting20['description'];
           print("loginType $loginType");
 
           return loginType;
