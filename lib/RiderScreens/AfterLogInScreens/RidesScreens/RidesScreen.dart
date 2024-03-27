@@ -104,7 +104,7 @@ class _RidesScreenState extends State<RidesScreen>
                     children: const [
                       InProgressScreen(),
                       CompletedRidesScreen(),
-                      CencelledRidesScreen(),
+                      CancelledRidesScreen(),
                     ],
                   ),
                 ),

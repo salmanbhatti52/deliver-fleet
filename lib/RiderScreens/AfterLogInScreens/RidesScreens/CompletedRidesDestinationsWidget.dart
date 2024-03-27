@@ -5,8 +5,8 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Constants/Colors.dart';
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/GetAllSystemDataModel.dart';
+import '../../../models/API_models/API_response.dart';
+import '../../../models/API_models/GetAllSystemDataModel.dart';
 import '../../../services/API_services.dart';
 
 class CompletedRidesDestinationsWidget extends StatefulWidget {

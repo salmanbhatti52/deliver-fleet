@@ -13,7 +13,7 @@ import 'Constants/Colors.dart';
 import 'Constants/back-arrow-with-container.dart';
 import 'Constants/buttonContainer.dart';
 import 'LogInScreen.dart';
-import 'models/API models/API response.dart';
+import 'models/API_models/API_response.dart';
 
 class NewPasswordAfterOTP extends StatefulWidget {
   final String otpData;

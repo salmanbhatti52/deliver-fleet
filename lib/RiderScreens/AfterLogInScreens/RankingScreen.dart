@@ -16,9 +16,9 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Constants/Colors.dart';
-import '../../models/API models/API response.dart';
-import '../../models/API models/GetAllRatingsModel.dart';
-import '../../models/API models/LogInModel.dart';
+import '../../models/API_models/API_response.dart';
+import '../../models/API_models/GetAllRatingsModel.dart';
+import '../../models/API_models/LogInModel.dart';
 import '../../services/API_services.dart';
 import '../../utilities/showToast.dart';
 
@@ -219,14 +219,10 @@ class _RankingScreenState extends State<RankingScreen> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10),
-                                                    child: getAllRatingsList![
-                                                                    index]
-                                                                .bookings_fleet!
-                                                                .users_fleet!
-                                                                .profile_pic !=
+                                                    child: getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic !=
                                                             null
                                                         ? Image.network(
-                                                            'https://deliver.eigix.net/public/${getAllRatingsList![index].bookings_fleet!.users_fleet!.profile_pic}',
+                                                            'https://deliver.eigix.net/public/${getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic}',
                                                             fit: BoxFit.cover,
                                                             errorBuilder:
                                                                 (BuildContext
@@ -291,8 +287,8 @@ class _RankingScreenState extends State<RankingScreen> {
                                                     SizedBox(
                                                       width: 150.w,
                                                       child: AutoSizeText(
-                                                        '${item.bookings_fleet!.users_fleet!.first_name}  '
-                                                        '${item.bookings_fleet!.users_fleet!.last_name}',
+                                                        '${item.bookings_fleet!.bookings!.users_customers!.first_name}'
+                                                        ' ${item.bookings_fleet!.bookings!.users_customers!.last_name}',
                                                         maxLines: 2,
                                                         minFontSize: 13,
                                                         overflow: TextOverflow

@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../models/API models/API response.dart';
-import '../models/API models/LogInModel.dart';
+import '../models/API_models/API_response.dart';
+import '../models/API_models/LogInModel.dart';
 
 mixin PeriodicApiMixin {
   void startPeriodicApiCalls(

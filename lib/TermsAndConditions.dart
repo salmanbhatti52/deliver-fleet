@@ -7,9 +7,9 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/models/API%20models/API%20response.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
 import 'package:deliver_partner/Constants/back-arrow-with-container.dart';
-import 'package:deliver_partner/models/API%20models/GetAllSystemDataModel.dart';
+import 'package:deliver_partner/models/API_models/GetAllSystemDataModel.dart';
 
 class TermsConditionsPage extends StatefulWidget {
   const TermsConditionsPage({super.key});

@@ -1,4 +1,4 @@
-import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/API_models/LogInModel.dart';
 
 class GetAllUserToUserChatModel {
   int? chat_messages_id, sender_id, receiver_id;

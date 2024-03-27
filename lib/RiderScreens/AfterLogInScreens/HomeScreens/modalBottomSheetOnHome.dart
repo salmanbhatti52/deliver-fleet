@@ -1,5 +1,7 @@
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/HomeScreens.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/UserToUserChat/UserToUserChat.dart';
-import 'package:deliver_partner/models/API%20models/API%20response.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Constants/Colors.dart';
-import '../../../models/API models/ShowBookingsModel.dart';
+import '../../../models/API_models/ShowBookingsModel.dart';
 import '../../../services/API_services.dart';
 import 'ModalSheetRideData.dart';
 import 'modalBottomSheetStartRide.dart';
@@ -79,7 +81,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
       ),
       height: widget.customersModel.scheduled == "Yes"
           ? MediaQuery.sizeOf(context).height * 0.64
-          : MediaQuery.sizeOf(context).height * 0.6,
+          : MediaQuery.sizeOf(context).height * 0.61,
       child: Column(
         children: [
           Row(
@@ -519,7 +521,11 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
       if (rejectRideResponse!.data != null) {
         showToastSuccess('Ride Request is rejected', FToast().init(context),
             seconds: 1);
-        Navigator.of(context).pop();
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBar(),
+            ),
+                (Route<dynamic> route) => false);
       }
     } else {
       showToastError(rejectRideResponse!.message!, FToast().init(context),

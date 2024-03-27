@@ -1,22 +1,12 @@
-import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/models/API%20models/API%20response.dart';
-import 'package:deliver_partner/models/API%20models/LogInModel.dart';
-import 'package:deliver_partner/models/NotificationSettingModel.dart';
-import 'package:deliver_partner/services/API_services.dart';
-import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_switch/flutter_switch.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/DeleteAccountScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../Constants/Colors.dart';
-import '../../../Constants/back-arrow-with-container.dart';
-import '../../../DeleteAccountScreen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:deliver_partner/models/NotificationSettingModel.dart';
 
 String? notificationStatus = "Yes";
 
@@ -264,7 +254,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
 // import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 // import 'package:deliver_partner/Constants/buttonContainer.dart';
-// import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+// import 'package:deliver_partner/models/API_models/LogInModel.dart';
 // import 'package:deliver_partner/widgets/apiButton.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -276,7 +266,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 //
 // import '../../../Constants/Colors.dart';
 // import '../../../Constants/back-arrow-with-container.dart';
-// import '../../../models/API models/API response.dart';
+// import '../../../models/API_models/API_response.dart';
 // import '../../../services/API_services.dart';
 // import '../../../utilities/showToast.dart';
 // import '../../../widgets/TextFormField_Widget.dart';

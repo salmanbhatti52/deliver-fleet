@@ -1,6 +1,6 @@
 import 'package:deliver_partner/RiderScreens/DrivingLicensePictureVerification.dart';
-import 'package:deliver_partner/models/API%20models/API%20response.dart';
-import 'package:deliver_partner/models/API%20models/LogInModel.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
+import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';

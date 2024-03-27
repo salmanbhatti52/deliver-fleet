@@ -1,4 +1,4 @@
-import 'GetAllVehicalsModel.dart';
+import 'GetAllVehiclesModel.dart';
 import 'LogInModel.dart';
 
 class AddVehicleModel {

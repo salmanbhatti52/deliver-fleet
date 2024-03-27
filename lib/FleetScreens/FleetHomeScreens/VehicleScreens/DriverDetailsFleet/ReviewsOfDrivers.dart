@@ -11,8 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../Constants/Colors.dart';
-import '../../../../models/API models/API response.dart';
-import '../../../../models/API models/GetAllRatingsModel.dart';
+import '../../../../models/API_models/API_response.dart';
+import '../../../../models/API_models/GetAllRatingsModel.dart';
 import '../../../../services/API_services.dart';
 import '../../../../utilities/showToast.dart';
 

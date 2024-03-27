@@ -20,10 +20,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../Constants/Colors.dart';
 import '../../../Constants/PageLoadingKits.dart';
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/GetAllSystemDataModel.dart';
-import '../../../models/API models/LogInModel.dart';
-import '../../../models/API models/ShowBookingsModel.dart';
+import '../../../models/API_models/API_response.dart';
+import '../../../models/API_models/GetAllSystemDataModel.dart';
+import '../../../models/API_models/LogInModel.dart';
+import '../../../models/API_models/ShowBookingsModel.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
 

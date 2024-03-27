@@ -1,21 +1,20 @@
+import 'package:get_it/get_it.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:deliver_partner/services/API_services.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
-import 'package:deliver_partner/models/API%20models/ShowBookingsModel.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/GetBookingDeatinationsStatus.dart';
-import '../../../models/API models/InProgressRidesModel.dart';
-import '../../../services/API_services.dart';
-import '../../../utilities/showToast.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
+import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
+import 'package:deliver_partner/models/API_models/InProgressRidesModel.dart';
+import 'package:deliver_partner/models/API_models/GetBookingDestinationsStatus.dart';
 
 class INProgressEndRideDialog extends StatefulWidget {
   final InProgressRidesModel? inProgressRidesList;
@@ -173,7 +172,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
                             setState(() {
                               radioButton = 1;
                               deliveredID;
-                              print(
+                              debugPrint(
                                   'object delivered: ${deliveredID.toString()}');
                             });
                           },
@@ -203,7 +202,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
                             setState(() {
                               radioButton = 2;
                               cancelledID;
-                              print(
+                              debugPrint(
                                   'object cancelled: ${cancelledID.toString()}');
                             });
                           },
@@ -233,7 +232,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
                             setState(() {
                               radioButton = 3;
                               lostID;
-                              print('object lost: ${lostID.toString()}');
+                              debugPrint('object lost: ${lostID.toString()}');
                             });
                           },
                           child: Row(
@@ -262,7 +261,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
                             setState(() {
                               radioButton = 4;
                               returnedID;
-                              print(
+                              debugPrint(
                                   'object returned: ${returnedID.toString()}');
                             });
                           },
@@ -292,7 +291,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
                             setState(() {
                               radioButton = 5;
                               damagedID;
-                              print('object damaged: ${damagedID.toString()}');
+                              debugPrint('object damaged: ${damagedID.toString()}');
                             });
                           },
                           child: Row(
@@ -365,7 +364,8 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
                           ? damagedID.toString()
                           : null,
     };
-    print('object end ride data: ${endRideData.toString()}');
+    debugPrint("end ride data: ${endRideData.toString()}");
+
     endRideResponse = await service.endRideRequest(endRideData);
 
     if (endRideResponse!.status!.toLowerCase() == "success") {
@@ -380,7 +380,7 @@ class _INProgressEndRideDialogState extends State<INProgressEndRideDialog> {
       }
     } else {
       showToastError(endRideResponse!.message, FToast().init(context));
-      print('object error ending ride: ${endRideResponse!.status!.toString()}');
+      debugPrint('object error ending ride: ${endRideResponse!.status!.toString()}');
     }
     setState(() {
       isRideEnding = false;

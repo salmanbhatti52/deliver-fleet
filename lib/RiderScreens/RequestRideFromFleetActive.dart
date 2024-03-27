@@ -13,9 +13,9 @@ import '../Constants/Colors.dart';
 import '../Constants/PageLoadingKits.dart';
 import '../Constants/back-arrow-with-container.dart';
 import '../Constants/buttonContainer.dart';
-import '../models/API models/API response.dart';
-import '../models/API models/GetAllAvailableVehicles.dart';
-import '../models/API models/RequestBikeModel.dart';
+import '../models/API_models/API_response.dart';
+import '../models/API_models/GetAllAvailableVehicles.dart';
+import '../models/API_models/RequestBikeModel.dart';
 import '../services/API_services.dart';
 import '../utilities/showToast.dart';
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:deliver_partner/models/API%20models/GetAllUserToUsreChatModel.dart';
+import 'package:deliver_partner/models/API_models/GetAllUserToUsreChatModel.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../Constants/back-arrow-with-container.dart';
-import '../../../../models/API models/API response.dart';
+import '../../../../models/API_models/API_response.dart';
 import '../../../../services/API_services.dart';
 
 class UserToUserChat extends StatefulWidget {

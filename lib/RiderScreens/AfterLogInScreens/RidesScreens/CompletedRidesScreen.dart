@@ -1,15 +1,12 @@
-import 'package:deliver_partner/Constants/PageLoadingKits.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../models/API models/API response.dart';
-import '../../../models/API models/InProgressRidesModel.dart';
-import '../../../services/API_services.dart';
-import '../../../utilities/showToast.dart';
-import 'CompletedRidesWidget.dart';
+import 'package:deliver_partner/services/API_services.dart';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/models/API_models/API_response.dart';
+import 'package:deliver_partner/models/API_models/InProgressRidesModel.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/RidesScreens/CompletedRidesWidget.dart';
 
 class CompletedRidesScreen extends StatefulWidget {
   const CompletedRidesScreen({super.key});
@@ -47,7 +44,7 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
 
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
-    print('object userId on completed rides is: $userID');
+    debugPrint("userId on completed rides is: $userID");
 
     Map data = {
       "users_fleet_id": userID.toString(),
@@ -61,9 +58,8 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
         completedRidesList = completedRidesResponse!.data!;
       }
     } else {
-      print(
-          'object massage:  ${completedRidesResponse!.message}   ${completedRidesResponse!.status}');
-      showToastError(completedRidesResponse!.message!, FToast().init(context));
+      debugPrint("error status: ${completedRidesResponse!.status}");
+      debugPrint("error massage: ${completedRidesResponse!.message}");
     }
     if (mounted) {
       setState(() {

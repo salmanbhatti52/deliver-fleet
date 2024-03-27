@@ -1,4 +1,4 @@
-import 'package:deliver_partner/models/API%20models/GetAllAvailableVehicles.dart';
+import 'package:deliver_partner/models/API_models/GetAllAvailableVehicles.dart';
 
 import 'LogInModel.dart';
 
