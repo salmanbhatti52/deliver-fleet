@@ -364,25 +364,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             SizedBox(
                               width: 296.w,
-                              child: TextFormFieldWidget(
+                              child: TextFormField(
                                 validator: (val) {
                                   if (val!.isEmpty) {
                                     return 'NIN cannot be empty';
+                                  } else if (val.length != 11) {
+                                    return 'NIN must be exactly 11 digits';
                                   }
                                   return null;
                                 },
                                 controller: nINController,
-                                textInputType: TextInputType.text,
-                                enterTextStyle: enterTextStyle,
+                                keyboardType: TextInputType.number,
+                                style: enterTextStyle,
                                 cursorColor: orange,
-                                hintText: 'National Identification Number',
-                                border: border,
-                                hintStyle: hintStyle,
-                                focusedBorder: focusedBorder,
-                                contentPadding: contentPadding,
-                                obscureText: null,
-                                enableBorder: enableBorder,
-                                length: -1,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.grey.withOpacity(
+                                      0.23), // Change this to your desired background color
+                                  filled: true,
+                                  hintText: 'National Identification Number',
+                                  border: border,
+                                  hintStyle: hintStyle,
+                                  focusedBorder: focusedBorder,
+                                  contentPadding: contentPadding,
+                                  enabledBorder: enableBorder,
+                                ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(11),
+                                ],
+                                obscureText: false,
                               ),
                             ),
                             // SizedBox(
@@ -638,6 +648,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  Future<void> saveEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email1', emailController.text);
+  }
+
   bool isRegistering = false;
   APIResponse<APIResponse>? _signupResponse;
 
@@ -648,6 +663,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         isRegistering = true;
       });
       print("  $identifier");
+      await saveEmail();
       Map signupData = {
         "user_type": widget.userType,
         "one_signal_id": identifier.toString(),

@@ -19,7 +19,7 @@ import '../utilities/showToast.dart';
 import 'DrivingLicensePictureVerification.dart';
 
 class VerifyDrivingLicenseManually extends StatefulWidget {
-  final String email;
+  final String? email;
   final String userType;
   final String? deviceID;
   const VerifyDrivingLicenseManually(
@@ -393,7 +393,7 @@ class _VerifyDrivingLicenseManuallyState
                           width: 300.w,
                           child: TextFormFieldWidget(
                             controller: licenseController,
-                            textInputType: TextInputType.text,
+                            textInputType: TextInputType.number,
                             enterTextStyle: enterTextStyle,
                             cursorColor: orange,
                             hintText: 'Driving license number',
@@ -434,7 +434,14 @@ class _VerifyDrivingLicenseManuallyState
     );
   }
 
+  Future<String?> getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('email1');
+  }
+
   licenseVerify(BuildContext context) async {
+    String? email = await getEmail();
+    print("email: $email ");
     sharedPrefs() async {
       SharedPreferences sharedPref = await SharedPreferences.getInstance();
       fleetId = sharedPref.getInt('userID');
@@ -442,6 +449,7 @@ class _VerifyDrivingLicenseManuallyState
     }
 
     await sharedPrefs();
+
     print(parentId.toString());
     print(addressController.text);
     print(licenseController.text);
@@ -451,14 +459,15 @@ class _VerifyDrivingLicenseManuallyState
         showToastError(
             'Please select image to proceed', FToast().init(context));
       } else {
+        print("widget.email: ${widget.email}");
         Map licenseMap = {
-          "email": widget.email.toString(),
+          "email": email ?? widget.email,
           "address": addressController.text,
           // "national_identification_no": CNICController.text,
           "driving_license_no": licenseController.text,
           "profile_pic": base64img,
         };
-
+        print("$licenseMap");
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => DrivingLicensePictureVerification(

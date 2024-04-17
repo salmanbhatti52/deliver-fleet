@@ -191,9 +191,12 @@ class _UpdateLocationState extends State<UpdateLocation> {
                       child: isUpdatingLocation
                           ? apiButton(context)
                           : GestureDetector(
-                              onTap: () => hasPermission
-                                  ? updateLocationMethod(context)
-                                  : _getCurrentPosition(),
+                              onTap: () {
+                             
+                                hasPermission
+                                  ?  updateLocationMethod(context)
+                                  :  _getCurrentPosition();
+                              },
                               child:
                                   buttonContainer(context, 'Update Location'),
                             ),
@@ -208,9 +211,11 @@ class _UpdateLocationState extends State<UpdateLocation> {
   bool isUpdatingLocation = false;
   APIResponse<LogInModel>? updateLocationResponse;
   updateLocationMethod(BuildContext context) async {
+
     setState(() {
       isUpdatingLocation = true;
     });
+   await _getCurrentPosition();
     Map updateLocationData = {
       "users_fleet_id": userID.toString(),
       "latitude": _currentPosition!.latitude.toString(),

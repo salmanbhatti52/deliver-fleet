@@ -387,6 +387,9 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
             ),
           ],
         ),
+     
+     
+     
       ],
     );
   }

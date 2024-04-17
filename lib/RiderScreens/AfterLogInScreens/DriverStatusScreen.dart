@@ -38,45 +38,48 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
   UpdateRiderStatusModel updateRiderStatusModel = UpdateRiderStatusModel();
 
   updateRiderStatus() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      SharedPreferences sharedPref = await SharedPreferences.getInstance();
-      userID = sharedPref.getInt('userID')!;
-      String apiUrl = "https://deliver.eigix.net/api/update_rider_status";
-      debugPrint("apiUrl: $apiUrl");
-      debugPrint("userId: $userID");
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          "users_fleet_id": userID.toString(),
-          "availability": isFullTimeSelected ? 'Full-Time' : 'Part-Time',
-          "online_status": workSwitchStatus ? 'Work' : 'Break',
-        },
-      );
-      final responseString = response.body;
-      debugPrint("response: $responseString");
-      debugPrint("statusCode: ${response.statusCode}");
-      if (response.statusCode == 200) {
-        updateRiderStatusModel = updateRiderStatusModelFromJson(responseString);
-        showToastSuccess("Status updated successfully", FToast().init(context));
-        debugPrint('updateRiderStatusModel status: ${updateRiderStatusModel.status}');
-        setState(() {
-          isLoading = false;
-        });
-        saveSelections();
-      }
-    } catch (e) {
-      showToastError("Status is already updated", FToast().init(context));
-      debugPrint('Something went wrong = ${e.toString()}');
+    // try {
+    setState(() {
+      isLoading = true;
+    });
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    userID = sharedPref.getInt('userID')!;
+    String apiUrl = "https://deliver.eigix.net/api/update_rider_status";
+    debugPrint("apiUrl: $apiUrl");
+    debugPrint("userId: $userID");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        "users_fleet_id": userID.toString(),
+        "availability": isFullTimeSelected ? 'Full-Time' : 'Part-Time',
+        "online_status": workSwitchStatus ? 'Work' : 'Break',
+      },
+    );
+    final responseString = response.body;
+    debugPrint("response: $responseString");
+    debugPrint("statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      updateRiderStatusModel = updateRiderStatusModelFromJson(responseString);
+      showToastSuccess(
+          "${updateRiderStatusModel.status}", FToast().init(context));
+      debugPrint(
+          'updateRiderStatusModel status: ${updateRiderStatusModel.status}');
       setState(() {
         isLoading = false;
       });
+      saveSelections();
     }
+    // }
+    // catch (e) {
+    //   showToastError("Status is already updated", FToast().init(context));
+    //   debugPrint('Something went wrong = ${e.toString()}');
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // }
   }
 
   sharedPrefs() async {
@@ -89,8 +92,10 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
     });
     debugPrint('workSwitchStatus: ${sharedPref.getBool('workSwitchStatus')}');
     debugPrint('breakSwitchStatus: ${sharedPref.getBool('breakSwitchStatus')}');
-    debugPrint('isFullTimeSelected: ${sharedPref.getBool('isFullTimeSelected')}');
-    debugPrint('isPartTimeSelected: ${sharedPref.getBool('isPartTimeSelected')}');
+    debugPrint(
+        'isFullTimeSelected: ${sharedPref.getBool('isFullTimeSelected')}');
+    debugPrint(
+        'isPartTimeSelected: ${sharedPref.getBool('isPartTimeSelected')}');
   }
 
   @override

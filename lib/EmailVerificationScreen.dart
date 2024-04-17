@@ -814,7 +814,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                     ),
                                     (Route<dynamic> route) => false);
                               }
-                            } else if (widget.phoneNumber == "+923301234567" &&
+                            } else if (widget.phoneNumber == "+923401234567" &&
                                 otpController.text == "225588") {
                               await checkNumber();
                               if (checkPhoneNumberModel.status == "success" &&

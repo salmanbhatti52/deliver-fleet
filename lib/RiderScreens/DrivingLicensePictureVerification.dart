@@ -102,6 +102,94 @@ class _DrivingLicensePictureVerificationState
     }
   }
 
+  bool isVerifying = false;
+  APIResponse<APIResponse>? verifyResponse;
+  String? deviceIDInfo;
+  Future<String?> getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('email1');
+  }
+
+// ... other code ...
+
+// Call getEmail when you want to retrieve the email
+
+  Future<void> licenseVerify() async {
+    await getEmail();
+    String? email = await getEmail();
+    if (xFile != null && xFileForBack != null) {
+      setState(() {
+        isVerifying = true;
+      });
+      widget.licenseMap.addAll({
+        "driving_license_front_image": base64img,
+        "driving_license_back_image": base64imgForBack,
+      });
+
+      verifyResponse = await service.verifyDrivingLicenseAPI(widget.licenseMap);
+      if (verifyResponse!.status!.toLowerCase() == 'success') {
+        final sharedPreferences = await SharedPreferences
+            .getInstance(); // Initialize sharedPreferences here
+        userID = sharedPreferences.getInt('userID');
+        deviceIDInfo = sharedPreferences.getString('deviceIDInfo');
+        print("userId value is = $userID");
+        print("deviceIDInfo = $deviceIDInfo");
+        if (userID != null) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => RideDetailsAfterLogInScreen(
+                  userType: 'Rider',
+                  userFleetId: fleetId.toString(),
+                  parentID: parentId.toString() ?? email.toString(),
+                ),
+              ),
+              (route) => false);
+        } else {
+          showToastSuccess(verifyResponse!.message, FToast().init(context));
+          print("${verifyResponse!.message}");
+          print("userId value is = $userID");
+
+          loginType == "Email"
+              ? Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => TempLoginRider(
+                        userType: 'Rider',
+                        deviceID: widget.deviceID.toString(),
+                        phoneNumber: "1234"),
+                  ), (route) {
+                  return false;
+                })
+              : Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => LogInScreen(
+                      userType: 'Rider',
+                      deviceID: widget.deviceID.toString(),
+                    ),
+                  ),
+                );
+          // ignore: use_build_context_synchronously
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => TempLoginRider(
+          //         userType: 'Rider',
+          //         deviceID: deviceIDInfo!,
+          //         phoneNumber: "1234"),
+          //   ),
+          // );
+        }
+      } else {
+        showToastError(verifyResponse!.message, FToast().init(context));
+        print("${verifyResponse!.message}");
+      }
+      setState(() {
+        isVerifying = false;
+      });
+    } else {
+      showToastError('Please provide license pictures', FToast().init(context));
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -372,7 +460,9 @@ class _DrivingLicensePictureVerificationState
                     child: isVerifying
                         ? apiButton(context)
                         : GestureDetector(
-                            onTap: () => licenseVerify(context),
+                            onTap: () async {
+                              await licenseVerify();
+                            },
                             child: buttonContainer(context, 'VERIFY'),
                           ),
                   ),
@@ -382,84 +472,6 @@ class _DrivingLicensePictureVerificationState
           ),
         ),
       );
-    }
-  }
-
-  bool isVerifying = false;
-  APIResponse<APIResponse>? verifyResponse;
-  String? deviceIDInfo;
-
-  licenseVerify(BuildContext context) async {
-    if (xFile != null && xFileForBack != null) {
-      setState(() {
-        isVerifying = true;
-      });
-      widget.licenseMap.addAll({
-        "driving_license_front_image": base64img,
-        "driving_license_back_image": base64imgForBack,
-      });
-
-      verifyResponse = await service.verifyDrivingLicenseAPI(widget.licenseMap);
-      if (verifyResponse!.status!.toLowerCase() == 'success') {
-        final sharedPreferences = await SharedPreferences
-            .getInstance(); // Initialize sharedPreferences here
-        userID = sharedPreferences.getInt('userID');
-        deviceIDInfo = sharedPreferences.getString('deviceIDInfo');
-        print("userId value is = $userID");
-        print("deviceIDInfo = $deviceIDInfo");
-        if (userID != null) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => RideDetailsAfterLogInScreen(
-                  userType: 'Rider',
-                  userFleetId: fleetId.toString(),
-                  parentID: parentId.toString(),
-                ),
-              ),
-              (route) => false);
-        } else {
-          showToastSuccess(verifyResponse!.message, FToast().init(context));
-          print("${verifyResponse!.message}");
-          print("userId value is = $userID");
-
-          loginType == "Email"
-              ? Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => TempLoginRider(
-                        userType: 'Rider',
-                        deviceID: widget.deviceID.toString(),
-                        phoneNumber: "1234"),
-                  ), (route) {
-                  return false;
-                })
-              : Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => LogInScreen(
-                      userType: 'Rider',
-                      deviceID: widget.deviceID.toString(),
-                    ),
-                  ),
-                );
-          // ignore: use_build_context_synchronously
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => TempLoginRider(
-          //         userType: 'Rider',
-          //         deviceID: deviceIDInfo!,
-          //         phoneNumber: "1234"),
-          //   ),
-          // );
-        }
-      } else {
-        showToastError(verifyResponse!.message, FToast().init(context));
-        print("${verifyResponse!.message}");
-      }
-      setState(() {
-        isVerifying = false;
-      });
-    } else {
-      showToastError('Please provide license pictures', FToast().init(context));
     }
   }
 }

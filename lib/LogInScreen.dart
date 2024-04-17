@@ -592,7 +592,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             height: MediaQuery.of(context).size.height * 0.01,
                           ),
                           Text(
-                            'as ${widget.userType}',
+                            'as a ${widget.userType} owner',
                             style: GoogleFonts.syne(
                               fontWeight: FontWeight.w700,
                               color: orange,
@@ -611,7 +611,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               keyboardType: TextInputType.number,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
-                                LengthLimitingTextInputFormatter(15),
+                                LengthLimitingTextInputFormatter(11),
                               ],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -620,7 +620,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                     .hasMatch(value)) {
                                   return 'Contact Number must contain only digits';
                                 } else if (value.length < 10 ||
-                                    value.length > 15) {
+                                    value.length > 11) {
                                   return 'Contact Number must be between 10 and 15 digits';
                                 }
                                 return null;
@@ -927,7 +927,9 @@ class _LogInScreenState extends State<LogInScreen> {
                                 isLoading2 = true;
                               });
                               if (contactNumberController.text ==
-                                  "3441234567") {
+                                      "3441234567" &&
+                                  contactNumberController.text ==
+                                      "3201234567") {
                                 await getCurrentLocation();
                                 if (_key.currentState!.validate()) {
                                   Navigator.of(context).push(
