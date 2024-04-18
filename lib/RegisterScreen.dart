@@ -365,6 +365,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             SizedBox(
                               width: 296.w,
                               child: TextFormField(
+                                  textInputAction: TextInputAction.done,
                                 validator: (val) {
                                   if (val!.isEmpty) {
                                     return 'NIN cannot be empty';

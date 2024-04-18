@@ -391,27 +391,62 @@ class _VerifyDrivingLicenseManuallyState
                         // ),
                         SizedBox(
                           width: 300.w,
-                          child: TextFormFieldWidget(
-                            controller: licenseController,
-                            textInputType: TextInputType.number,
-                            enterTextStyle: enterTextStyle,
-                            cursorColor: orange,
-                            hintText: 'Driving license number',
-                            border: border,
-                            hintStyle: hintStyle,
-                            focusedBorder: focusedBorder,
-                            obscureText: null,
-                            contentPadding: contentPadding,
-                            enableBorder: enableBorder,
+                          child: TextFormField(
+                            textInputAction: TextInputAction.done,
                             validator: (val) {
                               if (val!.isEmpty) {
-                                return 'make sure you\'ve entered the same number';
+                                return 'NIN cannot be empty';
                               }
                               return null;
                             },
-                            length: -1,
+                            controller: licenseController,
+                            keyboardType: TextInputType.number,
+                            style: enterTextStyle,
+                            cursorColor: orange,
+                            decoration: InputDecoration(
+                              fillColor: Colors.grey.withOpacity(
+                                  0.21), // Change this to your desired background color
+                              filled: true,
+                              hintText: 'Driving license number',
+                              border: border,
+                              hintStyle: hintStyle,
+                              focusedBorder: focusedBorder,
+                              contentPadding: contentPadding,
+                              enabledBorder: enableBorder,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(12),
+                            ],
+                            obscureText: false,
                           ),
                         ),
+                        //                       SizedBox(
+                        //                         width: 300.w,
+                        //                         child: TextFormFieldWidget(
+                        //                           controller: licenseController,
+                        //                           textInputType: TextInputType.number,
+                        //                           enterTextStyle: enterTextStyle,
+                        //                           cursorColor: orange,
+                        //                           hintText: 'Driving license number',
+                        //                           border: border,
+                        //                           hintStyle: hintStyle,
+                        //                           focusedBorder: focusedBorder,
+                        //                           obscureText: null,
+                        //                           contentPadding: contentPadding,
+                        //                           enableBorder: enableBorder,
+                        //                           validator: (val) {
+                        //   if (val!.isEmpty) {
+                        //     return 'Please enter a number';
+                        //   }
+                        //   if (val.length != 11) {
+                        //     return 'Please enter a valid 11-digit number';
+                        //   }
+                        //   return null;
+                        // },
+                        //                           length: -1,
+                        //                         ),
+                        //                       ),
                         SizedBox(
                           height: 120.h,
                         ),
