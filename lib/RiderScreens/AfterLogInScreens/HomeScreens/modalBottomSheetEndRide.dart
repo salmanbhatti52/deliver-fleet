@@ -1,5 +1,6 @@
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/EndRideDialog.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/endRidePage.dart';
 import 'package:deliver_partner/models/API_models/API_response.dart';
 import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -451,7 +452,9 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                           ),
                                           Text(
                                             DateFormat('h:mm a').format(
-                                              DateFormat('HH:mm:ss').parse(widget.bookingModel.delivery_time!),
+                                              DateFormat('HH:mm:ss').parse(
+                                                  widget.bookingModel
+                                                      .delivery_time!),
                                             ),
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
@@ -684,12 +687,16 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => EndRideDialog(
-                                    bookingModel: widget.bookingModel,
-                                    bookingDestinations: widget.bookingDestinations[i],
-                                    bookingDestinationsList: widget.bookingDestinations,
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EndRidePAge(
+                                      bookingModel: widget.bookingModel,
+                                      bookingDestinations:
+                                          widget.bookingDestinations[i],
+                                      bookingDestinationsList:
+                                          widget.bookingDestinations,
+                                    ),
                                   ),
                                 );
                                 // startRide(context);
@@ -896,8 +903,12 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                                     ),
                                                                   ),
                                                                   Text(
-                                                                    DateFormat('h:mm a').format(
-                                                                      DateFormat('HH:mm:ss').parse(widget.bookingModel.delivery_time!),
+                                                                    DateFormat(
+                                                                            'h:mm a')
+                                                                        .format(
+                                                                      DateFormat('HH:mm:ss').parse(widget
+                                                                          .bookingModel
+                                                                          .delivery_time!),
                                                                     ),
                                                                     style: GoogleFonts
                                                                         .inter(
@@ -1204,18 +1215,21 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                     Center(
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (context) =>
-                                                                EndRideDialog(
-                                                              bookingModel: widget
-                                                                  .bookingModel,
-                                                              bookingDestinationsList:
-                                                                  widget
-                                                                      .bookingDestinations,
-                                                              bookingDestinations:
-                                                                  widget.bookingDestinations[
-                                                                      index],
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      EndRidePAge(
+                                                                bookingModel: widget
+                                                                    .bookingModel,
+                                                                bookingDestinationsList:
+                                                                    widget
+                                                                        .bookingDestinations,
+                                                                bookingDestinations:
+                                                                    widget.bookingDestinations[
+                                                                        index],
+                                                              ),
                                                             ),
                                                           );
                                                           // startRide(context);
@@ -1338,6 +1352,6 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
               ),
       );
     }
-    return SizedBox();
+    return const SizedBox();
   }
 }

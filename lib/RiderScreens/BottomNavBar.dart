@@ -170,7 +170,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
             ),
             Positioned(
-              top: -40,
+              // top: -40,
+              bottom: 30,
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(

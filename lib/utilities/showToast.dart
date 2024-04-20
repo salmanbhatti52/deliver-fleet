@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+Color filledColor = const Color(0xFFF2F0EE);
+Color redColor = Colors.red;
+Color hintColor = const Color(0xFF191919).withOpacity(0.5);
+Color blackColor = const Color(0xFF000000);
+Color transparentColor = Colors.transparent;
+Color orangeColor = const Color(0xFFFF6302);
+
 void showToastSuccess(
   String? msg,
   FToast fToast, {

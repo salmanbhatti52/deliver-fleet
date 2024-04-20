@@ -1,5 +1,6 @@
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/RidesScreens/InProgressEndRideDialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/RidesScreens/inProgressEndRidePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -450,7 +451,10 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                                 ),
                                 Text(
                                   DateFormat('h:mm a').format(
-                                    DateFormat('HH:mm:ss').parse(widget.inProgressRidesList!.bookings!.delivery_time!),
+                                    DateFormat('HH:mm:ss').parse(widget
+                                        .inProgressRidesList!
+                                        .bookings!
+                                        .delivery_time!),
                                   ),
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
@@ -657,11 +661,16 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showAdaptiveDialog(
-                        context: context,
-                        builder: (context) => INProgressEndRideDialog(
-                          inProgressRidesList: widget.inProgressRidesList,
-                          inProgressRidesList2: widget.inProgressRidesList2,
+                      print("${widget.inProgressRidesList}");
+                      print("${widget.inProgressRidesList2}");
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InProgressEndRidePage(
+                            inProgressRidesList: widget.inProgressRidesList,
+                            inProgressRidesList2: widget.inProgressRidesList2,
+                          ),
                         ),
                       );
                     },
