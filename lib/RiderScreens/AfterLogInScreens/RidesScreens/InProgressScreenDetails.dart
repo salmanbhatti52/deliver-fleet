@@ -173,8 +173,8 @@ class _InProgressDetailsState extends State<InProgressDetails> {
         ),
         // height: MediaQuery.sizeOf(context).height * 0.66,
         height: widget.inProgressRidesList!.bookings!.scheduled == "Yes"
-            ? MediaQuery.sizeOf(context).height * 0.66
-            : MediaQuery.sizeOf(context).height * 0.6,
+            ? MediaQuery.sizeOf(context).height * 0.8
+            : MediaQuery.sizeOf(context).height * 0.8,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(

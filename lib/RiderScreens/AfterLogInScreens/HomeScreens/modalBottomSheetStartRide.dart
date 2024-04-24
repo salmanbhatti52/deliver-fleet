@@ -432,7 +432,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                           ),
                                           Text(
                                             DateFormat('h:mm a').format(
-                                              DateFormat('HH:mm:ss').parse(widget.bookingModel.delivery_time!),
+                                              DateFormat('HH:mm:ss').parse(
+                                                  widget.bookingModel
+                                                      .delivery_time!),
                                             ),
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
@@ -674,10 +676,17 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               height: MediaQuery.of(context).size.height * 0.38,
                               child: isLoading
                                   ? spinKitRotatingCircle
-                                  : ListView.builder(
+                                  : PageView.builder(
+                                      onPageChanged: (index) async {
+                                        setState(() {
+                                          currentIndex =
+                                              index; // Update currentIndex when page changes
+                                        });
+                                      },
                                       scrollDirection: Axis.horizontal,
                                       itemCount:
                                           widget.bookingDestinations.length,
+                                      controller: pageController,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Container(
@@ -838,8 +847,12 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                     ),
                                                                   ),
                                                                   Text(
-                                                                    DateFormat('h:mm a').format(
-                                                                      DateFormat('HH:mm:ss').parse(widget.bookingModel.delivery_time!),
+                                                                    DateFormat(
+                                                                            'h:mm a')
+                                                                        .format(
+                                                                      DateFormat('HH:mm:ss').parse(widget
+                                                                          .bookingModel
+                                                                          .delivery_time!),
                                                                     ),
                                                                     style: GoogleFonts
                                                                         .inter(
@@ -1296,23 +1309,33 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: widget.bookingDestinations.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(width: 3.w),
-                                      Container(
-                                        width: 10,
-                                        height: 10,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:
-                                              currentIndex == 0 ? orange : grey,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      pageController.animateToPage(index,
+                                          duration:
+                                              const Duration(milliseconds: 500),
+                                          curve: Curves.ease);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(width: 3.w),
+                                        Container(
+                                          width: 10,
+                                          height: 10,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: currentIndex == index
+                                                ? orange
+                                                : grey, // Adjust indicator color based on current index
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(width: 3.w)
-                                    ],
+                                        SizedBox(width: 3.w)
+                                      ],
+                                    ),
                                   );
                                 }),
                           ),
@@ -1363,6 +1386,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     return const SizedBox();
   }
 
+  PageController pageController = PageController();
   bool isChatStarting = false;
   APIResponse<APIResponse>? startUserToUserChatResponse;
 

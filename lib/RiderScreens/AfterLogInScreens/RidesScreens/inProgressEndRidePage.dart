@@ -75,6 +75,7 @@ class _InProgressEndRidePageState extends State<InProgressEndRidePage> {
           getBookingDestinationStatusFromJson(resBody);
       print("getBookingDestinationStatus: ${getBookingDestinationStatus.data}");
       print(resBody);
+      setState(() {});
     } else {
       print(res.reasonPhrase);
     }
@@ -194,92 +195,158 @@ class _InProgressEndRidePageState extends State<InProgressEndRidePage> {
           SizedBox(
             height: 10.h,
           ),
-
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: Row(
               children: [
                 Expanded(
-                  child: ButtonTheme(
-                    alignedDropdown: true,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButtonFormField<String>(
-                        value: endId,
-                        onChanged: (newValue) {
-                          setState(() {
-                            endId = newValue;
-                            print("endId: $endId");
-                          });
-                        },
-                        items: getBookingDestinationStatus.data?.map((bookid) {
-                              return DropdownMenuItem<String>(
-                                value: bookid.bookingsDestinationsStatusId
-                                    .toString(),
-                                child: Text(bookid.name ?? ''),
-                              );
-                            }).toList() ??
-                            [],
-                        style: TextStyle(
-                          color: blackColor,
-                          fontSize: 14,
-                          fontFamily: 'Inter-Regular',
-                          // fontWeight: FontWeight.w900,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: filledColor,
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
+                  child: getBookingDestinationStatus.data == null
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                          color: Colors.orange,
+                          strokeWidth: 2,
+                        )) // Show progress indicator if data is not fetched
+                      : DropdownButtonFormField<String>(
+                          value: endId,
+                          onChanged: (newValue) {
+                            setState(() {
+                              endId = newValue;
+                              print("endId: $endId");
+                            });
+                          },
+                          items:
+                              getBookingDestinationStatus.data!.map((status) {
+                                    return DropdownMenuItem<String>(
+                                      value: status.bookingsDestinationsStatusId
+                                          .toString(),
+                                      child: Text(status.name ?? ''),
+                                    );
+                                  }).toList() ??
+                                  [],
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: filledColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
                             ),
-                            borderSide: BorderSide.none,
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
                             ),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
                             ),
-                            borderSide: BorderSide.none,
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: redColor, width: 1),
                             ),
-                            borderSide: BorderSide(
-                              color: redColor,
-                              width: 1,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          hintText: 'Select Reason',
-                          hintStyle: TextStyle(
-                            color: hintColor,
-                            fontSize: 12,
-                            fontFamily: 'Inter-Light',
-                          ),
-                          errorStyle: TextStyle(
-                            color: redColor,
-                            fontSize: 10,
-                            fontFamily: 'Inter-Bold',
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            hintText: 'Please Select Answers',
+                            hintStyle: TextStyle(
+                                color: hintColor,
+                                fontSize: 12,
+                                fontFamily: 'Inter-Light'),
+                            errorStyle: TextStyle(
+                                color: redColor,
+                                fontSize: 10,
+                                fontFamily: 'Inter-Bold'),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
+                const SizedBox(width: 5),
               ],
             ),
           ),
+
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 15, right: 15),
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         child: ButtonTheme(
+          //           alignedDropdown: true,
+          //           child: DropdownButtonHideUnderline(
+          //             child: DropdownButtonFormField<String>(
+          //               value: endId,
+          //               onChanged: (newValue) {
+          //                 setState(() {
+          //                   endId = newValue;
+          //                   print("endId: $endId");
+          //                 });
+          //               },
+          //               items: getBookingDestinationStatus.data?.map((bookid) {
+          //                     return DropdownMenuItem<String>(
+          //                       value: bookid.bookingsDestinationsStatusId
+          //                           .toString(),
+          //                       child: Text(bookid.name ?? ''),
+          //                     );
+          //                   }).toList() ??
+          //                   [],
+          //               style: TextStyle(
+          //                 color: blackColor,
+          //                 fontSize: 14,
+          //                 fontFamily: 'Inter-Regular',
+          //                 // fontWeight: FontWeight.w900,
+          //               ),
+          //               borderRadius: BorderRadius.circular(10),
+          //               decoration: InputDecoration(
+          //                 filled: true,
+          //                 fillColor: filledColor,
+          //                 border: const OutlineInputBorder(
+          //                   borderRadius: BorderRadius.all(
+          //                     Radius.circular(10),
+          //                   ),
+          //                   borderSide: BorderSide.none,
+          //                 ),
+          //                 enabledBorder: const OutlineInputBorder(
+          //                   borderRadius: BorderRadius.all(
+          //                     Radius.circular(10),
+          //                   ),
+          //                   borderSide: BorderSide.none,
+          //                 ),
+          //                 focusedBorder: const OutlineInputBorder(
+          //                   borderRadius: BorderRadius.all(
+          //                     Radius.circular(10),
+          //                   ),
+          //                   borderSide: BorderSide.none,
+          //                 ),
+          //                 errorBorder: OutlineInputBorder(
+          //                   borderRadius: const BorderRadius.all(
+          //                     Radius.circular(10),
+          //                   ),
+          //                   borderSide: BorderSide(
+          //                     color: redColor,
+          //                     width: 1,
+          //                   ),
+          //                 ),
+          //                 contentPadding: const EdgeInsets.symmetric(
+          //                     horizontal: 20, vertical: 10),
+          //                 hintText: 'Select Reason',
+          //                 hintStyle: TextStyle(
+          //                   color: hintColor,
+          //                   fontSize: 12,
+          //                   fontFamily: 'Inter-Light',
+          //                 ),
+          //                 errorStyle: TextStyle(
+          //                   color: redColor,
+          //                   fontSize: 10,
+          //                   fontFamily: 'Inter-Bold',
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       const SizedBox(
+          //         width: 5,
+          //       ),
+          //     ],
+          //   ),
+          // ),
+
           // Expanded(
           //   child: ButtonTheme(
           //     alignedDropdown: true,
@@ -626,21 +693,23 @@ class _InProgressEndRidePageState extends State<InProgressEndRidePage> {
           SizedBox(
             height: 20.h,
           ),
-          isRideEnding
-              ? const Center(
-                  child: SpinKitDoubleBounce(
-                    color: orange,
-                    size: 50.0,
-                  ),
-                )
-              : GestureDetector(
-                  onTap: () {
-                    endRideMethod(
-                      context,
-                    );
-                  },
-                  child: buttonContainer(context, 'End Ride'),
-                ),
+          endId == null
+              ? const SizedBox.shrink()
+              : (isRideEnding
+                  ? const Center(
+                      child: SpinKitDoubleBounce(
+                        color: orange,
+                        size: 50.0,
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        endRideMethod(
+                          context,
+                        );
+                      },
+                      child: buttonContainer(context, 'End Ride'),
+                    )),
         ],
       ),
     );

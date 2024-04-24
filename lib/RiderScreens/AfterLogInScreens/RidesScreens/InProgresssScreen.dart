@@ -98,6 +98,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
             : ListView.builder(
                 itemCount: inProgressRidesList!.length,
                 shrinkWrap: true,
+                reverse: true,
                 padding: EdgeInsets.zero,
                 // physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {

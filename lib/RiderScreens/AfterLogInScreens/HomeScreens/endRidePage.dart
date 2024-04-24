@@ -24,12 +24,14 @@ class EndRidePAge extends StatefulWidget {
   final BookingModel bookingModel;
   final BookingDestinations bookingDestinations;
   final List<BookingDestinations> bookingDestinationsList;
+  final String? bookingDestinID;
 
   const EndRidePAge({
     super.key,
     required this.bookingModel,
     required this.bookingDestinations,
     required this.bookingDestinationsList,
+    this.bookingDestinID,
   });
 
   @override
@@ -77,6 +79,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       getBookingDestinationStatus =
           getBookingDestinationStatusFromJson(resBody);
       print("getBookingDestinationStatus: ${getBookingDestinationStatus.data}");
+      setState(() {});
       print(resBody);
     } else {
       print(res.reasonPhrase);
@@ -91,6 +94,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
     // TODO: implement initState
     super.initState();
     init();
+    print("widget bookingDestinID; ${widget.bookingDestinID}");
     getDestinationStatus();
     setState(() {
       isLoading = true;
@@ -658,7 +662,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
     });
     Map endRideData = {
       "bookings_id": widget.bookingModel.bookings_id.toString(),
-      "bookings_destinations_id": bookingsDestinationsId,
+      "bookings_destinations_id": "${widget.bookingDestinID}",
       "bookings_destinations_status_id": endId.toString(),
       "passcode": passCodeController.text
     };

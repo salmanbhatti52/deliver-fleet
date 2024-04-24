@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/EndRideDialog.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/endRidePage.dart';
@@ -12,9 +14,10 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../Constants/Colors.dart';
 import '../../../models/API_models/GetAllSystemDataModel.dart';
+import '../../../models/API_models/getupdateBooking.dart';
 import '../../../services/API_services.dart';
 import '../../../utilities/showToast.dart';
 import 'UserToUserChat/UserToUserChat.dart';
@@ -49,11 +52,65 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
 
   int currentIndex = 0;
   ScrollController nextPageScrollController = ScrollController();
+  String? ride0;
+  String? ride1;
+  String? ride2;
+  String? ride3;
+  String? ride4;
+  UpdateBookingStatusModel updateBookingStatusModel =
+      UpdateBookingStatusModel();
+
+  Future<void> updateBookingStatus() async {
+    try {
+      String apiUrl =
+          "https://deliver.eigix.net/api/get_updated_status_booking";
+      debugPrint("apiUrl: $apiUrl");
+      debugPrint("currentBookingId: ${widget.bookingModel.bookings_id}");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "bookings_id": widget.bookingModel.bookings_id.toString(),
+        },
+      );
+      final responseString = response.body;
+      debugPrint("response: $responseString");
+      debugPrint("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        updateBookingStatusModel =
+            updateBookingStatusModelFromJson(responseString);
+        debugPrint(
+            'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+        var bookingsFleet = jsonResponse['data']['bookings_fleet'];
+
+        ride0 =
+            bookingsFleet.length > 0 ? bookingsFleet[0]['status'] ?? "" : "";
+        ride1 =
+            bookingsFleet.length > 1 ? bookingsFleet[1]['status'] ?? "" : "";
+        ride2 =
+            bookingsFleet.length > 2 ? bookingsFleet[2]['status'] ?? "" : "";
+        ride3 =
+            bookingsFleet.length > 3 ? bookingsFleet[3]['status'] ?? "" : "";
+        ride4 =
+            bookingsFleet.length > 4 ? bookingsFleet[4]['status'] ?? "" : "";
+
+        setState(() {});
+      }
+    } catch (e) {
+      debugPrint('Something went wrong = ${e.toString()}');
+      return;
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    updateBookingStatus();
     init();
     setState(() {
       isLoading = true;
@@ -167,7 +224,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < widget.bookingDestinations.length; i++) {
+    for (int i = 0; i < widget.bookingDestinations.length;) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 20.h),
         decoration: const BoxDecoration(
@@ -177,7 +234,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
         ),
         height: widget.bookingModel.scheduled == "Yes"
             ? MediaQuery.sizeOf(context).height * 0.625
-            : MediaQuery.sizeOf(context).height * 0.601,
+            : MediaQuery.sizeOf(context).height * 0.621,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(
@@ -739,8 +796,16 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                               height: MediaQuery.of(context).size.height * 0.42,
                               child: isLoading
                                   ? spinKitRotatingCircle
-                                  : ListView.builder(
+                                  : PageView.builder(
+                                      onPageChanged: (index) async {
+                                        await updateBookingStatus();
+                                        setState(() {
+                                          currentIndex =
+                                              index; // Update currentIndex when page changes
+                                        });
+                                      },
                                       scrollDirection: Axis.horizontal,
+                                      controller: pageController,
                                       itemCount:
                                           widget.bookingDestinations.length,
                                       itemBuilder:
@@ -1213,68 +1278,95 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                       ),
                                                     ),
                                                     Center(
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      EndRidePAge(
-                                                                bookingModel: widget
-                                                                    .bookingModel,
-                                                                bookingDestinationsList:
-                                                                    widget
-                                                                        .bookingDestinations,
-                                                                bookingDestinations:
-                                                                    widget.bookingDestinations[
-                                                                        index],
+                                                      child: (currentIndex ==
+                                                                      0 &&
+                                                                  ride0 ==
+                                                                      "Completed") ||
+                                                              (currentIndex ==
+                                                                      1 &&
+                                                                  ride1 ==
+                                                                      "Completed") ||
+                                                              (currentIndex ==
+                                                                      2 &&
+                                                                  ride2 ==
+                                                                      "Completed") ||
+                                                              (currentIndex ==
+                                                                      3 &&
+                                                                  ride3 ==
+                                                                      "Completed") ||
+                                                              (currentIndex ==
+                                                                      4 &&
+                                                                  ride4 ==
+                                                                      "Completed")
+                                                          ? const SizedBox
+                                                              .shrink() // Don't show the button if the condition is true
+                                                          : GestureDetector(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder: (context) => EndRidePAge(
+                                                                        bookingModel:
+                                                                            widget
+                                                                                .bookingModel,
+                                                                        bookingDestinationsList:
+                                                                            widget
+                                                                                .bookingDestinations,
+                                                                        bookingDestinations:
+                                                                            widget.bookingDestinations[
+                                                                                index],
+                                                                        bookingDestinID: widget
+                                                                            .bookingDestinations[index]
+                                                                            .bookings_destinations_id
+                                                                            .toString()),
+                                                                  ),
+                                                                );
+                                                                // startRide(context);
+                                                              },
+                                                              child: Container(
+                                                                width: 170.w,
+                                                                height: 51.h,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  gradient:
+                                                                      const LinearGradient(
+                                                                    colors: [
+                                                                      Color(
+                                                                          0xffFF6302),
+                                                                      Color(
+                                                                          0xffFBC403),
+                                                                    ],
+                                                                    begin: Alignment
+                                                                        .centerRight,
+                                                                    end: Alignment
+                                                                        .centerLeft,
+                                                                  ),
+                                                                ),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    'End RIDE',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style:
+                                                                        GoogleFonts
+                                                                            .syne(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color:
+                                                                          white,
+                                                                    ),
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
-                                                          );
-                                                          // startRide(context);
-                                                        },
-                                                        child: Container(
-                                                          width: 170.w,
-                                                          height: 51.h,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            gradient:
-                                                                const LinearGradient(
-                                                              colors: [
-                                                                Color(
-                                                                    0xffFF6302),
-                                                                Color(
-                                                                    0xffFBC403),
-                                                              ],
-                                                              begin: Alignment
-                                                                  .centerRight,
-                                                              end: Alignment
-                                                                  .centerLeft,
-                                                            ),
-                                                          ),
-                                                          child: Center(
-                                                            child: Text(
-                                                              'End RIDE',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: GoogleFonts
-                                                                  .syne(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
                                                     ),
                                                     SizedBox(
                                                       height: 10.h,
@@ -1294,15 +1386,23 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 7),
                                       child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          controller: nextPageScrollController,
-                                          itemCount:
-                                              widget.bookingDestinations.length,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Row(
+                                        scrollDirection: Axis.horizontal,
+                                        controller: nextPageScrollController,
+                                        itemCount:
+                                            widget.bookingDestinations.length,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              pageController.animateToPage(
+                                                  index,
+                                                  duration: const Duration(
+                                                      milliseconds: 500),
+                                                  curve: Curves.ease);
+                                            },
+                                            child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               crossAxisAlignment:
@@ -1314,15 +1414,17 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                   height: 10,
                                                   decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
-                                                    color: currentIndex == 0
+                                                    color: currentIndex == index
                                                         ? orange
                                                         : grey,
                                                   ),
                                                 ),
                                                 SizedBox(width: 3.w)
                                               ],
-                                            );
-                                          }),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                           ],
@@ -1354,4 +1456,6 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
     }
     return const SizedBox();
   }
+
+  PageController pageController = PageController();
 }
