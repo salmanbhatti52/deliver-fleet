@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/HomeScreens.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/UserToUserChat/UserToUserChat.dart';
 import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';

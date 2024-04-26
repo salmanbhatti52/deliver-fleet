@@ -59,7 +59,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
   String? ride4;
   UpdateBookingStatusModel updateBookingStatusModel =
       UpdateBookingStatusModel();
-
+  Map<String, dynamic>? jsonResponse;
   Future<void> updateBookingStatus() async {
     try {
       String apiUrl =
@@ -83,9 +83,9 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
             updateBookingStatusModelFromJson(responseString);
         debugPrint(
             'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
-        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        jsonResponse = jsonDecode(response.body);
 
-        var bookingsFleet = jsonResponse['data']['bookings_fleet'];
+        var bookingsFleet = jsonResponse!['data']['bookings_fleet'];
 
         ride0 =
             bookingsFleet.length > 0 ? bookingsFleet[0]['status'] ?? "" : "";
@@ -748,11 +748,15 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => EndRidePAge(
-                                      bookingModel: widget.bookingModel,
-                                      bookingDestinations:
-                                          widget.bookingDestinations[i],
+                                      bookingModel: widget
+                                          .bookingModel.bookings_id
+                                          .toString(),
+                                      bookingDestinations: jsonResponse!["data"]
+                                                  ['bookings_fleet'][0]
+                                              ['bookings_destinations_id']
+                                          .toString(),
                                       bookingDestinationsList:
-                                          widget.bookingDestinations,
+                                          jsonResponse!["data"]['status'],
                                     ),
                                   ),
                                 );
@@ -1306,15 +1310,18 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                                   context,
                                                                   MaterialPageRoute(
                                                                     builder: (context) => EndRidePAge(
-                                                                        bookingModel:
-                                                                            widget
-                                                                                .bookingModel,
-                                                                        bookingDestinationsList:
-                                                                            widget
-                                                                                .bookingDestinations,
-                                                                        bookingDestinations:
-                                                                            widget.bookingDestinations[
-                                                                                index],
+                                                                        bookingModel: widget
+                                                                            .bookingModel
+                                                                            .bookings_id
+                                                                            .toString(),
+                                                                        bookingDestinationsList: jsonResponse!["data"]
+                                                                            [
+                                                                            'status'],
+                                                                        bookingDestinations: widget
+                                                                            .bookingDestinations[
+                                                                                index]
+                                                                            .bookings_destinations_id
+                                                                            .toString(),
                                                                         bookingDestinID: widget
                                                                             .bookingDestinations[index]
                                                                             .bookings_destinations_id

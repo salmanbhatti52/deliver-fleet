@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/RidesScreens/CompletedRideBottomSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -233,10 +234,15 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              setState(() {
-                                closed = false;
-                                opened = true;
-                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CompletedRideBottomSheet(
+                                            bookingID: widget
+                                                .completedRidesModel.bookings_id
+                                                .toString(),
+                                          )));
                             },
                             child: SeeDetailsOnCompletedRidesButton(context),
                           ),
@@ -347,19 +353,15 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                           //     :
                           Expanded(
                             child: CompletedRidesDestinationsWidget(
-                              destination: widget
-                                  .completedRidesModel
-                                  .bookings!
-                                  .bookings_destinations![0]
-                                  .destin_address!,
-                              distance: widget
-                                  .completedRidesModel
-                                  .bookings!
-                                  .bookings_destinations![0]
-                                  .destin_distance!,
+                              destination: widget.completedRidesModel.bookings!
+                                  .bookings_destinations![0].destin_address!,
+                              distance: widget.completedRidesModel.bookings!
+                                  .bookings_destinations![0].destin_distance!,
                               time: widget.completedRidesModel.bookings!
                                   .bookings_destinations![0].destin_time!,
-                              fare: widget.completedRidesModel.bookings!.total_charges.toString(),
+                              fare: widget
+                                  .completedRidesModel.bookings!.total_charges
+                                  .toString(),
                               // fare: widget.completedRidesModel.bookings!.bookings_destinations![0]!.destin_discounted_charges!,
                             ),
                           ),
@@ -387,9 +389,6 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
             ),
           ],
         ),
-     
-     
-     
       ],
     );
   }

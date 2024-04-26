@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -121,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
         getAllClientRequestsList!.addAll(getAllClientRequestsResponse.data!);
         for (int i = 0; i < getAllClientRequestsList!.length; i++) {
           print(
-              'object getting requests  : ${getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_longitude}   ${getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_latitude}');
+              'object getting requests: ${getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_longitude}   ${getAllClientRequestsList![i].bookings!.bookings_destinations![0].pickup_latitude}');
           print(
               "name: ${getAllClientRequestsList![i].bookings!.users_customers!.first_name}");
           print("fleet id: ${getAllClientRequestsList![i].bookings_fleet_id}");
@@ -129,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } else {
       print(
-          'object error getting requests  ${getAllClientRequestsResponse.status!}        ${getAllClientRequestsResponse.message!}');
+          'object error getting requests  ${getAllClientRequestsResponse.status!} ${getAllClientRequestsResponse.message!}');
       showToastError('No ride requests yet', FToast().init(context));
     }
 
@@ -444,6 +446,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return markers;
   }
 
+  late GoogleMapController _controller;
+
   List<LatLng> polylineCoordinates = [];
   void getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints();
@@ -462,21 +466,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // BitmapDescriptor? newCustomMarkerIcon;
-  // Future<void> loadCustomMarker() async {
-  //   print("userLatitude $userLatitude ::: userLongitude $userLongitude");
-  //   final ByteData bytes = await rootBundle.load(
-  //     'assets/images/rider-marker-icon.png',
-  //   );
-  //   final Uint8List list = bytes.buffer.asUint8List();
-  //   newCustomMarkerIcon = BitmapDescriptor.fromBytes(list);
-  //   setState(() {});
-  // }
-
+  bool isContainerVisible = true;
+  int currentLocationIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final isLargeScreen = screenSize.width > 600;
     LatLng initialPosition =
         LatLng(double.parse(userLatitude!), double.parse(userLongitude!));
     return Scaffold(
@@ -485,98 +478,136 @@ class _HomeScreenState extends State<HomeScreen> {
           : Stack(
               alignment: Alignment.bottomRight,
               children: [
-                GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  onCameraMove: _onCameraMove(
-                      CameraPosition(
-                          target: LatLng(double.parse(userLatitude!),
+                Stack(
+                  children: [
+                    GoogleMap(
+                      // onMapCreated: _onMapCreated,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller = controller;
+                      },
+                      onCameraMove: _onCameraMove(
+                          CameraPosition(
+                              target: LatLng(double.parse(userLatitude!),
+                                  double.parse(userLongitude!))),
+                          LatLng(double.parse(userLatitude!),
                               double.parse(userLongitude!))),
-                      LatLng(double.parse(userLatitude!),
-                          double.parse(userLongitude!))),
-                  initialCameraPosition: CameraPosition(
-                    target: initialPosition,
-                    zoom: 15.5,
-                  ),
-                  mapType: MapType.normal,
-                  polylines: {
-                    Polyline(
-                      polylineId: const PolylineId("route"),
-                      points: polylineCoordinates,
-                      color: orange,
-                      geodesic: true,
-                      patterns: [
-                        PatternItem.dash(40),
-                        PatternItem.gap(10),
-                      ],
-                      width: 6,
+                      initialCameraPosition: CameraPosition(
+                        target: initialPosition,
+                        zoom: 12.5,
+                      ),
+                      mapType: MapType.normal,
+                      polylines: {
+                        Polyline(
+                          polylineId: const PolylineId("route"),
+                          points: polylineCoordinates,
+                          color: orange,
+                          geodesic: true,
+                          patterns: [
+                            PatternItem.dash(40),
+                            PatternItem.gap(10),
+                          ],
+                          width: 6,
+                        ),
+                      },
+                      compassEnabled: true,
+                      markers: getMarkers(),
+                      scrollGesturesEnabled: true,
+                      buildingsEnabled: true,
                     ),
-                  },
-                  compassEnabled: true,
-                  markers: getMarkers(),
-                  scrollGesturesEnabled: true,
-                  buildingsEnabled: true,
+                  ],
                 ),
-                // Positioned(
-                //   child: Padding(
-                //     padding: EdgeInsets.only(right: 22.0.w, bottom: 130.h),
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.end,
-                //       children: [
-                //         GestureDetector(
-                //           onTap: () {},
-                //           child: Container(
-                //             width: 40.w,
-                //             height: 40.h,
-                //             decoration: const BoxDecoration(
-                //               color: orange,
-                //               shape: BoxShape.circle,
-                //             ),
-                //             child: SvgPicture.asset(
-                //               'assets/images/circle-pointer.svg',
-                //               colorFilter: const ColorFilter.mode(
-                //                   white, BlendMode.srcIn),
-                //               fit: BoxFit.scaleDown,
-                //             ),
-                //           ),
-                //         ),
-                //         SizedBox(
-                //           height: 40.h,
-                //         ),
-                //         GestureDetector(
-                //           // onTap: () {
-                //           //   showModalBottomSheet(
-                //           //     backgroundColor: white,
-                //           //     shape: RoundedRectangleBorder(
-                //           //       borderRadius: BorderRadius.vertical(
-                //           //         top: Radius.circular(20),
-                //           //       ),
-                //           //     ),
-                //           //     isScrollControlled: true,
-                //           //     context: context,
-                //           //     builder: (context) => ModalBottomSheetOnHome(
-                //           //         // clientData: getAllClientRequestsList[0],
-                //           //         ),
-                //           //   );
-                //           // },
-                //           child: Container(
-                //             width: 40.w,
-                //             height: 40.h,
-                //             decoration: const BoxDecoration(
-                //               color: orange,
-                //               shape: BoxShape.circle,
-                //             ),
-                //             child: SvgPicture.asset(
-                //               'assets/images/flag-map-icon.svg',
-                //               colorFilter: const ColorFilter.mode(
-                //                   white, BlendMode.srcIn),
-                //               fit: BoxFit.scaleDown,
-                //             ),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                getAllClientRequestsList!.isNotEmpty && isContainerVisible
+                    ? Visibility(
+                        visible: isContainerVisible,
+                        child: Positioned(
+                            top: 15,
+                            right: 20,
+                            left: 20,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (getAllClientRequestsList != null &&
+                                      getAllClientRequestsList!.isNotEmpty) {
+                                    _controller
+                                        .animateCamera(
+                                      CameraUpdate.newLatLng(
+                                        LatLng(
+                                          double.parse(
+                                              getAllClientRequestsList![
+                                                      currentLocationIndex]
+                                                  .bookings!
+                                                  .bookings_destinations![0]
+                                                  .pickup_latitude!),
+                                          double.parse(
+                                              getAllClientRequestsList![
+                                                      currentLocationIndex]
+                                                  .bookings!
+                                                  .bookings_destinations![0]
+                                                  .pickup_longitude!),
+                                        ),
+                                      ),
+                                    )
+                                        .then((_) {
+                                      setState(() {
+                                        isContainerVisible = false;
+                                      });
+                                    });
+                                    currentLocationIndex =
+                                        (currentLocationIndex + 1) %
+                                            getAllClientRequestsList!.length;
+                                  }
+                                },
+                                child: Container(
+                                  width: 200,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                    ),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.white.withOpacity(
+                                            0.5), // Change the opacity as needed
+                                        spreadRadius: 5, // Change as needed
+                                        blurRadius: 7, // Change as needed
+                                        offset: const Offset(
+                                            0, 3), // Change as needed
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          const Text(
+                                            "New Ride Request",
+                                            style: TextStyle(
+                                              fontSize:
+                                                  18, // Change this value as needed
+                                              // Makes the text bold
+                                              color: Colors
+                                                  .black, // Change this value as needed
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              width: 100.w,
+                                              height: 40.h,
+                                              child: buttonContainer(
+                                                  context, 'View')),
+                                        ]),
+                                  ),
+                                ),
+                              ),
+                            )),
+                      )
+                    : const SizedBox(),
               ],
             ),
     );

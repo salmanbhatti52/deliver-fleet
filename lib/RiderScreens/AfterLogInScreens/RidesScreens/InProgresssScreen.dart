@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/EndRideBottomSheetPage.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/Constants/details-button.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/RidesScreens/InProgressScreenDetails.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:deliver_partner/models/API_models/ongoingRides.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,13 +42,70 @@ class _InProgressScreenState extends State<InProgressScreen> {
   late SharedPreferences sharedPreferences;
   bool isPageLoading = false;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    init();
-    isPageLoading = true;
+  GetOnGoingRides getOnGoingRides = GetOnGoingRides();
+  Map<String, dynamic>? jsonResponse;
+  getRidesOnGoing() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    userID = (sharedPreferences.getInt('userID') ?? -1);
+
+    print("UserID $userID");
+    // try {
+    setState(() {
+      isPageLoading = true;
+    });
+    String apiUrl = "https://deliver.eigix.net/api/get_bookings_ongoing_fleet";
+    debugPrint("apiUrl: $apiUrl");
+    debugPrint("userID: $userID");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        "users_fleet_id": userID.toString(),
+      },
+    );
+    final responseString = response.body;
+    debugPrint("response: $responseString");
+    debugPrint("statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      getOnGoingRides = getOnGoingRidesFromJson(responseString);
+      debugPrint('getOnGoingRides status: ${getOnGoingRides.status}');
+      jsonResponse = jsonDecode(response.body);
+
+      print("jsonResponse: Dataaaa ${jsonResponse!['data'][0]}");
+
+      if (mounted) {
+        setState(() {
+          isPageLoading = false;
+        });
+      }
+      // if (updateBookingStatusModel.data?.status == "Completed") {
+      //   timer?.cancel();
+    } else {
+      // timer?.cancel();
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => HomePageScreen(
+      //       index: 1,
+      //       passCode: widget.passCode,
+      //       singleData: widget.singleData,
+      //       multipleData: widget.multipleData,
+      //       riderData: widget.riderData!,
+      //       currentBookingId: widget.currentBookingId,
+      //       bookingDestinationId: widget.bookingDestinationId,
+      //     ),
+      //   ),
+      // );
+    }
   }
+
+  // } catch (e) {
+  //   debugPrint('Something went wrong = ${e.toString()}');
+  //   return null;
+  // }
+  final ScrollController _scrollController = ScrollController();
 
   APIResponse<List<InProgressRidesModel>>? inProgressResponse;
   List<InProgressRidesModel>? inProgressRidesList;
@@ -53,6 +115,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
   String? imageHolder;
 
   init() async {
+    isPageLoading = true;
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
 
@@ -90,21 +153,46 @@ class _InProgressScreenState extends State<InProgressScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getRidesOnGoing();
+    init();
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // Move the animation code to didChangeDependencies
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (_scrollController.hasClients) {
+  //       _scrollController.animateTo(
+  //         _scrollController.position.maxScrollExtent,
+  //         duration: const Duration(milliseconds: 200),
+  //         curve: Curves.easeInOut,
+  //       );
+  //     }
+  //   });
+  // }
+
+  @override
   Widget build(BuildContext context) {
     return isPageLoading
         ? spinKitRotatingCircle
-        : inProgressRidesList!.isEmpty
+        : getOnGoingRides.data == null || getOnGoingRides.data!.isEmpty
             ? Lottie.asset('assets/images/no-data.json')
             : ListView.builder(
-                itemCount: inProgressRidesList!.length,
+                itemCount: getOnGoingRides.data?.length ?? 0,
                 shrinkWrap: true,
-                reverse: true,
+                // controller: _scrollController,
+                // reverse: true,
                 padding: EdgeInsets.zero,
-                // physics: const BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final listItem = inProgressRidesList![index];
+                  final listItem = getOnGoingRides.data![index];
+
                   DateTime time =
-                      DateTime.parse(listItem.bookings!.date_added!);
+                      DateTime.parse(listItem.bookings.dateAdded.toString());
                   var formattedTime = DateFormat('E,d MMM yyyy ').format(time);
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,13 +244,11 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                       ),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(15),
-                                        child: listItem
-                                                    .bookings!
-                                                    .users_customers!
-                                                    .profile_pic !=
+                                        child: listItem.bookings.usersCustomers
+                                                    .profilePic !=
                                                 null
                                             ? Image.network(
-                                                'https://deliver.eigix.net/public/${listItem.bookings!.users_customers!.profile_pic}',
+                                                'https://deliver.eigix.net/public/${listItem.bookings.usersCustomers.profilePic}',
                                                 fit: BoxFit.cover,
                                                 errorBuilder: (BuildContext
                                                         context,
@@ -217,7 +303,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                         SizedBox(
                                           width: 200.w,
                                           child: AutoSizeText(
-                                            '${listItem.bookings!.users_customers!.first_name} ${listItem.bookings!.users_customers!.last_name!}  ',
+                                            '${listItem.bookings.usersCustomers.firstName} ${listItem.bookings.usersCustomers.lastName}',
                                             maxLines: 2,
                                             minFontSize: 15,
                                             style: GoogleFonts.inter(
@@ -233,7 +319,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                         SizedBox(
                                           width: 200.w,
                                           child: AutoSizeText(
-                                            '${listItem.users_fleet_vehicles!.model}',
+                                            listItem.usersFleetVehicles.model,
                                             minFontSize: 13,
                                             maxLines: 2,
                                             style: GoogleFonts.inter(
@@ -246,7 +332,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                         SizedBox(
                                           width: 200.w,
                                           child: AutoSizeText(
-                                            '(${listItem.users_fleet_vehicles!.vehicle_registration_no})',
+                                            '(${listItem.usersFleetVehicles.vehicleIdentificationNo})',
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
@@ -327,24 +413,41 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                   selectedIndex = index;
                                   details = !details;
                                 });
-                                // Navigator.pushReplacement(context,
-                                //     MaterialPageRoute(builder: (context) => InProgressDetails(inProgressRidesList: listItem, inProgressRidesList2: inProgressRidesList,)));
-                                showModalBottomSheet(
-                                    backgroundColor: white,
-                                    // isDismissible: false,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20),
-                                      ),
-                                    ),
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (context) => InProgressDetails(
-                                          userID: userID.toString(),
-                                          inProgressRidesList: listItem,
-                                          inProgressRidesList2:
-                                              inProgressRidesList,
-                                        ));
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EndRideBottomSheetPage(
+                                              userID: userID.toString(),
+                                              bookingID: getOnGoingRides
+                                                  .data![index].bookingsId
+                                                  .toString(),
+                                              // inProgressRidesList:
+                                              //     jsonResponse!['data'][index],
+                                              // inProgressRidesList2:
+                                              //     inProgressRidesList,
+                                              index: selectedIndex,
+                                            )));
+                                // showModalBottomSheet(
+                                //     backgroundColor: white,
+                                //     // isDismissible: false,
+                                //     shape: const RoundedRectangleBorder(
+                                //       borderRadius: BorderRadius.vertical(
+                                //         top: Radius.circular(20),
+                                //       ),
+                                //     ),
+                                //     isScrollControlled: true,
+                                //     context: context,
+                                //     builder: (context) => EndRideBottomSheetPage(
+                                // userID: userID.toString(),
+                                // bookingID: getOnGoingRides.data![index].bookingsId.toString(),
+                                // // inProgressRidesList:
+                                // //     jsonResponse!['data'][index],
+                                // // inProgressRidesList2:
+                                // //     inProgressRidesList,
+                                // index: selectedIndex,
+                                //         ));
                               },
                               child: details && selectedIndex == index
                                   ? detailsButtonDown(context)

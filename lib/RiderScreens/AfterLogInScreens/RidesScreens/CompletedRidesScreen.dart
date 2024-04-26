@@ -24,14 +24,6 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
   late SharedPreferences sharedPreferences;
   bool isPageLoading = false;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    init();
-    isPageLoading = true;
-  }
-
   APIResponse<List<InProgressRidesModel>>? completedRidesResponse;
   List<InProgressRidesModel>? completedRidesList;
 
@@ -69,6 +61,14 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    init();
+    isPageLoading = true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return isPageLoading
         ? spinKitRotatingCircle
@@ -79,6 +79,9 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.zero,
+                reverse: true,
+                cacheExtent: 10000000,
+                scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   return CompletedRidesWidget(
                     completedRidesModel: completedRidesList![index],
