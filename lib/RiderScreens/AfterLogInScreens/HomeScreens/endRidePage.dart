@@ -139,7 +139,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
     super.initState();
     init();
     getDestinationStatus();
-    print("widget bookingDestinID; ${widget.bookingDestinID}");
+    print("widget bookingDestinID; ${widget.bookingDestinations}");
     print("widget bookingid; ${widget.bookingModel}");
   }
 
@@ -698,7 +698,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
     });
     Map endRideData = {
       "bookings_id": widget.bookingModel.toString(),
-      "bookings_destinations_id": "${widget.bookingDestinID}",
+      "bookings_destinations_id": "${widget.bookingDestinations}",
       "bookings_destinations_status_id": endId.toString(),
       "passcode": passCodeController.text
     };

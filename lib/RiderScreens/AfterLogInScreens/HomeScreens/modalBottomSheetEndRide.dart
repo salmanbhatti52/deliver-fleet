@@ -131,6 +131,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
     _getSystemDataList = [];
 
     if (_getAllSystemDataResponse.status!.toLowerCase() == 'success') {
+      await updateBookingStatus();
       if (_getAllSystemDataResponse.data != null) {
         _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
         for (GetAllSystemDataModel model in _getSystemDataList!) {
@@ -744,6 +745,10 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                             ),
                             GestureDetector(
                               onTap: () {
+                                print(jsonResponse!["data"]['bookings_fleet'][0]
+                                            ['bookings_destinations']
+                                        ['bookings_destinations_id']
+                                    .toString());
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -752,7 +757,8 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                           .bookingModel.bookings_id
                                           .toString(),
                                       bookingDestinations: jsonResponse!["data"]
-                                                  ['bookings_fleet'][0]
+                                                      ['bookings_fleet'][0]
+                                                  ['bookings_destinations']
                                               ['bookings_destinations_id']
                                           .toString(),
                                       bookingDestinationsList:
@@ -802,7 +808,6 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                   ? spinKitRotatingCircle
                                   : PageView.builder(
                                       onPageChanged: (index) async {
-                                        await updateBookingStatus();
                                         setState(() {
                                           currentIndex =
                                               index; // Update currentIndex when page changes
