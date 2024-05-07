@@ -62,7 +62,7 @@ class _InProgressEndRidePageState extends State<InProgressEndRidePage> {
       'Accept': '*/*',
     };
     var url = Uri.parse(
-        'https://deliver.eigix.net/api/get_bookings_destinations_status');
+        'https://cs.deliverbygfl.com/api/get_bookings_destinations_status');
 
     var req = http.Request('GET', url);
     req.headers.addAll(headersList);

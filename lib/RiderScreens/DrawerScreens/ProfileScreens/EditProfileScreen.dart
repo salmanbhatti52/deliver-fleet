@@ -288,7 +288,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         fit: BoxFit.cover,
                                       )
                                     : Image.network(
-                                        'https://deliver.eigix.net/public/${widget.image}',
+                                        'https://cs.deliverbygfl.com/public/${widget.image}',
                                         fit: BoxFit.cover,
                                         errorBuilder: (BuildContext context,
                                             Object exception,
@@ -521,7 +521,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                     fit: BoxFit.cover,
                                                   )
                                                 : Image.network(
-                                                    'https://deliver.eigix.net/public/${widget.frontImage}',
+                                                    'https://cs.deliverbygfl.com/public/${widget.frontImage}',
                                                     fit: BoxFit.cover,
                                                     errorBuilder:
                                                         (BuildContext context,
@@ -612,7 +612,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                     fit: BoxFit.cover,
                                                   )
                                                 : Image.network(
-                                                    'https://deliver.eigix.net/public/${widget.backImage}',
+                                                    'https://cs.deliverbygfl.com/public/${widget.backImage}',
                                                     fit: BoxFit.cover,
                                                     errorBuilder:
                                                         (BuildContext context,
@@ -760,7 +760,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     try {
       SharedPreferences sharedPref = await SharedPreferences.getInstance();
       userID = sharedPref.getInt('userID') ?? -1;
-      String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
+      String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
       print("apiUrlStartChat: $apiUrl");
       print("userID: $userID");
       print("OtherUserId: ${getAdminList![0].users_system_id.toString()}");

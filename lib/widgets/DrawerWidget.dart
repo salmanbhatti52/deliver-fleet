@@ -99,8 +99,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
-                          'https://deliver.eigix.net/public/${userProfilePic ?? ''}',
-                          // 'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                          'https://cs.deliverbygfl.com/public/${userProfilePic ?? ''}',
+                          // 'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
                           fit: BoxFit.cover,
                           errorBuilder: (BuildContext context, Object exception,
                               StackTrace? stackTrace) {

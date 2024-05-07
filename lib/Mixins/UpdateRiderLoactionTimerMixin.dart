@@ -17,7 +17,7 @@ mixin PeriodicApiMixin {
   /// Update rider location after a certain amount of time API:
 
   Future<APIResponse<LogInModel>> updateRiderLocationAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/update_location_rider';
+    String API = 'https://cs.deliverbygfl.com/api/update_location_rider';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);

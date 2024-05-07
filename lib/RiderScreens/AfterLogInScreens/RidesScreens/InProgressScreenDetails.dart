@@ -89,7 +89,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
 
     print("UserID $userID");
     // try {
-    String apiUrl = "https://deliver.eigix.net/api/get_bookings_ongoing_fleet";
+    String apiUrl = "https://cs.deliverbygfl.com/api/get_bookings_ongoing_fleet";
     debugPrint("apiUrl: $apiUrl");
     debugPrint("userID: $userID");
     final response = await http.post(
@@ -287,7 +287,7 @@ class _InProgressDetailsState extends State<InProgressDetails> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(60),
                                       child: Image.network(
-                                        'https://deliver.eigix.net/public/${jsonResponse!['data'][widget.index]['bookings']['users_customers']['profile_pic']}',
+                                        'https://cs.deliverbygfl.com/public/${jsonResponse!['data'][widget.index]['bookings']['users_customers']['profile_pic']}',
                                         fit: BoxFit.cover,
                                         errorBuilder: (BuildContext context,
                                             Object exception,

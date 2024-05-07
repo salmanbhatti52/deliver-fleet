@@ -86,7 +86,7 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
                                             .users_customers!.profile_pic !=
                                         null
                                     ? Image.network(
-                                        'https://deliver.eigix.net/public/${widget.canceledRidesModel.bookings!.users_customers!.profile_pic}',
+                                        'https://cs.deliverbygfl.com/public/${widget.canceledRidesModel.bookings!.users_customers!.profile_pic}',
                                         fit: BoxFit.cover,
                                         errorBuilder: (BuildContext context,
                                             Object exception,

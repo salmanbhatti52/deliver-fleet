@@ -206,7 +206,7 @@ class _RequestRideFromFleetActiveState
                                                 borderRadius:
                                                     BorderRadius.circular(100),
                                                 child: Image.network(
-                                                  'https://deliver.eigix.net/public/${getAvailableBikesList![index].image}',
+                                                  'https://cs.deliverbygfl.com/public/${getAvailableBikesList![index].image}',
                                                   fit: BoxFit.cover,
                                                   errorBuilder: (BuildContext
                                                           context,

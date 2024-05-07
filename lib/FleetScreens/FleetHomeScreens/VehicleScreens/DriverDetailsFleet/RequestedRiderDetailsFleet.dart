@@ -116,7 +116,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      'https://deliver.eigix.net/public/${widget.getFleetVehicleRequestByIdModel.users_fleet!.profile_pic}',
+                      'https://cs.deliverbygfl.com/public/${widget.getFleetVehicleRequestByIdModel.users_fleet!.profile_pic}',
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
@@ -375,7 +375,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(65),
                       child: Image.network(
-                        'https://deliver.eigix.net/public/${widget.requestVehicleById.image!}',
+                        'https://cs.deliverbygfl.com/public/${widget.requestVehicleById.image!}',
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {

@@ -114,7 +114,7 @@ class _ScooterDetailsState extends State<ScooterDetails> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            'https://deliver.eigix.net/public/${vehicleDetailsResponse!.data!.image}',
+                            'https://cs.deliverbygfl.com/public/${vehicleDetailsResponse!.data!.image}',
                             fit: BoxFit.cover,
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace? stackTrace) {

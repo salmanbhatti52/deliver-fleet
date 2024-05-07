@@ -33,7 +33,7 @@ class ApiServices {
 
 // New Number Sign up API
     Future<APIResponse<APIResponse>> signUpAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/signup_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/signup_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -65,7 +65,7 @@ class ApiServices {
 
 //Number Login API
     Future<APIResponse<LogInModel>> logInAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/login_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/login_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -97,7 +97,7 @@ class ApiServices {
   /// email Sign-up API:
 
   Future<APIResponse<APIResponse>> emailSignUpAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/email_signup_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/email_signup_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -130,7 +130,7 @@ class ApiServices {
   /// LogIn API:
 //Temp Login API Function
   Future<APIResponse<TempLoginModel>> tempLoginAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/email_login_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/email_login_fleet';
 
     try {
       var response = await http.post(Uri.parse(API), body: data);
@@ -170,7 +170,7 @@ class ApiServices {
   /// Update Location one time API:
 
   Future<APIResponse<LogInModel>> updateLocationOneTimeAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/update_location_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/update_location_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -202,7 +202,7 @@ class ApiServices {
   /// Forget API:
 
   Future<APIResponse<APIResponse>> forgetPasswordAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/forgot_password_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/forgot_password_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -224,7 +224,7 @@ class ApiServices {
 
   Future<APIResponse<APIResponse>> forgetPasswordOtpAPI(Map data) async {
     String API =
-        'https://deliver.eigix.net/api/verify_forgot_password_otp_fleet';
+        'https://cs.deliverbygfl.com/api/verify_forgot_password_otp_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -245,7 +245,7 @@ class ApiServices {
   /// reset Password  API:
 
   Future<APIResponse<APIResponse>> resetPasswordAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/reset_password_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/reset_password_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -266,7 +266,7 @@ class ApiServices {
   /// E-mail verification after signup API:
 
   Future<APIResponse<APIResponse>> verifyEmailAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/verify_email_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/verify_email_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -287,7 +287,7 @@ class ApiServices {
   /// verify otp API:
 
   Future<APIResponse<APIResponse>> verifyOtpApi(Map data) async {
-    String API = 'https://deliver.eigix.net/api/verify_email_otp_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/verify_email_otp_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -308,7 +308,7 @@ class ApiServices {
   /// Driving License API:
 
   Future<APIResponse<APIResponse>> verifyDrivingLicenseAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/verify_driving_license';
+    String API = 'https://cs.deliverbygfl.com/api/verify_driving_license';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -331,7 +331,7 @@ class ApiServices {
   /// Get Bike Categories API:
 
   Future<APIResponse<List<GetAllVehicalsModel>>> getBikeCategoryAPI() {
-    String api = 'https://deliver.eigix.net/api/get_vehicles';
+    String api = 'https://cs.deliverbygfl.com/api/get_vehicles';
     return http
         .get(
       Uri.parse(
@@ -380,7 +380,7 @@ class ApiServices {
   /// Get all system data API:
 
   Future<APIResponse<List<GetAllSystemDataModel>>> getALlSystemDataAPI() {
-    String api = 'https://deliver.eigix.net/api/get_all_system_data';
+    String api = 'https://cs.deliverbygfl.com/api/get_all_system_data';
     return http
         .get(
       Uri.parse(
@@ -431,7 +431,7 @@ class ApiServices {
   Future<APIResponse<List<GetBookingDestinationsStatus>>>
       getBookingDestinationsStatusAPI() {
     String api =
-        'https://deliver.eigix.net/api/get_bookings_destinations_status';
+        'https://cs.deliverbygfl.com/api/get_bookings_destinations_status';
     return http
         .get(
       Uri.parse(
@@ -480,7 +480,7 @@ class ApiServices {
   /// Upload CAC Certificate API:
 
   Future<APIResponse<UploadCACCertificateModel>> uploadCACApi(Map data) async {
-    String API = 'https://deliver.eigix.net/api/upload_cac_certificate';
+    String API = 'https://cs.deliverbygfl.com/api/upload_cac_certificate';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -511,7 +511,7 @@ class ApiServices {
   /// Add Bike API:
 
   Future<APIResponse<AddVehicleModel>> addVehicleAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/add_fleet_vehicle';
+    String API = 'https://cs.deliverbygfl.com/api/add_fleet_vehicle';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -542,7 +542,7 @@ class ApiServices {
   /// update status of rider API:
 
   Future<APIResponse<LogInModel>> updateRiderStatusApi(Map data) async {
-    String API = 'https://deliver.eigix.net/api/update_rider_status';
+    String API = 'https://cs.deliverbygfl.com/api/update_rider_status';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -575,7 +575,7 @@ class ApiServices {
 
   Future<APIResponse<LogInModel>> updateNotificationStatusApi(Map data) async {
     String API =
-        'https://deliver.eigix.net/api/update_notification_switch_fleet';
+        'https://cs.deliverbygfl.com/api/update_notification_switch_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -607,7 +607,7 @@ class ApiServices {
   /// Update Email API:
 
   Future<APIResponse<LogInModel>> updateEmailApi(Map data) async {
-    String API = 'https://deliver.eigix.net/api/update_email_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/update_email_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -639,7 +639,7 @@ class ApiServices {
   /// Update Password API:
 
   Future<APIResponse<LogInModel>> updatePasswordApi(Map data) async {
-    String API = 'https://deliver.eigix.net/api/update_password_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/update_password_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -672,7 +672,7 @@ class ApiServices {
 
   Future<APIResponse<GetFleetVehicleByIdModel>> getFleetVehicleByIdApi(
       Map data) async {
-    String API = 'https://deliver.eigix.net/api/get_fleet_vehicle_by_id';
+    String API = 'https://cs.deliverbygfl.com/api/get_fleet_vehicle_by_id';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -706,7 +706,7 @@ class ApiServices {
   Future<APIResponse<List<GetFleetVehicleRequestByIdModel>>>
       getAllFleetVehicleRequestByIdApi(Map data) {
     String api =
-        'https://deliver.eigix.net/api/get_requests_fleet_vehicle_by_id';
+        'https://cs.deliverbygfl.com/api/get_requests_fleet_vehicle_by_id';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -750,7 +750,7 @@ class ApiServices {
 
   Future<APIResponse<AcceptAndRejectRequestedVehicleModel>>
       acceptVehicleRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/accept_request_fleet_vehicle';
+    String API = 'https://cs.deliverbygfl.com/api/accept_request_fleet_vehicle';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -783,7 +783,7 @@ class ApiServices {
 
   Future<APIResponse<AcceptAndRejectRequestedVehicleModel>>
       deactivateVehicleRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/deactivate_fleet_vehicle';
+    String API = 'https://cs.deliverbygfl.com/api/deactivate_fleet_vehicle';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -816,7 +816,7 @@ class ApiServices {
 
   Future<APIResponse<AcceptAndRejectRequestedVehicleModel>>
       rejectVehicleRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/reject_request_fleet_vehicle';
+    String API = 'https://cs.deliverbygfl.com/api/reject_request_fleet_vehicle';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -849,7 +849,7 @@ class ApiServices {
   /// Request Bike API:
 
   Future<APIResponse<RequestBikeModel>> requestBikeAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/send_request_fleet_vehicle';
+    String API = 'https://cs.deliverbygfl.com/api/send_request_fleet_vehicle';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -880,7 +880,7 @@ class ApiServices {
   /// Get All Ratings API:
 
   Future<APIResponse<List<GetAllRatingsModel>>> getAllRatingsAPI(Map data) {
-    String api = 'https://deliver.eigix.net/api/get_ratings_bookings';
+    String api = 'https://cs.deliverbygfl.com/api/get_ratings_bookings';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -923,7 +923,7 @@ class ApiServices {
   /// InProgress Rides API:
 
   Future<APIResponse<List<InProgressRidesModel>>> inProgressRidesAPI(Map data) {
-    String api = 'https://deliver.eigix.net/api/get_bookings_ongoing_fleet';
+    String api = 'https://cs.deliverbygfl.com/api/get_bookings_ongoing_fleet';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -966,7 +966,7 @@ class ApiServices {
   /// Get User Profile API:
 
   Future<APIResponse<LogInModel>> getUserProfileAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/get_profile_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/get_profile_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -997,7 +997,7 @@ class ApiServices {
   /// Canceled Rides API:
 
   Future<APIResponse<List<InProgressRidesModel>>> canceledRidesAPI(Map data) {
-    String api = 'https://deliver.eigix.net/api/get_bookings_cancelled_fleet';
+    String api = 'https://cs.deliverbygfl.com/api/get_bookings_cancelled_fleet';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1040,7 +1040,7 @@ class ApiServices {
   /// Completed Rides API:
 
   Future<APIResponse<List<InProgressRidesModel>>> completedRidesAPI(Map data) {
-    String api = 'https://deliver.eigix.net/api/get_bookings_completed_fleet';
+    String api = 'https://cs.deliverbygfl.com/api/get_bookings_completed_fleet';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1083,7 +1083,7 @@ class ApiServices {
   /// Scheduled Rides API:
 
   Future<APIResponse<List<ScheduledRiderModel>>> scheduledRidesAPI(Map data) {
-    String api = 'https://deliver.eigix.net/api/get_bookings_scheduled_fleet';
+    String api = 'https://cs.deliverbygfl.com/api/get_bookings_scheduled_fleet';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1127,7 +1127,7 @@ class ApiServices {
 
   Future<APIResponse<GetAllAvailableVehicles>> getVehicleDetailsForRiderAPI(
       Map data) async {
-    String API = 'https://deliver.eigix.net/api/get_fleet_vehicle_as_rider';
+    String API = 'https://cs.deliverbygfl.com/api/get_fleet_vehicle_as_rider';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1158,7 +1158,7 @@ class ApiServices {
   /// Update Profile API:
 
   Future<APIResponse<LogInModel>> updateUserProfileApi(Map data) async {
-    String API = 'https://deliver.eigix.net/api/update_profile_fleet';
+    String API = 'https://cs.deliverbygfl.com/api/update_profile_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1190,7 +1190,7 @@ class ApiServices {
 
   Future<APIResponse<List<GetAllNotificationsModel>>> getAllNotificationsAPI(
       Map data) {
-    String api = 'https://deliver.eigix.net/api/all_notifications';
+    String api = 'https://cs.deliverbygfl.com/api/all_notifications';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1234,7 +1234,7 @@ class ApiServices {
 
   Future<APIResponse<List<ReadNotificationsModel>>> readNotificationsAPI(
       Map data) {
-    String api = 'https://deliver.eigix.net/api/read_notifications';
+    String api = 'https://cs.deliverbygfl.com/api/read_notifications';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1277,7 +1277,7 @@ class ApiServices {
   /// get All riders API:
 
   Future<APIResponse<List<GetAllRidersModel>>> getAllRidersApi(Map data) {
-    String api = 'https://deliver.eigix.net/api/get_riders_all';
+    String api = 'https://cs.deliverbygfl.com/api/get_riders_all';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1321,7 +1321,7 @@ class ApiServices {
 
   Future<APIResponse<List<GetAllSupportMessagesModel>>> getAllSupportMessages(
       Map data) {
-    String api = 'https://deliver.eigix.net/api/user_chat_live';
+    String api = 'https://cs.deliverbygfl.com/api/user_chat_live';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1369,7 +1369,7 @@ class ApiServices {
   ///Invite riders API:
 
   Future<APIResponse<APIResponse>> inviteRidersAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/invite_rider';
+    String API = 'https://cs.deliverbygfl.com/api/invite_rider';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1390,7 +1390,7 @@ class ApiServices {
   /// Start Chat API:
 
   Future<APIResponse<APIResponse>> startChatAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/user_chat_live';
+    String API = 'https://cs.deliverbygfl.com/api/user_chat_live';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1411,7 +1411,7 @@ class ApiServices {
   /// Get Admin API:
 
   Future<APIResponse<List<SupportedUserModel>>> getAllAdminsAPI() {
-    String api = 'https://deliver.eigix.net/api/get_admin_list';
+    String api = 'https://cs.deliverbygfl.com/api/get_admin_list';
     return http
         .get(
       Uri.parse(api),
@@ -1461,7 +1461,7 @@ class ApiServices {
   /// Send Message API:
 
   Future<APIResponse<APIResponse>> sendMessageAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/user_chat_live';
+    String API = 'https://cs.deliverbygfl.com/api/user_chat_live';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1483,7 +1483,7 @@ class ApiServices {
 
   Future<APIResponse<List<ShowBookingsModel>>> getAllClientRequestsAPI(
       Map data) {
-    String api = 'https://deliver.eigix.net/api/get_requests_bookings';
+    String api = 'https://cs.deliverbygfl.com/api/get_requests_bookings';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1526,7 +1526,7 @@ class ApiServices {
   /// Accept ride request API:
 
   Future<APIResponse<ShowBookingsModel>> acceptRideRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/accept_request_booking';
+    String API = 'https://cs.deliverbygfl.com/api/accept_request_booking';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1556,7 +1556,7 @@ class ApiServices {
   /// start user to user chat API:
 
   Future<APIResponse<APIResponse>> startUserToUserChatAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/user_chat';
+    String API = 'https://cs.deliverbygfl.com/api/user_chat';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1578,7 +1578,7 @@ class ApiServices {
 
   Future<APIResponse<List<GetAllUserToUserChatModel>>> getAllUserToUserChatAPI(
       Map data) {
-    String api = 'https://deliver.eigix.net/api/user_chat';
+    String api = 'https://cs.deliverbygfl.com/api/user_chat';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1621,7 +1621,7 @@ class ApiServices {
   /// send user to user chat api:
 
   Future<APIResponse<APIResponse>> sendUserToUserChatAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/user_chat';
+    String API = 'https://cs.deliverbygfl.com/api/user_chat';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1642,7 +1642,7 @@ class ApiServices {
   /// Reject ride request API:
 
   Future<APIResponse<ShowBookingsModel>> rejectRideRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/reject_request_booking';
+    String API = 'https://cs.deliverbygfl.com/api/reject_request_booking';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1672,7 +1672,7 @@ class ApiServices {
   /// parcel picked API:
 
   Future<APIResponse<ShowBookingsModel>> parcelPickedAPI(Map data) async {
-    String API = 'https://deliver.eigix.net/api/start_booking_ride';
+    String API = 'https://cs.deliverbygfl.com/api/start_booking_ride';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1704,7 +1704,7 @@ class ApiServices {
   /// Start ride request API:
 
   Future<APIResponse<ShowBookingsModel>> startRideRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/start_booking_ride';
+    String API = 'https://cs.deliverbygfl.com/api/start_booking_ride';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1736,7 +1736,7 @@ class ApiServices {
   /// End ride request API:
 
   Future<APIResponse<ShowBookingsModel>> endRideRequest(Map data) async {
-    String API = 'https://deliver.eigix.net/api/end_booking_ride';
+    String API = 'https://cs.deliverbygfl.com/api/end_booking_ride';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);
@@ -1769,7 +1769,7 @@ class ApiServices {
 
   Future<APIResponse<List<GetAllVehiclesFleetModel>>> getAllVehiclesFleetApi(
       Map data) {
-    String api = 'https://deliver.eigix.net/api/get_fleet_vehicles_all';
+    String api = 'https://cs.deliverbygfl.com/api/get_fleet_vehicles_all';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
@@ -1816,7 +1816,7 @@ class ApiServices {
 
   Future<APIResponse<List<GetAllAvailableVehicles>>> getAllAvailableVehiclesApi(
       Map data) {
-    String api = 'https://deliver.eigix.net/api/get_fleet_vehicles_available';
+    String api = 'https://cs.deliverbygfl.com/api/get_fleet_vehicles_available';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);

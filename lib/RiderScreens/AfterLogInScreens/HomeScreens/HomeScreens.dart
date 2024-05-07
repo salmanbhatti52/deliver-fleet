@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(45),
                                     child: Image.network(
-                                      'https://deliver.eigix.net/public/$profilePicture',
+                                      'https://cs.deliverbygfl.com/public/$profilePicture',
                                       fit: BoxFit.cover,
                                       errorBuilder: (BuildContext context,
                                           Object exception,

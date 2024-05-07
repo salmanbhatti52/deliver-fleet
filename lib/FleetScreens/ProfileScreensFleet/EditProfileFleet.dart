@@ -274,7 +274,7 @@ class _EditProfileFleetState extends State<EditProfileFleet> {
                                         fit: BoxFit.cover,
                                       )
                                     : Image.network(
-                                        'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic}',
+                                        'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic}',
                                         fit: BoxFit.cover,
                                         errorBuilder: (BuildContext context,
                                             Object exception,

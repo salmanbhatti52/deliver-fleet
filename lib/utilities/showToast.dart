@@ -84,3 +84,20 @@ void showToastError(
     toastDuration: Duration(seconds: seconds),
   );
 }
+
+class CustomToast {
+  static void showToast({
+    required String message,
+    double fontSize = 12,
+  }) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        fontSize: fontSize,
+        textColor: Colors.white,
+        backgroundColor: Colors.orange,
+        webPosition: "top");
+  }
+}

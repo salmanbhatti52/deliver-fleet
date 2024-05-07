@@ -137,7 +137,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset('assets/images/ride-grey.svg'),
                   activeIcon: SvgPicture.asset('assets/images/ride-orange.svg'),
-                  label: 'Rides',
+                  label: 'Rides History',
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset('assets/images/rank-grey.svg'),

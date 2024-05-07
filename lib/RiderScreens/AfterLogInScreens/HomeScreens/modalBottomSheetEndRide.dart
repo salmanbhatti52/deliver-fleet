@@ -63,7 +63,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
   Future<void> updateBookingStatus() async {
     try {
       String apiUrl =
-          "https://deliver.eigix.net/api/get_updated_status_booking";
+          "https://cs.deliverbygfl.com/api/get_updated_status_booking";
       debugPrint("apiUrl: $apiUrl");
       debugPrint("currentBookingId: ${widget.bookingModel.bookings_id}");
       final response = await http.post(
@@ -254,7 +254,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
                               child: Image.network(
-                                'https://deliver.eigix.net/public/${widget.bookingModel.users_customers!.profile_pic}',
+                                'https://cs.deliverbygfl.com/public/${widget.bookingModel.users_customers!.profile_pic}',
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace? stackTrace) {

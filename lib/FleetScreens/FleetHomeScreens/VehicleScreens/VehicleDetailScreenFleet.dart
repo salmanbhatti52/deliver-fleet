@@ -126,7 +126,7 @@ class _VehicleDetailScreenFleetState extends State<VehicleDetailScreenFleet> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
-                              'https://deliver.eigix.net/public/${_getVehicleFleetByIdResponse.data!.image}',
+                              'https://cs.deliverbygfl.com/public/${_getVehicleFleetByIdResponse.data!.image}',
                               fit: BoxFit.cover,
                               errorBuilder: (BuildContext context,
                                   Object exception, StackTrace? stackTrace) {

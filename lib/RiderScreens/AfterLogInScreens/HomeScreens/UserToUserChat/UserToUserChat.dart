@@ -173,7 +173,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
                                     "assets/images/user-profile.png",
                                   ),
                                   image: NetworkImage(
-                                    'https://deliver.eigix.net/public/${widget.image}',
+                                    'https://cs.deliverbygfl.com/public/${widget.image}',
                                   ),
                                   fit: BoxFit.cover,
                                 ),
@@ -388,7 +388,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
                                           "assets/images/user-profile.png",
                                         ),
                                         image: NetworkImage(
-                                          'https://deliver.eigix.net/public/${widget.image}',
+                                          'https://cs.deliverbygfl.com/public/${widget.image}',
                                         ),
                                         fit: BoxFit.cover,
                                       ),

@@ -222,7 +222,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                                     child: getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic !=
                                                             null
                                                         ? Image.network(
-                                                            'https://deliver.eigix.net/public/${getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic}',
+                                                            'https://cs.deliverbygfl.com/public/${getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic}',
                                                             fit: BoxFit.cover,
                                                             errorBuilder:
                                                                 (BuildContext

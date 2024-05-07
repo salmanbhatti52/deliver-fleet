@@ -117,7 +117,7 @@ class _AllDriversOfFleetState extends State<AllDriversOfFleet> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    'https://deliver.eigix.net/public/${item.profile_pic}',
+                                    'https://cs.deliverbygfl.com/public/${item.profile_pic}',
                                     fit: BoxFit.cover,
                                     errorBuilder: (BuildContext context,
                                         Object exception,

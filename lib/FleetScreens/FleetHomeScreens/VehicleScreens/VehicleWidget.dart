@@ -65,7 +65,7 @@ class _VehicleWidgetState extends State<VehicleWidget> {
                     borderRadius:
                         BorderRadius.circular(screenWidth > 600 ? 65 : 50),
                     child: Image.network(
-                      'https://deliver.eigix.net/public/${widget.getAllVehiclesFleetModel.image}',
+                      'https://cs.deliverbygfl.com/public/${widget.getAllVehiclesFleetModel.image}',
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {

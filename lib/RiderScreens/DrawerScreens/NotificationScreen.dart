@@ -175,7 +175,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             //                     //             .profile_pic !=
             //                     //         null
             //                     //     ? Image.network(
-            //                     //         'https://deliver.eigix.net/public/${getAllNotificationsList![index].sender!.profile_pic}',
+            //                     //         'https://cs.deliverbygfl.com/public/${getAllNotificationsList![index].sender!.profile_pic}',
             //                     //         fit: BoxFit.cover,
             //                     //         errorBuilder:
             //                     //             (BuildContext context,

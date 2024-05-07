@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/models/API_models/API_response.dart';
 import 'package:deliver_partner/models/API_models/GetBookingDestinationsStatus.dart';
@@ -18,9 +20,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Constants/Colors.dart';
 import '../../../models/API_models/GetAllSystemDataModel.dart';
+import '../../../models/API_models/getupdateBooking.dart';
 import '../../../services/API_services.dart';
 import 'UserToUserChat/UserToUserChat.dart';
 import 'modalBottomSheetEndRide.dart';
+import 'package:http/http.dart' as http;
 
 class ModalBottomSheetStartRide extends StatefulWidget {
   final String userID;
@@ -61,14 +65,64 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   ScrollController nextPageScrollController = ScrollController();
   List<String>? pickedParcelIds = [];
 
+  String? passcode0;
+  String? passcode1;
+  String? passcode2;
+  String? passcode3;
+  String? passcode4;
+
+  UpdateBookingStatusModel updateBookingStatusModel =
+      UpdateBookingStatusModel();
+  String? responseString1;
+  updateBookingStatus() async {
+    // print(
+    // " Passssssssssss ${updateBookingStatusModel.data!.bookingsFleet![0].bookingsDestinations!.passCode}");
+    // try {
+    String apiUrl =
+        "https://cs.deliverbygfl.com/api/get_updated_status_booking";
+    debugPrint("apiUrl: $apiUrl");
+    debugPrint("currentBookingId: ${widget.bookingModel.bookings_id}");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        "bookings_id": widget.bookingModel.bookings_id.toString(),
+      },
+    );
+    responseString1 = response.body;
+
+    debugPrint("response zain: $responseString1");
+    debugPrint("statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      updateBookingStatusModel =
+          updateBookingStatusModelFromJson(responseString1!);
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      debugPrint(
+          'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
+      debugPrint(
+          'updateBookingStatusModel paymentStatus: ${updateBookingStatusModel.data!.paymentStatus}');
+    }
+    // }
+    //  catch (e) {
+    //   debugPrint('Something went wrong = ${e.toString()}');
+    //   return null;
+    // }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    updateBookingStatus();
     init();
-    setState(() {
-      isLoading = true;
-    });
+    // setState(() {
+    //   isLoading = true;
+    // });
     nextPageScrollController.addListener(() {
       setState(() {
         // Update the current index based on the scroll position
@@ -83,6 +137,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
   String? startRide;
 
   init() async {
+    setState(() {
+      isLoading = true;
+    });
+    await updateBookingStatus();
     getBookingDestinationsStatusResponse =
         await service.getBookingDestinationsStatusAPI();
     getBookingDestinationsStatusList = [];
@@ -92,6 +150,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
       if (getBookingDestinationsStatusResponse.data != null) {
         getBookingDestinationsStatusList!
             .addAll(getBookingDestinationsStatusResponse.data!);
+
         for (GetBookingDestinationsStatus model
             in getBookingDestinationsStatusList!) {
           if (model.name == 'Parcel Picked') {
@@ -109,7 +168,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
         }
       }
     }
-
+    showToastError(
+        "Payment Status ${updateBookingStatusModel.data!.paymentStatus}",
+        FToast().init(context));
     _getAllSystemDataResponse = await service.getALlSystemDataAPI();
     _getSystemDataList = [];
 
@@ -177,7 +238,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
                               child: Image.network(
-                                'https://deliver.eigix.net/public/${widget.bookingModel.users_customers!.profile_pic}',
+                                'https://cs.deliverbygfl.com/public/${widget.bookingModel.users_customers!.profile_pic}',
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace? stackTrace) {
@@ -1354,33 +1415,65 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                           onTap: () {
                             startRideMethod(context);
                           },
-                          child: Container(
-                            width: 170.w,
-                            height: 51.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xffFF6302),
-                                  Color(0xffFBC403),
-                                ],
-                                begin: Alignment.centerRight,
-                                end: Alignment.centerLeft,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'START RIDE',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.syne(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                          child: updateBookingStatusModel.data!.paymentStatus ==
+                                  "Paid"
+                              ? Container(
+                                  width: 170.w,
+                                  height: 51.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color(0xffFF6302),
+                                        Color(0xffFBC403),
+                                      ],
+                                      begin: Alignment.centerRight,
+                                      end: Alignment.centerLeft,
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'START RIDE',
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.syne(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: white,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    init();
+                                  },
+                                  child: Container(
+                                    width: 170.w,
+                                    height: 51.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          Color(0xffFF6302),
+                                          Color(0xffFBC403),
+                                        ],
+                                        begin: Alignment.centerRight,
+                                        end: Alignment.centerLeft,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'Refresh',
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.syne(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )),
                 ],
               ),
       );

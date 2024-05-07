@@ -43,7 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       SharedPreferences sharedPref = await SharedPreferences.getInstance();
       userID = sharedPref.getInt('userID')!;
       String apiUrl =
-          "https://deliver.eigix.net/api/update_notification_switch_fleet";
+          "https://cs.deliverbygfl.com/api/update_notification_switch_fleet";
       print("apiUrl: $apiUrl");
       print("userId: $userID");
       print("notifications: $notificationStatus");
@@ -445,7 +445,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 //                                 child: ClipRRect(
 //                                   borderRadius: BorderRadius.circular(10),
 //                                   child: Image.network(
-//                                     'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic}',
+//                                     'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic}',
 //                                     fit: BoxFit.cover,
 //                                     errorBuilder: (BuildContext context,
 //                                         Object exception,

@@ -44,7 +44,7 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
     });
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
     userID = sharedPref.getInt('userID')!;
-    String apiUrl = "https://deliver.eigix.net/api/update_rider_status";
+    String apiUrl = "https://cs.deliverbygfl.com/api/update_rider_status";
     debugPrint("apiUrl: $apiUrl");
     debugPrint("userId: $userID");
     final response = await http.post(

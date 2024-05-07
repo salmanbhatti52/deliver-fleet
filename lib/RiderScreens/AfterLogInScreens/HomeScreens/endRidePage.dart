@@ -73,7 +73,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       'Accept': '*/*',
     };
     var url = Uri.parse(
-        'https://deliver.eigix.net/api/get_bookings_destinations_status');
+        'https://cs.deliverbygfl.com/api/get_bookings_destinations_status');
 
     var req = http.Request('GET', url);
     req.headers.addAll(headersList);
@@ -99,7 +99,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
   Future<void> updateBookingStatus() async {
     try {
       String apiUrl =
-          "https://deliver.eigix.net/api/get_updated_status_booking";
+          "https://cs.deliverbygfl.com/api/get_updated_status_booking";
       debugPrint("apiUrl: $apiUrl");
       debugPrint("currentBookingId: ${widget.bookingModel}");
       final response = await http.post(

@@ -48,7 +48,7 @@ class _SupportScreenState extends State<SupportScreen> {
   GetSupportAdminModel getSupportAdminModel = GetSupportAdminModel();
   bool load = false;
   getSupportAdmin() async {
-    String apiUrl = "https://deliver.eigix.net/api/get_admin_list";
+    String apiUrl = "https://cs.deliverbygfl.com/api/get_admin_list";
     print("apiUrl: $apiUrl");
     setState(() {
       load = true;
@@ -98,7 +98,7 @@ class _SupportScreenState extends State<SupportScreen> {
     // try{
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
     userID = sharedPref.getInt('userID') ?? -1;
-    String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
+    String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
     print("apiUrlStartChat: $apiUrl");
     print("userID: $userID");
     print("OtherUserId: ${getAdminId.toString()}");
@@ -133,7 +133,7 @@ class _SupportScreenState extends State<SupportScreen> {
     });
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
     userID = sharedPref.getInt('userID') ?? -1;
-    String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
+    String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
     print("apiUrlGetChat: $apiUrl");
     print("userID: $userID");
     print("OtherUserId: $getAdminId");
@@ -179,7 +179,7 @@ class _SupportScreenState extends State<SupportScreen> {
       });
       SharedPreferences sharedPref = await SharedPreferences.getInstance();
       userID = sharedPref.getInt('userID') ?? -1;
-      String apiUrl = "https://deliver.eigix.net/api/user_chat_live";
+      String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
       print("apiUrlSend: $apiUrl");
       print("userID: $userID");
       print("OtherUserId: $getAdminId");
@@ -323,7 +323,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                       "assets/images/user-profile.png",
                                     ),
                                     image: NetworkImage(
-                                      'https://deliver.eigix.net/public/$getAdminImage',
+                                      'https://cs.deliverbygfl.com/public/$getAdminImage',
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -541,7 +541,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                                         "assets/images/user-profile.png",
                                                       ),
                                                       image: NetworkImage(
-                                                        'https://deliver.eigix.net/public/${widget.getAdminImage}',
+                                                        'https://cs.deliverbygfl.com/public/${widget.getAdminImage}',
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),

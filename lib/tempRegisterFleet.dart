@@ -532,7 +532,7 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                                         ),
                                       );
                                       // const url =
-                                      //     'https://deliver.eigix.net/users/terms_and_conditions';
+                                      //     'https://cs.deliverbygfl.com/users/terms_and_conditions';
                                       // if (await canLaunch(url)) {
                                       //   await launch(url);
                                       // } else {
@@ -565,7 +565,7 @@ class _TempRegisterFleetState extends State<TempRegisterFleet> {
                                         ),
                                       );
                                       // const url =
-                                      //     'https://deliver.eigix.net/users/privacy_policy';
+                                      //     'https://cs.deliverbygfl.com/users/privacy_policy';
                                       // if (await canLaunch(url)) {
                                       //   await launch(url);
                                       // } else {

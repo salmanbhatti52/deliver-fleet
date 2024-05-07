@@ -572,7 +572,7 @@ class _TempLoginRiderState extends State<TempLoginRider> {
                                         );
                                         // try {
                                         //   String url =
-                                        //       'https://deliver.eigix.net/users/terms_and_conditions';
+                                        //       'https://cs.deliverbygfl.com/users/terms_and_conditions';
                                         //   if (await canLaunch(url)) {
                                         //     await launch(url);
                                         //   } else {
@@ -609,7 +609,7 @@ class _TempLoginRiderState extends State<TempLoginRider> {
                                         );
                                         // try {
                                         //   const url =
-                                        //       'https://deliver.eigix.net/users/privacy_policy';
+                                        //       'https://cs.deliverbygfl.com/users/privacy_policy';
                                         //   if (await canLaunch(url)) {
                                         //     await launch(url);
                                         //   } else {
@@ -836,7 +836,7 @@ class _TempLoginRiderState extends State<TempLoginRider> {
   late APIResponse<List<GetAllVehiclesFleetModel>> _getAllVehicleFleetResponse;
   APIResponse<TempLoginModel>? loginResponse;
   Future<void> fleeTempLogin(BuildContext context) async {
-    String apiUrl = "https://deliver.eigix.net/api/email_login_fleet";
+    String apiUrl = "https://cs.deliverbygfl.com/api/email_login_fleet";
     setState(() {
       isRegistering = true;
     });

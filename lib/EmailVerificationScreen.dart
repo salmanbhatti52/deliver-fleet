@@ -269,7 +269,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       'Content-Type': 'application/json'
     };
     var url =
-        Uri.parse('https://deliver.eigix.net/api/check_phone_exist_fleet');
+        Uri.parse('https://cs.deliverbygfl.com/api/check_phone_exist_fleet');
 
     var body = {
       "one_signal_id": widget.deviceID,
@@ -303,13 +303,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     // setState(() {
     //   isLoading = true;
     // });
-    // print("apiUrl: https://deliver.eigix.net/api/check_phone_exist_fleet");
+    // print("apiUrl: https://cs.deliverbygfl.com/api/check_phone_exist_fleet");
     // print("one_signal_id ${widget.deviceID}");
     // print("user_type ${widget.userType}");
     // print("phone ${widget.phoneNumber}");
     // print("latitude ${widget.latitude}");
     // print("longitude ${widget.longitude}");
-    // String apiUrl = "https://deliver.eigix.net/api/check_phone_exist_fleet";
+    // String apiUrl = "https://cs.deliverbygfl.com/api/check_phone_exist_fleet";
     // print("contactNumber: ${widget.phoneNumber}");
     // final response = await http.post(
     //   Uri.parse(apiUrl),
@@ -811,6 +811,107 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           const BottomNavBarFleet(),
+                                    ),
+                                    (Route<dynamic> route) => false);
+                              }
+                            } else if (widget.phoneNumber == "+923170794962" &&
+                                otpController.text == "112233") {
+                              await checkNumber();
+                              if (checkPhoneNumberModel.status == "success" &&
+                                  checkPhoneNumberModel.data!.status ==
+                                      "Active") {
+                                SharedPreferences sharedPreferences =
+                                    await SharedPreferences.getInstance();
+                                await sharedPreferences.setInt(
+                                    'userID',
+                                    checkPhoneNumberModel.data!.usersFleetId!
+                                        .toInt());
+                                await sharedPreferences.setString(
+                                    'userEmail',
+                                    checkPhoneNumberModel.data!.email
+                                        .toString());
+                                await sharedPreferences.setString(
+                                    'userFirstName',
+                                    checkPhoneNumberModel.data!.firstName
+                                        .toString());
+                                await sharedPreferences.setString(
+                                    'userLastName',
+                                    checkPhoneNumberModel.data!.lastName
+                                        .toString());
+                                await sharedPreferences.setString(
+                                    'userProfilePic',
+                                    checkPhoneNumberModel.data!.profilePic
+                                        .toString());
+                                await sharedPreferences.setString(
+                                    'userLatitude', widget.latitude.toString());
+                                await sharedPreferences.setString(
+                                    'userLongitude',
+                                    widget.longitude.toString());
+                                await sharedPreferences.setString(
+                                    'deviceIDInfo',
+                                    checkPhoneNumberModel.data!.oneSignalId
+                                        .toString());
+                                await sharedPreferences.setString(
+                                    'userType',
+                                    checkPhoneNumberModel.data!.userType
+                                        .toString());
+                                await sharedPreferences.setString(
+                                    'parentID',
+                                    checkPhoneNumberModel.data!.parentId
+                                        .toString());
+                                await sharedPreferences.setString(
+                                    'isLogIn', 'true');
+                                print(
+                                    "sharedPref lat: ${widget.latitude.toString()}");
+                                print(
+                                    "sharedPref long: ${widget.longitude.toString()}");
+                                print(
+                                    "sharedPref info: ${checkPhoneNumberModel.data?.oneSignalId}");
+                                print(
+                                    "sharedPref type: ${checkPhoneNumberModel.data?.userType}");
+                                fleetId = sharedPreferences.getInt('userID');
+                                parentId =
+                                    sharedPreferences.getString('userEmail');
+                                final pic = sharedPreferences
+                                    .getString('userProfilePic');
+                                print("fleetId $fleetId");
+                                print("parentId $parentId");
+                                print('pic: $pic');
+                                print(
+                                    "badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BottomNavBarFleet(),
+                                    ),
+                                    (Route<dynamic> route) => false);
+                              } else if (checkPhoneNumberModel.status ==
+                                      "success" &&
+                                  checkPhoneNumberModel.data!.status ==
+                                      "Pending") {
+                                Navigator.pop(context);
+                                showToastSuccess(
+                                  'Your account is not approved yet.',
+                                  FToast().init(context),
+                                  seconds: 3,
+                                );
+                              } else if (checkPhoneNumberModel.status ==
+                                      "error" &&
+                                  checkPhoneNumberModel.message ==
+                                      "Phone number does not exist.") {
+                                showToastSuccess(
+                                  'This is Test Number',
+                                  FToast().init(context),
+                                  seconds: 3,
+                                );
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterScreen(
+                                        userType: widget.userType,
+                                        phoneNumber:
+                                            widget.phoneNumber.toString(),
+                                        deviceID: widget.deviceID.toString(),
+                                      ),
                                     ),
                                     (Route<dynamic> route) => false);
                               }

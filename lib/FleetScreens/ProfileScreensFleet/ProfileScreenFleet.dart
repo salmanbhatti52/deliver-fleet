@@ -101,7 +101,7 @@ class _ProfileScreenFleetState extends State<ProfileScreenFleet> {
                           child:
                               getUserProfileResponse!.data!.profile_pic != null
                                   ? Image.network(
-                                      'https://deliver.eigix.net/public/${getUserProfileResponse!.data!.profile_pic}',
+                                      'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic}',
                                       fit: BoxFit.cover,
                                       errorBuilder: (BuildContext context,
                                           Object exception,
