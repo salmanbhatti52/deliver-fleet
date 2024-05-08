@@ -75,6 +75,7 @@ dependencies:
   pinput: ^3.0.1
   flutter_gif: ^0.0.4
   permission_handler: ^11.3.0
+  onesignal_flutter: ^5.1.6
 
 dev_dependencies:
   flutter_test:

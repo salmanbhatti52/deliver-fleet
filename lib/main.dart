@@ -7,10 +7,18 @@ import 'package:deliver_partner/CustomSplash.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
 
+  OneSignal.initialize(appID);
+  String? token;
+  token = await OneSignal.User.getOnesignalId();
+  print("token: $token");
+// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+  OneSignal.Notifications.requestPermission(true);
   HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp();
   runApp(const MyApp());

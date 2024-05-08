@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 // import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -270,9 +271,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     };
     var url =
         Uri.parse('https://cs.deliverbygfl.com/api/check_phone_exist_fleet');
-
+       OneSignal.initialize(appID);
+      String? token;
+      token = await OneSignal.User.getOnesignalId();
+      print("token: $token");
     var body = {
-      "one_signal_id": widget.deviceID,
+      "one_signal_id": token,
       "user_type": widget.userType,
       "phone": "${widget.phoneNumber}",
       "latitude": widget.latitude,

@@ -39,6 +39,7 @@ import 'RiderScreens/RideDetailsAfterLogIn.dart';
 import 'models/API_models/API_response.dart';
 import 'models/API_models/LogInModel.dart';
 import 'models/APIModelsFleet/GetAllVehiclesFleetModel.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class LogInScreen extends StatefulWidget {
   final String userType;
@@ -209,6 +210,10 @@ class _LogInScreenState extends State<LogInScreen> {
       setState(() {
         isLoading2 = true;
       });
+      OneSignal.initialize(appID);
+      String? token;
+      token = await OneSignal.User.getOnesignalId();
+      print("token: $token");
       print("one_signal_id ${widget.deviceID}");
       print("user_type ${widget.userType}");
       print("phone ${countryCode!.dialCode + contactNumberController.text}");
@@ -221,7 +226,7 @@ class _LogInScreenState extends State<LogInScreen> {
           'Accept': 'application/json',
         },
         body: {
-          "one_signal_id": widget.deviceID,
+          "one_signal_id": token,
           "user_type": widget.userType,
           "phone": countryCode!.dialCode + contactNumberController.text,
           "latitude": currentLat,
