@@ -1,13 +1,18 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 
+import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/EndRideDialog.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/UserToUserChat/UserToUserChat.dart';
+import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/endRidePage.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:deliver_partner/models/API_models/API_response.dart';
-import 'package:deliver_partner/models/API_models/GetBookingDestinationsStatus.dart';
+import 'package:deliver_partner/models/API_models/GetAllSystemDataModel.dart';
 import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
-import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:deliver_partner/models/API_models/getupdateBooking.dart';
+import 'package:deliver_partner/services/API_services.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -17,101 +22,88 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../Constants/Colors.dart';
-import '../../../models/API_models/GetAllSystemDataModel.dart';
-import '../../../models/API_models/getupdateBooking.dart';
-import '../../../services/API_services.dart';
-import 'UserToUserChat/UserToUserChat.dart';
-import 'modalBottomSheetEndRide.dart';
 import 'package:http/http.dart' as http;
 
-class ModalBottomSheetStartRide extends StatefulWidget {
+class ScheduledRidesDetailsPage extends StatefulWidget {
+  final int? index;
   final String userID;
-  final BookingModel bookingModel;
-  final List<BookingDestinations> bookingDestinations;
+  final String? bookingID;
 
-  const ModalBottomSheetStartRide({
+  const ScheduledRidesDetailsPage({
     super.key,
+    this.index,
     required this.userID,
-    required this.bookingModel,
-    required this.bookingDestinations,
+    this.bookingID,
   });
 
   @override
-  State<ModalBottomSheetStartRide> createState() =>
-      _ModalBottomSheetStartRideState();
+  State<ScheduledRidesDetailsPage> createState() =>
+      _ScheduledRidesDetailsPageState();
 }
 
-class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
-  bool packageStatus = false;
-
-  late APIResponse<List<GetBookingDestinationsStatus>>
-      getBookingDestinationsStatusResponse;
-  List<GetBookingDestinationsStatus>? getBookingDestinationsStatusList;
+class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
+  ApiServices get service => GetIt.I<ApiServices>();
 
   late APIResponse<List<GetAllSystemDataModel>> _getAllSystemDataResponse;
   List<GetAllSystemDataModel>? _getSystemDataList;
 
   String currency = '';
+  String distance = '';
 
-  int? statusID;
-  int? startRideID;
-  String? distance;
   bool isLoading = false;
+
   int currentIndex = 0;
-  String? bookingsDestinationsId;
-
   ScrollController nextPageScrollController = ScrollController();
-  List<String>? pickedParcelIds = [];
-
-  String? passcode0;
-  String? passcode1;
-  String? passcode2;
-  String? passcode3;
-  String? passcode4;
-
+  String? ride0;
+  String? ride1;
+  String? ride2;
+  String? ride3;
+  String? ride4;
   UpdateBookingStatusModel updateBookingStatusModel =
       UpdateBookingStatusModel();
-  String? responseString1;
-  updateBookingStatus() async {
-    // print(
-    // " Passssssssssss ${updateBookingStatusModel.data!.bookingsFleet![0].bookingsDestinations!.passCode}");
-    // try {
-    String apiUrl =
-        "https://cs.deliverbygfl.com/api/get_updated_status_booking";
-    debugPrint("apiUrl: $apiUrl");
-    debugPrint("currentBookingId: ${widget.bookingModel.bookings_id}");
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        "bookings_id": widget.bookingModel.bookings_id.toString(),
-      },
-    );
-    responseString1 = response.body;
+  Map<String, dynamic>? jsonResponse;
+  Future<void> updateBookingStatus() async {
+    try {
+      String apiUrl =
+          "https://cs.deliverbygfl.com/api/get_updated_status_booking";
+      debugPrint("apiUrl: $apiUrl");
+      debugPrint("currentBookingId: ${widget.bookingID}");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "bookings_id": widget.bookingID.toString(),
+        },
+      );
+      final responseString = response.body;
+      debugPrint("response: $responseString");
+      debugPrint("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        updateBookingStatusModel =
+            updateBookingStatusModelFromJson(responseString);
+        debugPrint(
+            'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
+        jsonResponse = jsonDecode(response.body);
 
-    debugPrint("response zain: $responseString1");
-    debugPrint("statusCode: ${response.statusCode}");
-    if (response.statusCode == 200) {
-      updateBookingStatusModel =
-          updateBookingStatusModelFromJson(responseString1!);
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      debugPrint(
-          'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
-      debugPrint(
-          'updateBookingStatusModel paymentStatus: ${updateBookingStatusModel.data!.paymentStatus}');
+        var bookingsFleet = jsonResponse!['data']['bookings_fleet'];
+
+        ride0 =
+            bookingsFleet.length > 0 ? bookingsFleet[0]['status'] ?? "" : "";
+        ride1 =
+            bookingsFleet.length > 1 ? bookingsFleet[1]['status'] ?? "" : "";
+        ride2 =
+            bookingsFleet.length > 2 ? bookingsFleet[2]['status'] ?? "" : "";
+        ride3 =
+            bookingsFleet.length > 3 ? bookingsFleet[3]['status'] ?? "" : "";
+        ride4 =
+            bookingsFleet.length > 4 ? bookingsFleet[4]['status'] ?? "" : "";
+      }
+    } catch (e) {
+      debugPrint('Something went wrong = ${e.toString()}');
+      return;
     }
-    // }
-    //  catch (e) {
-    //   debugPrint('Something went wrong = ${e.toString()}');
-    //   return null;
-    // }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -119,11 +111,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     // TODO: implement initState
     super.initState();
     init();
-    updateBookingStatus();
+    setState(() {
+      isLoading = true;
+    });
 
-    // setState(() {
-    //   isLoading = true;
-    // });
     nextPageScrollController.addListener(() {
       setState(() {
         // Update the current index based on the scroll position
@@ -134,48 +125,12 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     });
   }
 
-  String? name;
-  String? startRide;
-
   init() async {
-    setState(() {
-      isLoading = true;
-    });
-    await updateBookingStatus();
-    getBookingDestinationsStatusResponse =
-        await service.getBookingDestinationsStatusAPI();
-    getBookingDestinationsStatusList = [];
-
-    if (getBookingDestinationsStatusResponse.status!.toLowerCase() ==
-        'success') {
-      if (getBookingDestinationsStatusResponse.data != null) {
-        getBookingDestinationsStatusList!
-            .addAll(getBookingDestinationsStatusResponse.data!);
-
-        for (GetBookingDestinationsStatus model
-            in getBookingDestinationsStatusList!) {
-          if (model.name == 'Parcel Picked') {
-            setState(() {
-              name = model.name!;
-              statusID = model.bookings_destinations_status_id!;
-              print("statusID: $statusID");
-            });
-          } else if (model.name == "Start Ride") {
-            setState(() {
-              startRide = model.name!;
-              startRideID = model.bookings_destinations_status_id!;
-            });
-          }
-        }
-      }
-    }
-    showToastError(
-        "Payment Status ${updateBookingStatusModel.data!.paymentStatus}",
-        FToast().init(context));
     _getAllSystemDataResponse = await service.getALlSystemDataAPI();
     _getSystemDataList = [];
 
     if (_getAllSystemDataResponse.status!.toLowerCase() == 'success') {
+      await updateBookingStatus();
       if (_getAllSystemDataResponse.data != null) {
         _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
         for (GetAllSystemDataModel model in _getSystemDataList!) {
@@ -191,10 +146,73 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
         }
       }
     }
-    await updateBookingStatus();
 
     setState(() {
       isLoading = false;
+    });
+  }
+
+  bool isChatStarting = false;
+  APIResponse<APIResponse>? startUserToUserChatResponse;
+
+  startUserToUserChatMethod(BuildContext context) async {
+    setState(() {
+      isChatStarting = true;
+    });
+    Map startChatData = {
+      "request_type": " startChat",
+      "users_type": "Rider",
+      "other_users_type": "Customers",
+      "users_id": widget.userID,
+      "other_users_id":
+          updateBookingStatusModel.data!.usersCustomersId.toString(),
+    };
+    print('object start suer to uer chat data: ${startChatData.toString()}');
+    startUserToUserChatResponse =
+        await service.startUserToUserChatAPI(startChatData);
+    if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
+      showToastSuccess('Chat has been started!', FToast().init(context),
+          seconds: 1);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UserToUserChat(
+            phone: updateBookingStatusModel.data!.usersCustomers.phone,
+            riderID: widget.userID.toString(),
+            image: updateBookingStatusModel.data!.usersCustomers.profilePic,
+            name:
+                "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+            address: updateBookingStatusModel.data!.bookingsFleet[widget.index!]
+                .bookingsDestinations.pickupAddress,
+            clientID: updateBookingStatusModel
+                .data!.usersCustomers.usersCustomersId
+                .toString(),
+          ),
+        ),
+      );
+    } else {
+      print(
+          ' error starting chat: ${startUserToUserChatResponse!.message!.toString()}');
+      // showToastError('error occurred,try again', FToast().init(context),
+      //     seconds: 2);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UserToUserChat(
+            phone: updateBookingStatusModel.data!.usersCustomers.phone,
+            riderID: widget.userID.toString(),
+            image: updateBookingStatusModel.data!.usersCustomers.profilePic,
+            name:
+                "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+            address: updateBookingStatusModel
+                .data!.bookingsFleet[0].bookingsDestinations.pickupAddress,
+            clientID: updateBookingStatusModel
+                .data!.usersCustomers.usersCustomersId
+                .toString(),
+          ),
+        ),
+      );
+    }
+    setState(() {
+      isChatStarting = false;
     });
   }
 
@@ -208,24 +226,41 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < widget.bookingDestinations.length;) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 10.h),
+    return Scaffold(
+      backgroundColor: white,
+      appBar: AppBar(
+        backgroundColor: white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          'Ride Details',
+          style: GoogleFonts.syne(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: black,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
         ),
-        height: widget.bookingModel.scheduled == "Yes"
-            ? MediaQuery.sizeOf(context).height * 0.685
-            : MediaQuery.sizeOf(context).height * 0.645,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(
                 children: [
-                  SizedBox(
-                    height: 13.h,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -240,7 +275,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
                               child: Image.network(
-                                'https://cs.deliverbygfl.com/public/${widget.bookingModel.users_customers!.profile_pic}',
+                                'https://cs.deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers.profilePic}',
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace? stackTrace) {
@@ -283,7 +318,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               SizedBox(
                                 width: 100.w,
                                 child: AutoSizeText(
-                                  '${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}',
+                                  "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
                                   minFontSize: 12,
                                   maxLines: 3,
                                   style: GoogleFonts.syne(
@@ -295,9 +330,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               SizedBox(
                                 height: 4.h,
                               ),
-                              widget.bookingModel.scheduled == "Yes"
+                              updateBookingStatusModel.data!.scheduled == "Yes"
                                   ? Text(
-                                      '${widget.bookingModel.bookings_types!.name!} (Scheduled Ride)',
+                                      '${updateBookingStatusModel.data!.bookingsTypes.name} \n(Scheduled Ride)',
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -305,22 +340,47 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                       ),
                                     )
                                   : Text(
-                                      widget.bookingModel.bookings_types!.name!,
+                                      updateBookingStatusModel
+                                          .data!.bookingsTypes.name,
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
                                         color: grey,
                                       ),
                                     ),
-                              SizedBox(
-                                height: 4.h,
-                              ),
                             ],
                           ),
                         ],
                       ),
                       Row(
                         children: [
+                          Column(
+                            children: [
+                              SizedBox(
+                                width: 36.w,
+                                height: 36.h,
+                                child: SvgPicture.asset(
+                                  'assets/images/dt.svg',
+                                  fit: BoxFit.scaleDown,
+                                  color: orangeColor,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Text(
+                                updateBookingStatusModel.data!.deliveryType,
+                                style: GoogleFonts.syne(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: grey,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
                           GestureDetector(
                             onTap: () => startUserToUserChatMethod(context),
                             child: Column(
@@ -352,8 +412,8 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              _makePhoneCall(
-                                  widget.bookingModel.users_customers!.phone!);
+                              _makePhoneCall(updateBookingStatusModel
+                                  .data!.usersCustomers.phone);
                             },
                             child: Column(
                               children: [
@@ -392,9 +452,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                     ],
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 10.h,
                   ),
-                  widget.bookingModel.delivery_type == 'Single'
+                  updateBookingStatusModel.data!.deliveryType == 'Single'
                       ? Column(
                           children: [
                             Row(
@@ -426,7 +486,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '${widget.bookingDestinations[i].receiver_name}',
+                                  '${jsonResponse!['data']['bookings_fleet'][0]['bookings_destinations']['receiver_name']}',
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -434,7 +494,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                   ),
                                 ),
                                 Text(
-                                  '${widget.bookingDestinations[i].receiver_phone}',
+                                  '${jsonResponse!['data']['bookings_fleet'][0]['bookings_destinations']['receiver_phone']}',
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -443,16 +503,15 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                 )
                               ],
                             ),
-                            widget.bookingModel.scheduled == "Yes"
+                            updateBookingStatusModel.data!.scheduled == "Yes"
                                 ? SizedBox(
                                     height: 5.h,
                                   )
                                 : SizedBox(
                                     height: 20.h,
                                   ),
-                            widget.bookingModel.scheduled == "Yes"
+                            updateBookingStatusModel.data!.scheduled == "Yes"
                                 ? Column(
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
                                         height: 10.h,
@@ -488,7 +547,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            '${widget.bookingModel.delivery_date}',
+                                            '${updateBookingStatusModel.data!.dateAdded}',
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -497,10 +556,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                           ),
                                           Text(
                                             DateFormat('h:mm a').format(
-                                              DateFormat('HH:mm:ss').parse(
-                                                  widget.bookingModel
-                                                      .delivery_time!),
-                                            ),
+                                                DateTime.parse(
+                                                    updateBookingStatusModel
+                                                        .data!.dateAdded
+                                                        .toString())),
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -549,11 +608,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                 SizedBox(
                                   width: 290.w,
                                   child: AutoSizeText(
-                                    widget
-                                        .bookingModel
-                                        .bookings_destinations![0]
-                                        .pickup_address!,
-                                    maxLines: 2,
+                                    jsonResponse!['data']['bookings_fleet'][0]
+                                            ['bookings_destinations']
+                                        ['pickup_address'],
+                                    maxLines: 3,
                                     minFontSize: 12,
                                     overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.inter(
@@ -599,8 +657,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                     SizedBox(
                                       width: 290.w,
                                       child: AutoSizeText(
-                                        widget.bookingDestinations[i]
-                                            .destin_address!,
+                                        jsonResponse!['data']['bookings_fleet']
+                                                [0]['bookings_destinations']
+                                            ['destin_address'],
                                         minFontSize: 12,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
@@ -639,8 +698,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                     .height *
                                                 0.004),
                                         Text(
-                                          widget.bookingDestinations[i]
-                                              .destin_time!,
+                                          jsonResponse!['data']
+                                                      ['bookings_fleet'][0]
+                                                  ['bookings_destinations']
+                                              ['destin_time'],
                                           style: GoogleFonts.inter(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w700,
@@ -672,7 +733,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                     .height *
                                                 0.007),
                                         Text(
-                                          '${widget.bookingDestinations[i].destin_distance!} $distance',
+                                          '${jsonResponse!['data']['bookings_fleet'][0]['bookings_destinations']['destin_distance']} $distance',
                                           style: GoogleFonts.inter(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w700,
@@ -705,7 +766,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                           ),
                                         ),
                                         Text(
-                                          '${widget.bookingModel.total_charges}',
+                                          '${jsonResponse!['data']['bookings_fleet'][0]['bookings_destinations']['total_charges'] ?? jsonResponse!['data']['total_charges']}',
                                           // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
                                           style: GoogleFonts.inter(
                                             fontSize: 10,
@@ -728,7 +789,84 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               ],
                             ),
                             SizedBox(
-                              height: 15.h,
+                              height: 20.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                isAcceptingRide
+                                    ? const Padding(
+                                        padding: EdgeInsets.only(left: 35.0),
+                                        child: SpinKitDoubleBounce(
+                                          color: orange,
+                                          size: 50.0,
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          acceptRideMethod(context);
+                                        },
+                                        child: Container(
+                                          width: 160.w,
+                                          height: 51.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xffFF6302),
+                                                Color(0xffFBC403),
+                                              ],
+                                              begin: Alignment.centerRight,
+                                              end: Alignment.centerLeft,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'ACCEPT',
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.syne(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                isRejectingRide
+                                    ? const Padding(
+                                        padding: EdgeInsets.only(right: 35.0),
+                                        child: SpinKitDoubleBounce(
+                                          color: orange,
+                                          size: 50.0,
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () =>
+                                            rejectRequestMethod(context),
+                                        child: Container(
+                                          width: 170.w,
+                                          height: 51.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: red,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'REJECT',
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.syne(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                              ],
                             ),
                           ],
                         )
@@ -738,20 +876,21 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               color: Colors.transparent,
                               padding: const EdgeInsets.only(right: 10),
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.38,
+                              height: MediaQuery.of(context).size.height * 0.42,
                               child: isLoading
                                   ? spinKitRotatingCircle
                                   : PageView.builder(
                                       onPageChanged: (index) async {
+                                        await updateBookingStatus();
                                         setState(() {
                                           currentIndex =
                                               index; // Update currentIndex when page changes
                                         });
                                       },
                                       scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          widget.bookingDestinations.length,
                                       controller: pageController,
+                                      itemCount: updateBookingStatusModel
+                                          .data!.bookingsFleet.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Container(
@@ -765,7 +904,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.38,
+                                              0.325,
                                           child: isLoading
                                               ? spinKitRotatingCircle
                                               : Column(
@@ -813,7 +952,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          '${widget.bookingDestinations[index].receiver_name}',
+                                                          '${jsonResponse!["data"]['bookings_fleet'][index]['bookings_destinations']['receiver_name']}',
                                                           style:
                                                               GoogleFonts.inter(
                                                             fontSize: 14,
@@ -823,7 +962,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          '${widget.bookingDestinations[index].receiver_phone}',
+                                                          '${jsonResponse!["data"]['bookings_fleet'][index]['bookings_destinations']['receiver_phone']}',
                                                           style:
                                                               GoogleFonts.inter(
                                                             fontSize: 14,
@@ -834,7 +973,8 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                         )
                                                       ],
                                                     ),
-                                                    widget.bookingModel
+                                                    updateBookingStatusModel
+                                                                .data!
                                                                 .scheduled ==
                                                             "Yes"
                                                         ? SizedBox(
@@ -843,7 +983,8 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                         : SizedBox(
                                                             height: 20.h,
                                                           ),
-                                                    widget.bookingModel
+                                                    updateBookingStatusModel
+                                                                .data!
                                                                 .scheduled ==
                                                             "Yes"
                                                         ? Column(
@@ -899,7 +1040,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                         .spaceBetween,
                                                                 children: [
                                                                   Text(
-                                                                    '${widget.bookingModel.delivery_date}',
+                                                                    '${updateBookingStatusModel.data!.dateAdded}',
                                                                     style: GoogleFonts
                                                                         .inter(
                                                                       fontSize:
@@ -914,11 +1055,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                   Text(
                                                                     DateFormat(
                                                                             'h:mm a')
-                                                                        .format(
-                                                                      DateFormat('HH:mm:ss').parse(widget
-                                                                          .bookingModel
-                                                                          .delivery_time!),
-                                                                    ),
+                                                                        .format(DateTime.parse(updateBookingStatusModel
+                                                                            .data!
+                                                                            .dateAdded
+                                                                            .toString())),
                                                                     style: GoogleFonts
                                                                         .inter(
                                                                       fontSize:
@@ -976,10 +1116,13 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                         SizedBox(
                                                           width: 250.w,
                                                           child: AutoSizeText(
-                                                            widget
-                                                                .bookingDestinations[
-                                                                    index]
-                                                                .pickup_address!,
+                                                            jsonResponse!["data"]
+                                                                            [
+                                                                            'bookings_fleet']
+                                                                        [index][
+                                                                    'bookings_destinations']
+                                                                [
+                                                                'pickup_address'],
                                                             maxLines: 3,
                                                             minFontSize: 12,
                                                             style: GoogleFonts
@@ -1039,10 +1182,13 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                               width: 270.w,
                                                               child:
                                                                   AutoSizeText(
-                                                                widget
-                                                                    .bookingDestinations[
-                                                                        index]
-                                                                    .destin_address!,
+                                                                jsonResponse!["data"]['bookings_fleet']
+                                                                            [
+                                                                            index]
+                                                                        [
+                                                                        'bookings_destinations']
+                                                                    [
+                                                                    'destin_address'],
                                                                 minFontSize: 12,
                                                                 maxLines: 2,
                                                                 overflow:
@@ -1064,7 +1210,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                       ],
                                                     ),
                                                     SizedBox(
-                                                      height: 15.h,
+                                                      height: 7.h,
                                                     ),
                                                     Expanded(
                                                       child: Row(
@@ -1092,10 +1238,11 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                               .height *
                                                                           0.004),
                                                                   Text(
-                                                                    widget
-                                                                        .bookingDestinations[
-                                                                            index]
-                                                                        .destin_time!,
+                                                                    jsonResponse!["data"]['bookings_fleet'][index]
+                                                                            [
+                                                                            'bookings_destinations']
+                                                                        [
+                                                                        'destin_time']!,
                                                                     style: GoogleFonts
                                                                         .inter(
                                                                       fontSize:
@@ -1138,7 +1285,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                               .height *
                                                                           0.007),
                                                                   Text(
-                                                                    '${widget.bookingDestinations[index].destin_distance!} $distance',
+                                                                    '${jsonResponse!["data"]['bookings_fleet'][index]['bookings_destinations']['destin_distance']!} $distance',
                                                                     style: GoogleFonts
                                                                         .inter(
                                                                       fontSize:
@@ -1187,7 +1334,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                     ),
                                                                   ),
                                                                   Text(
-                                                                    '${widget.bookingModel.total_charges}',
+                                                                    updateBookingStatusModel
+                                                                        .data!
+                                                                        .totalCharges,
                                                                     // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
                                                                     style: GoogleFonts
                                                                         .inter(
@@ -1221,432 +1370,339 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                         ],
                                                       ),
                                                     ),
-                                                    isParcelPicked
-                                                        ? SizedBox(
-                                                            // width: 10.w,
-                                                            height: 10.h,
-                                                            child:
-                                                                const SpinKitThreeInOut(
-                                                              size: 10,
-                                                              color: orange,
-                                                            ),
-                                                          )
-                                                        : Row(
-                                                            children: [
-                                                              GestureDetector(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    // packageStatus =
-                                                                    //     !packageStatus;
-                                                                    statusID;
-                                                                  });
-                                                                  bookingsDestinationsId = widget
-                                                                      .bookingDestinations[
-                                                                          index]
-                                                                      .bookings_destinations_id
-                                                                      .toString();
-                                                                  print(
-                                                                      'object id of picked parcel: $bookingsDestinationsId');
-                                                                  parcelPickedMethod(
-                                                                      context,
-                                                                      bookingsDestinationsId!);
 
-                                                                  print(
-                                                                      'object id of picked parcel: ${statusID.toString()}');
-                                                                },
-                                                                child: pickedParcelIds!.contains(widget
-                                                                        .bookingDestinations[
-                                                                            index]
-                                                                        .bookings_destinations_id
-                                                                        .toString())
-                                                                    ? SvgPicture
-                                                                        .asset(
-                                                                            'assets/images/tick-orange.svg')
-                                                                    : SvgPicture
-                                                                        .asset(
-                                                                            'assets/images/tick-grey.svg'),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 15.w,
-                                                              ),
-                                                              pickedParcelIds!.contains(widget
-                                                                      .bookingDestinations[
-                                                                          index]
-                                                                      .bookings_destinations_id
-                                                                      .toString())
-                                                                  ? Text(
-                                                                      name!,
-                                                                      style: GoogleFonts
-                                                                          .syne(
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        color:
-                                                                            black,
-                                                                      ),
-                                                                    )
-                                                                  : Text(
-                                                                      'Pick Parcel',
-                                                                      style: GoogleFonts
-                                                                          .syne(
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        color:
-                                                                            black,
-                                                                      ),
-                                                                    ),
-                                                            ],
-                                                          ),
+                                                    // Center(
+                                                    //   child: (currentIndex ==
+                                                    //                   0 &&
+                                                    //               ride0 ==
+                                                    //                   "Completed") ||
+                                                    //           (currentIndex ==
+                                                    //                   1 &&
+                                                    //               ride1 ==
+                                                    //                   "Completed") ||
+                                                    //           (currentIndex ==
+                                                    //                   2 &&
+                                                    //               ride2 ==
+                                                    //                   "Completed") ||
+                                                    //           (currentIndex ==
+                                                    //                   3 &&
+                                                    //               ride3 ==
+                                                    //                   "Completed") ||
+                                                    //           (currentIndex ==
+                                                    //                   4 &&
+                                                    //               ride4 ==
+                                                    //                   "Completed")
+                                                    //       ? const SizedBox
+                                                    //           .shrink() // Don't show the button if the condition is true
+                                                    //       : GestureDetector(
+                                                    //           onTap: () {
+                                                    //             Navigator.push(
+                                                    //               context,
+                                                    //               MaterialPageRoute(
+                                                    //                 builder:
+                                                    //                     (context) =>
+                                                    //                         EndRidePAge(
+                                                    //                   bookingDestinID: updateBookingStatusModel
+                                                    //                       .data!
+                                                    //                       .bookingsFleet[
+                                                    //                           index]
+                                                    //                       .bookingsDestinationsId
+                                                    //                       .toString(),
+                                                    //                   deliveryType: updateBookingStatusModel
+                                                    //                       .data!
+                                                    //                       .deliveryType,
+                                                    //                   bookingModel: updateBookingStatusModel
+                                                    //                       .data!
+                                                    //                       .bookingsId
+                                                    //                       .toString(),
+                                                    //                   bookingDestinations:
+                                                    //                       jsonResponse!["data"]['bookings_fleet'][0]['bookings_destinations_id']
+                                                    //                           .toString(),
+                                                    //                   bookingDestinationsList:
+                                                    //                       jsonResponse!["data"]['bookings_fleet'][0]['bookings_destinations']['bookings_destinations_status_id']
+                                                    //                           .toString(),
+                                                    //                 ),
+                                                    //               ),
+                                                    //             );
+                                                    //             // startRide(context);
+                                                    //           },
+                                                    //           child: Container(
+                                                    //             width: 170.w,
+                                                    //             height: 51.h,
+                                                    //             decoration:
+                                                    //                 BoxDecoration(
+                                                    //               borderRadius:
+                                                    //                   BorderRadius
+                                                    //                       .circular(
+                                                    //                           10),
+                                                    //               gradient:
+                                                    //                   const LinearGradient(
+                                                    //                 colors: [
+                                                    //                   Color(
+                                                    //                       0xffFF6302),
+                                                    //                   Color(
+                                                    //                       0xffFBC403),
+                                                    //                 ],
+                                                    //                 begin: Alignment
+                                                    //                     .centerRight,
+                                                    //                 end: Alignment
+                                                    //                     .centerLeft,
+                                                    //               ),
+                                                    //             ),
+                                                    //             child: Center(
+                                                    //               child: Text(
+                                                    //                 'End RIDE',
+                                                    //                 textAlign:
+                                                    //                     TextAlign
+                                                    //                         .center,
+                                                    //                 style:
+                                                    //                     GoogleFonts
+                                                    //                         .syne(
+                                                    //                   fontSize:
+                                                    //                       16,
+                                                    //                   fontWeight:
+                                                    //                       FontWeight
+                                                    //                           .w500,
+                                                    //                   color:
+                                                    //                       white,
+                                                    //                 ),
+                                                    //               ),
+                                                    //             ),
+                                                    //           ),
+                                                    //         ),
+                                                    // ),
                                                   ],
                                                 ),
                                         );
                                       }),
                             ),
-                          ],
-                        ),
-                  widget.bookingModel.delivery_type == 'Single'
-                      ? SizedBox(height: 5.h)
-                      : SizedBox(height: 15.h),
-                  widget.bookingModel.delivery_type == 'Single'
-                      ? isParcelPicked
-                          ? SizedBox(
-                              height: 10.h,
-                              child: const SpinKitThreeInOut(
-                                size: 10,
-                                color: orange,
-                              ),
-                            )
-                          : Row(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      packageStatus = !packageStatus;
-                                      statusID;
-                                    });
-                                    parcelPickedMethod(
-                                        context,
-                                        widget.bookingDestinations[0]
-                                            .bookings_destinations_id
-                                            .toString());
-                                    print(
-                                        'object id of picked parcel: ${statusID.toString()}');
-                                  },
-                                  child: packageStatus
-                                      ? SvgPicture.asset(
-                                          'assets/images/tick-orange.svg')
-                                      : SvgPicture.asset(
-                                          'assets/images/tick-grey.svg'),
-                                ),
-                                SizedBox(
-                                  width: 15.w,
-                                ),
-                                Text(
-                                  name!,
-                                  style: GoogleFonts.syne(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: black,
-                                  ),
-                                ),
-                              ],
-                            )
-                      : const SizedBox(),
-                  widget.bookingModel.delivery_type == 'Single'
-                      ? SizedBox(
-                          height: 15.h,
-                        )
-                      : const SizedBox(),
-                  widget.bookingModel.delivery_type == 'Single'
-                      ? const SizedBox()
-                      : Container(
-                          color: Colors.transparent,
-                          height: 12.h,
-                          width: 100.w,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 7),
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                controller: nextPageScrollController,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: widget.bookingDestinations.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      pageController.animateToPage(index,
-                                          duration:
-                                              const Duration(milliseconds: 500),
-                                          curve: Curves.ease);
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: 3.w),
-                                        Container(
-                                          width: 10,
-                                          height: 10,
+                                isAcceptingRide
+                                    ? const Padding(
+                                        padding: EdgeInsets.only(left: 35.0),
+                                        child: SpinKitDoubleBounce(
+                                          color: orange,
+                                          size: 50.0,
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          acceptRideMethod(context);
+                                        },
+                                        child: Container(
+                                          width: 160.w,
+                                          height: 51.h,
                                           decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: currentIndex == index
-                                                ? orange
-                                                : grey, // Adjust indicator color based on current index
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xffFF6302),
+                                                Color(0xffFBC403),
+                                              ],
+                                              begin: Alignment.centerRight,
+                                              end: Alignment.centerLeft,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(width: 3.w)
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  isRideStarting
-                      ? const SpinKitDoubleBounce(
-                          color: orange,
-                          size: 50.0,
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            startRideMethod(context);
-                          },
-                          child: updateBookingStatusModel.data!.paymentStatus ==
-                                  "Paid"
-                              ? Container(
-                                  width: 170.w,
-                                  height: 51.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color(0xffFF6302),
-                                        Color(0xffFBC403),
-                                      ],
-                                      begin: Alignment.centerRight,
-                                      end: Alignment.centerLeft,
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'START RIDE',
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.syne(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: white,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        init();
-                                      },
-                                      child: Container(
-                                        width: 170.w,
-                                        height: 51.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          gradient: const LinearGradient(
-                                            colors: [
-                                              Color(0xffFF6302),
-                                              Color(0xffFBC403),
-                                            ],
-                                            begin: Alignment.centerRight,
-                                            end: Alignment.centerLeft,
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            'Refresh',
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.syne(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: white,
+                                          child: Center(
+                                            child: Text(
+                                              'ACCEPT',
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.syne(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: white,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
+                                isRejectingRide
+                                    ? const Padding(
+                                        padding: EdgeInsets.only(right: 35.0),
+                                        child: SpinKitDoubleBounce(
+                                          color: orange,
+                                          size: 50.0,
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () =>
+                                            rejectRequestMethod(context),
+                                        child: Container(
+                                          width: 170.w,
+                                          height: 51.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: red,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'REJECT',
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.syne(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
+                            SizedBox(height: 30.h),
+                            updateBookingStatusModel.data!.deliveryType ==
+                                    'Single'
+                                ? const SizedBox()
+                                : Container(
+                                    color: Colors.transparent,
+                                    height: 12.h,
+                                    width: 100.w,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 7),
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        controller: nextPageScrollController,
+                                        itemCount: updateBookingStatusModel
+                                            .data!.bookingsFleet.length,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              pageController.animateToPage(
+                                                  index,
+                                                  duration: const Duration(
+                                                      milliseconds: 500),
+                                                  curve: Curves.ease);
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(width: 3.w),
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: currentIndex == index
+                                                        ? orange
+                                                        : grey,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 3.w)
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
-                                    const Text(
-                                        "Click Refresh to check the Payment Status"),
-                                  ],
-                                )),
+                                  ),
+                          ],
+                        ),
+                  updateBookingStatusModel.data!.deliveryType == 'Single'
+                      ? SizedBox(
+                          height: 25.h,
+                        )
+                      : SizedBox(
+                          height: 10.h,
+                        ),
                 ],
               ),
-      );
+      ),
+    );
+  }
+
+  bool isAcceptingRide = false;
+  APIResponse<ShowBookingsModel>? acceptRideResponse;
+
+  acceptRideMethod(BuildContext context) async {
+    setState(() {
+      isAcceptingRide = true;
+    });
+    Map acceptRideData = {
+      "bookings_id": widget.bookingID.toString(),
+      "users_customers_id": updateBookingStatusModel
+          .data!.usersCustomers.usersCustomersId
+          .toString(),
+      "users_fleet_id": widget.userID.toString(),
+    };
+
+    print('object accept ride data: ${acceptRideData.toString()}');
+
+    acceptRideResponse = await service.acceptRideRequest(acceptRideData);
+    if (acceptRideResponse!.status!.toLowerCase() == 'success') {
+      if (acceptRideResponse!.data != null) {
+        showToastSuccess('Request has been accepted', FToast().init(context),
+            seconds: 1);
+        Navigator.of(context).pop();
+        // showModalBottomSheet(
+        //   backgroundColor: white,
+        //   shape: const RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.vertical(
+        //       top: Radius.circular(20),
+        //     ),
+        //   ),
+        //   isScrollControlled: true,
+        //   isDismissible: false,
+        //   context: context,
+        //   builder: (context) => ModalBottomSheetStartRide(
+        //     userID: widget.userID,
+        //     bookingModel: widget.customersModel,
+        //     bookingDestinations: widget.bookingDestinationsList!,
+        //   ),
+        // );
+      }
+    } else {
+      showToastError(acceptRideResponse!.message!, FToast().init(context),
+          seconds: 1);
     }
-    return const SizedBox();
+    setState(() {
+      isAcceptingRide = false;
+    });
+  }
+
+  bool isRejectingRide = false;
+  APIResponse<ShowBookingsModel>? rejectRideResponse;
+
+  rejectRequestMethod(BuildContext context) async {
+    setState(() {
+      isRejectingRide = true;
+    });
+    Map rejectRideData = {
+      "bookings_id": widget.bookingID.toString(),
+      "users_customers_id": updateBookingStatusModel
+          .data!.usersCustomers.usersCustomersId
+          .toString(),
+      "users_fleet_id": widget.userID.toString(),
+    };
+    rejectRideResponse = await service.rejectRideRequest(rejectRideData);
+    if (rejectRideResponse!.status!.toLowerCase() == 'success') {
+      if (rejectRideResponse!.data != null) {
+        showToastSuccess('Ride Request is rejected', FToast().init(context),
+            seconds: 1);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBar(),
+            ),
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      showToastError(rejectRideResponse!.message!, FToast().init(context),
+          seconds: 1);
+      Navigator.of(context).pop();
+    }
+    setState(() {
+      isRejectingRide = false;
+    });
   }
 
   PageController pageController = PageController();
-  bool isChatStarting = false;
-  APIResponse<APIResponse>? startUserToUserChatResponse;
-
-  startUserToUserChatMethod(BuildContext context) async {
-    setState(() {
-      isChatStarting = true;
-    });
-    Map startChatData = {
-      "request_type": " startChat",
-      "users_type": "Rider",
-      "other_users_type": "Customers",
-      "users_id": widget.userID,
-      "other_users_id":
-          widget.bookingModel.users_customers!.users_customers_id.toString(),
-    };
-    print('object start suer to uer chat data: ${startChatData.toString()}');
-    startUserToUserChatResponse =
-        await service.startUserToUserChatAPI(startChatData);
-    if (startUserToUserChatResponse!.status!.toLowerCase() == 'success') {
-      showToastSuccess('Chat has been started!', FToast().init(context),
-          seconds: 1);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => UserToUserChat(
-            phone: widget.bookingModel.users_customers!.phone!,
-            riderID: widget.userID.toString(),
-            image: widget.bookingModel.users_customers!.profile_pic!,
-            name:
-                "${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
-            address:
-                widget.bookingModel.bookings_destinations![0].pickup_address,
-            clientID: widget.bookingModel.users_customers!.users_customers_id
-                .toString(),
-          ),
-        ),
-      );
-    } else {
-      print(
-          'error starting chat:  ${startUserToUserChatResponse!.message!.toString()}');
-      // showToastError('error occurred,try again', FToast().init(context),
-      //     seconds: 2);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => UserToUserChat(
-            phone: widget.bookingModel.users_customers!.phone!,
-            riderID: widget.userID.toString(),
-            image: widget.bookingModel.users_customers!.profile_pic!,
-            name:
-                "${widget.bookingModel.users_customers!.first_name!} ${widget.bookingModel.users_customers!.last_name!}",
-            address:
-                widget.bookingModel.bookings_destinations![0].pickup_address,
-            clientID: widget.bookingModel.users_customers!.users_customers_id
-                .toString(),
-          ),
-        ),
-      );
-    }
-    setState(() {
-      isChatStarting = false;
-    });
-  }
-
-  ApiServices get service => GetIt.I<ApiServices>();
-
-  APIResponse<ShowBookingsModel>? startRideResponse;
-
-  bool isRideStarting = false;
-
-  startRideMethod(BuildContext context) async {
-    if (widget.bookingModel.scheduled == "Yes") {
-      showToastError(
-          'Your scheduled ride is not started yet', FToast().init(context),
-          seconds: 2);
-    } else if (pickedParcelIds!.length != widget.bookingDestinations.length) {
-      showToastError(
-          'You\'ve to pick all the parcel from pickup location first.',
-          FToast().init(context),
-          seconds: 2);
-    } else {
-      setState(() {
-        isRideStarting = true;
-      });
-
-      Map startRideData = {
-        "bookings_id": widget.bookingModel.bookings_id.toString(),
-        "bookings_destinations_id":
-            widget.bookingDestinations[0].bookings_destinations_id.toString(),
-        "bookings_destinations_status_id": startRideID.toString()
-      };
-      print('object start ride data: ${startRideData.toString()}');
-      startRideResponse = await service.startRideRequest(startRideData);
-
-      if (startRideResponse!.status!.toLowerCase() == "success") {
-        if (startRideResponse!.data != null) {
-          showToastSuccess('Ride has been started', FToast().init(context));
-          Navigator.of(context).pop();
-          showModalBottomSheet(
-            backgroundColor: white,
-            isDismissible: false,
-            isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(20),
-              ),
-            ),
-            context: context,
-            builder: (context) => ModalBottomSheetEndRide(
-              bookingModel: widget.bookingModel,
-              userID: widget.userID,
-              bookingDestinations: widget.bookingDestinations,
-            ),
-          );
-        }
-      } else {
-        showToastError(startRideResponse!.message, FToast().init(context));
-        print(
-            'object status starting ride: ${startRideResponse!.status!.toString()}');
-        print(
-            'object message starting ride: ${startRideResponse!.message!.toString()}');
-      }
-      setState(() {
-        isRideStarting = false;
-      });
-    }
-  }
-
-  bool isParcelPicked = false;
-  APIResponse<ShowBookingsModel>? pickedResponse;
-
-  parcelPickedMethod(BuildContext context, String index) async {
-    setState(() {
-      isParcelPicked = true;
-    });
-    Map startRideData = {
-      "bookings_id": widget.bookingModel.bookings_id.toString(),
-      "bookings_destinations_id": index,
-      "bookings_destinations_status_id": statusID.toString()
-    };
-    print('object picked parcel data: ${startRideData.toString()}');
-    pickedResponse = await service.startRideRequest(startRideData);
-
-    if (pickedResponse!.status!.toLowerCase() == "success") {
-      if (pickedResponse!.data != null) {
-        showToastSuccess('Parcel has been picked', FToast().init(context));
-      }
-      pickedParcelIds!.add(index);
-      print('picked parcels id: ${pickedParcelIds!.toString()}');
-    } else {
-      showToastError(pickedResponse!.message, FToast().init(context));
-      print(
-          'object status picked parcel: ${pickedResponse!.status!.toString()}');
-      print(
-          'object message picked parcel: ${pickedResponse!.message!.toString()}');
-    }
-    setState(() {
-      isParcelPicked = false;
-    });
-  }
 }

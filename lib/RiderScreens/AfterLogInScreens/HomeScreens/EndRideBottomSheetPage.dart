@@ -248,7 +248,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 20.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
@@ -556,11 +556,10 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                           ),
                                           Text(
                                             DateFormat('h:mm a').format(
-                                              DateFormat('HH:mm:ss').parse(
-                                                  updateBookingStatusModel
-                                                      .data!.dateAdded
-                                                      .toString()),
-                                            ),
+                                                DateTime.parse(
+                                                    updateBookingStatusModel
+                                                        .data!.dateAdded
+                                                        .toString())),
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,

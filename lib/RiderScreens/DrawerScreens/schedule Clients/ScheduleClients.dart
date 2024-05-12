@@ -1,4 +1,5 @@
 import 'package:deliver_partner/Constants/Colors.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/schedule%20Clients/scheduleRidesScreen.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/schedule%20Clients/scheduled_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -109,9 +110,9 @@ class _ScheduleClientsState extends State<ScheduleClients> {
                   physics: const BouncingScrollPhysics(),
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
-                    return ScheduledScreen(
-                      scheduledRiderModel: scheduledRidesList![index],
-                    );
+                    return const ScheduledRideScreen(
+                        // scheduledRiderModel: scheduledRidesList![index],
+                        );
                   },
                 ),
     );

@@ -139,7 +139,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
               print('val deliveryDateTime: $deliveryDateTime');
             },
             child: Text(
-              '${widget.scheduledRiderModel.status}',//
+              '${widget.scheduledRiderModel.status}', //
               style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -485,97 +485,92 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                             // isScheduled
                             //     ?
                             Column(
-                                    children: [
-                                      isParcelPicked
-                                          ? SizedBox(
-                                              height: 10.h,
-                                              child: const SpinKitThreeInOut(
-                                                size: 10,
-                                                color: orange,
-                                              ),
-                                            )
-                                          : Row(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      packageStatus =
-                                                          !packageStatus;
-                                                      statusID;
-                                                    });
-                                                    parcelPickedMethod(context);
-                                                    print(
-                                                        'object id of picked parcel: ${statusID.toString()}');
-                                                  },
-                                                  child: packageStatus
-                                                      ? SvgPicture.asset(
-                                                          'assets/images/tick-orange.svg')
-                                                      : SvgPicture.asset(
-                                                          'assets/images/tick-grey.svg'),
-                                                ),
-                                                SizedBox(
-                                                  width: 15.w,
-                                                ),
-                                                Text(
-                                                  name!,
-                                                  style: GoogleFonts.syne(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: black,
-                                                  ),
-                                                ),
-                                              ],
+                              children: [
+                                isParcelPicked
+                                    ? SizedBox(
+                                        height: 10.h,
+                                        child: const SpinKitThreeInOut(
+                                          size: 10,
+                                          color: orange,
+                                        ),
+                                      )
+                                    : Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                packageStatus = !packageStatus;
+                                                statusID;
+                                              });
+                                              parcelPickedMethod(context);
+                                              print(
+                                                  'object id of picked parcel: ${statusID.toString()}');
+                                            },
+                                            child: packageStatus
+                                                ? SvgPicture.asset(
+                                                    'assets/images/tick-orange.svg')
+                                                : SvgPicture.asset(
+                                                    'assets/images/tick-grey.svg'),
+                                          ),
+                                          SizedBox(
+                                            width: 15.w,
+                                          ),
+                                          Text(
+                                            name!,
+                                            style: GoogleFonts.syne(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color: black,
                                             ),
-                                      SizedBox(
-                                        height: 20.h,
+                                          ),
+                                        ],
                                       ),
-                                      isRideStarting
-                                          ? const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 35.0),
-                                              child: SpinKitDoubleBounce(
-                                                color: orange,
-                                                size: 50.0,
-                                              ),
-                                            )
-                                          : GestureDetector(
-                                              onTap: () {
-                                                startRideMethod(context);
-                                              },
-                                              child: Container(
-                                                width: 170.w,
-                                                height: 51.h,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  gradient:
-                                                      const LinearGradient(
-                                                    colors: [
-                                                      Color(0xffFF6302),
-                                                      Color(0xffFBC403),
-                                                    ],
-                                                    begin:
-                                                        Alignment.centerRight,
-                                                    end: Alignment.centerLeft,
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    'START RIDE',
-                                                    textAlign: TextAlign.center,
-                                                    style: GoogleFonts.syne(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: white,
-                                                    ),
-                                                  ),
-                                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                isRideStarting
+                                    ? const Padding(
+                                        padding: EdgeInsets.only(left: 35.0),
+                                        child: SpinKitDoubleBounce(
+                                          color: orange,
+                                          size: 50.0,
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          startRideMethod(context);
+                                        },
+                                        child: Container(
+                                          width: 170.w,
+                                          height: 51.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xffFF6302),
+                                                Color(0xffFBC403),
+                                              ],
+                                              begin: Alignment.centerRight,
+                                              end: Alignment.centerLeft,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'START RIDE',
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.syne(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: white,
                                               ),
                                             ),
-                                    ],
-                                  ),
-                                // : const SizedBox(),
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
+                            // : const SizedBox(),
                             SizedBox(
                               height: 20.h,
                             ),
@@ -623,7 +618,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
           widget.scheduledRiderModel.bookings_destinations_id.toString(),
       "bookings_destinations_status_id": statusID.toString()
     };
-    print('object start ride data:    ' + startRideData.toString());
+    print('object start ride data:    $startRideData');
     pickedResponse = await service.startRideRequest(startRideData);
 
     if (pickedResponse!.status!.toLowerCase() == "success") {
@@ -632,10 +627,8 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
       }
     } else {
       showToastError(pickedResponse!.message, FToast().init(context));
-      print('object error starting ride:   ' +
-          pickedResponse!.message!.toString() +
-          '   ' +
-          pickedResponse!.status!.toString());
+      print(
+          'object error starting ride:   ${pickedResponse!.message!}   ${pickedResponse!.status!}');
     }
     setState(() {
       isParcelPicked = false;
@@ -662,7 +655,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
             widget.scheduledRiderModel.bookings_destinations_id.toString(),
         "bookings_destinations_status_id": startRideID.toString()
       };
-      print('object start ride data:    ' + startRideData.toString());
+      print('object start ride data:    $startRideData');
       startRideResponse = await service.startRideRequest(startRideData);
 
       if (startRideResponse!.status!.toLowerCase() == "success") {
@@ -693,10 +686,8 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
         }
       } else {
         showToastError(startRideResponse!.message, FToast().init(context));
-        print('object error starting ride:   ' +
-            startRideResponse!.message!.toString() +
-            '   ' +
-            startRideResponse!.status!.toString());
+        print(
+            'object error starting ride:   ${startRideResponse!.message!}   ${startRideResponse!.status!}');
       }
       setState(() {
         isRideStarting = false;
