@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:deliver_partner/models/API_models/getbookingDestinationStatus.dart';
+import 'package:deliver_partner/models/API_models/updateBookingTranscations.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
@@ -123,6 +124,58 @@ class _EndRidePAgeState extends State<EndRidePAge> {
 
         bookingsFleet = jsonResponse!['data']['status'];
         setState(() {});
+      }
+    } catch (e) {
+      debugPrint('Something went wrong = ${e.toString()}');
+      return;
+    }
+  }
+
+  UpdateBookingTransactionModel updateBookingTransactionModel =
+      UpdateBookingTransactionModel();
+  Future<void> updateBookingTransaction() async {
+    try {
+      String apiUrl =
+          "https://cs.deliverbygfl.com/maintain_booking_transaction";
+      debugPrint("apiUrl: $apiUrl");
+      // debugPrint("bookings_id: ${widget.currentBookingId}");
+      // debugPrint("payer_name: $firstName $lastName");
+      // debugPrint("payer_email: $userEmail");
+      // debugPrint(
+      //     "total_amount: ${widget.singleData!.isNotEmpty ? widget.singleData!['total_charges'] : widget.multipleData!['total_charges']}");
+      Map data = {
+        "bookings_id": widget.bookingModel.toString(),
+        "payer_name":
+            "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+        "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+        "total_amount": updateBookingStatusModel.data!.totalCharges,
+        "payment_status": "Paid"
+      };
+      print("$data");
+
+      debugPrint("payment_status: Paid");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "bookings_id": widget.bookingModel.toString(),
+          "payer_name":
+              "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+          "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+          "total_amount": updateBookingStatusModel.data!.totalCharges,
+          "payment_status": "Paid"
+        },
+      );
+      final responseString = response.body;
+      debugPrint("response: $responseString");
+      debugPrint("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        updateBookingTransactionModel =
+            updateBookingTransactionModelFromJson(responseString);
+        debugPrint(
+            'updateBookingTransactionModel status: ${updateBookingTransactionModel.status}');
       }
     } catch (e) {
       debugPrint('Something went wrong = ${e.toString()}');
@@ -705,7 +758,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
     debugPrint("end ride data: ${endRideData.toString()}");
 
     endRideResponse = await service.endRideRequest(endRideData);
-
+    await updateBookingTransaction();
     if (endRideResponse!.status!.toLowerCase() == "success") {
       await updateBookingStatus();
       debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
@@ -723,6 +776,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
         await updateBookingStatus();
         if (bookingsFleet == "Completed") {
           Navigator.of(context).pop();
+
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const BottomNavBar(),

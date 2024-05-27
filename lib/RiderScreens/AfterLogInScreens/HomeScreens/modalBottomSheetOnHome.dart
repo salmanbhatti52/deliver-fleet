@@ -452,8 +452,6 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
               ],
             ),
           ),
-        
-        
         ],
       ),
     );
@@ -529,7 +527,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             MaterialPageRoute(
               builder: (context) => const BottomNavBar(),
             ),
-                (Route<dynamic> route) => false);
+            (Route<dynamic> route) => false);
       }
     } else {
       showToastError(rejectRideResponse!.message!, FToast().init(context),

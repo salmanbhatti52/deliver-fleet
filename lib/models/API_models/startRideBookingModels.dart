@@ -1,37 +1,41 @@
 // To parse this JSON data, do
 //
-//     final getOnGoingRides = getOnGoingRidesFromJson(jsonString);
+//     final startRideBookingModels = startRideBookingModelsFromJson(jsonString);
 
 import 'dart:convert';
 
-GetOnGoingRides getOnGoingRidesFromJson(String str) =>
-    GetOnGoingRides.fromJson(json.decode(str));
+StartRideBookingModels startRideBookingModelsFromJson(String str) =>
+    StartRideBookingModels.fromJson(json.decode(str));
 
-String getOnGoingRidesToJson(GetOnGoingRides data) =>
+String startRideBookingModelsToJson(StartRideBookingModels data) =>
     json.encode(data.toJson());
 
-class GetOnGoingRides {
+class StartRideBookingModels {
   String? status;
-  List<Datum>? data;
+  Data? data;
+  String? message;
 
-  GetOnGoingRides({
+  StartRideBookingModels({
     this.status,
+    this.message,
     this.data,
   });
 
-  factory GetOnGoingRides.fromJson(Map<String, dynamic> json) =>
-      GetOnGoingRides(
+  factory StartRideBookingModels.fromJson(Map<String, dynamic> json) =>
+      StartRideBookingModels(
         status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: Data.fromJson(json["data"]),
+        message: json["message"],
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+        "message" : message,
+        "data": data!.toJson(),
       };
 }
 
-class Datum {
+class Data {
   int bookingsFleetId;
   int bookingsId;
   int bookingsDestinationsId;
@@ -40,14 +44,14 @@ class Datum {
   int bookingsCancellationsReasonsId;
   int parcelHandshakeReasonsId;
   String fleetAmount;
-  String? dateAdded;
-  String? dateModified;
+  DateTime dateAdded;
+  DateTime dateModified;
   String status;
   Bookings bookings;
-  UsersFleetVehicles usersFleetVehicles;
+  Vehicles vehicles;
   UsersFleet usersFleet;
 
-  Datum({
+  Data({
     required this.bookingsFleetId,
     required this.bookingsId,
     required this.bookingsDestinationsId,
@@ -57,14 +61,14 @@ class Datum {
     required this.parcelHandshakeReasonsId,
     required this.fleetAmount,
     required this.dateAdded,
-    this.dateModified,
+    required this.dateModified,
     required this.status,
     required this.bookings,
-    required this.usersFleetVehicles,
+    required this.vehicles,
     required this.usersFleet,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         bookingsFleetId: json["bookings_fleet_id"],
         bookingsId: json["bookings_id"],
         bookingsDestinationsId: json["bookings_destinations_id"],
@@ -74,12 +78,11 @@ class Datum {
             json["bookings_cancellations_reasons_id"],
         parcelHandshakeReasonsId: json["parcel_handshake_reasons_id"],
         fleetAmount: json["fleet_amount"],
-        dateAdded: json["date_added"],
-        dateModified: json["date_modified"],
+        dateAdded: DateTime.parse(json["date_added"]),
+        dateModified: DateTime.parse(json["date_modified"]),
         status: json["status"],
         bookings: Bookings.fromJson(json["bookings"]),
-        usersFleetVehicles:
-            UsersFleetVehicles.fromJson(json["users_fleet_vehicles"]),
+        vehicles: Vehicles.fromJson(json["vehicles"]),
         usersFleet: UsersFleet.fromJson(json["users_fleet"]),
       );
 
@@ -92,11 +95,11 @@ class Datum {
         "bookings_cancellations_reasons_id": bookingsCancellationsReasonsId,
         "parcel_handshake_reasons_id": parcelHandshakeReasonsId,
         "fleet_amount": fleetAmount,
-        "date_added": dateAdded,
-        "date_modified": dateModified,
+        "date_added": dateAdded.toIso8601String(),
+        "date_modified": dateModified.toIso8601String(),
         "status": status,
         "bookings": bookings.toJson(),
-        "users_fleet_vehicles": usersFleetVehicles.toJson(),
+        "vehicles": vehicles.toJson(),
         "users_fleet": usersFleet.toJson(),
       };
 }
@@ -117,13 +120,14 @@ class Bookings {
   int paymentGatewaysId;
   String paymentBy;
   String paymentStatus;
+  int bookingsCancellationsReasonsId;
   DateTime dateAdded;
   DateTime dateModified;
   String status;
   BookingsTypes bookingsTypes;
   PaymentGateways paymentGateways;
-  UsersCustomers usersCustomers;
   List<BookingsDestination> bookingsDestinations;
+  UsersCustomers usersCustomers;
 
   Bookings({
     required this.bookingsId,
@@ -141,13 +145,14 @@ class Bookings {
     required this.paymentGatewaysId,
     required this.paymentBy,
     required this.paymentStatus,
+    required this.bookingsCancellationsReasonsId,
     required this.dateAdded,
     required this.dateModified,
     required this.status,
     required this.bookingsTypes,
     required this.paymentGateways,
-    required this.usersCustomers,
     required this.bookingsDestinations,
+    required this.usersCustomers,
   });
 
   factory Bookings.fromJson(Map<String, dynamic> json) => Bookings(
@@ -162,19 +167,21 @@ class Bookings {
         totalVatCharges: json["total_vat_charges"],
         totalCharges: json["total_charges"],
         totalDiscount: json["total_discount"] ?? "0",
-        totalDiscountedCharges: json["total_discounted_charges"] ?? "0",
+        totalDiscountedCharges: json["total_discounted_charges"] ?? "",
         paymentGatewaysId: json["payment_gateways_id"],
         paymentBy: json["payment_by"],
         paymentStatus: json["payment_status"],
+        bookingsCancellationsReasonsId:
+            json["bookings_cancellations_reasons_id"],
         dateAdded: DateTime.parse(json["date_added"]),
         dateModified: DateTime.parse(json["date_modified"]),
         status: json["status"],
         bookingsTypes: BookingsTypes.fromJson(json["bookings_types"]),
         paymentGateways: PaymentGateways.fromJson(json["payment_gateways"]),
-        usersCustomers: UsersCustomers.fromJson(json["users_customers"]),
         bookingsDestinations: List<BookingsDestination>.from(
             json["bookings_destinations"]
                 .map((x) => BookingsDestination.fromJson(x))),
+        usersCustomers: UsersCustomers.fromJson(json["users_customers"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -193,14 +200,15 @@ class Bookings {
         "payment_gateways_id": paymentGatewaysId,
         "payment_by": paymentBy,
         "payment_status": paymentStatus,
+        "bookings_cancellations_reasons_id": bookingsCancellationsReasonsId,
         "date_added": dateAdded.toIso8601String(),
         "date_modified": dateModified.toIso8601String(),
         "status": status,
         "bookings_types": bookingsTypes.toJson(),
         "payment_gateways": paymentGateways.toJson(),
-        "users_customers": usersCustomers.toJson(),
         "bookings_destinations":
             List<dynamic>.from(bookingsDestinations.map((x) => x.toJson())),
+        "users_customers": usersCustomers.toJson(),
       };
 }
 
@@ -708,92 +716,6 @@ class UsersFleet {
         "date_added": dateAdded.toIso8601String(),
         "date_modified": dateModified.toIso8601String(),
         "status": status,
-      };
-}
-
-class UsersFleetVehicles {
-  int usersFleetVehiclesId;
-  int usersFleetId;
-  int vehiclesId;
-  String model;
-  String color;
-  String vehicleRegistrationNo;
-  String vehicleIdentificationNo;
-  DateTime vehicleLicenseExpiryDate;
-  DateTime vehicleInsuranceExpiryDate;
-  DateTime rwcExpiryDate;
-  dynamic cost;
-  String manufactureYear;
-  String image;
-  DateTime dateAdded;
-  dynamic dateModified;
-  String status;
-  Vehicles vehicles;
-
-  UsersFleetVehicles({
-    required this.usersFleetVehiclesId,
-    required this.usersFleetId,
-    required this.vehiclesId,
-    required this.model,
-    required this.color,
-    required this.vehicleRegistrationNo,
-    required this.vehicleIdentificationNo,
-    required this.vehicleLicenseExpiryDate,
-    required this.vehicleInsuranceExpiryDate,
-    required this.rwcExpiryDate,
-    required this.cost,
-    required this.manufactureYear,
-    required this.image,
-    required this.dateAdded,
-    required this.dateModified,
-    required this.status,
-    required this.vehicles,
-  });
-
-  factory UsersFleetVehicles.fromJson(Map<String, dynamic> json) =>
-      UsersFleetVehicles(
-        usersFleetVehiclesId: json["users_fleet_vehicles_id"],
-        usersFleetId: json["users_fleet_id"],
-        vehiclesId: json["vehicles_id"],
-        model: json["model"],
-        color: json["color"],
-        vehicleRegistrationNo: json["vehicle_registration_no"],
-        vehicleIdentificationNo: json["vehicle_identification_no"],
-        vehicleLicenseExpiryDate:
-            DateTime.parse(json["vehicle_license_expiry_date"]),
-        vehicleInsuranceExpiryDate:
-            DateTime.parse(json["vehicle_insurance_expiry_date"]),
-        rwcExpiryDate: DateTime.parse(json["rwc_expiry_date"]),
-        cost: json["cost"],
-        manufactureYear: json["manufacture_year"],
-        image: json["image"],
-        dateAdded: DateTime.parse(json["date_added"]),
-        dateModified: json["date_modified"],
-        status: json["status"],
-        vehicles: Vehicles.fromJson(json["vehicles"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "users_fleet_vehicles_id": usersFleetVehiclesId,
-        "users_fleet_id": usersFleetId,
-        "vehicles_id": vehiclesId,
-        "model": model,
-        "color": color,
-        "vehicle_registration_no": vehicleRegistrationNo,
-        "vehicle_identification_no": vehicleIdentificationNo,
-        "vehicle_license_expiry_date":
-            "${vehicleLicenseExpiryDate.year.toString().padLeft(4, '0')}-${vehicleLicenseExpiryDate.month.toString().padLeft(2, '0')}-${vehicleLicenseExpiryDate.day.toString().padLeft(2, '0')}",
-        "vehicle_insurance_expiry_date":
-            "${vehicleInsuranceExpiryDate.year.toString().padLeft(4, '0')}-${vehicleInsuranceExpiryDate.month.toString().padLeft(2, '0')}-${vehicleInsuranceExpiryDate.day.toString().padLeft(2, '0')}",
-        "rwc_expiry_date":
-            "${rwcExpiryDate.year.toString().padLeft(4, '0')}-${rwcExpiryDate.month.toString().padLeft(2, '0')}-${rwcExpiryDate.day.toString().padLeft(2, '0')}",
-        "cost": cost,
-        "manufacture_year": manufactureYear,
-        "image": image,
-        "date_added": dateAdded.toIso8601String(),
-        "date_modified": dateModified,
-        "status": status,
-        "vehicles": vehicles.toJson(),
       };
 }
 

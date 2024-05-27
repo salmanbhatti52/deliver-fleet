@@ -54,7 +54,7 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 5 ,horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               width: double.infinity,
               height: details ? 170.h : 90.h,
               decoration: BoxDecoration(
@@ -100,8 +100,7 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
                                         },
                                         loadingBuilder: (BuildContext context,
                                             Widget child,
-                                            ImageChunkEvent?
-                                                loadingProgress) {
+                                            ImageChunkEvent? loadingProgress) {
                                           if (loadingProgress == null) {
                                             return child;
                                           }
@@ -224,7 +223,8 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
                                 ),
                                 Container(
                                   color: Colors.transparent,
-                                  width: MediaQuery.of(context).size.width * 0.74,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.74,
                                   child: Text(
                                     '${widget.canceledRidesModel.bookings!.bookings_destinations![0].pickup_address}',
                                     overflow: TextOverflow.ellipsis,

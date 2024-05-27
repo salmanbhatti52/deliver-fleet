@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:deliver_partner/models/update_rider_status_model.dart';
 
+SharedPreferences? sharedPref;
+
 class DriverStatusScreen extends StatefulWidget {
   const DriverStatusScreen({super.key});
 
@@ -28,11 +30,11 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
   bool isPartTimeSelected = false;
 
   void saveSelections() async {
-    SharedPreferences sharedPref = await SharedPreferences.getInstance();
-    sharedPref.setBool('workSwitchStatus', workSwitchStatus);
-    sharedPref.setBool('breakSwitchStatus', breakSwitchStatus);
-    sharedPref.setBool('isFullTimeSelected', isFullTimeSelected);
-    sharedPref.setBool('isPartTimeSelected', isPartTimeSelected);
+    sharedPref = await SharedPreferences.getInstance();
+    sharedPref?.setBool('workSwitchStatus', workSwitchStatus);
+    sharedPref?.setBool('breakSwitchStatus', breakSwitchStatus);
+    sharedPref?.setBool('isFullTimeSelected', isFullTimeSelected);
+    sharedPref?.setBool('isPartTimeSelected', isPartTimeSelected);
   }
 
   UpdateRiderStatusModel updateRiderStatusModel = UpdateRiderStatusModel();
@@ -83,19 +85,20 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
   }
 
   sharedPrefs() async {
-    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    sharedPref = await SharedPreferences.getInstance();
     setState(() {
-      isFullTimeSelected = sharedPref.getBool('isFullTimeSelected') ?? false;
-      isPartTimeSelected = sharedPref.getBool('isPartTimeSelected') ?? false;
-      workSwitchStatus = sharedPref.getBool('workSwitchStatus') ?? false;
-      breakSwitchStatus = sharedPref.getBool('breakSwitchStatus') ?? false;
+      isFullTimeSelected = sharedPref!.getBool('isFullTimeSelected') ?? false;
+      isPartTimeSelected = sharedPref!.getBool('isPartTimeSelected') ?? false;
+      workSwitchStatus = sharedPref!.getBool('workSwitchStatus') ?? false;
+      breakSwitchStatus = sharedPref!.getBool('breakSwitchStatus') ?? false;
     });
-    debugPrint('workSwitchStatus: ${sharedPref.getBool('workSwitchStatus')}');
-    debugPrint('breakSwitchStatus: ${sharedPref.getBool('breakSwitchStatus')}');
+    debugPrint('workSwitchStatus: ${sharedPref!.getBool('workSwitchStatus')}');
     debugPrint(
-        'isFullTimeSelected: ${sharedPref.getBool('isFullTimeSelected')}');
+        'breakSwitchStatus: ${sharedPref!.getBool('breakSwitchStatus')}');
     debugPrint(
-        'isPartTimeSelected: ${sharedPref.getBool('isPartTimeSelected')}');
+        'isFullTimeSelected: ${sharedPref!.getBool('isFullTimeSelected')}');
+    debugPrint(
+        'isPartTimeSelected: ${sharedPref!.getBool('isPartTimeSelected')}');
   }
 
   @override

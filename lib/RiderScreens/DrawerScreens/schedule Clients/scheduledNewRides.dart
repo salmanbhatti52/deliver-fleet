@@ -59,9 +59,11 @@ class _ScheduledNewRidesState extends State<ScheduledNewRides> {
     if (res.statusCode == 200) {
       print(resBody);
       scheduledRides = scheduledRidesFromJson(resBody);
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     } else {
       print(res.reasonPhrase);
     }

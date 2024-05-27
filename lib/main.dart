@@ -11,14 +11,21 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize(appID);
-  String? token;
-  token = await OneSignal.User.getOnesignalId();
-  print("token: $token");
-// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+  //  await OneSignal.shared.setAppId(appID);
+  //      var status = await OneSignal.shared.getDeviceState();
+  //   // print("OneSignal Device ID: ${status!.deviceId}");
+  //   String? tokenId = status!.userId;
+  //   print("OneSignal User ID: $tokenId");
   OneSignal.Notifications.requestPermission(true);
+  String? token;
+  token = OneSignal.User.pushSubscription.id;
+  print("token: $token");
+
+  // print("token: $token");
+// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+
   HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -33,7 +40,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  @override 
+  @override
   State<MyApp> createState() => _MyAppState();
 }
 

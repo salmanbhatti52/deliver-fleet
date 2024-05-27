@@ -6,6 +6,7 @@ import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/endRi
 import 'package:deliver_partner/models/API_models/API_response.dart';
 import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:deliver_partner/models/API_models/updateBookingTranscations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -213,6 +214,57 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
     });
   }
 
+  UpdateBookingTransactionModel updateBookingTransactionModel =
+      UpdateBookingTransactionModel();
+  Future<void> updateBookingTransaction() async {
+    try {
+      String apiUrl =
+          "https://cs.deliverbygfl.com/maintain_booking_transaction";
+      debugPrint("apiUrl: $apiUrl");
+      Map data = {
+        "bookings_id": widget.bookingID.toString(),
+        "payer_name":
+            "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+        "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+        "total_amount": updateBookingStatusModel.data!.totalCharges,
+        "payment_status": "Paid"
+      };
+      print("$data");
+      // debugPrint("bookings_id: ${widget.currentBookingId}");
+      // debugPrint("payer_name: $firstName $lastName");
+      // debugPrint("payer_email: $userEmail");
+      // debugPrint(
+      //     "total_amount: ${widget.singleData!.isNotEmpty ? widget.singleData!['total_charges'] : widget.multipleData!['total_charges']}");
+      debugPrint("payment_status: Paid");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "bookings_id": widget.bookingID.toString(),
+          "payer_name":
+              "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+          "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+          "total_amount": updateBookingStatusModel.data!.totalCharges,
+          "payment_status": "Paid"
+        },
+      );
+      final responseString = response.body;
+      debugPrint("response: $responseString");
+      debugPrint("statusCode: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        updateBookingTransactionModel =
+            updateBookingTransactionModelFromJson(responseString);
+        debugPrint(
+            'updateBookingTransactionModel status: ${updateBookingTransactionModel.status}');
+      }
+    } catch (e) {
+      debugPrint('Something went wrong = ${e.toString()}');
+      return;
+    }
+  }
+
   Future<void> _makePhoneCall(String phoneNumber) async {
     final Uri launchUri = Uri(
       scheme: 'tel',
@@ -329,7 +381,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                               ),
                               updateBookingStatusModel.data!.scheduled == "Yes"
                                   ? Text(
-                                      '${updateBookingStatusModel.data!.bookingsTypes.name} (Scheduled Ride)',
+                                      '${updateBookingStatusModel.data!.bookingsTypes.name} \n(Scheduled Ride)',
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -854,7 +906,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                               color: Colors.transparent,
                               padding: const EdgeInsets.only(right: 10),
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.42,
+                              height: MediaQuery.of(context).size.height * 0.52,
                               child: isLoading
                                   ? spinKitRotatingCircle
                                   : PageView.builder(
@@ -1034,10 +1086,16 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                                                     DateFormat(
                                                                             'h:mm a')
                                                                         .format(
-                                                                      DateFormat('HH:mm:ss').parse(updateBookingStatusModel
-                                                                          .data!
-                                                                          .dateAdded
-                                                                          .toString()),
+                                                                      DateFormat(
+                                                                              'HH:mm:ss')
+                                                                          .parse(
+                                                                        updateBookingStatusModel
+                                                                            .data!
+                                                                            .dateAdded
+                                                                            .toString()
+                                                                            .substring(11,
+                                                                                19),
+                                                                      ),
                                                                     ),
                                                                     style: GoogleFonts
                                                                         .inter(

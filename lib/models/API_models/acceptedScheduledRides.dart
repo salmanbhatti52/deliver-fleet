@@ -22,7 +22,9 @@ class AcceptedScheduledRides {
   factory AcceptedScheduledRides.fromJson(Map<String, dynamic> json) =>
       AcceptedScheduledRides(
         status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: json["data"] != null
+            ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {

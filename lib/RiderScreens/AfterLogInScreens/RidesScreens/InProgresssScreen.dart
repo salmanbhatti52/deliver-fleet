@@ -53,7 +53,8 @@ class _InProgressScreenState extends State<InProgressScreen> {
     setState(() {
       isPageLoading = true;
     });
-    String apiUrl = "https://cs.deliverbygfl.com/api/get_bookings_ongoing_fleet";
+    String apiUrl =
+        "https://cs.deliverbygfl.com/api/get_bookings_ongoing_fleet";
     debugPrint("apiUrl: $apiUrl");
     debugPrint("userID: $userID");
     final response = await http.post(

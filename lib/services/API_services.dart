@@ -28,17 +28,11 @@ import '../models/APIModelsFleet/GetFleetVehicleRequestByIdModel.dart';
 import '../models/APIModelsFleet/UploadCACCertificateModel.dart';
 import '../models/tempLoginModel.dart';
 
-
-
-
-
 String appID = "00d28278-85c3-440a-8f4b-ed69c78f72bf";
 
 class ApiServices {
-
-
 // New Number Sign up API
-    Future<APIResponse<APIResponse>> signUpAPI(Map data) async {
+  Future<APIResponse<APIResponse>> signUpAPI(Map data) async {
     String API = 'https://cs.deliverbygfl.com/api/signup_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
@@ -70,7 +64,7 @@ class ApiServices {
   }
 
 //Number Login API
-    Future<APIResponse<LogInModel>> logInAPI(Map data) async {
+  Future<APIResponse<LogInModel>> logInAPI(Map data) async {
     String API = 'https://cs.deliverbygfl.com/api/login_fleet';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
@@ -170,8 +164,6 @@ class ApiServices {
       );
     }
   }
-
-
 
   /// Update Location one time API:
 
@@ -1678,7 +1670,7 @@ class ApiServices {
   /// parcel picked API:
 
   Future<APIResponse<ShowBookingsModel>> parcelPickedAPI(Map data) async {
-    String API = 'https://cs.deliverbygfl.com/api/start_booking_ride';
+    String API = 'https://cs.deliverbygfl.com/api/confirm_parcel_picked';
     return http.post(Uri.parse(API), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonData = json.decode(value.body);

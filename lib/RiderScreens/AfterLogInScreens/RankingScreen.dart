@@ -219,7 +219,12 @@ class _RankingScreenState extends State<RankingScreen> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10),
-                                                    child: getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic !=
+                                                    child: getAllRatingsList![
+                                                                    index]
+                                                                .bookings_fleet!
+                                                                .bookings!
+                                                                .users_customers!
+                                                                .profile_pic !=
                                                             null
                                                         ? Image.network(
                                                             'https://cs.deliverbygfl.com/public/${getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic}',

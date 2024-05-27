@@ -210,9 +210,9 @@ class _LogInScreenState extends State<LogInScreen> {
       setState(() {
         isLoading2 = true;
       });
-      OneSignal.initialize(appID);
+      // OneSignal.initialize(appID);
       String? token;
-      token = await OneSignal.User.getOnesignalId();
+      // token = await OneSignal.User.getOnesignalId();
       print("token: $token");
       print("one_signal_id ${widget.deviceID}");
       print("user_type ${widget.userType}");

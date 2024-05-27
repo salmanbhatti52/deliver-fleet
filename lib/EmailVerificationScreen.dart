@@ -264,17 +264,18 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     setState(() {
       isLoading = true;
     });
-    var headersList = {
-      'Accept': '*/*',
-      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
-      'Content-Type': 'application/json'
-    };
+    var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
     var url =
         Uri.parse('https://cs.deliverbygfl.com/api/check_phone_exist_fleet');
-       OneSignal.initialize(appID);
-      String? token;
-      token = await OneSignal.User.getOnesignalId();
-      print("token: $token");
+    OneSignal.initialize(appID);
+    String? token;
+    token = OneSignal.User.pushSubscription.id;
+    if (token == null || token.isEmpty) {
+      token = "123";
+    }
+    // token = await OneSignal.User.getOnesignalId();
+    print("token: $token");
+    print("Zain");
     var body = {
       "one_signal_id": token,
       "user_type": widget.userType,

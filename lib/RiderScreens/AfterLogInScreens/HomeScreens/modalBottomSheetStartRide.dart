@@ -6,6 +6,7 @@ import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/models/API_models/API_response.dart';
 import 'package:deliver_partner/models/API_models/GetBookingDestinationsStatus.dart';
 import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
+import 'package:deliver_partner/models/API_models/startRideBookingModels.dart';
 import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,6 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     setState(() {
       isLoading = true;
     });
-    await updateBookingStatus();
     getBookingDestinationsStatusResponse =
         await service.getBookingDestinationsStatusAPI();
     getBookingDestinationsStatusList = [];
@@ -169,6 +169,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
         }
       }
     }
+
     showToastError(
         "Payment Status ${updateBookingStatusModel.data!.paymentStatus}",
         FToast().init(context));
@@ -192,10 +193,6 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
       }
     }
     await updateBookingStatus();
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
@@ -1406,7 +1403,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                           ),
                         ),
                   SizedBox(
-                    height: 15.h,
+                    height: 10.h,
                   ),
                   isRideStarting
                       ? const SpinKitDoubleBounce(
@@ -1414,11 +1411,15 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                           size: 50.0,
                         )
                       : GestureDetector(
-                          onTap: () {
-                            startRideMethod(context);
+                          onTap: () async {
+                            await startBookingRide();
+                            // startRideMethod(context);
+                            print("startRideID: $startRideID");
                           },
                           child: updateBookingStatusModel.data!.paymentStatus ==
-                                  "Paid"
+                                      "Paid" ||
+                                  updateBookingStatusModel.data!.paymentBy ==
+                                      "Receiver"
                               ? Container(
                                   width: 170.w,
                                   height: 51.h,
@@ -1479,8 +1480,31 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                         ),
                                       ),
                                     ),
-                                    const Text(
-                                        "Click Refresh to check the Payment Status"),
+                                    const SizedBox(
+                                      height: 3,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.info_outline_rounded,
+                                          color: Colors.grey,
+                                        ),
+                                        const SizedBox(
+                                          width: 3,
+                                        ),
+                                        Text(
+                                          "Click Refresh to check the Payment Status",
+                                          style: TextStyle(
+                                              color: Colors.grey[
+                                                  700], // Change the color to a dark grey
+                                              fontSize:
+                                                  12.0, // Increase the font size
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 )),
                 ],
@@ -1553,13 +1577,8 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     });
   }
 
-  ApiServices get service => GetIt.I<ApiServices>();
-
-  APIResponse<ShowBookingsModel>? startRideResponse;
-
-  bool isRideStarting = false;
-
-  startRideMethod(BuildContext context) async {
+  StartRideBookingModels startRideBookingModels = StartRideBookingModels();
+  startBookingRide() async {
     if (widget.bookingModel.scheduled == "Yes") {
       showToastError(
           'Your scheduled ride is not started yet', FToast().init(context),
@@ -1573,18 +1592,32 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
       setState(() {
         isRideStarting = true;
       });
+    }
+    // try {
+    String apiUrl = "https://cs.deliverbygfl.com/api/start_booking_ride";
+    debugPrint("apiUrl: $apiUrl");
 
-      Map startRideData = {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
         "bookings_id": widget.bookingModel.bookings_id.toString(),
         "bookings_destinations_id":
             widget.bookingDestinations[0].bookings_destinations_id.toString(),
         "bookings_destinations_status_id": startRideID.toString()
-      };
-      print('object start ride data: ${startRideData.toString()}');
-      startRideResponse = await service.startRideRequest(startRideData);
-
-      if (startRideResponse!.status!.toLowerCase() == "success") {
-        if (startRideResponse!.data != null) {
+      },
+    );
+    final responseString = response.body;
+    debugPrint("startRideBookingModels: $responseString");
+    debugPrint("startRideBookingModels: statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      startRideBookingModels = startRideBookingModelsFromJson(responseString);
+      print(
+          "startRideBookingModels.data?.status: ${startRideBookingModels.data?.status}");
+      if (startRideBookingModels.status!.toLowerCase() == "success") {
+        if (startRideBookingModels.data != null) {
           showToastSuccess('Ride has been started', FToast().init(context));
           Navigator.of(context).pop();
           showModalBottomSheet(
@@ -1605,17 +1638,89 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
           );
         }
       } else {
-        showToastError(startRideResponse!.message, FToast().init(context));
+        showToastError(startRideBookingModels.message, FToast().init(context));
         print(
-            'object status starting ride: ${startRideResponse!.status!.toString()}');
+            'object status starting ride: ${startRideBookingModels.status!.toString()}');
         print(
-            'object message starting ride: ${startRideResponse!.message!.toString()}');
+            'object message starting ride: ${startRideBookingModels.message!.toString()}');
       }
+      setState(() {
+        isRideStarting = false;
+      });
+
+      setState(() {});
+    } else if (response.statusCode == 200) {
+      showToastError('Server error occurred,try again', FToast().init(context),
+          seconds: 2);
       setState(() {
         isRideStarting = false;
       });
     }
   }
+
+  ApiServices get service => GetIt.I<ApiServices>();
+
+  // APIResponse<ShowBookingsModel>? startRideResponse;
+
+  bool isRideStarting = false;
+
+  // startRideMethod(BuildContext context) async {
+  //   if (widget.bookingModel.scheduled == "Yes") {
+  //     showToastError(
+  //         'Your scheduled ride is not started yet', FToast().init(context),
+  //         seconds: 2);
+  //   } else if (pickedParcelIds!.length != widget.bookingDestinations.length) {
+  //     showToastError(
+  //         'You\'ve to pick all the parcel from pickup location first.',
+  //         FToast().init(context),
+  //         seconds: 2);
+  //   } else {
+  //     setState(() {
+  //       isRideStarting = true;
+  //     });
+
+  //     Map startRideData = {
+  //       "bookings_id": widget.bookingModel.bookings_id.toString(),
+  //       "bookings_destinations_id":
+  //           widget.bookingDestinations[0].bookings_destinations_id.toString(),
+  //       "bookings_destinations_status_id": startRideID.toString()
+  //     };
+  //     print('object start ride data: ${startRideData.toString()}');
+  //     startRideResponse = await service.startRideRequest(startRideData);
+
+  //     if (startRideResponse!.status!.toLowerCase() == "success") {
+  //       if (startRideResponse!.data != null) {
+  //         showToastSuccess('Ride has been started', FToast().init(context));
+  //         Navigator.of(context).pop();
+  //         showModalBottomSheet(
+  //           backgroundColor: white,
+  //           isDismissible: false,
+  //           isScrollControlled: true,
+  //           shape: const RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.vertical(
+  //               top: Radius.circular(20),
+  //             ),
+  //           ),
+  //           context: context,
+  //           builder: (context) => ModalBottomSheetEndRide(
+  //             bookingModel: widget.bookingModel,
+  //             userID: widget.userID,
+  //             bookingDestinations: widget.bookingDestinations,
+  //           ),
+  //         );
+  //       }
+  //     } else {
+  //       showToastError(startRideResponse!.message, FToast().init(context));
+  //       print(
+  //           'object status starting ride: ${startRideResponse!.status!.toString()}');
+  //       print(
+  //           'object message starting ride: ${startRideResponse!.message!.toString()}');
+  //     }
+  //     setState(() {
+  //       isRideStarting = false;
+  //     });
+  //   }
+  // }
 
   bool isParcelPicked = false;
   APIResponse<ShowBookingsModel>? pickedResponse;
@@ -1624,13 +1729,13 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     setState(() {
       isParcelPicked = true;
     });
-    Map startRideData = {
+    Map parcelPickedRideData = {
       "bookings_id": widget.bookingModel.bookings_id.toString(),
       "bookings_destinations_id": index,
       "bookings_destinations_status_id": statusID.toString()
     };
-    print('object picked parcel data: ${startRideData.toString()}');
-    pickedResponse = await service.startRideRequest(startRideData);
+    print('object picked parcel data: ${parcelPickedRideData.toString()}');
+    pickedResponse = await service.parcelPickedAPI(parcelPickedRideData);
 
     if (pickedResponse!.status!.toLowerCase() == "success") {
       if (pickedResponse!.data != null) {

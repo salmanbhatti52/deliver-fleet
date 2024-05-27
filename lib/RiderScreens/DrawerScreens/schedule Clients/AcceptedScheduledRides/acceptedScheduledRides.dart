@@ -239,6 +239,7 @@ class _AcceptedScheduledRidesPageState
           body: isLoading
               ? spinKitRotatingCircle
               : Container(
+                  height: MediaQuery.of(context).size.height,
                   padding:
                       EdgeInsets.symmetric(horizontal: 22.w, vertical: 10.h),
                   decoration: const BoxDecoration(
@@ -246,9 +247,6 @@ class _AcceptedScheduledRidesPageState
                       top: Radius.circular(20),
                     ),
                   ),
-                  height: updateBookingStatusModel.data!.scheduled == "Yes"
-                      ? MediaQuery.sizeOf(context).height
-                      : MediaQuery.sizeOf(context).height,
                   child: isLoading
                       ? spinKitRotatingCircle
                       : Column(
@@ -831,7 +829,7 @@ class _AcceptedScheduledRidesPageState
                                             MediaQuery.of(context).size.width,
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.38,
+                                                0.44,
                                         child: isLoading
                                             ? spinKitRotatingCircle
                                             : PageView.builder(
@@ -1023,7 +1021,7 @@ class _AcceptedScheduledRidesPageState
                                                                               ),
                                                                             ),
                                                                             Text(
-                                                                              DateFormat('h:mm a').format(DateTime.parse(bookingModels.deliveryTime)),
+                                                                              DateFormat('h:mm a').format(DateFormat('HH:mm:ss').parse(bookingModels.deliveryTime)),
                                                                               style: GoogleFonts.inter(
                                                                                 fontSize: 14,
                                                                                 fontWeight: FontWeight.w500,
@@ -1177,7 +1175,7 @@ class _AcceptedScheduledRidesPageState
                                                                 ],
                                                               ),
                                                               SizedBox(
-                                                                height: 15.h,
+                                                                height: 20.h,
                                                               ),
                                                               Expanded(
                                                                 child: Row(
@@ -1294,7 +1292,7 @@ class _AcceptedScheduledRidesPageState
                                                                   ? SizedBox(
                                                                       // width: 10.w,
                                                                       height:
-                                                                          10.h,
+                                                                          14.h,
                                                                       child:
                                                                           const SpinKitThreeInOut(
                                                                         size:
@@ -1303,50 +1301,54 @@ class _AcceptedScheduledRidesPageState
                                                                             orange,
                                                                       ),
                                                                     )
-                                                                  : Row(
-                                                                      children: [
-                                                                        GestureDetector(
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(() {
-                                                                              // packageStatus =
-                                                                              //     !packageStatus;
-                                                                              statusID;
-                                                                            });
-                                                                            bookingsDestinationsId =
-                                                                                itemList.bookingsDestinations.bookingsDestinationsId.toString();
-                                                                            print('object id of picked parcel: $bookingsDestinationsId');
-                                                                            parcelPickedMethod(context,
-                                                                                bookingsDestinationsId!);
+                                                                  : Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          GestureDetector(
+                                                                            onTap:
+                                                                                () {
+                                                                              setState(() {
+                                                                                // packageStatus =
+                                                                                //     !packageStatus;
+                                                                                statusID;
+                                                                              });
+                                                                              bookingsDestinationsId = itemList.bookingsDestinations.bookingsDestinationsId.toString();
+                                                                              print('object id of picked parcel: $bookingsDestinationsId');
+                                                                              parcelPickedMethod(context, bookingsDestinationsId!);
 
-                                                                            print('object id of picked parcel: ${statusID.toString()}');
-                                                                          },
-                                                                          child: pickedParcelIds!.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
-                                                                              ? SvgPicture.asset('assets/images/tick-orange.svg')
-                                                                              : SvgPicture.asset('assets/images/tick-grey.svg'),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              15.w,
-                                                                        ),
-                                                                        pickedParcelIds!.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
-                                                                            ? Text(
-                                                                                name!,
-                                                                                style: GoogleFonts.syne(
-                                                                                  fontSize: 16,
-                                                                                  fontWeight: FontWeight.w500,
-                                                                                  color: black,
+                                                                              print('object id of picked parcel: ${statusID.toString()}');
+                                                                            },
+                                                                            child: pickedParcelIds!.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
+                                                                                ? SvgPicture.asset('assets/images/tick-orange.svg')
+                                                                                : SvgPicture.asset('assets/images/tick-grey.svg'),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                15.w,
+                                                                          ),
+                                                                          pickedParcelIds!.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
+                                                                              ? Text(
+                                                                                  name!,
+                                                                                  style: GoogleFonts.syne(
+                                                                                    fontSize: 16,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    color: black,
+                                                                                  ),
+                                                                                )
+                                                                              : Text(
+                                                                                  'Pick Parcel',
+                                                                                  style: GoogleFonts.syne(
+                                                                                    fontSize: 16,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    color: black,
+                                                                                  ),
                                                                                 ),
-                                                                              )
-                                                                            : Text(
-                                                                                'Pick Parcel',
-                                                                                style: GoogleFonts.syne(
-                                                                                  fontSize: 16,
-                                                                                  fontWeight: FontWeight.w500,
-                                                                                  color: black,
-                                                                                ),
-                                                                              ),
-                                                                      ],
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                             ],
                                                           ),
@@ -1408,70 +1410,8 @@ class _AcceptedScheduledRidesPageState
                                         ],
                                       )
                                 : const SizedBox(),
-                            updateBookingStatusModel.data!.deliveryType ==
-                                    'Single'
-                                ? SizedBox(
-                                    height: 15.h,
-                                  )
-                                : const SizedBox(),
-                            updateBookingStatusModel.data!.deliveryType ==
-                                    'Single'
-                                ? const SizedBox()
-                                : Container(
-                                    color: Colors.transparent,
-                                    height: 12.h,
-                                    width: 100.w,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 7),
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          controller: nextPageScrollController,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemCount: updateBookingStatusModel
-                                              .data!.bookingsFleet.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            final itemList =
-                                                updateBookingStatusModel
-                                                    .data!.bookingsFleet[index];
-                                            final bookingModels =
-                                                updateBookingStatusModel.data;
-                                            return GestureDetector(
-                                              onTap: () {
-                                                pageController.animateToPage(
-                                                    index,
-                                                    duration: const Duration(
-                                                        milliseconds: 500),
-                                                    curve: Curves.ease);
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  SizedBox(width: 3.w),
-                                                  Container(
-                                                    width: 10,
-                                                    height: 10,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: currentIndex ==
-                                                              index
-                                                          ? orange
-                                                          : grey, // Adjust indicator color based on current index
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 3.w)
-                                                ],
-                                              ),
-                                            );
-                                          }),
-                                    ),
-                                  ),
                             SizedBox(
-                              height: 15.h,
+                              height: 5.h,
                             ),
                             isRideStarting
                                 ? const SpinKitDoubleBounce(
@@ -1483,8 +1423,11 @@ class _AcceptedScheduledRidesPageState
                                       startRideMethod(context);
                                     },
                                     child: updateBookingStatusModel
-                                                .data!.paymentStatus ==
-                                            "Paid"
+                                                    .data!.paymentStatus ==
+                                                "Paid" ||
+                                            updateBookingStatusModel
+                                                    .data!.paymentBy ==
+                                                "Receiver"
                                         ? Container(
                                             width: 170.w,
                                             height: 51.h,
@@ -1544,11 +1487,88 @@ class _AcceptedScheduledRidesPageState
                                               ),
                                             ),
                                           )),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                  "Payment Status ${updateBookingStatusModel.data!.paymentStatus}"),
+                            SizedBox(
+                              height: 25.h,
                             ),
+                            updateBookingStatusModel.data!.deliveryType ==
+                                    'Single'
+                                ? SizedBox(
+                                    height: 15.h,
+                                  )
+                                : const SizedBox(),
+                            updateBookingStatusModel.data!.deliveryType ==
+                                    'Single'
+                                ? const SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 35),
+                                    child: Center(
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        height: 12.h,
+                                        width: 100.w,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 7),
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              controller:
+                                                  nextPageScrollController,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemCount:
+                                                  updateBookingStatusModel.data!
+                                                      .bookingsFleet.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                final itemList =
+                                                    updateBookingStatusModel
+                                                        .data!
+                                                        .bookingsFleet[index];
+                                                final bookingModels =
+                                                    updateBookingStatusModel
+                                                        .data;
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    pageController.animateToPage(
+                                                        index,
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                        curve: Curves.ease);
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SizedBox(width: 3.w),
+                                                      Container(
+                                                        width: 10,
+                                                        height: 10,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: currentIndex ==
+                                                                  index
+                                                              ? orange
+                                                              : grey, // Adjust indicator color based on current index
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 3.w)
+                                                    ],
+                                                  ),
+                                                );
+                                              }),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                           ],
                         ),
                 ),
@@ -1631,7 +1651,25 @@ class _AcceptedScheduledRidesPageState
   bool isRideStarting = false;
 
   startRideMethod(BuildContext context) async {
-    if (updateBookingStatusModel.data!.scheduled == "Yes") {
+    DateTime deliveryDate =
+        DateTime.parse(updateBookingStatusModel.data!.deliveryDate);
+    TimeOfDay deliveryTime = TimeOfDay.fromDateTime(DateFormat('HH:mm:ss')
+        .parse(updateBookingStatusModel.data!.deliveryTime));
+
+    DateTime deliveryDateTime = DateTime(
+      deliveryDate.year,
+      deliveryDate.month,
+      deliveryDate.day,
+      deliveryTime.hour,
+      deliveryTime.minute,
+    );
+
+    DateTime currentDateTime = DateTime.now();
+
+    print("currentDateTime: $currentDateTime");
+    print("deliveryTime: $deliveryTime");
+
+    if (currentDateTime.isBefore(deliveryDateTime)) {
       showToastError(
           'Your scheduled ride is not started yet', FToast().init(context),
           seconds: 2);

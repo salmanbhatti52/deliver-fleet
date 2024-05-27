@@ -239,17 +239,18 @@ class _ScheduledAcceptedState extends State<ScheduledAccepted> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               AcceptedScheduledRidesPage(
-                                                userID: userID.toString(),
-                                                bookingID: itemList.bookingsId.toString()
+                                                  userID: userID.toString(),
+                                                  bookingID: itemList.bookingsId
+                                                      .toString()
 
-                                                // bookingID: itemList.bookingsId
-                                                //     .toString(),
-                                                // // inProgressRidesList:
-                                                // //     jsonResponse!['data'][index],
-                                                // // inProgressRidesList2:
-                                                // //     inProgressRidesList,
-                                                // index: selectedIndex,
-                                              )));
+                                                  // bookingID: itemList.bookingsId
+                                                  //     .toString(),
+                                                  // // inProgressRidesList:
+                                                  // //     jsonResponse!['data'][index],
+                                                  // // inProgressRidesList2:
+                                                  // //     inProgressRidesList,
+                                                  // index: selectedIndex,
+                                                  )));
                                 },
                                 child:
                                     SeeDetailsOnCompletedRidesButton(context),
