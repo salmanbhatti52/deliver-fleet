@@ -21,27 +21,24 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
-class AcceptedScheduledRidesPage extends StatefulWidget {
+class AcceptedRidesPage extends StatefulWidget {
   final String? userID;
   final String? bookingID;
 
-  const AcceptedScheduledRidesPage({
+  const AcceptedRidesPage({
     super.key,
     this.userID,
     this.bookingID,
   });
 
   @override
-  State<AcceptedScheduledRidesPage> createState() =>
-      _AcceptedScheduledRidesPageState();
+  State<AcceptedRidesPage> createState() => _AcceptedRidesPageState();
 }
 
-class _AcceptedScheduledRidesPageState
-    extends State<AcceptedScheduledRidesPage> {
+class _AcceptedRidesPageState extends State<AcceptedRidesPage> {
   bool packageStatus = false;
 
   late APIResponse<List<GetBookingDestinationsStatus>>
@@ -1317,20 +1314,19 @@ class _AcceptedScheduledRidesPageState
                                                                         children: [
                                                                           GestureDetector(
                                                                             onTap:
-                                                                                () async {
+                                                                                () {
                                                                               setState(() {
+                                                                                // packageStatus =
+                                                                                //     !packageStatus;
                                                                                 statusID;
                                                                               });
                                                                               bookingsDestinationsId = itemList.bookingsDestinations.bookingsDestinationsId.toString();
                                                                               print('object id of picked parcel: $bookingsDestinationsId');
-                                                                              await parcelPickedMethod(context, bookingsDestinationsId!);
-                                                                              print('object id of picked parcel: ${statusID.toString()}');
+                                                                              parcelPickedMethod(context, bookingsDestinationsId!);
 
-                                                                              // Access the PickedParcelsModel and add the parcelId to it
-                                                                              final pickedParcelsModel = Provider.of<PickedParcelsModel>(context, listen: false);
-                                                                              pickedParcelsModel.addParcel(bookingsDestinationsId!);
+                                                                              print('object id of picked parcel: ${statusID.toString()}');
                                                                             },
-                                                                            child: Provider.of<PickedParcelsModel>(context).pickedParcelIds.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
+                                                                            child: pickedParcelIds!.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
                                                                                 ? SvgPicture.asset('assets/images/tick-orange.svg')
                                                                                 : SvgPicture.asset('assets/images/tick-grey.svg'),
                                                                           ),
@@ -1338,7 +1334,7 @@ class _AcceptedScheduledRidesPageState
                                                                             width:
                                                                                 15.w,
                                                                           ),
-                                                                          Provider.of<PickedParcelsModel>(context).pickedParcelIds.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
+                                                                          pickedParcelIds!.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
                                                                               ? Text(
                                                                                   name!,
                                                                                   style: GoogleFonts.syne(
@@ -1382,31 +1378,21 @@ class _AcceptedScheduledRidesPageState
                                     : Row(
                                         children: [
                                           GestureDetector(
-                                            onTap: () async {
+                                            onTap: () {
                                               setState(() {
                                                 packageStatus = !packageStatus;
                                                 statusID;
                                               });
-                                              String parcelId =
+                                              parcelPickedMethod(
+                                                  context,
                                                   updateBookingStatusModel
                                                       .data!
                                                       .bookingsFleet[0]
                                                       .bookingsDestinations
                                                       .bookingsDestinationsId
-                                                      .toString();
-                                              await parcelPickedMethod(
-                                                  context, parcelId);
+                                                      .toString());
                                               print(
                                                   'object id of picked parcel: ${statusID.toString()}');
-
-                                              // Access the PickedParcelsModel and add the parcelId to it
-                                              final pickedParcelsModel =
-                                                  Provider.of<
-                                                          PickedParcelsModel>(
-                                                      context,
-                                                      listen: false);
-                                              pickedParcelsModel
-                                                  .addParcel(parcelId);
                                             },
                                             child: packageStatus
                                                 ? SvgPicture.asset(
@@ -1669,31 +1655,27 @@ class _AcceptedScheduledRidesPageState
   bool isRideStarting = false;
 
   startRideMethod(BuildContext context) async {
-    DateTime deliveryDate =
-        DateTime.parse(updateBookingStatusModel.data!.deliveryDate);
-    TimeOfDay deliveryTime = TimeOfDay.fromDateTime(DateFormat('HH:mm:ss')
-        .parse(updateBookingStatusModel.data!.deliveryTime));
+    // DateTime deliveryDate =
+    //     DateTime.parse(updateBookingStatusModel.data!.deliveryDate);
+    // TimeOfDay deliveryTime = TimeOfDay.fromDateTime(DateFormat('HH:mm:ss')
+    //     .parse(updateBookingStatusModel.data!.deliveryTime));
 
-    DateTime deliveryDateTime = DateTime(
-      deliveryDate.year,
-      deliveryDate.month,
-      deliveryDate.day,
-      deliveryTime.hour,
-      deliveryTime.minute,
-    );
+    // DateTime deliveryDateTime = DateTime(
+    //   deliveryDate.year,
+    //   deliveryDate.month,
+    //   deliveryDate.day,
+    //   deliveryTime.hour,
+    //   deliveryTime.minute,
+    // );
 
-    DateTime currentDateTime = DateTime.now();
+    // DateTime currentDateTime = DateTime.now();
 
-    print("currentDateTime: $currentDateTime");
-    print("deliveryTime: $deliveryTime");
+    // print("currentDateTime: $currentDateTime");
+    // print("deliveryTime: $deliveryTime");
 
     print(
         "updateBookingStatusModel.data!.bookingsFleet.length: ${updateBookingStatusModel.data!.bookingsFleet.length}");
-    if (currentDateTime.isBefore(deliveryDateTime)) {
-      showToastError(
-          'Your scheduled ride is not started yet', FToast().init(context),
-          seconds: 2);
-    } else if ((pickedParcelIds?.length ?? 0) !=
+    if ((pickedParcelIds?.length ?? 0) !=
         (updateBookingStatusModel.data?.bookingsFleet.length ?? 0)) {
       print("pickedParcelIds!.length: ${pickedParcelIds?.length ?? 0}");
       showToastError(
@@ -1764,44 +1746,21 @@ class _AcceptedScheduledRidesPageState
     print('object picked parcel data: ${startRideData.toString()}');
     pickedResponse = await service.parcelPickedAPI(startRideData);
 
-    // Access the PickedParcelsModel
-    final pickedParcelsModel =
-        Provider.of<PickedParcelsModel>(context, listen: false);
-
     if (pickedResponse!.status!.toLowerCase() == "success") {
       if (pickedResponse!.data != null) {
         showToastSuccess('Parcel has been picked', FToast().init(context));
       }
-      pickedParcelsModel.addParcel(index);
-      print(
-          'picked parcels id: ${pickedParcelsModel.pickedParcelIds.toString()}');
+      pickedParcelIds!.add(index);
+      print('picked parcels id: ${pickedParcelIds!.toString()}');
     } else {
       showToastError(pickedResponse!.message, FToast().init(context));
       print(
           'object status picked parcel: ${pickedResponse!.status!.toString()}');
       print(
           'object message picked parcel: ${pickedResponse!.message!.toString()}');
-      print(
-          'picked parcels id: ${pickedParcelsModel.pickedParcelIds.toString()}');
     }
     setState(() {
       isParcelPicked = false;
     });
-  }
-}
-
-class PickedParcelsModel extends ChangeNotifier {
-  final List<String> _pickedParcelIds = [];
-
-  List<String> get pickedParcelIds => _pickedParcelIds;
-
-  void addParcel(String parcelId) {
-    _pickedParcelIds.add(parcelId);
-    notifyListeners();
-  }
-
-  void removeParcel(String parcelId) {
-    _pickedParcelIds.remove(parcelId);
-    notifyListeners();
   }
 }

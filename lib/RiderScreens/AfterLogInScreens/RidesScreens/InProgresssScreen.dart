@@ -74,7 +74,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
       debugPrint('getOnGoingRides status: ${getOnGoingRides.status}');
       jsonResponse = jsonDecode(response.body);
 
-      print("jsonResponse: Dataaaa ${jsonResponse!['data'][0]}");
+      // print("jsonResponse: Dataaaa ${jsonResponse!['data'][0]}");
 
       if (mounted) {
         setState(() {
@@ -190,7 +190,8 @@ class _InProgressScreenState extends State<InProgressScreen> {
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final listItem = getOnGoingRides.data![index];
+                  final listItem = getOnGoingRides
+                      .data![getOnGoingRides.data!.length - 1 - index];
 
                   DateTime time =
                       DateTime.parse(listItem.bookings.dateAdded.toString());
@@ -429,6 +430,18 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                               // inProgressRidesList2:
                                               //     inProgressRidesList,
                                               index: selectedIndex,
+                                              destinBookingId: getOnGoingRides
+                                                  .data![index]
+                                                  .bookingsDestinationsId
+                                                  .toString(),
+                                              // destinTotalCharges:
+                                              //     getOnGoingRides
+                                              //         .data![index]
+                                              //         .bookings
+                                              //         .bookingsDestinations[
+                                              //             index]
+                                              //         .destinTotalCharges
+                                              //         .toString(),
                                             )));
                                 // showModalBottomSheet(
                                 //     backgroundColor: white,

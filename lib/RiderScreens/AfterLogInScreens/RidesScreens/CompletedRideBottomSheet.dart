@@ -840,10 +840,14 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                                                                     DateFormat(
                                                                             'h:mm a')
                                                                         .format(
-                                                                      DateFormat('HH:mm:ss').parse(updateBookingStatusModel
-                                                                          .data!
-                                                                          .dateAdded
-                                                                          .toString()),
+                                                                      DateFormat(
+                                                                              'yyyy-MM-dd HH:mm:ss.SSS')
+                                                                          .parse(
+                                                                        updateBookingStatusModel
+                                                                            .data!
+                                                                            .dateAdded
+                                                                            .toString(),
+                                                                      ),
                                                                     ),
                                                                     style: GoogleFonts
                                                                         .inter(

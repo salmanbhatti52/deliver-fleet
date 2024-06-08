@@ -1,12 +1,16 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -107,6 +111,51 @@ class _UpdateLocationState extends State<UpdateLocation> {
     return true;
   }
 
+  String? currentLat;
+  String? currentLng;
+  LatLng? currentLocation;
+  LatLng? selectedLocation;
+  LatLng? selectedAddressLocation;
+  Future<void> getCurrentLocation() async {
+    hasPermission = await _handleLocationPermission();
+    if (!hasPermission) return;
+    final Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+      timeLimit: const Duration(seconds: 5),
+      forceAndroidLocationManager: true,
+    );
+
+    final List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    if (placemarks.isNotEmpty) {
+      final Placemark currentPlace = placemarks.first;
+      final String currentAddress =
+          "${currentPlace.name}, ${currentPlace.locality}, ${currentPlace.country}";
+      final String postalCode = currentPlace.postalCode!;
+      final String city = currentPlace.locality!;
+      final String state = currentPlace.administrativeArea!;
+      final String country = currentPlace.country!;
+      double latitude = double.parse(currentLat!);
+      double longitude = double.parse(currentLng!);
+      getPostalCode(latitude, longitude);
+      setState(() {
+        currentLocation = LatLng(position.latitude, position.longitude);
+        selectedLocation = null; // Clear selected location
+        selectedAddressLocation = null; // Clear address location
+        currentLat = position.latitude.toString();
+        currentLng = position.longitude.toString();
+        debugPrint("currentLat: $currentLat");
+        debugPrint("currentLng: $currentLng");
+        debugPrint("currentPickupLocation: $currentAddress");
+        debugPrint("Postal Code: $postalCode");
+        debugPrint("City: $city");
+        debugPrint("State: $state");
+        debugPrint("Country: $country");
+      });
+    }
+  }
+
   // String? _currentAddress;
   var hasPermission = false;
   Position? _currentPosition;
@@ -119,6 +168,45 @@ class _UpdateLocationState extends State<UpdateLocation> {
     }).catchError((e) {
       debugPrint(e);
     });
+  }
+
+  Future<void> handleLocationUpdate() async {
+    if (hasPermission) {
+      await updateLocationMethod(context);
+    } else {
+      await getCurrentLocation();
+    }
+  }
+
+  Future<String> getPostalCode(double lat, double lng) async {
+    final response = await http.get(
+      Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyAk-CA4yYf-txNZvvwmCshykjpLiASEkcw',
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print('Data received from API: $data'); // Print the entire data
+
+      final results = data['results'] as List;
+      if (results.isNotEmpty) {
+        print('First result: ${results[0]}'); // Print the first result
+
+        final components = results[0]['address_components'] as List;
+        final postalCodeComponent = components.firstWhere(
+          (c) => c['types'].contains('postal_code'),
+          orElse: () => null,
+        );
+        if (postalCodeComponent != null) {
+          print(
+              'Postal code component: $postalCodeComponent'); // Print the postal code component
+          return postalCodeComponent['long_name'];
+        }
+      }
+    }
+
+    return "";
   }
 
   /// Location permission methods for longitude and latitude:
@@ -191,11 +279,8 @@ class _UpdateLocationState extends State<UpdateLocation> {
                       child: isUpdatingLocation
                           ? apiButton(context)
                           : GestureDetector(
-                              onTap: () {
-                             
-                                hasPermission
-                                  ?  updateLocationMethod(context)
-                                  :  _getCurrentPosition();
+                              onTap: () async {
+                                await handleLocationUpdate();
                               },
                               child:
                                   buttonContainer(context, 'Update Location'),
@@ -211,15 +296,14 @@ class _UpdateLocationState extends State<UpdateLocation> {
   bool isUpdatingLocation = false;
   APIResponse<LogInModel>? updateLocationResponse;
   updateLocationMethod(BuildContext context) async {
-
     setState(() {
       isUpdatingLocation = true;
     });
-   await _getCurrentPosition();
+    await getCurrentLocation();
     Map updateLocationData = {
       "users_fleet_id": userID.toString(),
-      "latitude": _currentPosition!.latitude.toString(),
-      "longitude": _currentPosition!.longitude.toString(),
+      "latitude": currentLat.toString(),
+      "longitude": currentLng.toString(),
     };
     updateLocationResponse =
         await service.updateLocationOneTimeAPI(updateLocationData);

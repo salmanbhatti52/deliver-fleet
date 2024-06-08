@@ -107,7 +107,8 @@ class _InProgressDetailsState extends State<InProgressDetails> {
     debugPrint("statusCode: ${response.statusCode}");
     if (response.statusCode == 200) {
       getOnGoingRides = getOnGoingRidesFromJson(responseString);
-      debugPrint('getOnGoingRides status: ${getOnGoingRides.status}');
+      debugPrint(
+          'getOnGoingRides status: in progress ${getOnGoingRides.status}');
       jsonResponse = jsonDecode(response.body);
 
       print("jsonResponse: Dataaaa ${jsonResponse!['data'][widget.index]}");

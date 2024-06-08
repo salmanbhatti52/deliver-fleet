@@ -1,26 +1,26 @@
 // To parse this JSON data, do
 //
-//     final acceptedScheduledRides = acceptedScheduledRidesFromJson(jsonString);
+//     final acceptedRidesModel = acceptedRidesModelFromJson(jsonString);
 
 import 'dart:convert';
 
-AcceptedScheduledRides acceptedScheduledRidesFromJson(String str) =>
-    AcceptedScheduledRides.fromJson(json.decode(str));
+AcceptedRidesModel acceptedRidesModelFromJson(String str) =>
+    AcceptedRidesModel.fromJson(json.decode(str));
 
-String acceptedScheduledRidesToJson(AcceptedScheduledRides data) =>
+String acceptedRidesModelToJson(AcceptedRidesModel data) =>
     json.encode(data.toJson());
 
-class AcceptedScheduledRides {
+class AcceptedRidesModel {
   String? status;
   List<Datum>? data;
 
-  AcceptedScheduledRides({
+  AcceptedRidesModel({
     this.status,
     this.data,
   });
 
-  factory AcceptedScheduledRides.fromJson(Map<String, dynamic> json) =>
-      AcceptedScheduledRides(
+  factory AcceptedRidesModel.fromJson(Map<String, dynamic> json) =>
+      AcceptedRidesModel(
         status: json["status"],
         data: json["data"] != null
             ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
@@ -109,13 +109,16 @@ class Bookings {
   int? bookingsTypesId;
   String? deliveryType;
   String? scheduled;
-  String? deliveryDate;
-  String? deliveryTime;
+  dynamic deliveryDate;
+  dynamic deliveryTime;
+  String? serviceRunning;
   String? totalDeliveryCharges;
   String? totalVatCharges;
+  String? totalSvcRunningCharges;
+  dynamic totalTollgateCharges;
   String? totalCharges;
-  String? totalDiscount;
-  String? totalDiscountedCharges;
+  dynamic totalDiscount;
+  dynamic totalDiscountedCharges;
   int? paymentGatewaysId;
   String? paymentBy;
   String? paymentStatus;
@@ -136,8 +139,11 @@ class Bookings {
     this.scheduled,
     this.deliveryDate,
     this.deliveryTime,
+    this.serviceRunning,
     this.totalDeliveryCharges,
     this.totalVatCharges,
+    this.totalSvcRunningCharges,
+    this.totalTollgateCharges,
     this.totalCharges,
     this.totalDiscount,
     this.totalDiscountedCharges,
@@ -162,8 +168,11 @@ class Bookings {
         scheduled: json["scheduled"],
         deliveryDate: json["delivery_date"],
         deliveryTime: json["delivery_time"],
+        serviceRunning: json["service_running"],
         totalDeliveryCharges: json["total_delivery_charges"],
         totalVatCharges: json["total_vat_charges"],
+        totalSvcRunningCharges: json["total_svc_running_charges"],
+        totalTollgateCharges: json["total_tollgate_charges"],
         totalCharges: json["total_charges"],
         totalDiscount: json["total_discount"],
         totalDiscountedCharges: json["total_discounted_charges"],
@@ -191,8 +200,11 @@ class Bookings {
         "scheduled": scheduled,
         "delivery_date": deliveryDate,
         "delivery_time": deliveryTime,
+        "service_running": serviceRunning,
         "total_delivery_charges": totalDeliveryCharges,
         "total_vat_charges": totalVatCharges,
+        "total_svc_running_charges": totalSvcRunningCharges,
+        "total_tollgate_charges": totalTollgateCharges,
         "total_charges": totalCharges,
         "total_discount": totalDiscount,
         "total_discounted_charges": totalDiscountedCharges,
@@ -224,9 +236,12 @@ class BookingsDestination {
   String? destinTime;
   String? destinDeliveryCharges;
   String? destinVatCharges;
+  String? svcRunningCharges;
+  String? tollgateCharges;
   String? destinTotalCharges;
   String? destinDiscount;
   String? destinDiscountedCharges;
+  String? paymentStatus;
   String? receiverName;
   String? receiverPhone;
   String? passcode;
@@ -246,9 +261,12 @@ class BookingsDestination {
     this.destinTime,
     this.destinDeliveryCharges,
     this.destinVatCharges,
+    this.svcRunningCharges,
+    this.tollgateCharges,
     this.destinTotalCharges,
     this.destinDiscount,
     this.destinDiscountedCharges,
+    this.paymentStatus,
     this.receiverName,
     this.receiverPhone,
     this.passcode,
@@ -270,9 +288,12 @@ class BookingsDestination {
         destinTime: json["destin_time"],
         destinDeliveryCharges: json["destin_delivery_charges"],
         destinVatCharges: json["destin_vat_charges"],
+        svcRunningCharges: json["svc_running_charges"],
+        tollgateCharges: json["tollgate_charges"],
         destinTotalCharges: json["destin_total_charges"],
         destinDiscount: json["destin_discount"],
         destinDiscountedCharges: json["destin_discounted_charges"],
+        paymentStatus: json["payment_status"],
         receiverName: json["receiver_name"],
         receiverPhone: json["receiver_phone"],
         passcode: json["passcode"],
@@ -294,9 +315,12 @@ class BookingsDestination {
         "destin_time": destinTime,
         "destin_delivery_charges": destinDeliveryCharges,
         "destin_vat_charges": destinVatCharges,
+        "svc_running_charges": svcRunningCharges,
+        "tollgate_charges": tollgateCharges,
         "destin_total_charges": destinTotalCharges,
         "destin_discount": destinDiscount,
         "destin_discounted_charges": destinDiscountedCharges,
+        "payment_status": paymentStatus,
         "receiver_name": receiverName,
         "receiver_phone": receiverPhone,
         "passcode": passcode,
@@ -345,7 +369,7 @@ class BookingsTypes {
   int? bookingsTypesId;
   String? name;
   String? sameDay;
-  String? dateAdded;
+  DateTime? dateAdded;
   dynamic dateModified;
   String? status;
 
@@ -362,7 +386,7 @@ class BookingsTypes {
         bookingsTypesId: json["bookings_types_id"],
         name: json["name"],
         sameDay: json["same_day"],
-        dateAdded: json["date_added"],
+        dateAdded: DateTime.parse(json["date_added"]),
         dateModified: json["date_modified"],
         status: json["status"],
       );
@@ -371,7 +395,7 @@ class BookingsTypes {
         "bookings_types_id": bookingsTypesId,
         "name": name,
         "same_day": sameDay,
-        "date_added": dateAdded,
+        "date_added": dateAdded!.toIso8601String(),
         "date_modified": dateModified,
         "status": status,
       };
@@ -436,7 +460,7 @@ class UsersCustomers {
   dynamic forgotPwdOtp;
   dynamic forgotPwdOtpCreatedAt;
   DateTime? dateAdded;
-  dynamic dateModified;
+  DateTime? dateModified;
   String? status;
 
   UsersCustomers({
@@ -503,7 +527,7 @@ class UsersCustomers {
         forgotPwdOtp: json["forgot_pwd_otp"],
         forgotPwdOtpCreatedAt: json["forgot_pwd_otp_created_at"],
         dateAdded: DateTime.parse(json["date_added"]),
-        dateModified: json["date_modified"],
+        dateModified: DateTime.parse(json["date_modified"]),
         status: json["status"],
       );
 
@@ -537,7 +561,7 @@ class UsersCustomers {
         "forgot_pwd_otp": forgotPwdOtp,
         "forgot_pwd_otp_created_at": forgotPwdOtpCreatedAt,
         "date_added": dateAdded!.toIso8601String(),
-        "date_modified": dateModified,
+        "date_modified": dateModified!.toIso8601String(),
         "status": status,
       };
 }
@@ -789,11 +813,11 @@ class UsersFleetVehicles {
         "vehicle_registration_no": vehicleRegistrationNo,
         "vehicle_identification_no": vehicleIdentificationNo,
         "vehicle_license_expiry_date":
-            "${vehicleLicenseExpiryDate?.year.toString().padLeft(4, '0')}-${vehicleLicenseExpiryDate?.month.toString().padLeft(2, '0')}-${vehicleLicenseExpiryDate?.day.toString().padLeft(2, '0')}",
+            "${vehicleLicenseExpiryDate!.year.toString().padLeft(4, '0')}-${vehicleLicenseExpiryDate!.month.toString().padLeft(2, '0')}-${vehicleLicenseExpiryDate!.day.toString().padLeft(2, '0')}",
         "vehicle_insurance_expiry_date":
-            "${vehicleInsuranceExpiryDate?.year.toString().padLeft(4, '0')}-${vehicleInsuranceExpiryDate?.month.toString().padLeft(2, '0')}-${vehicleInsuranceExpiryDate?.day.toString().padLeft(2, '0')}",
+            "${vehicleInsuranceExpiryDate!.year.toString().padLeft(4, '0')}-${vehicleInsuranceExpiryDate!.month.toString().padLeft(2, '0')}-${vehicleInsuranceExpiryDate!.day.toString().padLeft(2, '0')}",
         "rwc_expiry_date":
-            "${rwcExpiryDate?.year.toString().padLeft(4, '0')}-${rwcExpiryDate?.month.toString().padLeft(2, '0')}-${rwcExpiryDate?.day.toString().padLeft(2, '0')}",
+            "${rwcExpiryDate!.year.toString().padLeft(4, '0')}-${rwcExpiryDate!.month.toString().padLeft(2, '0')}-${rwcExpiryDate!.day.toString().padLeft(2, '0')}",
         "cost": cost,
         "manufacture_year": manufactureYear,
         "image": image,

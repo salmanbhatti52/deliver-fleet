@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
@@ -27,12 +29,14 @@ class EndRideBottomSheetPage extends StatefulWidget {
   final int? index;
   final String userID;
   final String? bookingID;
+  final String? destinBookingId;
 
   const EndRideBottomSheetPage({
     super.key,
     this.index,
     required this.userID,
     this.bookingID,
+    this.destinBookingId,
   });
 
   @override
@@ -98,6 +102,15 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
         ride4 =
             bookingsFleet.length > 4 ? bookingsFleet[4]['status'] ?? "" : "";
       }
+      print(
+          "destinTotalCharges: ${jsonResponse!["data"]['bookings_fleet'][0]['bookings_destinations']['destin_total_charges'].toString()}");
+      print("destinBookingId: ${widget.destinBookingId}");
+      print(jsonResponse!["data"]['bookings_fleet'][0]['bookings_destinations']
+              ['destin_total_charges']
+          .toString());
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       debugPrint('Something went wrong = ${e.toString()}');
       return;
@@ -109,6 +122,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
     // TODO: implement initState
     super.initState();
     init();
+
     setState(() {
       isLoading = true;
     });
@@ -128,7 +142,6 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
     _getSystemDataList = [];
 
     if (_getAllSystemDataResponse.status!.toLowerCase() == 'success') {
-      await updateBookingStatus();
       if (_getAllSystemDataResponse.data != null) {
         _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
         for (GetAllSystemDataModel model in _getSystemDataList!) {
@@ -144,10 +157,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
         }
       }
     }
-
-    setState(() {
-      isLoading = false;
-    });
+    await updateBookingStatus();
   }
 
   bool isChatStarting = false;
@@ -223,11 +233,12 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
       debugPrint("apiUrl: $apiUrl");
       Map data = {
         "bookings_id": widget.bookingID.toString(),
-        "payer_name":
-            "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-        "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+        // "payer_name":
+        //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+        // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
         "total_amount": updateBookingStatusModel.data!.totalCharges,
-        "payment_status": "Paid"
+        "payment_status": "Paid",
+        "bookings_destinations_id": "" // payment_by = 'Receiver'
       };
       print("$data");
       // debugPrint("bookings_id: ${widget.currentBookingId}");
@@ -243,11 +254,12 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
         },
         body: {
           "bookings_id": widget.bookingID.toString(),
-          "payer_name":
-              "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-          "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+          // "payer_name":
+          //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+          // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
           "total_amount": updateBookingStatusModel.data!.totalCharges,
-          "payment_status": "Paid"
+          "payment_status": "Paid",
+          "bookings_destinations_id": "" // payment_by = 'Receiver'
         },
       );
       final responseString = response.body;
@@ -854,19 +866,19 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                         bookingModel: updateBookingStatusModel
                                             .data!.bookingsId
                                             .toString(),
-                                        bookingDestinations:
-                                            jsonResponse!["data"]
-                                                        ['bookings_fleet'][0]
-                                                    ['bookings_destinations_id']
-                                                .toString(),
+                                        bookingDestinations: jsonResponse!["data"]
+                                                    ['bookings_fleet'][0]
+                                                ['bookings_destinations_id']
+                                            .toString(),
                                         bookingDestinationsList:
                                             jsonResponse!["data"]['status'],
-                                        bookingDestinID:
-                                            updateBookingStatusModel
-                                                .data!
-                                                .bookingsFleet[0]
-                                                .bookingsDestinationsId
-                                                .toString()),
+                                        bookingDestinID: updateBookingStatusModel
+                                            .data!
+                                            .bookingsFleet[0]
+                                            .bookingsDestinationsId
+                                            .toString(),
+                                        destinTotalCharges:
+                                            jsonResponse!["data"]['bookings_fleet'][0]['bookings_destinations']['destin_total_charges'].toString()),
                                   ),
                                 );
                                 // startRide(context);
@@ -1432,7 +1444,10 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                                           ? const SizedBox
                                                               .shrink() // Don't show the button if the condition is true
                                                           : GestureDetector(
-                                                              onTap: () {
+                                                              onTap: () async {
+                                                                print(
+                                                                    "Helllooo");
+                                                                await updateBookingStatus();
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
@@ -1453,10 +1468,13 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                                                           .bookingsId
                                                                           .toString(),
                                                                       bookingDestinations:
-                                                                          jsonResponse!["data"]['bookings_fleet'][0]['bookings_destinations_id']
+                                                                          jsonResponse!["data"]['bookings_fleet'][index]['bookings_destinations_id']
                                                                               .toString(),
                                                                       bookingDestinationsList:
                                                                           jsonResponse!["data"]['bookings_fleet'][0]['bookings_destinations']['bookings_destinations_status_id']
+                                                                              .toString(),
+                                                                      destinTotalCharges:
+                                                                          jsonResponse!["data"]['bookings_fleet'][index]['bookings_destinations']['destin_total_charges']
                                                                               .toString(),
                                                                     ),
                                                                   ),

@@ -22,7 +22,9 @@ class GetOnGoingRides {
   factory GetOnGoingRides.fromJson(Map<String, dynamic> json) =>
       GetOnGoingRides(
         status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: json["data"] != null
+            ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -264,8 +266,8 @@ class BookingsDestination {
         destinDeliveryCharges: json["destin_delivery_charges"],
         destinVatCharges: json["destin_vat_charges"],
         destinTotalCharges: json["destin_total_charges"],
-        destinDiscount: json["destin_discount"],
-        destinDiscountedCharges: json["destin_discounted_charges"],
+        destinDiscount: json["destin_discount"] ?? "",
+        destinDiscountedCharges: json["destin_discounted_charges"] ?? "",
         receiverName: json["receiver_name"],
         receiverPhone: json["receiver_phone"],
         passcode: json["passcode"],

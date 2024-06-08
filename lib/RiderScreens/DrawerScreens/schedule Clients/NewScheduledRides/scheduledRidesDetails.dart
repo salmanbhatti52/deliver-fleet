@@ -63,47 +63,43 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
       UpdateBookingStatusModel();
   Map<String, dynamic>? jsonResponse;
   Future<void> updateBookingStatus() async {
-    try {
-      String apiUrl =
-          "https://cs.deliverbygfl.com/api/get_updated_status_booking";
-      debugPrint("apiUrl: $apiUrl");
-      debugPrint("currentBookingId: ${widget.bookingID}");
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          "bookings_id": widget.bookingID.toString(),
-        },
-      );
-      final responseString = response.body;
-      debugPrint("response: $responseString");
-      debugPrint("statusCode: ${response.statusCode}");
-      if (response.statusCode == 200) {
-        updateBookingStatusModel =
-            updateBookingStatusModelFromJson(responseString);
-        debugPrint(
-            'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
-        jsonResponse = jsonDecode(response.body);
+    // try {
+    String apiUrl =
+        "https://cs.deliverbygfl.com/api/get_updated_status_booking";
+    debugPrint("apiUrl: $apiUrl");
+    debugPrint("currentBookingId: ${widget.bookingID}");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        "bookings_id": widget.bookingID.toString(),
+        "users_fleet_id": widget.userID
+      },
+    );
+    final responseString = response.body;
+    debugPrint("response: $responseString");
+    debugPrint("statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      updateBookingStatusModel =
+          updateBookingStatusModelFromJson(responseString);
+      debugPrint(
+          'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
+      jsonResponse = jsonDecode(response.body);
 
-        var bookingsFleet = jsonResponse!['data']['bookings_fleet'];
+      var bookingsFleet = jsonResponse!['data']['bookings_fleet'];
 
-        ride0 =
-            bookingsFleet.length > 0 ? bookingsFleet[0]['status'] ?? "" : "";
-        ride1 =
-            bookingsFleet.length > 1 ? bookingsFleet[1]['status'] ?? "" : "";
-        ride2 =
-            bookingsFleet.length > 2 ? bookingsFleet[2]['status'] ?? "" : "";
-        ride3 =
-            bookingsFleet.length > 3 ? bookingsFleet[3]['status'] ?? "" : "";
-        ride4 =
-            bookingsFleet.length > 4 ? bookingsFleet[4]['status'] ?? "" : "";
-      }
-    } catch (e) {
-      debugPrint('Something went wrong = ${e.toString()}');
-      return;
+      ride0 = bookingsFleet.length > 0 ? bookingsFleet[0]['status'] ?? "" : "";
+      ride1 = bookingsFleet.length > 1 ? bookingsFleet[1]['status'] ?? "" : "";
+      ride2 = bookingsFleet.length > 2 ? bookingsFleet[2]['status'] ?? "" : "";
+      ride3 = bookingsFleet.length > 3 ? bookingsFleet[3]['status'] ?? "" : "";
+      ride4 = bookingsFleet.length > 4 ? bookingsFleet[4]['status'] ?? "" : "";
     }
+    // } catch (e) {
+    //   debugPrint('Something went wrong = ${e.toString()}');
+    //   return;
+    // }
   }
 
   @override

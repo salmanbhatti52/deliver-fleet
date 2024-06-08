@@ -79,12 +79,12 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.zero,
-                reverse: true,
+                // reverse: true,
                 cacheExtent: 10000000,
-                scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   return CompletedRidesWidget(
-                    completedRidesModel: completedRidesList![index],
+                    completedRidesModel: completedRidesList![
+                        completedRidesList!.length - 1 - index],
                   );
                 },
               );

@@ -24,7 +24,7 @@ class StartRideBookingModels {
   factory StartRideBookingModels.fromJson(Map<String, dynamic> json) =>
       StartRideBookingModels(
         status: json["status"],
-        data: Data.fromJson(json["data"]),
+        data : json["data"] != null ? Data.fromJson(json["data"]) : null,
         message: json["message"],
       );
 

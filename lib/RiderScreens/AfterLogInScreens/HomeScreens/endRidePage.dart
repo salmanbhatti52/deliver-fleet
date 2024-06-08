@@ -31,6 +31,7 @@ class EndRidePAge extends StatefulWidget {
   final String? bookingDestinationsList;
   final String? bookingDestinID;
   final String? deliveryType;
+  final String? destinTotalCharges;
 
   const EndRidePAge({
     super.key,
@@ -39,6 +40,7 @@ class EndRidePAge extends StatefulWidget {
     this.bookingDestinations,
     this.bookingDestinationsList,
     this.bookingDestinID,
+    this.destinTotalCharges,
   });
 
   @override
@@ -145,11 +147,12 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       //     "total_amount: ${widget.singleData!.isNotEmpty ? widget.singleData!['total_charges'] : widget.multipleData!['total_charges']}");
       Map data = {
         "bookings_id": widget.bookingModel.toString(),
-        "payer_name":
-            "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-        "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+        // "payer_name":
+        //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+        // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
         "total_amount": updateBookingStatusModel.data!.totalCharges,
-        "payment_status": "Paid"
+        "payment_status": "Paid",
+        "bookings_destinations_id": "" // payment_by = 'Receiver'
       };
       print("$data");
 
@@ -161,11 +164,13 @@ class _EndRidePAgeState extends State<EndRidePAge> {
         },
         body: {
           "bookings_id": widget.bookingModel.toString(),
-          "payer_name":
-              "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-          "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
-          "total_amount": updateBookingStatusModel.data!.totalCharges,
-          "payment_status": "Paid"
+          // "payer_name":
+          //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+          // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+          "total_amount": "${widget.destinTotalCharges}",
+          "payment_status": "Paid",
+          "bookings_destinations_id":
+              "${widget.bookingDestinations}" // payment_by = 'Receiver'
         },
       );
       final responseString = response.body;
@@ -192,8 +197,10 @@ class _EndRidePAgeState extends State<EndRidePAge> {
     super.initState();
     init();
     getDestinationStatus();
+    print("End Ride Page From InProgress");
     print("widget bookingDestinID; ${widget.bookingDestinations}");
-    print("widget bookingid; ${widget.bookingModel}");
+    print("widget bookingsId; ${widget.bookingModel}");
+    print("widget destinTotalCharges; ${widget.destinTotalCharges}");
   }
 
   init() async {

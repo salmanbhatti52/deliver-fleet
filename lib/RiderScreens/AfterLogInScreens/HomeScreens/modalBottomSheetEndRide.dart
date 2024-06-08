@@ -1330,7 +1330,10 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                                         bookingDestinID: widget
                                                                             .bookingDestinations[index]
                                                                             .bookings_destinations_id
-                                                                            .toString()),
+                                                                            .toString(),
+                                                                            destinTotalCharges: updateBookingStatusModel.data!.bookingsFleet[index].bookingsDestinations.destinTotalCharges,
+                                                                            // destingID: updateBookingStatusModel.data!.bookingsFleet[index].bookingsDestinations.destinTotalCharges,
+                                                                            ),
                                                                   ),
                                                                 );
                                                                 // startRide(context);

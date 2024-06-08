@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/schedule%20Clients/AcceptedScheduledRides/acceptedScheduledRides.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:deliver_partner/services/API_services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,13 +85,16 @@ class _MyAppState extends State<MyApp> {
           systemNavigationBarIconBrightness: Brightness.dark,
         ));
 
-        return MaterialApp(
-          theme: ThemeData(
-            useMaterial3: false,
+        return ChangeNotifierProvider(
+          create: (context) => PickedParcelsModel(),
+          child: MaterialApp(
+            theme: ThemeData(
+              useMaterial3: false,
+            ),
+            debugShowCheckedModeBanner: false,
+            title: 'Deliver Rider',
+            home: const CustomSplash(),
           ),
-          debugShowCheckedModeBanner: false,
-          title: 'Deliver Rider',
-          home: const CustomSplash(),
         );
       },
     );

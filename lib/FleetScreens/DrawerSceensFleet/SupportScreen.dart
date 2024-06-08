@@ -69,17 +69,18 @@ class _SupportScreenState extends State<SupportScreen> {
       print(
           'getSupportAdminModel length: ${getSupportAdminModel.data!.length}');
       for (int i = 0; i < getSupportAdminModel.data!.length; i++) {
-        if (getSupportAdminModel.data![i].usersSystemId != null &&
-            getSupportAdminModel.data![i].name != null &&
-            getSupportAdminModel.data![i].profilePic != null &&
-            getSupportAdminModel.data![i].address != null) {
+        if (getSupportAdminModel.data![0].usersSystemId != null &&
+            getSupportAdminModel.data![0].name != null &&
+            getSupportAdminModel.data![0].profilePic != null &&
+            getSupportAdminModel.data![0].address != null) {
           print(
-              'getSupportAdminModel id: ${getSupportAdminModel.data![i].usersSystemId}');
+              'getSupportAdminModel id: ${getSupportAdminModel.data![0].usersSystemId}');
 
-          getAdminId = "${getSupportAdminModel.data![i].usersSystemId}";
-          getAdminName = "${getSupportAdminModel.data![i].name}";
-          getAdminImage = "${getSupportAdminModel.data![i].profilePic}";
-          getAdminAddress = "${getSupportAdminModel.data![i].address}";
+          getAdminId = "${getSupportAdminModel.data![0].usersSystemId}";
+          getAdminName = "${getSupportAdminModel.data![0].name}";
+          getAdminImage = "${getSupportAdminModel.data![0].profilePic}";
+          getAdminAddress = "${getSupportAdminModel.data![0].address}";
+          print("getAdminImage $getAdminImage");
         }
       }
       await startSupportChat();
@@ -541,7 +542,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                                         "assets/images/user-profile.png",
                                                       ),
                                                       image: NetworkImage(
-                                                        'https://cs.deliverbygfl.com/public/${widget.getAdminImage}',
+                                                        'https://cs.deliverbygfl.com/public/$getAdminImage',
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),

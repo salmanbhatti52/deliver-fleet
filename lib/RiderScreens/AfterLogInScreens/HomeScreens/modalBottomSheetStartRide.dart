@@ -120,8 +120,6 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     // TODO: implement initState
     super.initState();
     init();
-    updateBookingStatus();
-
     // setState(() {
     //   isLoading = true;
     // });
@@ -170,9 +168,9 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
       }
     }
 
-    showToastError(
-        "Payment Status ${updateBookingStatusModel.data!.paymentStatus}",
-        FToast().init(context));
+    // showToastError(
+    //     "Payment Status ${updateBookingStatusModel.data!.paymentStatus}",
+    // FToast().init(context));
     _getAllSystemDataResponse = await service.getALlSystemDataAPI();
     _getSystemDataList = [];
 
@@ -234,39 +232,45 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(60),
-                              child: Image.network(
-                                'https://cs.deliverbygfl.com/public/${widget.bookingModel.users_customers!.profile_pic}',
-                                fit: BoxFit.cover,
-                                errorBuilder: (BuildContext context,
-                                    Object exception, StackTrace? stackTrace) {
-                                  return SizedBox(
-                                      child: Image.asset(
-                                    'assets/images/place-holder.png',
-                                    fit: BoxFit.scaleDown,
-                                  ));
-                                },
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  }
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      color: orange,
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                    ),
-                                  );
-                                },
+                            child: GestureDetector(
+                              onTap: () {
+                                // init();
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(60),
+                                child: Image.network(
+                                  'https://cs.deliverbygfl.com/public/${widget.bookingModel.users_customers!.profile_pic}',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
+                                    return SizedBox(
+                                        child: Image.asset(
+                                      'assets/images/place-holder.png',
+                                      fit: BoxFit.scaleDown,
+                                    ));
+                                  },
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    }
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: orange,
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -1341,14 +1345,23 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                 SizedBox(
                                   width: 15.w,
                                 ),
-                                Text(
-                                  name!,
-                                  style: GoogleFonts.syne(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: black,
-                                  ),
-                                ),
+                                packageStatus
+                                    ? Text(
+                                        "Parcel Picked",
+                                        style: GoogleFonts.syne(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: black,
+                                        ),
+                                      )
+                                    : Text(
+                                        "Pick the Parcel",
+                                        style: GoogleFonts.syne(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: black,
+                                        ),
+                                      ),
                               ],
                             )
                       : const SizedBox(),

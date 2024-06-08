@@ -2,6 +2,7 @@ import 'package:deliver_partner/ChooseAppScreen.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/LegalScreen.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/Accepted%20Rides/acceptedRides.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/schedule%20Clients/scheduleRidesScreen.dart';
 import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:flutter/material.dart';
@@ -235,6 +236,31 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               SvgPicture.asset('assets/images/ride-orange.svg'),
                           title: Text(
                             'Schedule Rides',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const AcceptedRides(),
+                              ),
+                            );
+                          },
+                          leading:
+                              SvgPicture.asset('assets/images/ride-orange.svg'),
+                          title: Text(
+                            'Accepted Rides',
                             style: GoogleFonts.syne(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
