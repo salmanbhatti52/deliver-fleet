@@ -213,7 +213,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: bcb5acffd4ea05e12a783ecf835f2210ce3dc6af
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
-  geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
+  geocoding_ios: d7460f56e80e118d57678efe5c2cdc888739ff18
   geolocator_apple: 6cbaf322953988e009e5ecb481f07efece75c450
   google_maps_flutter_ios: f135b968a67c05679e0a53538e900b5c174b0d99
   GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
