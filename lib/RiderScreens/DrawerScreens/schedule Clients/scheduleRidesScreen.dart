@@ -86,7 +86,7 @@ class _ScheduledRideScreenState extends State<ScheduledRideScreen>
                   ),
                   tabs: [
                     Text(
-                      'New Rides',
+                      'Schedule Rides',
                       style: GoogleFonts.syne(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -118,8 +118,4 @@ class _ScheduledRideScreenState extends State<ScheduledRideScreen>
       ),
     );
   }
-
-
-
-
 }

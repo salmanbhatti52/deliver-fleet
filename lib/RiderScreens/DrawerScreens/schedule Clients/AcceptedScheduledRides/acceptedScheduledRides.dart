@@ -1693,13 +1693,6 @@ class _AcceptedScheduledRidesPageState
       showToastError(
           'Your scheduled ride is not started yet', FToast().init(context),
           seconds: 2);
-    } else if ((pickedParcelIds?.length ?? 0) !=
-        (updateBookingStatusModel.data?.bookingsFleet.length ?? 0)) {
-      print("pickedParcelIds!.length: ${pickedParcelIds?.length ?? 0}");
-      showToastError(
-          'You\'ve to pick all the parcel from pickup location first.',
-          FToast().init(context),
-          seconds: 2);
     } else {
       setState(() {
         isRideStarting = true;

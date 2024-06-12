@@ -1188,7 +1188,7 @@ class ApiServices {
 
   Future<APIResponse<List<GetAllNotificationsModel>>> getAllNotificationsAPI(
       Map data) {
-    String api = 'https://cs.deliverbygfl.com/api/all_notifications';
+    String api = 'https://cs.deliverbygfl.com/api/get_notifications_fleet';
     return http.post(Uri.parse(api), body: data).then((value) {
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
