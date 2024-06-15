@@ -715,7 +715,14 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                           ),
                                         ),
                                         Text(
-                                          'Fare',
+                                          (updateBookingStatusModel.data!
+                                                          .paymentStatus ==
+                                                      "Paid" ||
+                                                  updateBookingStatusModel
+                                                          .data!.paymentBy ==
+                                                      "Receiver")
+                                              ? 'Fare Paid'
+                                              : 'Fare',
                                           style: GoogleFonts.syne(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
@@ -1203,7 +1210,10 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                   ),
                                                                   Expanded(
                                                                     child: Text(
-                                                                      'Fare',
+                                                                      (updateBookingStatusModel.data!.paymentStatus == "Paid" ||
+                                                                              updateBookingStatusModel.data!.paymentBy == "Receiver")
+                                                                          ? 'Fare Paid'
+                                                                          : 'Fare',
                                                                       style: GoogleFonts
                                                                           .syne(
                                                                         fontSize:

@@ -735,7 +735,7 @@ class _InProgressEndRidePageState extends State<InProgressEndRidePage> {
 
     if (endRideResponse!.status!.toLowerCase() == "success") {
       if (endRideResponse!.data != null) {
-        showToastSuccess('Ride has been ended', FToast().init(context));
+        showToastSuccess('Parcel delivered successfully ', FToast().init(context));
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(

@@ -19,7 +19,7 @@ class _LineChartWidgetBankingState extends State<LineChartWidgetBanking> {
         LineChartData(
           minX: 0,
           maxX: 11,
-          minY: 50,
+          minY: 54,
           maxY: 0,
           titlesData: FlTitlesData(
             bottomTitles: const AxisTitles(
@@ -67,18 +67,18 @@ class _LineChartWidgetBankingState extends State<LineChartWidgetBanking> {
                 //   fontSize: 15,
                 // ),
 
-             getTitlesWidget: (double value, TitleMeta titleMeta) {
-  final intValue = value.toInt();
-  switch (intValue) {
-    case 1:
-      return Text('data1');
-    case 3:
-      return Text('data3');
-    case 5:
-      return Text('data5');
-  }
-  return Text('defaultData');
-},
+                getTitlesWidget: (double value, TitleMeta titleMeta) {
+                  final intValue = value.toInt();
+                  switch (intValue) {
+                    case 1:
+                      return const Text('data1');
+                    case 3:
+                      return const Text('data3');
+                    case 5:
+                      return const Text('data5');
+                  }
+                  return const Text('');
+                },
 
                 reservedSize: 35,
                 interval: 12,

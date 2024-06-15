@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../../../Constants/Colors.dart';
 import '../../../Constants/SeeDetailsOnCompletedRidesButton.dart';
@@ -14,6 +15,7 @@ import 'CompletedRidesDestinationsWidget.dart';
 
 class CompletedRidesWidget extends StatefulWidget {
   final InProgressRidesModel completedRidesModel;
+
   const CompletedRidesWidget({super.key, required this.completedRidesModel});
 
   @override
@@ -51,25 +53,42 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
   @override
   void initState() {
     super.initState();
+
     closed = true;
   }
 
   @override
   Widget build(BuildContext context) {
     timeAdded = DateTime.parse("${widget.completedRidesModel.date_modified}");
+    var formattedTime = DateFormat('E,d MMM yyyy ').format(timeAdded!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           height: 20.h,
         ),
-        Text(
-          '${widget.completedRidesModel.status}',
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: grey,
-          ),
+        Row(
+          children: [
+            Text(
+              '${widget.completedRidesModel.status}',
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: grey,
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              formattedTime,
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: grey,
+              ),
+            ),
+          ],
         ),
         SizedBox(
           height: 20.h,
@@ -175,13 +194,11 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                                     ),
                                   ),
                                   RatingContainerOnCompletedRides(
-                                      ratings: widget
-                                                  .completedRidesModel
-                                                  .users_fleet!
-                                                  .bookings_ratings ==
+                                      ratings: widget.completedRidesModel
+                                                  .bookings!.bookings_ratings ==
                                               null
                                           ? '0.0'
-                                          : '${widget.completedRidesModel.users_fleet!.bookings_ratings}'),
+                                          : '${widget.completedRidesModel.bookings!.bookings_ratings}'),
                                 ],
                               ),
                             ),

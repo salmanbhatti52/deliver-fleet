@@ -398,6 +398,7 @@ class BookingModel {
       date_added,
       date_modified,
       status,
+      bookings_ratings,
       scheduled;
   CustomersModel? users_customers;
   BookingsTypesModel? bookings_types;
@@ -427,6 +428,7 @@ class BookingModel {
       this.users_customers,
       this.bookings_types,
       this.payment_gateways,
+      this.bookings_ratings,
       this.bookings_destinations});
 
   Map<String, dynamic> toJson() {
@@ -454,6 +456,7 @@ class BookingModel {
       "bookings_types": bookings_types,
       "payment_gateways": payment_gateways,
       "bookings_destinations": bookings_destinations,
+      "bookings_ratings": bookings_ratings,
     };
   }
 
@@ -478,6 +481,7 @@ class BookingModel {
       date_modified: json["date_modified"] ?? '',
       status: json["status"] ?? '',
       scheduled: json["scheduled"] ?? '',
+      bookings_ratings : json["bookings_ratings"] ?? "",
       users_customers:
           CustomersModel.fromJson(json["users_customers"] ?? Map()),
       bookings_types:
@@ -487,6 +491,7 @@ class BookingModel {
       bookings_destinations: List<BookingDestinations>.from(
           json["bookings_destinations"]
               .map((x) => BookingDestinations.fromJson(x))),
+              
     );
   }
 //

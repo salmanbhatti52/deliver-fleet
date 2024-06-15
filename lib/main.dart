@@ -10,6 +10,9 @@ import 'package:deliver_partner/services/API_services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +33,20 @@ void main() async {
 
   HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp();
+
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  // NotificationSettings settings = await messaging.requestPermission(
+  //   alert: true,
+  //   announcement: false,
+  //   badge: true,
+  //   carPlay: false,
+  //   criticalAlert: false,
+  //   provisional: false,
+  //   sound: true,
+  // );
+
+  // print('User granted permission: ${settings.authorizationStatus}');
   runApp(const MyApp());
   // runApp(
   //   DevicePreview(
@@ -56,13 +73,39 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 class _MyAppState extends State<MyApp> {
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    await Firebase.initializeApp();
+    print('Handling a background message: ${message.messageId}');
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
+
     if (!GetIt.I.isRegistered<ApiServices>()) {
       GetIt.I.registerLazySingleton(() => ApiServices());
     }
-    super.initState();
+
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   RemoteNotification? notification = message.notification;
+    //   AndroidNotification? android = message.notification?.android;
+
+    //   if (notification != null && android != null) {
+    //     print('Message title: ${notification.title}');
+    //     print('Message body: ${notification.body}');
+    //   }
+    // });
+
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   print('A new onMessageOpenedApp event was published!');
+    // });
+
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // FirebaseMessaging.instance.getToken().then((String? token) {
+    //   assert(token != null);
+    //   print('FirebaseMessaging token: $token');
+    // });
   }
 
   bool get isIos =>

@@ -1,8 +1,18 @@
+import 'dart:convert';
+import 'package:deliver_partner/RiderScreens/DrivingLicensePictureVerification.dart';
+import 'package:deliver_partner/models/API_models/notifciaitonRiderModel.dart';
+import 'package:deliver_partner/temploginReider.dart';
+import 'package:deliver_partner/utilities/showToast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:deliver_partner/Constants/back-arrow-with-container.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -16,61 +26,45 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   // int userID = -1;
   // late SharedPreferences sharedPreferences;
-  // bool isPageLoading = false;
+  bool isPageLoading = false;
+  NotificationRiderModel notificationRiderModel = NotificationRiderModel();
+  notificationData() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    userID = (sharedPreferences.getInt('userID') ?? -1);
+    var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
+    var url =
+        Uri.parse('https://cs.deliverbygfl.com/api/get_notifications_fleet');
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   setState(() {
-  //     isPageLoading = true;
-  //   });
-  //   init();
-  // }
+    var body = {"users_fleet_id": "$userID", "users_type": "Rider"};
 
-  // late APIResponse<List<GetAllNotificationsModel>>? getAllNotificationsResponse;
-  // List<GetAllNotificationsModel>? getAllNotificationsList;
+    var req = http.Request('POST', url);
+    req.headers.addAll(headersList);
+    req.body = json.encode(body);
 
-  // late APIResponse<List<ReadNotificationsModel>>? readNotificationsResponse;
-  // List<ReadNotificationsModel>? readNotificationsList;
+    var res = await req.send();
+    final resBody = await res.stream.bytesToString();
 
-  // init() async {
-  //   sharedPreferences = await SharedPreferences.getInstance();
-  //   userID = (sharedPreferences.getInt('userID') ?? -1);
+    if (res.statusCode == 200) {
+      notificationRiderModel = notificationRiderModelFromJson(resBody);
+      setState(() {
+        isPageLoading = false;
+      });
+      print(resBody);
+    } else {
+      print(res.reasonPhrase);
+      showToastError('${res.reasonPhrase}', FToast().init(context));
+    }
+  }
 
-  //   Map data = {
-  //     "users_customers_id": userID.toString(),
-  //   };
-  //   getAllNotificationsResponse = await service.getAllNotificationsAPI(data);
-  //   getAllNotificationsList = [];
-
-  //   if (getAllNotificationsResponse!.status!.toLowerCase() == 'success') {
-  //     if (getAllNotificationsResponse!.data != null) {
-  //       getAllNotificationsList!.addAll(getAllNotificationsResponse!.data!);
-  //       showToastSuccess('Loading all notifications', FToast().init(context),
-  //           seconds: 1);
-  //     }
-  //   } else {
-  //     showToastError(
-  //         getAllNotificationsResponse!.message, FToast().init(context));
-  //   }
-
-  //   readNotificationsResponse = await service.readNotificationsAPI(data);
-  //   readNotificationsList = [];
-
-  //   if (readNotificationsResponse!.status!.toLowerCase() == 'success') {
-  //     if (readNotificationsResponse!.data != null) {
-  //       readNotificationsList!.addAll(readNotificationsResponse!.data!);
-  //       // showToastSuccess('Loading all notifications', FToast().init(context),
-  //       //     seconds: 1);
-  //     }
-  //   } else {
-  //     showToastError('No notification found', FToast().init(context));
-  //   }
-  //   setState(() {
-  //     isPageLoading = false;
-  //   });
-  // }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      isPageLoading = true;
+    });
+    notificationData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,201 +94,82 @@ class _NotificationScreenState extends State<NotificationScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 30.h),
-          child: Center(
-            child: Text(
-              'You have no unread notifications',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.syne(
-                color: grey,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          // TODO: Implement the below code after the API is ready
-          // GlowingOverscrollIndicator(
-          //   color: orange,
-          //   axisDirection: AxisDirection.down,
-          //   child: RefreshIndicator(
-          //     color: orange,
-          //     onRefresh: onRefreshReadNotifications,
-          //     child: ListView.builder(
-          //       shrinkWrap: true,
-          //       // physics: BouncingScrollPhysics(),
-          //       itemCount: 10,
-          //       padding: EdgeInsets.zero,
-          //       itemBuilder: (context, index) {
-          //         return Column(
-          //           children: [
-          //             Container(
-          //               margin: EdgeInsets.only(bottom: 20.h),
-          //               width: 350.w,
-          //               height: 70.h,
-          //               decoration: BoxDecoration(
-          //                 color: lightWhite,
-          //                 borderRadius: BorderRadius.circular(10),
-          //                 border: Border.all(
-          //                   color: white,
-          //                   width: 1.5,
-          //                 ),
-          //               ),
-          //               child: ListTile(
-          //                 // onTap: () {
-          //                 //   getAllNotificationsList![index]
-          //                 //               .notifications_type ==
-          //                 //           'Requested'
-          //                 //       ? Navigator.of(context).pushReplacement(
-          //                 //           MaterialPageRoute(
-          //                 //             builder: (context) =>
-          //                 //                 RequestRideFromFleetActive(),
-          //                 //           ),
-          //                 //         )
-          //                 //       : getAllNotificationsList![index]!
-          //                 //                   .notifications_type ==
-          //                 //               'Accepted'
-          //                 //           ? Navigator.of(context).push(
-          //                 //               MaterialPageRoute(
-          //                 //                 builder: (context) =>
-          //                 //                     BottomNavBar(),
-          //                 //               ),
-          //                 //             )
-          //                 //           : Navigator.of(context).push(
-          //                 //               MaterialPageRoute(
-          //                 //                 builder: (context) =>
-          //                 //                     RequestRideFromFleetActive(),
-          //                 //               ),
-          //                 //             );
-          //                 // },
-          //                 leading: SizedBox(
-          //                   width: 50.w,
-          //                   height: 50.h,
-          //                   child: ClipRRect(
-          //                     borderRadius: BorderRadius.circular(20),
-          //                     // child: getAllNotificationsList![index]
-          //                     //             .sender!
-          //                     //             .profile_pic !=
-          //                     //         null
-          //                     //     ? Image.network(
-          //                     //         'https://cs.deliverbygfl.com/public/${getAllNotificationsList![index].sender!.profile_pic}',
-          //                     //         fit: BoxFit.cover,
-          //                     //         errorBuilder:
-          //                     //             (BuildContext context,
-          //                     //                 Object exception,
-          //                     //                 StackTrace? stackTrace) {
-          //                     //           return SizedBox(
-          //                     //             child: Image.asset(
-          //                     //               'assets/images/place-holder.png',
-          //                     //               fit: BoxFit.cover,
-          //                     //             ),
-          //                     //           );
-          //                     //         },
-          //                     //         loadingBuilder:
-          //                     //             (BuildContext context,
-          //                     //                 Widget child,
-          //                     //                 ImageChunkEvent?
-          //                     //                     loadingProgress) {
-          //                     //           if (loadingProgress == null) {
-          //                     //             return child;
-          //                     //           }
-          //                     //           return Center(
-          //                     //             child:
-          //                     //                 CircularProgressIndicator(
-          //                     //               color: orange,
-          //                     //               value: loadingProgress
-          //                     //                           .expectedTotalBytes !=
-          //                     //                       null
-          //                     //                   ? loadingProgress
-          //                     //                           .cumulativeBytesLoaded /
-          //                     //                       loadingProgress
-          //                     //                           .expectedTotalBytes!
-          //                     //                   : null,
-          //                     //             ),
-          //                     //           );
-          //                     //         },
-          //                     //       )
-          //                     child: SvgPicture.asset(
-          //                         'assets/images/system-notification.svg'),
-          //                   ),
-          //                 ),
-          //                 title: Text(
-          //                   'Name',
-          //                   style: GoogleFonts.syne(
-          //                     fontSize: 14,
-          //                     fontWeight: FontWeight.w700,
-          //                     color: black,
-          //                   ),
-          //                 ),
-          //                 subtitle: AutoSizeText(
-          //                   'Message',
-          //                   minFontSize: 12,
-          //                   maxLines: 3,
-          //                   overflow: TextOverflow.ellipsis,
-          //                   style: GoogleFonts.inter(
-          //                     color: grey,
-          //                     fontWeight: FontWeight.w400,
-          //                     fontSize: 12,
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //             // Container(
-          //             //   margin: EdgeInsets.only(bottom: 20.h),
-          //             //   width: 350.w,
-          //             //   height: 70.h,
-          //             //   decoration: BoxDecoration(
-          //             //     color: lightWhite,
-          //             //     borderRadius: BorderRadius.circular(10),
-          //             //     border: Border.all(
-          //             //       color: white,
-          //             //       width: 1.5,
-          //             //     ),
-          //             //   ),
-          //             //   child: ListTile(
-          //             //     leading: Container(
-          //             //       width: 46.w,
-          //             //       height: 46.h,
-          //             //       decoration: BoxDecoration(
-          //             //         color: orange,
-          //             //         shape: BoxShape.circle,
-          //             //       ),
-          //             //       child: SvgPicture.asset(
-          //             //         'assets/images/update-notification.svg',
-          //             //         fit: BoxFit.scaleDown,
-          //             //       ),
-          //             //     ),
-          //             //     title: Text(
-          //             //       'System',
-          //             //       style: GoogleFonts.syne(
-          //             //         fontSize: 14,
-          //             //         fontWeight: FontWeight.w700,
-          //             //         color: black,
-          //             //       ),
-          //             //     ),
-          //             //     subtitle: AutoSizeText(
-          //             //       'The notifications about the system would be shown here so that rider could see the updates and many more',
-          //             //       minFontSize: 12,
-          //             //       maxLines: 3,
-          //             //       overflow: TextOverflow.ellipsis,
-          //             //       style: GoogleFonts.inter(
-          //             //         color: grey,
-          //             //         fontWeight: FontWeight.w400,
-          //             //         fontSize: 12,
-          //             //       ),
-          //             //     ),
-          //             //   ),
-          //             // ),
-          //           ],
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // ),
+          child: isPageLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                  color: Colors.orange,
+                  strokeWidth: 2,
+                )) // Show loading indicator while data is loading
+              : notificationRiderModel.data!.isEmpty
+                  ? Center(
+                      child: Text(
+                        'You have no unread notifications',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.syne(
+                          color: grey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: notificationRiderModel.data!.length,
+                      itemBuilder: (context, index) {
+                        var notification = notificationRiderModel.data![index];
+                        String formattedDate = DateFormat('d MMMM yyyy, h:mm a')
+                            .format(notification.dateAdded!);
+                        return Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(5),
+                            leading: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                "https://cs.deliverbygfl.com/public/${notification.senderData!.profilePic!}",
+                              ),
+                            ),
+                            title: Text(
+                              "${notification.senderData!.firstName!} ${notification.senderData!.lastName!}",
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 10),
+                                Text(
+                                  notification.message!,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  formattedDate,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            isThreeLine: true,
+                          ),
+                        );
+                      },
+                    ),
         ),
       ),
     );
   }
 
   Future<void> onRefreshReadNotifications() async {
-    // init();
+    notificationData();
   }
 }

@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'package:deliver_partner/models/API_models/completedRideBookingModel.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +69,7 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
     // TODO: implement initState
     super.initState();
     init();
+
     isPageLoading = true;
   }
 
@@ -83,8 +88,7 @@ class _CompletedRidesScreenState extends State<CompletedRidesScreen> {
                 cacheExtent: 10000000,
                 itemBuilder: (context, index) {
                   return CompletedRidesWidget(
-                    completedRidesModel: completedRidesList![
-                        completedRidesList!.length - 1 - index],
+                    completedRidesModel: completedRidesList![index],
                   );
                 },
               );

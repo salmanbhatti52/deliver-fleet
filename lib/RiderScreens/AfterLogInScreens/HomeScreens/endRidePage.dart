@@ -792,7 +792,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
         } else {
           Navigator.of(context).pop();
         }
-        showToastSuccess('Ride has been ended', FToast().init(context));
+        showToastSuccess('Parcel delivered successfully ', FToast().init(context));
       }
     } else {
       showToastSuccess(endRideResponse!.message!, FToast().init(context));
