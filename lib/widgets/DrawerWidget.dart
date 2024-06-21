@@ -1,9 +1,11 @@
 import 'package:deliver_partner/ChooseAppScreen.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/FleetScreens/DrawerSceensFleet/SupportScreen.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/Banking/AllRecentTransactions.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/LegalScreen.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/Accepted%20Rides/acceptedRides.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/Rider%20Support/riderSupportScreen.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/schedule%20Clients/scheduleRidesScreen.dart';
 import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:flutter/material.dart';
@@ -445,6 +447,37 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           ),
                           title: Text(
                             'Legal',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        ListTile(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RiderSupportScreen(
+                                  // getAdminImage: '$getAdminImage',
+                                  // getAdminName: '$getAdminName',
+                                  // getAdminAddress: '$getAdminAddress',
+                                  // getAdminId: '$getAdminId',
+                                  ),
+                            ),
+                          ),
+                          leading: SvgPicture.asset(
+                            'assets/images/support-icon.svg',
+                            colorFilter:
+                                const ColorFilter.mode(orange, BlendMode.srcIn),
+                          ),
+                          title: Text(
+                            'Contact Support',
                             style: GoogleFonts.syne(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,

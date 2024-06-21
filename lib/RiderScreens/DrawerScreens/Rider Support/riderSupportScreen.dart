@@ -15,25 +15,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:deliver_partner/models/APIModelsFleet/StartSupportChatModel.dart';
 
-class SupportScreen extends StatefulWidget {
-  final String? getAdminId;
-  final String? getAdminName;
-  final String? getAdminImage;
-  final String? getAdminAddress;
-
-  const SupportScreen({
+class RiderSupportScreen extends StatefulWidget {
+  const RiderSupportScreen({
     super.key,
-    this.getAdminId,
-    this.getAdminName,
-    this.getAdminImage,
-    this.getAdminAddress,
   });
 
   @override
-  State<SupportScreen> createState() => _SupportScreenState();
+  State<RiderSupportScreen> createState() => _RiderSupportScreenState();
 }
 
-class _SupportScreenState extends State<SupportScreen> {
+class _RiderSupportScreenState extends State<RiderSupportScreen> {
   TextEditingController messageController = TextEditingController();
 
   Timer? timer;
@@ -148,7 +139,7 @@ class _SupportScreenState extends State<SupportScreen> {
       },
       body: {
         "request_type": "getMessages",
-        "users_type": "Fleet",
+        "users_type": "Rider",
         "other_users_type": "Admin",
         "users_id": userID.toString(),
         "other_users_id": getAdminId.toString(),
@@ -196,7 +187,7 @@ class _SupportScreenState extends State<SupportScreen> {
         },
         body: {
           "request_type": "sendMessage",
-          "users_type": "Fleet",
+          "users_type": "Rider",
           "other_users_type": "Admin",
           "users_id": userID.toString(),
           "other_users_id": getAdminId.toString(),
@@ -241,10 +232,29 @@ class _SupportScreenState extends State<SupportScreen> {
     cancelTimer();
   }
 
+  Future<List<ChatCategory>> fetchChatCategories() async {
+    final response = await http
+        .get(Uri.parse('https://cs.deliverbygfl.com/api/get_chat_categories'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body)['data'];
+      return jsonResponse.map((data) => ChatCategory.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load chat categories');
+    }
+  }
+
+  List<ChatCategory> chatCategories = [];
+  bool isLoading2 = true;
   @override
   void initState() {
     super.initState();
-
+    fetchChatCategories().then((categories) {
+      setState(() {
+        chatCategories = categories;
+        isLoading = false;
+      });
+    });
     getSupportAdmin();
     onPageEnter();
   }
@@ -640,6 +650,7 @@ class _SupportScreenState extends State<SupportScreen> {
                     ],
                   ),
                 ),
+                chatCategoryButtons(),
                 SizedBox(height: size.height * 0.005),
                 Container(
                   width: size.width,
@@ -758,5 +769,46 @@ class _SupportScreenState extends State<SupportScreen> {
         ),
       );
     }
+  }
+
+  Widget chatCategoryButtons() {
+    return Wrap(
+      spacing: 8.0, // Horizontal space between buttons
+      runSpacing: 4.0, // Vertical space between button rows
+      alignment: WrapAlignment.center, // Center align the buttons
+      children: chatCategories.map((category) {
+        return TextButton(
+          onPressed: () {
+            setState(() {
+              messageController.text = category.name; // Set the message
+            });
+            sendSupportChat(messageController.text); // Send the message
+          },
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.orangeAccent, // Ensure solid color is used
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(5), // Optional: Rounded corners
+            ),
+          ),
+          child: Text(category.name),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class ChatCategory {
+  final int id;
+  final String name;
+
+  ChatCategory({required this.id, required this.name});
+
+  factory ChatCategory.fromJson(Map<String, dynamic> json) {
+    return ChatCategory(
+      id: json['chat_categories_id'],
+      name: json['name'],
+    );
   }
 }

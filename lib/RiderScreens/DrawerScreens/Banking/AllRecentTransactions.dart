@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:deliver_partner/RiderScreens/DrivingLicensePictureVerification.dart';
@@ -25,7 +26,7 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
   String? errorMessage;
   GetTransactionsRider getTransactionsRider = GetTransactionsRider();
   bool isLoading = true; // Add this line at the top of your widget
-
+  double? totalEarnings;
   weekly() async {
     setState(() {
       isLoading = true; // Add this line
@@ -53,6 +54,9 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
     if (res.statusCode == 200) {
       var responseJson = json.decode(resBody);
       getTransactionsRider = getTransactionsRiderFromJson(resBody);
+      totalEarnings = getTransactionsRider.data!
+          .fold(0.0, (sum, item) => sum! + double.parse(item.totalAmount));
+      print("totalEarnings: $totalEarnings");
       if (responseJson['status'] == 'error') {
         setState(() {
           errorMessage = responseJson['message'];
@@ -66,15 +70,34 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
           isLoading = false;
         });
       }
+      sharedPrefs();
     } else {
       print(res.reasonPhrase);
       getTransactionsRider = getTransactionsRiderFromJson(resBody);
     }
   }
 
+  String? userFirstName;
+  String? userLastName;
+  String? userProfilePic;
+  sharedPrefs() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    userID = (sharedPreferences.getInt('userID') ?? -1);
+    userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
+    userLastName = (sharedPreferences.getString('userLastName') ?? '');
+    userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
+
+    print(
+        'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
     weekly();
   }
 
@@ -119,14 +142,82 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
           child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 22.w),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  isLoading // Use the isLoading variable here
-                      ? const Center(child: CircularProgressIndicator())
-                      : ListView.builder(
+              child: isLoading // Use the isLoading variable here
+                  ? Center(child: spinKitRotatingCircle)
+                  : Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Card(
+                            elevation: 4, // Adds shadow
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    10)), // Rounded corners
+                            color: Colors
+                                .orangeAccent, // Background color of the card
+                            child: Padding(
+                              padding: EdgeInsets.all(
+                                  16.h), // Inner padding for the card content
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    // To make the card wrap its content
+                                    children: [
+                                      Text(
+                                        'Account Holder',
+                                        style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        '$userFirstName $userLastName', // Assuming totalEarnings is a double
+                                        style: TextStyle(
+                                          fontSize: 19.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 4.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    // To make the card wrap its content
+                                    children: [
+                                      Text(
+                                        'Total Earnings',
+                                        style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        '\$${totalEarnings!.toStringAsFixed(2)}', // Assuming totalEarnings is a double
+                                        style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        ListView.builder(
                           itemBuilder: (context, index) {
                             return RecentTransactionsOnBankingScreen(
                               nameOfTransaction:
@@ -146,8 +237,8 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
                           padding: EdgeInsets.zero,
                           physics: const BouncingScrollPhysics(),
                         ),
-                ],
-              ),
+                      ],
+                    ),
             ),
           ),
         ),
