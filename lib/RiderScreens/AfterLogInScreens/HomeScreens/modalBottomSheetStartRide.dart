@@ -725,8 +725,25 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                               : 'Fare',
                                           style: GoogleFonts.syne(
                                             fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: grey,
+                                            fontWeight: (updateBookingStatusModel
+                                                            .data!
+                                                            .paymentStatus ==
+                                                        "Paid" ||
+                                                    updateBookingStatusModel
+                                                            .data!.paymentBy ==
+                                                        "Receiver")
+                                                ? FontWeight.w600
+                                                : FontWeight.w400,
+                                            color: (updateBookingStatusModel
+                                                            .data!
+                                                            .paymentStatus ==
+                                                        "Paid" ||
+                                                    updateBookingStatusModel
+                                                            .data!.paymentBy ==
+                                                        "Receiver")
+                                                ? Colors
+                                                    .green // Change to the desired highlight color
+                                                : grey,
                                           ),
                                         ),
                                       ],
@@ -1218,10 +1235,14 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                                                                           .syne(
                                                                         fontSize:
                                                                             12,
-                                                                        fontWeight:
-                                                                            FontWeight.w400,
-                                                                        color:
-                                                                            grey,
+                                                                        fontWeight: (updateBookingStatusModel.data!.paymentStatus == "Paid" ||
+                                                                                updateBookingStatusModel.data!.paymentBy == "Receiver")
+                                                                            ? FontWeight.w600
+                                                                            : FontWeight.w400,
+                                                                        color: (updateBookingStatusModel.data!.paymentStatus == "Paid" ||
+                                                                                updateBookingStatusModel.data!.paymentBy == "Receiver")
+                                                                            ? Colors.green // Change to the desired highlight color
+                                                                            : grey,
                                                                       ),
                                                                     ),
                                                                   ),

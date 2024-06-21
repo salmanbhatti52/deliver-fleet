@@ -9,70 +9,42 @@ class RecentTransactionsOnBankingScreen extends StatelessWidget {
   final String nameOfTransaction;
   final String dateOfTransaction;
   final String priceOfTransaction;
-  const RecentTransactionsOnBankingScreen(
-      {super.key,
-      required this.nameOfTransaction,
-      required this.dateOfTransaction,
-      required this.priceOfTransaction});
+
+  const RecentTransactionsOnBankingScreen({
+    super.key,
+    required this.nameOfTransaction,
+    required this.dateOfTransaction,
+    required this.priceOfTransaction,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-          margin: EdgeInsets.only(bottom: 22.h),
-          width: double.infinity,
-          height: 80.h,
-          decoration: BoxDecoration(
-            color: lightGrey,
-            borderRadius: BorderRadius.circular(10),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Card(
+        elevation: 2,
+        child: ListTile(
+          // leading: Container(
+          //   width: 55.w,
+          //   height: 66.h,
+          //   decoration: const BoxDecoration(
+          //     shape: BoxShape.circle,
+          //     color: orange,
+          //   ),
+          // ),
+          title: AutoSizeText(
+            nameOfTransaction,
+            minFontSize: 11,
+            maxLines: 4,
+            style: GoogleFonts.syne(
+              fontWeight: FontWeight.w700,
+              color: black,
+              fontSize: 12,
+            ),
           ),
-          child: Row(
+          subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 55.w,
-                    height: 66.h,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: orange,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 7.w,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AutoSizeText(
-                        nameOfTransaction,
-                        minFontSize: 11,
-                        maxLines: 2,
-                        style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w700,
-                          color: black,
-                          fontSize: 12,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 9.h,
-                      ),
-                      Text(
-                        dateOfTransaction,
-                        style: GoogleFonts.inter(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w500,
-                          color: grey,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
               Row(
                 children: [
                   SvgPicture.asset(
@@ -80,7 +52,7 @@ class RecentTransactionsOnBankingScreen extends StatelessWidget {
                     colorFilter: const ColorFilter.mode(green, BlendMode.srcIn),
                   ),
                   SizedBox(
-                    width: 10.w,
+                    width: 4.w,
                   ),
                   Text(
                     priceOfTransaction,
@@ -92,94 +64,18 @@ class RecentTransactionsOnBankingScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-          margin: EdgeInsets.only(bottom: 22.h),
-          width: double.infinity,
-          height: 80.h,
-          decoration: BoxDecoration(
-            color: lightGrey,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 55.w,
-                    height: 66.h,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: orange,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 7.w,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AutoSizeText(
-                        nameOfTransaction,
-                        minFontSize: 11,
-                        maxLines: 2,
-                        style: GoogleFonts.syne(
-                          fontWeight: FontWeight.w700,
-                          color: black,
-                          fontSize: 12,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 9.h,
-                      ),
-                      Text(
-                        dateOfTransaction,
-                        style: GoogleFonts.inter(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w500,
-                          color: grey,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    '-',
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: red,
-                    ),
-                  ),
-                  SvgPicture.asset(
-                    'assets/images/currency.svg',
-                    colorFilter: const ColorFilter.mode(red, BlendMode.srcIn),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Text(
-                    priceOfTransaction,
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: red,
-                    ),
-                  ),
-                ],
+              Text(
+                dateOfTransaction,
+                style: GoogleFonts.inter(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w500,
+                  color: grey,
+                ),
               ),
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

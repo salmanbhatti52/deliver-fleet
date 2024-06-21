@@ -1,6 +1,7 @@
 import 'package:deliver_partner/ChooseAppScreen.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/Banking/AllRecentTransactions.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/LegalScreen.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/Accepted%20Rides/acceptedRides.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/schedule%20Clients/scheduleRidesScreen.dart';
@@ -178,7 +179,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ListTile(
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const BankingScreen(),
+                              builder: (context) =>
+                                  const AllRecentTransactions(),
                             ),
                           ),
                           leading: SvgPicture.asset('assets/images/wallet.svg'),
