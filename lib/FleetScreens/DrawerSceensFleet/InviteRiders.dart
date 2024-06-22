@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:deliver_partner/models/API_models/API_response.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:http/http.dart' as http;
 import '../../services/API_services.dart';
 import '../../widgets/TextFormField_Widget.dart';
 
@@ -157,7 +158,20 @@ class _InviteRidersState extends State<InviteRiders> {
                     isInviting
                         ? apiButton(context)
                         : GestureDetector(
-                            onTap: () => inviteRiders(context),
+                            onTap: () async {
+                              await inviteRider();
+                              if (inviteRiderModel.status == "success") {
+                                showToastSuccess(inviteRiderModel.message!,
+                                    FToast().init(context),
+                                    seconds: 1);
+                                Navigator.pop(context);
+                              } else {
+                                showToastError(inviteRiderModel.message,
+                                    FToast().init(context),
+                                    seconds: 1);
+                                Navigator.pop(context);
+                              }
+                            },
                             child: buttonContainer(context, 'INVITE'),
                           ),
                   ],
@@ -251,30 +265,96 @@ class _InviteRidersState extends State<InviteRiders> {
   }
 
   bool isInviting = false;
-  APIResponse<APIResponse>? _inviteResponse;
+  // APIResponse<APIResponse>? _inviteResponse;
+  InviteRiderModel inviteRiderModel = InviteRiderModel();
+  inviteRider() async {
+    setState(() {
+      isInviting = true;
+    });
+    var headersList = {
+      'Accept': '*/*',
+      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+      'Content-Type': 'application/json'
+    };
+    var url = Uri.parse('https://cs.deliverbygfl.com/api/invite_rider');
 
-  inviteRiders(BuildContext context) async {
-    if (_key.currentState!.validate()) {
-      setState(() {
-        isInviting = true;
-      });
+    var body = {
+      "users_fleet_id": widget.users_fleet_id,
+      "email": emailController.text,
+    };
 
-      Map inviteData = {
-        "users_fleet_id": widget.users_fleet_id,
-        "email": emailController.text,
-      };
-      _inviteResponse = await service.inviteRidersAPI(inviteData);
-      if (_inviteResponse!.status!.toLowerCase() == 'success') {
-        showToastSuccess(_inviteResponse!.message!, FToast().init(context),
-            seconds: 1);
-        Navigator.pop(context);
-      } else {
-        showToastError(_inviteResponse!.message!, FToast().init(context),
-            seconds: 1);
-      }
+    var req = http.Request('POST', url);
+    req.headers.addAll(headersList);
+    req.body = json.encode(body);
+
+    var res = await req.send();
+    final resBody = await res.stream.bytesToString();
+
+    if (res.statusCode == 200) {
+      inviteRiderModel = inviteRiderModelFromJson(resBody);
+      print(resBody);
+    } else {
+      print(res.reasonPhrase);
+      inviteRiderModel = inviteRiderModelFromJson(resBody);
     }
     setState(() {
       isInviting = false;
     });
   }
+
+  // inviteRiders(BuildContext context) async {
+  //   if (_key.currentState!.validate()) {
+  //     setState(() {
+  //       isInviting = true;
+  //     });
+
+  //     Map inviteData = {
+  //       "users_fleet_id": widget.users_fleet_id,
+  //       "email": emailController.text,
+  //     };
+  //     _inviteResponse = await service.inviteRidersAPI(inviteData);
+  //     if (_inviteResponse!.status!.toLowerCase() == 'success') {
+  //       showToastSuccess(_inviteResponse!.message!, FToast().init(context),
+  //           seconds: 1);
+  //       Navigator.pop(context);
+  //     } else {
+  //       showToastError(_inviteResponse!.message!, FToast().init(context),
+  //           seconds: 1);
+  //     }
+  //   }
+  //   setState(() {
+  //     isInviting = false;
+  //   });
+  // }
+}
+
+// To parse this JSON data, do
+//
+//     final inviteRiderModel = inviteRiderModelFromJson(jsonString);
+
+InviteRiderModel inviteRiderModelFromJson(String str) =>
+    InviteRiderModel.fromJson(json.decode(str));
+
+String inviteRiderModelToJson(InviteRiderModel data) =>
+    json.encode(data.toJson());
+
+class InviteRiderModel {
+  String? status;
+  String? message;
+
+  InviteRiderModel({
+    this.status,
+    this.message,
+  });
+
+  factory InviteRiderModel.fromJson(Map<String, dynamic> json) =>
+      InviteRiderModel(
+        status: json["status"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+      };
 }

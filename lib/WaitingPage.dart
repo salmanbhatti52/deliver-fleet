@@ -61,7 +61,7 @@ class _WaitingPageState extends State<WaitingPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(

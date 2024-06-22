@@ -75,12 +75,15 @@ class _RequestRideFromFleetActiveState
     };
 
     getAvailableBikesResponse = await service.getAllAvailableVehiclesApi(data);
+    print("getAvailableBikesResponse: ${getAvailableBikesResponse!.data}");
     getAvailableBikesList = [];
     if (getAvailableBikesResponse!.status!.toLowerCase() == 'success') {
       print("object");
       if (getAvailableBikesResponse!.data != null) {
         getAvailableBikesList!.addAll(getAvailableBikesResponse!.data!);
       }
+      selectedVehicleID = getAvailableBikesList![0].users_fleet_vehicles_id!;
+      bikeID = getAvailableBikesList![0].vehicles!.vehicles_id!;
     } else {
       // showToastError(
       //     getAvailableBikesResponse!.message, FToast().init(context));
@@ -91,8 +94,6 @@ class _RequestRideFromFleetActiveState
       });
     }
 
-    selectedVehicleID = getAvailableBikesList![0].users_fleet_vehicles_id!;
-    bikeID = getAvailableBikesList![0].vehicles!.vehicles_id!;
     setState(() {
       isPageLoading = false;
     });
@@ -125,210 +126,226 @@ class _RequestRideFromFleetActiveState
       ),
       body: isPageLoading
           ? spinKitRotatingCircle
-          : GlowingOverscrollIndicator(
-              axisDirection: AxisDirection.down,
-              color: orange,
-              child: getAvailableBikesResponse!.data != null
-                  ? SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 22.w),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 30.h,
-                            ),
-                            Text(
-                              'Select from available rides to request \n a ride from fleet manager.',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.syne(
-                                fontSize: 18,
-                                color: grey,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.h,
-                            ),
-                            SvgPicture.asset(
-                              'assets/images/bike.svg',
-                              width: 150.w,
-                              height: 120.h,
-                              fit: BoxFit.scaleDown,
-                            ),
-                            SizedBox(
-                              height: 15.h,
-                            ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: getAvailableBikesList!.length,
-                              padding: EdgeInsets.zero,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      checked = index;
-                                      selectedVehicleID =
-                                          getAvailableBikesList![index]
-                                              .users_fleet_vehicles_id!;
-                                      bikeID = getAvailableBikesList![index]
-                                          .vehicles!
-                                          .vehicles_id!;
-                                    });
-                                    print(
-                                        'selected bike id: ${bikeID.toString()}');
-                                    print(
-                                        'id of selected vehicle: ${selectedVehicleID.toString()}');
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(bottom: 20.h),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12.w, vertical: 12.h),
-                                    width: double.infinity,
-                                    height: 70.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: lightWhite,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
+          : getAvailableBikesResponse!.data == null
+              ? const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: Text('You didn\'t sign-up with fleet code')),
+                  ],
+                )
+              : GlowingOverscrollIndicator(
+                  axisDirection: AxisDirection.down,
+                  color: orange,
+                  child: getAvailableBikesResponse!.data != null
+                      ? SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 22.w),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 30.h,
+                                ),
+                                Text(
+                                  'Select from available rides to request \n a ride from fleet manager.',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.syne(
+                                    fontSize: 18,
+                                    color: grey,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                SvgPicture.asset(
+                                  'assets/images/bike.svg',
+                                  width: 150.w,
+                                  height: 120.h,
+                                  fit: BoxFit.scaleDown,
+                                ),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: getAvailableBikesList!.length,
+                                  padding: EdgeInsets.zero,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          checked = index;
+                                          selectedVehicleID =
+                                              getAvailableBikesList![index]
+                                                  .users_fleet_vehicles_id!;
+                                          bikeID = getAvailableBikesList![index]
+                                              .vehicles!
+                                              .vehicles_id!;
+                                        });
+                                        print(
+                                            'selected bike id: ${bikeID.toString()}');
+                                        print(
+                                            'id of selected vehicle: ${selectedVehicleID.toString()}');
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.only(bottom: 20.h),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w, vertical: 12.h),
+                                        width: double.infinity,
+                                        height: 70.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: lightWhite,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Container(
-                                              width: 67.w,
-                                              height: 67.h,
-                                              decoration: const BoxDecoration(
-                                                  color: white,
-                                                  shape: BoxShape.circle),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                child: Image.network(
-                                                  'https://cs.deliverbygfl.com/public/${getAvailableBikesList![index].image}',
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder: (BuildContext
-                                                          context,
-                                                      Object exception,
-                                                      StackTrace? stackTrace) {
-                                                    return SizedBox(
-                                                      child: Image.asset(
-                                                        'assets/images/place-holder.png',
-                                                        fit: BoxFit.scaleDown,
-                                                      ),
-                                                    );
-                                                  },
-                                                  loadingBuilder:
-                                                      (BuildContext context,
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 67.w,
+                                                  height: 67.h,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color: white,
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                    child: Image.network(
+                                                      'https://cs.deliverbygfl.com/public/${getAvailableBikesList![index].image}',
+                                                      fit: BoxFit.cover,
+                                                      errorBuilder:
+                                                          (BuildContext context,
+                                                              Object exception,
+                                                              StackTrace?
+                                                                  stackTrace) {
+                                                        return SizedBox(
+                                                          child: Image.asset(
+                                                            'assets/images/place-holder.png',
+                                                            fit: BoxFit
+                                                                .scaleDown,
+                                                          ),
+                                                        );
+                                                      },
+                                                      loadingBuilder: (BuildContext
+                                                              context,
                                                           Widget child,
                                                           ImageChunkEvent?
                                                               loadingProgress) {
-                                                    if (loadingProgress ==
-                                                        null) {
-                                                      return child;
-                                                    }
-                                                    return Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color: orange,
-                                                        value: loadingProgress
-                                                                    .expectedTotalBytes !=
-                                                                null
-                                                            ? loadingProgress
-                                                                    .cumulativeBytesLoaded /
-                                                                loadingProgress
-                                                                    .expectedTotalBytes!
-                                                            : null,
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 7.w,
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 120.w,
-                                                  child: AutoSizeText(
-                                                    '${getAvailableBikesList![index].model}',
-                                                    maxLines: 2,
-                                                    minFontSize: 12,
-                                                    style: GoogleFonts.syne(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: black,
+                                                        if (loadingProgress ==
+                                                            null) {
+                                                          return child;
+                                                        }
+                                                        return Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            color: orange,
+                                                            value: loadingProgress
+                                                                        .expectedTotalBytes !=
+                                                                    null
+                                                                ? loadingProgress
+                                                                        .cumulativeBytesLoaded /
+                                                                    loadingProgress
+                                                                        .expectedTotalBytes!
+                                                                : null,
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  height: 4.h,
+                                                  width: 7.w,
                                                 ),
-                                                Text(
-                                                  '${getAvailableBikesList![index].vehicles!.name}',
-                                                  style: GoogleFonts.inter(
-                                                    fontSize: 14,
-                                                    color: grey,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 120.w,
+                                                      child: AutoSizeText(
+                                                        '${getAvailableBikesList![index].model}',
+                                                        maxLines: 2,
+                                                        minFontSize: 12,
+                                                        style: GoogleFonts.syne(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 4.h,
+                                                    ),
+                                                    Text(
+                                                      '${getAvailableBikesList![index].vehicles!.name}',
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 14,
+                                                        color: grey,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
+                                            checked == index
+                                                ? SvgPicture.asset(
+                                                    'assets/images/checked.svg')
+                                                : SvgPicture.asset(
+                                                    'assets/images/unchecked.svg'),
                                           ],
                                         ),
-                                        checked == index
-                                            ? SvgPicture.asset(
-                                                'assets/images/checked.svg')
-                                            : SvgPicture.asset(
-                                                'assets/images/unchecked.svg'),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
+                                      ),
+                                    );
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 20.0.h),
+                                  child: isRequesting
+                                      ? apiButton(context)
+                                      : GestureDetector(
+                                          onTap: () {
+                                            requestBike(context);
+                                          },
+                                          child:
+                                              buttonContainer(context, 'NEXT'),
+                                        ),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              height: 20.h,
+                          ),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'No data found',
+                              style: GoogleFonts.syne(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20,
+                                color: orange,
+                              ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 20.0.h),
-                              child: isRequesting
-                                  ? apiButton(context)
-                                  : GestureDetector(
-                                      onTap: () {
-                                        requestBike(context);
-                                      },
-                                      child: buttonContainer(context, 'NEXT'),
-                                    ),
-                            ),
+                            SvgPicture.asset(
+                                'assets/images/no-data-found-2.svg'),
                           ],
                         ),
-                      ),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'No data found',
-                          style: GoogleFonts.syne(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: orange,
-                          ),
-                        ),
-                        SvgPicture.asset('assets/images/no-data-found-2.svg'),
-                      ],
-                    ),
-            ),
+                ),
     );
   }
 

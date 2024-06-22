@@ -771,6 +771,7 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
     }
   }
 
+  String? messgs;
   Widget chatCategoryButtons() {
     return Wrap(
       spacing: 8.0, // Horizontal space between buttons
@@ -780,9 +781,9 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
         return TextButton(
           onPressed: () {
             setState(() {
-              messageController.text = category.name; // Set the message
+              messgs = category.name; // Set the message
             });
-            sendSupportChat(messageController.text); // Send the message
+            sendSupportChat(messgs); // Send the message
           },
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,

@@ -1815,7 +1815,11 @@ class ApiServices {
   Future<APIResponse<List<GetAllAvailableVehicles>>> getAllAvailableVehiclesApi(
       Map data) {
     String api = 'https://cs.deliverbygfl.com/api/get_fleet_vehicles_available';
-    return http.post(Uri.parse(api), body: data).then((value) {
+    return http.post(Uri.parse(api), body: data, headers: {
+      'Accept': 'application/json', 
+    }).then((value) {
+      print('Status Code: ${value.statusCode}'); // Debugging
+      print('Response Body: ${value.body}'); // Debugging
       if (value.statusCode == 200) {
         final jsonResult = jsonDecode(value.body);
         if (jsonResult['data'] != null) {
@@ -1824,10 +1828,6 @@ class ApiServices {
             final jsonData = GetAllAvailableVehicles.fromJson(item);
             jsonResultArray.add(jsonData);
           }
-
-          // final jsonData = Signin_Signup_Model.fromMap(
-          //   jsonResult['data'],
-          // );
           return APIResponse<List<GetAllAvailableVehicles>>(
             data: jsonResultArray,
             status: jsonResult['status'],
@@ -1842,18 +1842,16 @@ class ApiServices {
         }
       }
       return APIResponse<List<GetAllAvailableVehicles>>(
-        status: APIResponse.fromMap(
-          jsonDecode(value.body),
-        ).status,
-        message: APIResponse.fromMap(
-          jsonDecode(value.body),
-        ).message,
+        status: APIResponse.fromMap(jsonDecode(value.body)).status,
+        message: APIResponse.fromMap(jsonDecode(value.body)).message,
       );
-    }).onError(
-      (error, stackTrace) => APIResponse<List<GetAllAvailableVehicles>>(
+    }).onError((error, stackTrace) {
+      print('Error: $error'); // Debugging
+      print('StackTrace: $stackTrace'); // Debugging
+      return APIResponse<List<GetAllAvailableVehicles>>(
         status: error.toString(),
         message: stackTrace.toString(),
-      ),
-    );
+      );
+    });
   }
 }

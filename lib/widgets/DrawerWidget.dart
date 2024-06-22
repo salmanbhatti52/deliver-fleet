@@ -7,6 +7,7 @@ import 'package:deliver_partner/RiderScreens/DrawerScreens/LegalScreen.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/Accepted%20Rides/acceptedRides.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/Rider%20Support/riderSupportScreen.dart';
 import 'package:deliver_partner/RiderScreens/DrawerScreens/schedule%20Clients/scheduleRidesScreen.dart';
+import 'package:deliver_partner/RiderScreens/RequestRideFromFleetActive.dart';
 import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,6 +47,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   String? userFirstName;
   String? userLastName;
   String? userProfilePic;
+  String? parentId;
 
   late SharedPreferences sharedPreferences;
   bool isLoading = false;
@@ -68,9 +70,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     userFirstName = (sharedPreferences.getString('userFirstName') ?? '');
     userLastName = (sharedPreferences.getString('userLastName') ?? '');
     userProfilePic = (sharedPreferences.getString('userProfilePic') ?? '');
+    parentId = (sharedPreferences.getString('parentId') ?? '');
 
     print(
-        'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic');
+        'sharedPref Data: $userID, $userFirstName, $userLastName, $userProfilePic , $parentId');
     setState(() {
       isLoading = false;
     });
@@ -300,26 +303,35 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           contentPadding: EdgeInsets.zero,
                           dense: true,
                         ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
                         // available jobs list
-                        // ListTile(
-                        //   onTap: () => Navigator.of(context).push(
-                        //     MaterialPageRoute(
-                        //       builder: (context) => AvailableJobs(),
-                        //     ),
-                        //   ),
-                        //   leading: SvgPicture.asset('assets/images/jobs.svg'),
-                        //   title: Text(
-                        //     'Available Jobs',
-                        //     style: GoogleFonts.syne(
-                        //       fontSize: 16,
-                        //       fontWeight: FontWeight.w500,
-                        //       color: black,
-                        //     ),
-                        //   ),
-                        //   visualDensity: VisualDensity.compact,
-                        //   contentPadding: EdgeInsets.zero,
-                        //   dense: true,
-                        // ),
+                        ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    RequestRideFromFleetActive(
+                                  parentID: parentId!,
+                                  userFleetId: userID.toString(),
+                                ),
+                              ),
+                            );
+                          },
+                          leading: SvgPicture.asset('assets/images/jobs.svg'),
+                          title: Text(
+                            'Request a Bike',
+                            style: GoogleFonts.syne(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: black,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                        ),
                         // notification list
                         SizedBox(
                           height: 12.h,

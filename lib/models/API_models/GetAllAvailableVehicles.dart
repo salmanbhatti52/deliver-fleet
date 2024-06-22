@@ -68,9 +68,14 @@ class GetAllAvailableVehicles {
 
   factory GetAllAvailableVehicles.fromJson(Map<String, dynamic> json) {
     return GetAllAvailableVehicles(
-      vehicles: GetAllVehicalsModel.fromJson(
-          json["vehicles"] ?? GetAllVehicalsModel()),
-      users_fleet: LogInModel.fromJson(json["users_fleet"] ?? Map()),
+      vehicles:
+          json["vehicles"] != null && json["vehicles"] is Map<String, dynamic>
+              ? GetAllVehicalsModel.fromJson(json["vehicles"])
+              : null, // Only attempt to parse if it's a Map
+      users_fleet: json["users_fleet"] != null &&
+              json["users_fleet"] is Map<String, dynamic>
+          ? LogInModel.fromJson(json["users_fleet"])
+          : null, // Apply similar logic for users_fleet
       users_fleet_vehicles_id: json["users_fleet_vehicles_id"] ?? -1,
       users_fleet_id: json["users_fleet_id"] ?? -1,
       vehicles_id: json["vehicles_id"] ?? -1,
@@ -91,7 +96,4 @@ class GetAllAvailableVehicles {
       status: json["status"] ?? '',
     );
   }
-//
-
-//
 }

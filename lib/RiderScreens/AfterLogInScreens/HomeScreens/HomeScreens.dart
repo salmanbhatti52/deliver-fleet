@@ -80,6 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
         if (getUserProfileResponse!.data != null) {
           await sharedPreferences.setString(
               'userProfilePic', getUserProfileResponse!.data!.profile_pic!);
+          await sharedPreferences.setString(
+              'parentId', getUserProfileResponse!.data!.parent_id.toString());
         }
       }
     } else {

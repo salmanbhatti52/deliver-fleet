@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:deliver_partner/Constants/buttonConatinerWithBorder.dart';
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/FleetScreens/FleetHomeScreens/VehicleScreens/DriverDetailsFleet/ContactHistoryOfDriverFleet.dart';
@@ -172,8 +175,10 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                                           size: 50.0,
                                         )
                                       : GestureDetector(
-                                          onTap: () =>
-                                              acceptVehicleRequest(context),
+                                          onTap: () async {
+                                            await acceptVehicleRequestData();
+                                            // acceptVehicleRequest(context);
+                                          },
                                           child: buttonContainer(
                                               context, 'Accept'),
                                         ),
@@ -448,68 +453,68 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
-              // padding: EdgeInsets.all(6),
-              width: double.infinity,
-              height: 50.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: lightGrey,
-                  width: 1,
-                ),
-                color: white,
-              ),
-              child: TabBar(
-                unselectedLabelColor: black,
-                labelColor: white,
-                controller: tabController,
-                indicator: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xffFF6302),
-                      Color(0xffFBC403),
-                    ],
-                    begin: Alignment.centerRight,
-                    end: Alignment.centerLeft,
-                  ),
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ),
-                ),
-                tabs: [
-                  Text(
-                    'Contact History',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.syne(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    'Reviews',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.syne(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: tabController,
-                physics: const BouncingScrollPhysics(),
-                children: const [
-                  ContactHistoryOfDriverFleet(),
-                  ReviewsOfDrivers(),
-                  // RidesTabOnFleetDetails(),
-                  // ContactHistoryTabOnFleetDetails(),
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+            //   // padding: EdgeInsets.all(6),
+            //   width: double.infinity,
+            //   height: 50.h,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(10),
+            //     border: Border.all(
+            //       color: lightGrey,
+            //       width: 1,
+            //     ),
+            //     color: white,
+            //   ),
+            //   child: TabBar(
+            //     unselectedLabelColor: black,
+            //     labelColor: white,
+            //     controller: tabController,
+            //     indicator: BoxDecoration(
+            //       gradient: const LinearGradient(
+            //         colors: [
+            //           Color(0xffFF6302),
+            //           Color(0xffFBC403),
+            //         ],
+            //         begin: Alignment.centerRight,
+            //         end: Alignment.centerLeft,
+            //       ),
+            //       borderRadius: BorderRadius.circular(
+            //         10,
+            //       ),
+            //     ),
+            //     tabs: [
+            //       Text(
+            //         'Contact History',
+            //         textAlign: TextAlign.center,
+            //         style: GoogleFonts.syne(
+            //           fontWeight: FontWeight.w400,
+            //           fontSize: 14,
+            //         ),
+            //       ),
+            //       Text(
+            //         'Reviews',
+            //         textAlign: TextAlign.center,
+            //         style: GoogleFonts.syne(
+            //           fontWeight: FontWeight.w400,
+            //           fontSize: 14,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // Expanded(
+            //   child: TabBarView(
+            //     controller: tabController,
+            //     physics: const BouncingScrollPhysics(),
+            //     children: const [
+            //       ContactHistoryOfDriverFleet(),
+            //       ReviewsOfDrivers(),
+            //       // RidesTabOnFleetDetails(),
+            //       // ContactHistoryTabOnFleetDetails(),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -517,6 +522,53 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
   }
 
   ApiServices get service => GetIt.I<ApiServices>();
+  acceptVehicleRequestData() async {
+    setState(() {
+      isAccepting = true;
+    });
+    var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
+    var url = Uri.parse(
+        'https://cs.deliverbygfl.com/api/accept_request_fleet_vehicle');
+
+    var body = {
+      "users_fleet_vehicles_assigned_id": widget
+          .getFleetVehicleRequestByIdModel.users_fleet_vehicles_assigned_id
+          .toString(),
+      "users_fleet_id": widget
+          .getFleetVehicleRequestByIdModel.users_fleet!.users_fleet_id
+          .toString(),
+      "users_fleet_vehicles_id": widget
+          .getFleetVehicleRequestByIdModel.users_fleet_vehicles_id
+          .toString(),
+    };
+
+    var req = http.Request('POST', url);
+    req.headers.addAll(headersList);
+    req.body = json.encode(body);
+
+    var res = await req.send();
+    final resBody = await res.stream.bytesToString();
+    var decodedBody = json.decode(resBody);
+
+    if (res.statusCode == 200 && decodedBody['status'] == 'success') {
+      showToastSuccess(
+          'The request has been successfully accepted', FToast().init(context),
+          seconds: 1);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const BottomNavBarFleet(),
+        ),
+      );
+      print(resBody);
+    } else {
+      showToastSuccess('${decodedBody['message']}', FToast().init(context),
+          seconds: 1);
+      print(res.reasonPhrase);
+    }
+    setState(() {
+      isAccepting = false;
+    });
+  }
 
   /// accept vehicle request method:
   bool isAccepting = false;
@@ -538,7 +590,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
           .getFleetVehicleRequestByIdModel.users_fleet_vehicles_id
           .toString(),
     };
-
+    print("acceptData: $acceptData");
     acceptResponse = await service.acceptVehicleRequest(acceptData);
     if (acceptResponse!.status!.toLowerCase() == 'success') {
       showToastSuccess(
@@ -551,6 +603,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
       );
     } else {
       showToastError(acceptResponse!.message!, FToast().init(context));
+      print("acceptResponse!.message!: ${acceptResponse!.message!}");
     }
     setState(() {
       isAccepting = false;
