@@ -696,6 +696,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   email: emailController.text,
                   userType: widget.userType,
                   // deviceID: widget.deviceID,
+                  parentId: fleetCodeController.text
                 ),
               ),
             );

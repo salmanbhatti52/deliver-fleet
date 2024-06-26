@@ -22,8 +22,9 @@ class VerifyDrivingLicenseManually extends StatefulWidget {
   final String? email;
   final String userType;
   final String? deviceID;
+  final String? parentId;
   const VerifyDrivingLicenseManually(
-      {super.key, required this.email, required this.userType, this.deviceID});
+      {super.key, required this.email, required this.userType, this.parentId, this.deviceID});
 
   @override
   State<VerifyDrivingLicenseManually> createState() =>
@@ -510,6 +511,7 @@ class _VerifyDrivingLicenseManuallyState
               profileImage: imagePath != null ? imagePath! : null,
               userType: widget.userType,
               deviceID: widget.deviceID,
+              parentId: widget.parentId,
             ),
           ),
         );

@@ -72,14 +72,16 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
                 padding: const EdgeInsets.only(right: 15),
                 child: _currentIndex == 0
                     ? GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const AddVehicleFleetFirstScreen(
-                                  userType: 'Fleet',
-                                ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const AddVehicleFleetFirstScreen(
+                                userType: 'Fleet',
                               ),
                             ),
+                          );
+                        },
                         child: const Icon(Icons.add, color: Colors.black))
                     : _currentIndex == 1
                         ? GestureDetector(
@@ -215,34 +217,34 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
                 fontSize: screenWidth > 600 ? 22 : 12,
               ),
             ),
-            Positioned(
-              top: -40.h,
-              child: GestureDetector(
-                // onTap: () {
-                //   Navigator.of(
-                //     context,
-                //   ).push(
-                //     MaterialPageRoute(
-                //       builder: (context) => DashBoard(),
-                //     ),
-                //   );
-                // },
-                child: Container(
-                  width: 60.w,
-                  height: 60.h,
-                  decoration: const BoxDecoration(
-                    color: grey,
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    'assets/images/nav-button.svg',
-                    fit: BoxFit.scaleDown,
-                    width: 25.w,
-                    height: 25.h,
-                  ),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   top: -40.h,
+            //   child: GestureDetector(
+            //     // onTap: () {
+            //     //   Navigator.of(
+            //     //     context,
+            //     //   ).push(
+            //     //     MaterialPageRoute(
+            //     //       builder: (context) => DashBoard(),
+            //     //     ),
+            //     //   );
+            //     // },
+            //     child: Container(
+            //       width: 60.w,
+            //       height: 60.h,
+            //       decoration: const BoxDecoration(
+            //         color: grey,
+            //         shape: BoxShape.circle,
+            //       ),
+            //       child: SvgPicture.asset(
+            //         'assets/images/nav-button.svg',
+            //         fit: BoxFit.scaleDown,
+            //         width: 25.w,
+            //         height: 25.h,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

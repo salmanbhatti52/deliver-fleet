@@ -260,7 +260,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
   CheckPhoneNumberModel checkPhoneNumberModel = CheckPhoneNumberModel();
 
-  checkNumber() async {
+  Future<void> checkNumber() async {
     setState(() {
       isLoading = true;
     });
@@ -748,6 +748,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                           const BottomNavBar(),
                                     ),
                                     (Route<dynamic> route) => false);
+                              } else {
+                                showToastSuccess(
+                                  '${checkPhoneNumberModel.message}',
+                                  FToast().init(context),
+                                  seconds: 3,
+                                );
                               }
                             } else if (otpController.text == "123456" &&
                                 widget.userType == "Fleet") {

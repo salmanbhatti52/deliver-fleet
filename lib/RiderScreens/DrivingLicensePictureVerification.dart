@@ -33,11 +33,13 @@ class DrivingLicensePictureVerification extends StatefulWidget {
   File? profileImage;
   final String userType;
   final String? deviceID;
+  final String? parentId;
 
   DrivingLicensePictureVerification(
       {super.key,
       required this.licenseMap,
       this.profileImage,
+      this.parentId,
       required this.userType,
       this.deviceID});
 

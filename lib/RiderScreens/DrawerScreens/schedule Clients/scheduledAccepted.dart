@@ -67,6 +67,7 @@ class _ScheduledAcceptedState extends State<ScheduledAccepted> {
       });
     } else {
       print(res.reasonPhrase);
+      acceptedScheduledRides = acceptedScheduledRidesFromJson(resBody);
     }
   }
 

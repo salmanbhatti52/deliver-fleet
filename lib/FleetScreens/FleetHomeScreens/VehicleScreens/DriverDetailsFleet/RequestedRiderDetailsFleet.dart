@@ -1,6 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
 import 'package:deliver_partner/Constants/buttonConatinerWithBorder.dart';
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
 import 'package:deliver_partner/FleetScreens/FleetHomeScreens/VehicleScreens/DriverDetailsFleet/ContactHistoryOfDriverFleet.dart';
@@ -17,7 +18,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../Constants/Colors.dart';
 import '../../../../Constants/back-arrow-with-container.dart';
 import '../../../../Constants/buttonContainer.dart';

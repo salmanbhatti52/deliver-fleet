@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:deliver_partner/ChooseAppScreen.dart';
 import 'package:deliver_partner/Constants/Colors.dart';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
@@ -9,6 +11,7 @@ import 'package:deliver_partner/RiderScreens/DrawerScreens/ContactSupport.dart';
 import 'package:deliver_partner/RiderScreens/VerifyDrivingLisecnseManually.dart';
 import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:deliver_partner/models/APIModelsFleet/GetAllSupportAdmin.dart';
+import 'package:deliver_partner/models/API_models/switchUserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,6 +59,37 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
     });
 
     sharedPrefs();
+  }
+
+  SwitchUserModel switchUserModel = SwitchUserModel();
+  switchUserType() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+
+    userID = (sharedPreferences.getInt('userID') ?? -1);
+    var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
+    var url = Uri.parse('https://cs.deliverbygfl.com/api/switch_user_type');
+
+    var body = {
+      "users_fleet_id": "$userID",
+      "user_type": "Fleet",
+      "switch_to": "Rider"
+    };
+
+    var req = http.Request('POST', url);
+    req.headers.addAll(headersList);
+    req.body = json.encode(body);
+
+    var res = await req.send();
+    final resBody = await res.stream.bytesToString();
+
+    if (res.statusCode == 200) {
+      switchUserModel = switchUserModelFromJson(resBody);
+
+      print(resBody);
+    } else {
+      print(res.reasonPhrase);
+      switchUserModel = switchUserModelFromJson(resBody);
+    }
   }
 
   sharedPrefs() async {
@@ -242,30 +276,37 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
 
                 // loyalty points
                 ListTile(
-                  onTap: () {
-                    if (getUserProfileResponse!.data!.driving_license_no ==
-                            '' ||
-                        getUserProfileResponse!
-                                .data!.driving_license_no!.isEmpty &&
-                            getUserProfileResponse!.data!.address!.isEmpty &&
-                            getUserProfileResponse!.data!.user_type ==
-                                'Fleet') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => VerifyDrivingLicenseManually(
-                              email: userEmail, userType: 'Fleet'),
-                        ),
-                      );
+                  onTap: () async {
+                    await switchUserType();
+                    if (switchUserModel.status == "success") {
+                      if (getUserProfileResponse!.data!.driving_license_no ==
+                              '' ||
+                          getUserProfileResponse!
+                                  .data!.driving_license_no!.isEmpty &&
+                              getUserProfileResponse!.data!.address!.isEmpty &&
+                              getUserProfileResponse!.data!.user_type ==
+                                  'Fleet') {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => VerifyDrivingLicenseManually(
+                                email: userEmail, userType: 'Fleet'),
+                          ),
+                        );
+                      } else {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const BottomNavBar(),
+                          ),
+                        );
+                        showToastSuccess(
+                            'Switching to rider', FToast().init(context),
+                            seconds: 1);
+                      }
                     } else {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavBar(),
-                        ),
-                      );
+                      showToastSuccess(
+                          '${switchUserModel.message}', FToast().init(context),
+                          seconds: 2);
                     }
-                    showToastSuccess(
-                        'Switching to rider', FToast().init(context),
-                        seconds: 1);
                     // Navigator.of(context).pushReplacement(
                     //   MaterialPageRoute(
                     //     builder: (context) => getUserProfileResponse!

@@ -1,4 +1,5 @@
 import 'package:deliver_partner/FleetScreens/BottomNavBarFleet.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
 import 'package:deliver_partner/widgets/apiButton.dart';
 import 'package:flutter/material.dart';
@@ -506,11 +507,19 @@ class _AddVehicleFleetSecondScreenState
       if (addVehicleResponse!.status!.toLowerCase() == 'success') {
         showToastSuccess(
             'Your bike is added successfully', FToast().init(context));
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const BottomNavBarFleet(),
-          ),
-        );
+        if (widget.userType == "Fleet") {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBarFleet(),
+            ),
+          );
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBar(),
+            ),
+          );
+        }
       } else {
         print(
             'error${addVehicleResponse!.status}   ${addVehicleResponse!.message!}');
