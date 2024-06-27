@@ -49,10 +49,10 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late TextEditingController firstNameController;
-  late TextEditingController lastNameController;
-  late TextEditingController phoneNumberController;
-  late TextEditingController addressController;
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   bool saveInfo = false;
 
@@ -90,10 +90,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     } else {}
 
     saveInfo = false;
-    firstNameController = TextEditingController();
-    addressController = TextEditingController();
-    lastNameController = TextEditingController();
-    phoneNumberController = TextEditingController();
+    firstNameController.text = widget.firstName;
+    addressController.text = widget.address;
+    lastNameController.text = widget.lastName;
+    phoneNumberController.text = widget.phoneNumber;
 
     setState(() {
       isPageLoading = false;

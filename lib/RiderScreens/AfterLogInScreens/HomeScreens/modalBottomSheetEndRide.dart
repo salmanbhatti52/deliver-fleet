@@ -86,9 +86,11 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
         jsonResponse = jsonDecode(response.body);
 
         var bookingsFleet = jsonResponse!['data']['bookings_fleet'];
-
+        var data1 = updateBookingStatusModel.data!.bookingsFleet[0].status;
+        print("data1: $data1");
         ride0 =
             bookingsFleet.length > 0 ? bookingsFleet[0]['status'] ?? "" : "";
+        print("ride0: $ride0");
         ride1 =
             bookingsFleet.length > 1 ? bookingsFleet[1]['status'] ?? "" : "";
         ride2 =
@@ -812,6 +814,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                           currentIndex =
                                               index; // Update currentIndex when page changes
                                         });
+                                        await updateBookingStatus();
                                       },
                                       scrollDirection: Axis.horizontal,
                                       controller: pageController,
@@ -1307,33 +1310,83 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                                       4 &&
                                                                   ride4 ==
                                                                       "Completed")
-                                                          ? const SizedBox
-                                                              .shrink() // Don't show the button if the condition is true
+                                                          ? Container(
+                                                              width: 170.w,
+                                                              height: 51.h,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                gradient:
+                                                                    const LinearGradient(
+                                                                  colors: [
+                                                                    Color(
+                                                                        0xff9e9e9e),
+                                                                    Color(
+                                                                        0xff9e9e9e),
+                                                                  ],
+                                                                  begin: Alignment
+                                                                      .centerRight,
+                                                                  end: Alignment
+                                                                      .centerLeft,
+                                                                ),
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  'RIDE ENDED',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .syne(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color:
+                                                                        white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ) // Don't show the button if the condition is true
                                                           : GestureDetector(
                                                               onTap: () {
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
-                                                                    builder: (context) => EndRidePAge(
-                                                                        bookingModel: widget
-                                                                            .bookingModel
-                                                                            .bookings_id
-                                                                            .toString(),
-                                                                        bookingDestinationsList: jsonResponse!["data"]
-                                                                            [
-                                                                            'status'],
-                                                                        bookingDestinations: widget
-                                                                            .bookingDestinations[
-                                                                                index]
-                                                                            .bookings_destinations_id
-                                                                            .toString(),
-                                                                        bookingDestinID: widget
-                                                                            .bookingDestinations[index]
-                                                                            .bookings_destinations_id
-                                                                            .toString(),
-                                                                            destinTotalCharges: updateBookingStatusModel.data!.bookingsFleet[index].bookingsDestinations.destinTotalCharges,
-                                                                            // destingID: updateBookingStatusModel.data!.bookingsFleet[index].bookingsDestinations.destinTotalCharges,
-                                                                            ),
+                                                                    builder:
+                                                                        (context) =>
+                                                                            EndRidePAge(
+                                                                      bookingModel: widget
+                                                                          .bookingModel
+                                                                          .bookings_id
+                                                                          .toString(),
+                                                                      bookingDestinationsList:
+                                                                          jsonResponse!["data"]
+                                                                              [
+                                                                              'status'],
+                                                                      bookingDestinations: widget
+                                                                          .bookingDestinations[
+                                                                              index]
+                                                                          .bookings_destinations_id
+                                                                          .toString(),
+                                                                      bookingDestinID: widget
+                                                                          .bookingDestinations[
+                                                                              index]
+                                                                          .bookings_destinations_id
+                                                                          .toString(),
+                                                                      destinTotalCharges: updateBookingStatusModel
+                                                                          .data!
+                                                                          .bookingsFleet[
+                                                                              index]
+                                                                          .bookingsDestinations
+                                                                          .destinTotalCharges,
+                                                                      // destingID: updateBookingStatusModel.data!.bookingsFleet[index].bookingsDestinations.destinTotalCharges,
+                                                                    ),
                                                                   ),
                                                                 );
                                                                 // startRide(context);

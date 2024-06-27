@@ -270,39 +270,39 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
             ),
           ),
           SizedBox(height: 5.h),
-          widget.customersModel.delivery_type == 'Single'
-              ? const SizedBox()
-              : Container(
-                  color: Colors.transparent,
-                  height: 12.h,
-                  width: 100.w,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 7),
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        controller: nextPageScrollController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: widget.bookingDestinationsList!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(width: 3.w),
-                              Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: currentIndex == 0 ? orange : grey,
-                                ),
-                              ),
-                              SizedBox(width: 3.w)
-                            ],
-                          );
-                        }),
-                  ),
-                ),
+          // widget.customersModel.delivery_type == 'Single'
+          //     ? const SizedBox()
+          //     : Container(
+          //         color: Colors.transparent,
+          //         height: 12.h,
+          //         width: 100.w,
+          //         child: Padding(
+          //           padding: const EdgeInsets.only(left: 7),
+          //           child: ListView.builder(
+          //               scrollDirection: Axis.horizontal,
+          //               controller: nextPageScrollController,
+          //               itemCount: widget.bookingDestinationsList!.length,
+
+          //               itemBuilder: (BuildContext context, int index) {
+          //                 return Row(
+          //                   mainAxisAlignment: MainAxisAlignment.center,
+          //                   crossAxisAlignment: CrossAxisAlignment.center,
+          //                   children: [
+          //                     SizedBox(width: 3.w),
+          //                     Container(
+          //                       width: 10,
+          //                       height: 10,
+          //                       decoration: BoxDecoration(
+          //                         shape: BoxShape.circle,
+          //                         color: currentIndex == 0 ? orange : grey,
+          //                       ),
+          //                     ),
+          //                     SizedBox(width: 3.w)
+          //                   ],
+          //                 );
+          //               }),
+          //         ),
+          //       ),
           // Row(
           //   mainAxisAlignment:
           //   MainAxisAlignment.center,

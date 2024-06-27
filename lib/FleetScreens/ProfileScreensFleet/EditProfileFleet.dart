@@ -34,10 +34,10 @@ class EditProfileFleet extends StatefulWidget {
 }
 
 class _EditProfileFleetState extends State<EditProfileFleet> {
-  late TextEditingController firstNameController;
-  late TextEditingController lastNameController;
-  late TextEditingController phoneNumberController;
-  late TextEditingController addressController;
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   ApiServices get service => GetIt.I<ApiServices>();
 
@@ -73,13 +73,16 @@ class _EditProfileFleetState extends State<EditProfileFleet> {
         showToastSuccess('Loading user data', FToast().init(context),
             seconds: 1);
       }
+      firstNameController.text =
+          getUserProfileResponse!.data!.first_name.toString();
+      lastNameController.text =
+          getUserProfileResponse!.data!.last_name.toString();
+      addressController.text = getUserProfileResponse!.data!.address.toString();
+      phoneNumberController.text =
+          getUserProfileResponse!.data!.phone.toString();
     } else {
       showToastError(getUserProfileResponse!.message, FToast().init(context));
     }
-    firstNameController = TextEditingController();
-    lastNameController = TextEditingController();
-    addressController = TextEditingController();
-    phoneNumberController = TextEditingController();
 
     setState(() {
       isPageLoading = false;

@@ -213,7 +213,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
         ),
         height: widget.bookingModel.scheduled == "Yes"
             ? MediaQuery.sizeOf(context).height * 0.685
-            : MediaQuery.sizeOf(context).height * 0.645,
+            : MediaQuery.sizeOf(context).height * 0.669,
         child: isLoading
             ? spinKitRotatingCircle
             : Column(
