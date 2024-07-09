@@ -1,3 +1,5 @@
+import 'package:deliver_partner/FleetScreens/CalenderScreens/addFleetVehicleTask.dart';
+import 'package:deliver_partner/FleetScreens/CalenderScreens/taskMainScreen.dart';
 import 'package:deliver_partner/FleetScreens/ProfileScreensFleet/EditProfileFleet.dart';
 import 'package:deliver_partner/FleetScreens/ProfileScreensFleet/ProfileScreenFleet.dart';
 import 'package:deliver_partner/widgets/DrawerWidgetFleet.dart';
@@ -30,7 +32,7 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
     const FleetScreen(
       userType: 'Fleet',
     ),
-    const CalenderScreenFleet(),
+    const MainTaskScreen(),
     const SpendingScreenFleet(),
     const ProfileScreenFleet(),
   ];
@@ -85,6 +87,14 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
                         child: const Icon(Icons.add, color: Colors.black))
                     : _currentIndex == 1
                         ? GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AddFleetVehicleTask(),
+                                ),
+                              );
+                            },
                             child: addContainer(context),
                           )
                         : null,
@@ -128,7 +138,7 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
                 )
               : _currentIndex == 1
                   ? Text(
-                      'Calender',
+                      'Tasks',
                       style: GoogleFonts.syne(
                         fontSize: screenWidth > 600 ? 32 : 22,
                         fontWeight: FontWeight.w700,
@@ -172,13 +182,16 @@ class _BottomNavBarFleetState extends State<BottomNavBarFleet> {
                   label: 'Fleet',
                 ),
                 BottomNavigationBarItem(
-                  icon: SvgPicture.asset('assets/images/fleet-calender.svg'),
+                  icon: SvgPicture.asset(
+                    'assets/images/car.svg',
+                    colorFilter: const ColorFilter.mode(grey, BlendMode.srcIn),
+                  ),
                   activeIcon: SvgPicture.asset(
-                    'assets/images/fleet-calender.svg',
+                    'assets/images/car.svg',
                     colorFilter:
                         const ColorFilter.mode(orange, BlendMode.srcIn),
                   ),
-                  label: 'Calender',
+                  label: 'Tasks',
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset('assets/images/fleet-spending.svg'),

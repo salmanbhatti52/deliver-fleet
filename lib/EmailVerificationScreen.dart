@@ -1095,39 +1095,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                   print(
                                       "badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
                                   if (widget.userType == "Rider") {
-                                    if (checkPhoneNumberModel
-                                            .data?.usersFleetId!
-                                            .toInt() !=
-                                        null) {
-                                      if (checkPhoneNumberModel
-                                              .data?.badgeVerified ==
-                                          "No") {
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RideDetailsAfterLogInScreen(
-                                                    userType: 'Rider',
-                                                    userFleetId:
-                                                        fleetId.toString(),
-                                                    parentID:
-                                                        parentId.toString(),
-                                                  ),
-                                                ),
-                                                (route) => false);
-                                        showToastSuccess(
-                                          'Badge is not verified. PLease add vehicle or request a bike to verify badge.',
-                                          FToast().init(context),
-                                          seconds: 3,
-                                        );
-                                      } else {
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        Navigator.of(context)
+                                     Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
@@ -1135,8 +1103,49 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                                 ),
                                                 (Route<dynamic> route) =>
                                                     false);
-                                      }
-                                    }
+                                    // if (checkPhoneNumberModel
+                                    //         .data?.usersFleetId!
+                                    //         .toInt() !=
+                                    //     null) {
+                                    //   if (checkPhoneNumberModel
+                                    //           .data?.badgeVerified ==
+                                    //       "No") {
+                                    //     setState(() {
+                                    //       isLoading = false;
+                                    //     });
+                                    //     // Navigator.of(context)
+                                    //     //     .pushAndRemoveUntil(
+                                    //     //         MaterialPageRoute(
+                                    //     //           builder: (context) =>
+                                    //     //               RideDetailsAfterLogInScreen(
+                                    //     //             userType: 'Rider',
+                                    //     //             userFleetId:
+                                    //     //                 fleetId.toString(),
+                                    //     //             parentID:
+                                    //     //                 parentId.toString(),
+                                    //     //           ),
+                                    //     //         ),
+                                    //     //         (route) => false);
+                                    //     // showToastSuccess(
+                                    //     //   'Badge is not verified. PLease add vehicle or request a bike to verify badge.',
+                                    //     //   FToast().init(context),
+                                    //     //   seconds: 3,
+                                    //     // );
+                                    //   } 
+                                    //   else {
+                                    //     setState(() {
+                                    //       isLoading = false;
+                                    //     });
+                                    //     Navigator.of(context)
+                                    //         .pushAndRemoveUntil(
+                                    //             MaterialPageRoute(
+                                    //               builder: (context) =>
+                                    //                   const BottomNavBar(),
+                                    //             ),
+                                    //             (Route<dynamic> route) =>
+                                    //                 false);
+                                    //   }
+                                    // }
                                   } else {
                                     if (widget.userType == "Fleet") {
                                       setState(() {

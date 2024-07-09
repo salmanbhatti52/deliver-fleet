@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:deliver_partner/utilities/showToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -52,34 +53,40 @@ class TextFormFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      onSaved: onSaved,
-      onTap: onTap,
-      onChanged: onChanged,
-      readOnly: readOnly ?? false,
-      validator: validator,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(
-          length,
+    return GestureDetector(
+      onTap: () {
+        // This will hide the keyboard when tapping outside of the text field
+        FocusScope.of(context).unfocus();
+      },
+      child: TextFormField(
+        onSaved: onSaved,
+        onTap: onTap,
+        onChanged: onChanged,
+        readOnly: readOnly ?? false,
+        validator: validator,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(
+            length,
+          ),
+        ],
+        keyboardType: textInputType,
+        controller: controller,
+        style: enterTextStyle,
+        cursorColor: cursorColor,
+        obscureText: obscureText ?? false,
+        autofillHints: [autofillHints ?? ''],
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: filledColor,
+          suffixIcon: suffixIcon,
+          border: border,
+          hintText: hintText,
+          contentPadding: contentPadding,
+          hintStyle: hintStyle,
+          focusedBorder: focusedBorder,
+          enabledBorder: enableBorder,
+          prefixIcon: prefixIcon,
         ),
-      ],
-      keyboardType: textInputType,
-      controller: controller,
-      style: enterTextStyle,
-      cursorColor: cursorColor,
-      obscureText: obscureText ?? false,
-      autofillHints: [autofillHints ?? ''],
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: lightGrey,
-        suffixIcon: suffixIcon,
-        border: border,
-        hintText: hintText,
-        contentPadding: contentPadding,
-        hintStyle: hintStyle,
-        focusedBorder: focusedBorder,
-        enabledBorder: enableBorder,
-        prefixIcon: prefixIcon,
       ),
     );
   }
