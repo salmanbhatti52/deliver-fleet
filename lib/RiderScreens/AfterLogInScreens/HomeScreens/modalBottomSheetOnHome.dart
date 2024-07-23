@@ -100,7 +100,7 @@ class _ModalBottomSheetOnHomeState extends State<ModalBottomSheetOnHome> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(60),
                       child: Image.network(
-                        'https://cs.deliverbygfl.com/public/${widget.customersModel.users_customers!.profile_pic}',
+                        'https://deliverbygfl.com/public/${widget.customersModel.users_customers!.profile_pic}',
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {

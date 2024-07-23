@@ -37,8 +37,7 @@ class _AddFleetVehicleTaskState extends State<AddFleetVehicleTask> {
             .now()) // Format today's date if formattedDate is null or empty
         : formattedDate!;
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url =
-        Uri.parse('https://cs.deliverbygfl.com/api/add_fleet_vehicle_task');
+    var url = Uri.parse('https://deliverbygfl.com/api/add_fleet_vehicle_task');
 
     var body = {
       "users_fleet_vehicles_id": "$vehicleId",
@@ -77,8 +76,7 @@ class _AddFleetVehicleTaskState extends State<AddFleetVehicleTask> {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url =
-        Uri.parse('https://cs.deliverbygfl.com/api/get_fleet_vehicles_all');
+    var url = Uri.parse('https://deliverbygfl.com/api/get_fleet_vehicles_all');
 
     var body = {"users_fleet_id": "$userID"};
 

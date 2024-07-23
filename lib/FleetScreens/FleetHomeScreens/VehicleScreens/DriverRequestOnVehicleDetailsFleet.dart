@@ -130,7 +130,7 @@ class _DriverRequestOnVehicleDetailsFleetState
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    'https://cs.deliverbygfl.com/public/${item.users_fleet!.profile_pic}',
+                                    'https://deliverbygfl.com/public/${item.users_fleet!.profile_pic}',
                                     fit: BoxFit.cover,
                                     errorBuilder: (BuildContext context,
                                         Object exception,

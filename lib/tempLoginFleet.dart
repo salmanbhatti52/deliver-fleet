@@ -563,7 +563,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                           ),
                                         );
                                         // const url =
-                                        //     'https://cs.deliverbygfl.com/users/terms_and_conditions';
+                                        //     'https://deliverbygfl.com/users/terms_and_conditions';
                                         // if (await canLaunch(url)) {
                                         //   await launch(url);
                                         // } else {
@@ -596,7 +596,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
                                           ),
                                         );
                                         // const url =
-                                        //     'https://cs.deliverbygfl.com/users/privacy_policy';
+                                        //     'https://deliverbygfl.com/users/privacy_policy';
                                         // if (await canLaunch(url)) {
                                         //   await launch(url);
                                         // } else {
@@ -818,7 +818,7 @@ class _TempLoginFleetState extends State<TempLoginFleet> {
   bool isRegistering = false;
   APIResponse<TempLoginModel>? loginResponse;
   Future<void> fleeTempLogin(BuildContext context) async {
-    String apiUrl = "https://cs.deliverbygfl.com/api/email_login_fleet";
+    String apiUrl = "https://deliverbygfl.com/api/email_login_fleet";
     setState(() {
       isRegistering = true;
     });

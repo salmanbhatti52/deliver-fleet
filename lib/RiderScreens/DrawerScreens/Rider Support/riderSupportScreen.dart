@@ -40,7 +40,7 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
   GetSupportAdminModel getSupportAdminModel = GetSupportAdminModel();
   bool load = false;
   getSupportAdmin() async {
-    String apiUrl = "https://cs.deliverbygfl.com/api/get_admin_list";
+    String apiUrl = "https://deliverbygfl.com/api/get_admin_list";
     print("apiUrl: $apiUrl");
     setState(() {
       load = true;
@@ -92,7 +92,7 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
 
-    String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
+    String apiUrl = "https://deliverbygfl.com/api/user_chat_live";
     print("apiUrlStartChat: $apiUrl");
     print("userID: $userID");
     print("OtherUserId: ${getAdminId.toString()}");
@@ -128,7 +128,7 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
 
-    String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
+    String apiUrl = "https://deliverbygfl.com/api/user_chat_live";
     print("apiUrlGetChat: $apiUrl");
     print("userID: $userID");
     print("OtherUserId: $getAdminId");
@@ -175,7 +175,7 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
       sharedPreferences = await SharedPreferences.getInstance();
       userID = (sharedPreferences.getInt('userID') ?? -1);
 
-      String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
+      String apiUrl = "https://deliverbygfl.com/api/user_chat_live";
       print("apiUrlSend: $apiUrl");
       print("userID: $userID");
       print("OtherUserId: $getAdminId");
@@ -234,7 +234,7 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
 
   Future<List<ChatCategory>> fetchChatCategories() async {
     final response = await http
-        .get(Uri.parse('https://cs.deliverbygfl.com/api/get_chat_categories'));
+        .get(Uri.parse('https://deliverbygfl.com/api/get_chat_categories'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body)['data'];
@@ -338,7 +338,7 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
                                       "assets/images/user-profile.png",
                                     ),
                                     image: NetworkImage(
-                                      'https://cs.deliverbygfl.com/public/$getAdminImage',
+                                      'https://deliverbygfl.com/public/$getAdminImage',
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -556,7 +556,7 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
                                                         "assets/images/user-profile.png",
                                                       ),
                                                       image: NetworkImage(
-                                                        'https://cs.deliverbygfl.com/public/$getAdminImage',
+                                                        'https://deliverbygfl.com/public/$getAdminImage',
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),

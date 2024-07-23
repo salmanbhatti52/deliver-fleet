@@ -276,7 +276,7 @@ class _InviteRidersState extends State<InviteRiders> {
       'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
       'Content-Type': 'application/json'
     };
-    var url = Uri.parse('https://cs.deliverbygfl.com/api/invite_rider');
+    var url = Uri.parse('https://deliverbygfl.com/api/invite_rider');
 
     var body = {
       "users_fleet_id": widget.users_fleet_id,

@@ -219,7 +219,7 @@ class _LogInScreenState extends State<LogInScreen> {
       print("phone ${countryCode!.dialCode + contactNumberController.text}");
       print("latitude $currentLat");
       print("longitude $currentLng");
-      String apiUrl = "https://cs.deliverbygfl.com/api/check_phone_exist_fleet";
+      String apiUrl = "https://deliverbygfl.com/api/check_phone_exist_fleet";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {

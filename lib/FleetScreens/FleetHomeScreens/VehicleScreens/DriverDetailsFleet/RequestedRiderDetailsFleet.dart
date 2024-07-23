@@ -119,7 +119,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      'https://cs.deliverbygfl.com/public/${widget.getFleetVehicleRequestByIdModel.users_fleet!.profile_pic}',
+                      'https://deliverbygfl.com/public/${widget.getFleetVehicleRequestByIdModel.users_fleet!.profile_pic}',
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
@@ -380,7 +380,7 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(65),
                       child: Image.network(
-                        'https://cs.deliverbygfl.com/public/${widget.requestVehicleById.image!}',
+                        'https://deliverbygfl.com/public/${widget.requestVehicleById.image!}',
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {
@@ -527,8 +527,8 @@ class _RequestedRiderDetailsFleetState extends State<RequestedRiderDetailsFleet>
       isAccepting = true;
     });
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url = Uri.parse(
-        'https://cs.deliverbygfl.com/api/accept_request_fleet_vehicle');
+    var url =
+        Uri.parse('https://deliverbygfl.com/api/accept_request_fleet_vehicle');
 
     var body = {
       "users_fleet_vehicles_assigned_id": widget

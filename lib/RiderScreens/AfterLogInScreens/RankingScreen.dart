@@ -85,7 +85,35 @@ class _RankingScreenState extends State<RankingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isLargeScreen = screenSize.width > 600;
     return Scaffold(
+      drawer: const DrawerWidget(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: 70,
+        leading: Builder(builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 20),
+            child: GestureDetector(
+                onTap: () => Scaffold.of(context).openDrawer(),
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                )),
+          );
+        }),
+        centerTitle: true,
+        title: Text(
+          'My Reviews',
+          style: GoogleFonts.syne(
+            fontSize: isLargeScreen ? 32 : 22,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+        ),
+      ),
       backgroundColor: white,
       body: isRankingLoading
           ? spinKitRotatingCircle
@@ -227,7 +255,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                                                 .profile_pic !=
                                                             null
                                                         ? Image.network(
-                                                            'https://cs.deliverbygfl.com/public/${getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic}',
+                                                            'https://deliverbygfl.com/public/${getAllRatingsList![index].bookings_fleet!.bookings!.users_customers!.profile_pic}',
                                                             fit: BoxFit.cover,
                                                             errorBuilder:
                                                                 (BuildContext

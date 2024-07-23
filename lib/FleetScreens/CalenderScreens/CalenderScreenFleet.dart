@@ -36,7 +36,7 @@ class _CalenderScreenFleetState extends State<CalenderScreenFleet> {
       'Content-Type': 'application/json'
     };
     var url = Uri.parse(
-        'https://cs.deliverbygfl.com/api/get_fleet_vehicles_taks_upcoming');
+        'https://deliverbygfl.com/api/get_fleet_vehicles_taks_upcoming');
 
     var body = {"users_fleet_id": "$userID"};
 
@@ -95,76 +95,90 @@ class _CalenderScreenFleetState extends State<CalenderScreenFleet> {
                   //     color: black,
                   //   ),
                   // ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: fleetTaskUpcomingModel.data!.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        String formattedDate = DateFormat('d MMMM yyyy').format(
-                            DateTime.parse(fleetTaskUpcomingModel
-                                .data![index].dateAdded
-                                .toString()));
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 12.h),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 9.h, horizontal: 11.w),
-                          height: 72.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: grey,
-                              width: 1,
+                  fleetTaskUpcomingModel.data != null
+                      ? Expanded(
+                          child: ListView.builder(
+                            itemCount: fleetTaskUpcomingModel.data!.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              String formattedDate = DateFormat('d MMMM yyyy')
+                                  .format(DateTime.parse(fleetTaskUpcomingModel
+                                      .data![index].dateAdded
+                                      .toString()));
+                              return Container(
+                                margin: EdgeInsets.symmetric(vertical: 12.h),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 9.h, horizontal: 11.w),
+                                height: 72.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: grey,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/images/oil-change.svg'),
+                                        SizedBox(
+                                          width: 7.w,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              fleetTaskUpcomingModel
+                                                  .data![index].name,
+                                              style: GoogleFonts.syne(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w700,
+                                                color: black,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.h,
+                                            ),
+                                            Text(
+                                              formattedDate,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w500,
+                                                color: grey,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: grey,
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : const Center(
+                          child: Text(
+                            "No Task Found",
+                            style: TextStyle(
+                              fontSize: 20.0, // Sets the font size to 20
+                              color: Colors.red, // Sets the text color to red
+                              fontWeight:
+                                  FontWeight.bold, // Makes the text bold
                             ),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  SvgPicture.asset(
-                                      'assets/images/oil-change.svg'),
-                                  SizedBox(
-                                    width: 7.w,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        fleetTaskUpcomingModel
-                                            .data![index].name,
-                                        style: GoogleFonts.syne(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w700,
-                                          color: black,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      Text(
-                                        formattedDate,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w500,
-                                          color: grey,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: grey,
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                        ),
                 ],
               ),
             ),

@@ -4,66 +4,71 @@
 
 import 'dart:convert';
 
-FleetTaskUpcomingModel fleetTaskUpcomingModelFromJson(String str) => FleetTaskUpcomingModel.fromJson(json.decode(str));
+FleetTaskUpcomingModel fleetTaskUpcomingModelFromJson(String str) =>
+    FleetTaskUpcomingModel.fromJson(json.decode(str));
 
-String fleetTaskUpcomingModelToJson(FleetTaskUpcomingModel data) => json.encode(data.toJson());
+String fleetTaskUpcomingModelToJson(FleetTaskUpcomingModel data) =>
+    json.encode(data.toJson());
 
 class FleetTaskUpcomingModel {
-    String? status;
-    List<Datum>? data;
+  String? status;
+  List<Datum>? data;
 
-    FleetTaskUpcomingModel({
-         this.status,
-         this.data,
-    });
+  FleetTaskUpcomingModel({
+    this.status,
+    this.data,
+  });
 
-    factory FleetTaskUpcomingModel.fromJson(Map<String, dynamic> json) => FleetTaskUpcomingModel(
+  factory FleetTaskUpcomingModel.fromJson(Map<String, dynamic> json) =>
+      FleetTaskUpcomingModel(
         status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-    );
+        data: json["data"] != null
+            ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x)))
+            : null,
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-    };
+      };
 }
 
 class Datum {
-    int usersFleetVehiclesTasksId;
-    int usersFleetVehiclesId;
-    int usersFleetId;
-    String name;
-    String description;
-    DateTime taskDate;
-    dynamic companyName;
-    dynamic location;
-    dynamic totalAmount;
-    dynamic invoice;
-    DateTime dateAdded;
-    dynamic dateModified;
-    String status;
-    UsersFleetVehicles usersFleetVehicles;
-    UsersFleet usersFleet;
+  int usersFleetVehiclesTasksId;
+  int usersFleetVehiclesId;
+  int usersFleetId;
+  String name;
+  String description;
+  DateTime taskDate;
+  dynamic companyName;
+  dynamic location;
+  dynamic totalAmount;
+  dynamic invoice;
+  DateTime dateAdded;
+  dynamic dateModified;
+  String status;
+  UsersFleetVehicles usersFleetVehicles;
+  UsersFleet usersFleet;
 
-    Datum({
-        required this.usersFleetVehiclesTasksId,
-        required this.usersFleetVehiclesId,
-        required this.usersFleetId,
-        required this.name,
-        required this.description,
-        required this.taskDate,
-        required this.companyName,
-        required this.location,
-        required this.totalAmount,
-        required this.invoice,
-        required this.dateAdded,
-        required this.dateModified,
-        required this.status,
-        required this.usersFleetVehicles,
-        required this.usersFleet,
-    });
+  Datum({
+    required this.usersFleetVehiclesTasksId,
+    required this.usersFleetVehiclesId,
+    required this.usersFleetId,
+    required this.name,
+    required this.description,
+    required this.taskDate,
+    required this.companyName,
+    required this.location,
+    required this.totalAmount,
+    required this.invoice,
+    required this.dateAdded,
+    required this.dateModified,
+    required this.status,
+    required this.usersFleetVehicles,
+    required this.usersFleet,
+  });
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         usersFleetVehiclesTasksId: json["users_fleet_vehicles_tasks_id"],
         usersFleetVehiclesId: json["users_fleet_vehicles_id"],
         usersFleetId: json["users_fleet_id"],
@@ -77,17 +82,19 @@ class Datum {
         dateAdded: DateTime.parse(json["date_added"]),
         dateModified: json["date_modified"],
         status: json["status"],
-        usersFleetVehicles: UsersFleetVehicles.fromJson(json["users_fleet_vehicles"]),
+        usersFleetVehicles:
+            UsersFleetVehicles.fromJson(json["users_fleet_vehicles"]),
         usersFleet: UsersFleet.fromJson(json["users_fleet"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "users_fleet_vehicles_tasks_id": usersFleetVehiclesTasksId,
         "users_fleet_vehicles_id": usersFleetVehiclesId,
         "users_fleet_id": usersFleetId,
         "name": name,
         "description": description,
-        "task_date": "${taskDate.year.toString().padLeft(4, '0')}-${taskDate.month.toString().padLeft(2, '0')}-${taskDate.day.toString().padLeft(2, '0')}",
+        "task_date":
+            "${taskDate.year.toString().padLeft(4, '0')}-${taskDate.month.toString().padLeft(2, '0')}-${taskDate.day.toString().padLeft(2, '0')}",
         "company_name": companyName,
         "location": location,
         "total_amount": totalAmount,
@@ -97,99 +104,99 @@ class Datum {
         "status": status,
         "users_fleet_vehicles": usersFleetVehicles.toJson(),
         "users_fleet": usersFleet.toJson(),
-    };
+      };
 }
 
 class UsersFleet {
-    int usersFleetId;
-    String oneSignalId;
-    String userType;
-    String walletAmount;
-    String availability;
-    String onlineStatus;
-    dynamic lastActivity;
-    String bookingsRatings;
-    int parentId;
-    String userTypeSwitched;
-    String firstName;
-    String lastName;
-    String phone;
-    String email;
-    dynamic password;
-    String profilePic;
-    String address;
-    String nationalIdentificationNo;
-    String drivingLicenseNo;
-    String drivingLicenseFrontImage;
-    String drivingLicenseBackImage;
-    dynamic cacCertificate;
-    String latitude;
-    String longitude;
-    dynamic googleAccessToken;
-    String accountType;
-    String socialAccountType;
-    String badgeVerified;
-    String notifications;
-    String messages;
-    String updateProfile;
-    dynamic verifyEmailOtp;
-    dynamic verifyEmailOtpCreatedAt;
-    dynamic emailVerified;
-    dynamic verifyPhoneOtp;
-    dynamic verifyPhoneOtpCreatedAt;
-    dynamic phoneVerified;
-    dynamic forgotPwdOtp;
-    dynamic forgotPwdOtpCreatedAt;
-    DateTime dateAdded;
-    DateTime dateModified;
-    String status;
+  int usersFleetId;
+  String oneSignalId;
+  String userType;
+  String walletAmount;
+  String availability;
+  String onlineStatus;
+  dynamic lastActivity;
+  String bookingsRatings;
+  int parentId;
+  String userTypeSwitched;
+  String firstName;
+  String lastName;
+  String phone;
+  String email;
+  dynamic password;
+  String profilePic;
+  String address;
+  String nationalIdentificationNo;
+  String drivingLicenseNo;
+  String drivingLicenseFrontImage;
+  String drivingLicenseBackImage;
+  dynamic cacCertificate;
+  String latitude;
+  String longitude;
+  dynamic googleAccessToken;
+  String accountType;
+  String socialAccountType;
+  String badgeVerified;
+  String notifications;
+  String messages;
+  String updateProfile;
+  dynamic verifyEmailOtp;
+  dynamic verifyEmailOtpCreatedAt;
+  dynamic emailVerified;
+  dynamic verifyPhoneOtp;
+  dynamic verifyPhoneOtpCreatedAt;
+  dynamic phoneVerified;
+  dynamic forgotPwdOtp;
+  dynamic forgotPwdOtpCreatedAt;
+  DateTime dateAdded;
+  DateTime dateModified;
+  String status;
 
-    UsersFleet({
-        required this.usersFleetId,
-        required this.oneSignalId,
-        required this.userType,
-        required this.walletAmount,
-        required this.availability,
-        required this.onlineStatus,
-        required this.lastActivity,
-        required this.bookingsRatings,
-        required this.parentId,
-        required this.userTypeSwitched,
-        required this.firstName,
-        required this.lastName,
-        required this.phone,
-        required this.email,
-        required this.password,
-        required this.profilePic,
-        required this.address,
-        required this.nationalIdentificationNo,
-        required this.drivingLicenseNo,
-        required this.drivingLicenseFrontImage,
-        required this.drivingLicenseBackImage,
-        required this.cacCertificate,
-        required this.latitude,
-        required this.longitude,
-        required this.googleAccessToken,
-        required this.accountType,
-        required this.socialAccountType,
-        required this.badgeVerified,
-        required this.notifications,
-        required this.messages,
-        required this.updateProfile,
-        required this.verifyEmailOtp,
-        required this.verifyEmailOtpCreatedAt,
-        required this.emailVerified,
-        required this.verifyPhoneOtp,
-        required this.verifyPhoneOtpCreatedAt,
-        required this.phoneVerified,
-        required this.forgotPwdOtp,
-        required this.forgotPwdOtpCreatedAt,
-        required this.dateAdded,
-        required this.dateModified,
-        required this.status,
-    });
+  UsersFleet({
+    required this.usersFleetId,
+    required this.oneSignalId,
+    required this.userType,
+    required this.walletAmount,
+    required this.availability,
+    required this.onlineStatus,
+    required this.lastActivity,
+    required this.bookingsRatings,
+    required this.parentId,
+    required this.userTypeSwitched,
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+    required this.email,
+    required this.password,
+    required this.profilePic,
+    required this.address,
+    required this.nationalIdentificationNo,
+    required this.drivingLicenseNo,
+    required this.drivingLicenseFrontImage,
+    required this.drivingLicenseBackImage,
+    required this.cacCertificate,
+    required this.latitude,
+    required this.longitude,
+    required this.googleAccessToken,
+    required this.accountType,
+    required this.socialAccountType,
+    required this.badgeVerified,
+    required this.notifications,
+    required this.messages,
+    required this.updateProfile,
+    required this.verifyEmailOtp,
+    required this.verifyEmailOtpCreatedAt,
+    required this.emailVerified,
+    required this.verifyPhoneOtp,
+    required this.verifyPhoneOtpCreatedAt,
+    required this.phoneVerified,
+    required this.forgotPwdOtp,
+    required this.forgotPwdOtpCreatedAt,
+    required this.dateAdded,
+    required this.dateModified,
+    required this.status,
+  });
 
-    factory UsersFleet.fromJson(Map<String, dynamic> json) => UsersFleet(
+  factory UsersFleet.fromJson(Map<String, dynamic> json) => UsersFleet(
         usersFleetId: json["users_fleet_id"],
         oneSignalId: json["one_signal_id"],
         userType: json["user_type"],
@@ -232,9 +239,9 @@ class UsersFleet {
         dateAdded: DateTime.parse(json["date_added"]),
         dateModified: DateTime.parse(json["date_modified"]),
         status: json["status"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "users_fleet_id": usersFleetId,
         "one_signal_id": oneSignalId,
         "user_type": userType,
@@ -277,51 +284,52 @@ class UsersFleet {
         "date_added": dateAdded.toIso8601String(),
         "date_modified": dateModified.toIso8601String(),
         "status": status,
-    };
+      };
 }
 
 class UsersFleetVehicles {
-    int usersFleetVehiclesId;
-    int usersFleetId;
-    int vehiclesId;
-    String model;
-    String color;
-    String vehicleRegistrationNo;
-    String vehicleIdentificationNo;
-    DateTime vehicleLicenseExpiryDate;
-    DateTime vehicleInsuranceExpiryDate;
-    DateTime rwcExpiryDate;
-    dynamic cost;
-    String manufactureYear;
-    String image;
-    DateTime dateAdded;
-    dynamic dateModified;
-    String status;
-    UsersFleet usersFleet;
-    Vehicles vehicles;
+  int usersFleetVehiclesId;
+  int usersFleetId;
+  int vehiclesId;
+  String model;
+  String color;
+  String vehicleRegistrationNo;
+  String vehicleIdentificationNo;
+  DateTime vehicleLicenseExpiryDate;
+  DateTime vehicleInsuranceExpiryDate;
+  DateTime rwcExpiryDate;
+  dynamic cost;
+  String manufactureYear;
+  String image;
+  DateTime dateAdded;
+  dynamic dateModified;
+  String status;
+  UsersFleet usersFleet;
+  Vehicles vehicles;
 
-    UsersFleetVehicles({
-        required this.usersFleetVehiclesId,
-        required this.usersFleetId,
-        required this.vehiclesId,
-        required this.model,
-        required this.color,
-        required this.vehicleRegistrationNo,
-        required this.vehicleIdentificationNo,
-        required this.vehicleLicenseExpiryDate,
-        required this.vehicleInsuranceExpiryDate,
-        required this.rwcExpiryDate,
-        required this.cost,
-        required this.manufactureYear,
-        required this.image,
-        required this.dateAdded,
-        required this.dateModified,
-        required this.status,
-        required this.usersFleet,
-        required this.vehicles,
-    });
+  UsersFleetVehicles({
+    required this.usersFleetVehiclesId,
+    required this.usersFleetId,
+    required this.vehiclesId,
+    required this.model,
+    required this.color,
+    required this.vehicleRegistrationNo,
+    required this.vehicleIdentificationNo,
+    required this.vehicleLicenseExpiryDate,
+    required this.vehicleInsuranceExpiryDate,
+    required this.rwcExpiryDate,
+    required this.cost,
+    required this.manufactureYear,
+    required this.image,
+    required this.dateAdded,
+    required this.dateModified,
+    required this.status,
+    required this.usersFleet,
+    required this.vehicles,
+  });
 
-    factory UsersFleetVehicles.fromJson(Map<String, dynamic> json) => UsersFleetVehicles(
+  factory UsersFleetVehicles.fromJson(Map<String, dynamic> json) =>
+      UsersFleetVehicles(
         usersFleetVehiclesId: json["users_fleet_vehicles_id"],
         usersFleetId: json["users_fleet_id"],
         vehiclesId: json["vehicles_id"],
@@ -329,8 +337,10 @@ class UsersFleetVehicles {
         color: json["color"],
         vehicleRegistrationNo: json["vehicle_registration_no"],
         vehicleIdentificationNo: json["vehicle_identification_no"],
-        vehicleLicenseExpiryDate: DateTime.parse(json["vehicle_license_expiry_date"]),
-        vehicleInsuranceExpiryDate: DateTime.parse(json["vehicle_insurance_expiry_date"]),
+        vehicleLicenseExpiryDate:
+            DateTime.parse(json["vehicle_license_expiry_date"]),
+        vehicleInsuranceExpiryDate:
+            DateTime.parse(json["vehicle_insurance_expiry_date"]),
         rwcExpiryDate: DateTime.parse(json["rwc_expiry_date"]),
         cost: json["cost"],
         manufactureYear: json["manufacture_year"],
@@ -340,9 +350,9 @@ class UsersFleetVehicles {
         status: json["status"],
         usersFleet: UsersFleet.fromJson(json["users_fleet"]),
         vehicles: Vehicles.fromJson(json["vehicles"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "users_fleet_vehicles_id": usersFleetVehiclesId,
         "users_fleet_id": usersFleetId,
         "vehicles_id": vehiclesId,
@@ -350,9 +360,12 @@ class UsersFleetVehicles {
         "color": color,
         "vehicle_registration_no": vehicleRegistrationNo,
         "vehicle_identification_no": vehicleIdentificationNo,
-        "vehicle_license_expiry_date": "${vehicleLicenseExpiryDate.year.toString().padLeft(4, '0')}-${vehicleLicenseExpiryDate.month.toString().padLeft(2, '0')}-${vehicleLicenseExpiryDate.day.toString().padLeft(2, '0')}",
-        "vehicle_insurance_expiry_date": "${vehicleInsuranceExpiryDate.year.toString().padLeft(4, '0')}-${vehicleInsuranceExpiryDate.month.toString().padLeft(2, '0')}-${vehicleInsuranceExpiryDate.day.toString().padLeft(2, '0')}",
-        "rwc_expiry_date": "${rwcExpiryDate.year.toString().padLeft(4, '0')}-${rwcExpiryDate.month.toString().padLeft(2, '0')}-${rwcExpiryDate.day.toString().padLeft(2, '0')}",
+        "vehicle_license_expiry_date":
+            "${vehicleLicenseExpiryDate.year.toString().padLeft(4, '0')}-${vehicleLicenseExpiryDate.month.toString().padLeft(2, '0')}-${vehicleLicenseExpiryDate.day.toString().padLeft(2, '0')}",
+        "vehicle_insurance_expiry_date":
+            "${vehicleInsuranceExpiryDate.year.toString().padLeft(4, '0')}-${vehicleInsuranceExpiryDate.month.toString().padLeft(2, '0')}-${vehicleInsuranceExpiryDate.day.toString().padLeft(2, '0')}",
+        "rwc_expiry_date":
+            "${rwcExpiryDate.year.toString().padLeft(4, '0')}-${rwcExpiryDate.month.toString().padLeft(2, '0')}-${rwcExpiryDate.day.toString().padLeft(2, '0')}",
         "cost": cost,
         "manufacture_year": manufactureYear,
         "image": image,
@@ -361,39 +374,39 @@ class UsersFleetVehicles {
         "status": status,
         "users_fleet": usersFleet.toJson(),
         "vehicles": vehicles.toJson(),
-    };
+      };
 }
 
 class Vehicles {
-    int vehiclesId;
-    int serviceTypesId;
-    String name;
-    String weightAllowed;
-    String numberOfParcels;
-    String amount;
-    String tollgateAmount;
-    String cancellationAmount;
-    DateTime dateAdded;
-    DateTime dateModified;
-    String status;
-    ServiceTypes serviceTypes;
+  int vehiclesId;
+  int serviceTypesId;
+  String name;
+  String weightAllowed;
+  String numberOfParcels;
+  String amount;
+  String tollgateAmount;
+  String cancellationAmount;
+  DateTime dateAdded;
+  DateTime dateModified;
+  String status;
+  ServiceTypes serviceTypes;
 
-    Vehicles({
-        required this.vehiclesId,
-        required this.serviceTypesId,
-        required this.name,
-        required this.weightAllowed,
-        required this.numberOfParcels,
-        required this.amount,
-        required this.tollgateAmount,
-        required this.cancellationAmount,
-        required this.dateAdded,
-        required this.dateModified,
-        required this.status,
-        required this.serviceTypes,
-    });
+  Vehicles({
+    required this.vehiclesId,
+    required this.serviceTypesId,
+    required this.name,
+    required this.weightAllowed,
+    required this.numberOfParcels,
+    required this.amount,
+    required this.tollgateAmount,
+    required this.cancellationAmount,
+    required this.dateAdded,
+    required this.dateModified,
+    required this.status,
+    required this.serviceTypes,
+  });
 
-    factory Vehicles.fromJson(Map<String, dynamic> json) => Vehicles(
+  factory Vehicles.fromJson(Map<String, dynamic> json) => Vehicles(
         vehiclesId: json["vehicles_id"],
         serviceTypesId: json["service_types_id"],
         name: json["name"],
@@ -406,9 +419,9 @@ class Vehicles {
         dateModified: DateTime.parse(json["date_modified"]),
         status: json["status"],
         serviceTypes: ServiceTypes.fromJson(json["service_types"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "vehicles_id": vehiclesId,
         "service_types_id": serviceTypesId,
         "name": name,
@@ -421,37 +434,37 @@ class Vehicles {
         "date_modified": dateModified.toIso8601String(),
         "status": status,
         "service_types": serviceTypes.toJson(),
-    };
+      };
 }
 
 class ServiceTypes {
-    int serviceTypesId;
-    String name;
-    DateTime dateAdded;
-    dynamic dateModified;
-    String status;
+  int serviceTypesId;
+  String name;
+  DateTime dateAdded;
+  dynamic dateModified;
+  String status;
 
-    ServiceTypes({
-        required this.serviceTypesId,
-        required this.name,
-        required this.dateAdded,
-        required this.dateModified,
-        required this.status,
-    });
+  ServiceTypes({
+    required this.serviceTypesId,
+    required this.name,
+    required this.dateAdded,
+    required this.dateModified,
+    required this.status,
+  });
 
-    factory ServiceTypes.fromJson(Map<String, dynamic> json) => ServiceTypes(
+  factory ServiceTypes.fromJson(Map<String, dynamic> json) => ServiceTypes(
         serviceTypesId: json["service_types_id"],
         name: json["name"],
         dateAdded: DateTime.parse(json["date_added"]),
         dateModified: json["date_modified"],
         status: json["status"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "service_types_id": serviceTypesId,
         "name": name,
         "date_added": dateAdded.toIso8601String(),
         "date_modified": dateModified,
         "status": status,
-    };
+      };
 }

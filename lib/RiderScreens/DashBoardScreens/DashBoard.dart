@@ -59,7 +59,7 @@ class _DashBoardState extends State<DashBoard>
 
     print("UserID $userID");
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url = Uri.parse('https://cs.deliverbygfl.com/api/get_earnings_fleet');
+    var url = Uri.parse('https://deliverbygfl.com/api/get_earnings_fleet');
 
     var body = {
       "users_fleet_id": userID,

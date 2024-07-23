@@ -154,7 +154,7 @@
 //                           child: ClipRRect(
 //                               borderRadius: BorderRadius.circular(25),
 //                               child: Image.network(
-//                                 'https://cs.deliverbygfl.com/public/${widget.adminPicture}',
+//                                 'https://deliverbygfl.com/public/${widget.adminPicture}',
 //                                 fit: BoxFit.cover,
 //                                 errorBuilder: (BuildContext context,
 //                                     Object exception, StackTrace? stackTrace) {
@@ -279,7 +279,7 @@
 //                                           borderRadius:
 //                                               BorderRadius.circular(25),
 //                                           child: Image.network(
-//                                             'https://cs.deliverbygfl.com/public/${widget.adminPicture}',
+//                                             'https://deliverbygfl.com/public/${widget.adminPicture}',
 //                                             fit: BoxFit.cover,
 //                                             errorBuilder: (BuildContext context,
 //                                                 Object exception,

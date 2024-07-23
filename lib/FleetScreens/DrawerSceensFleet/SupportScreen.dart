@@ -49,7 +49,7 @@ class _SupportScreenState extends State<SupportScreen> {
   GetSupportAdminModel getSupportAdminModel = GetSupportAdminModel();
   bool load = false;
   getSupportAdmin() async {
-    String apiUrl = "https://cs.deliverbygfl.com/api/get_admin_list";
+    String apiUrl = "https://deliverbygfl.com/api/get_admin_list";
     print("apiUrl: $apiUrl");
     setState(() {
       load = true;
@@ -101,7 +101,7 @@ class _SupportScreenState extends State<SupportScreen> {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
 
-    String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
+    String apiUrl = "https://deliverbygfl.com/api/user_chat_live";
     print("apiUrlStartChat: $apiUrl");
     print("userID: $userID");
     print("OtherUserId: ${getAdminId.toString()}");
@@ -137,7 +137,7 @@ class _SupportScreenState extends State<SupportScreen> {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
 
-    String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
+    String apiUrl = "https://deliverbygfl.com/api/user_chat_live";
     print("apiUrlGetChat: $apiUrl");
     print("userID: $userID");
     print("OtherUserId: $getAdminId");
@@ -184,7 +184,7 @@ class _SupportScreenState extends State<SupportScreen> {
       sharedPreferences = await SharedPreferences.getInstance();
       userID = (sharedPreferences.getInt('userID') ?? -1);
 
-      String apiUrl = "https://cs.deliverbygfl.com/api/user_chat_live";
+      String apiUrl = "https://deliverbygfl.com/api/user_chat_live";
       print("apiUrlSend: $apiUrl");
       print("userID: $userID");
       print("OtherUserId: $getAdminId");
@@ -328,7 +328,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                       "assets/images/user-profile.png",
                                     ),
                                     image: NetworkImage(
-                                      'https://cs.deliverbygfl.com/public/$getAdminImage',
+                                      'https://deliverbygfl.com/public/$getAdminImage',
                                     ),
                                     fit: BoxFit.cover,
                                   ),
@@ -546,7 +546,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                                         "assets/images/user-profile.png",
                                                       ),
                                                       image: NetworkImage(
-                                                        'https://cs.deliverbygfl.com/public/$getAdminImage',
+                                                        'https://deliverbygfl.com/public/$getAdminImage',
                                                       ),
                                                       fit: BoxFit.cover,
                                                     ),

@@ -62,7 +62,7 @@ class _InProgressEndRidePageState extends State<InProgressEndRidePage> {
       'Accept': '*/*',
     };
     var url = Uri.parse(
-        'https://cs.deliverbygfl.com/api/get_bookings_destinations_status');
+        'https://deliverbygfl.com/api/get_bookings_destinations_status');
 
     var req = http.Request('GET', url);
     req.headers.addAll(headersList);
@@ -735,7 +735,8 @@ class _InProgressEndRidePageState extends State<InProgressEndRidePage> {
 
     if (endRideResponse!.status!.toLowerCase() == "success") {
       if (endRideResponse!.data != null) {
-        showToastSuccess('Parcel delivered successfully ', FToast().init(context));
+        showToastSuccess(
+            'Parcel delivered successfully ', FToast().init(context));
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(

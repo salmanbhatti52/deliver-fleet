@@ -89,7 +89,7 @@ class _DriverDetailsFleetState extends State<DriverDetailsFleet>
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
-                      'https://cs.deliverbygfl.com/public/${widget.allRiders.profile_pic}',
+                      'https://deliverbygfl.com/public/${widget.allRiders.profile_pic}',
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
@@ -167,7 +167,7 @@ class _DriverDetailsFleetState extends State<DriverDetailsFleet>
             //               child: ClipRRect(
             //                 borderRadius: BorderRadius.circular(65),
             //                 child: Image.network(
-            //                   'https://cs.deliverbygfl.com/public/${widget.allRiders.users_fleet_vehicles!.image}',
+            //                   'https://deliverbygfl.com/public/${widget.allRiders.users_fleet_vehicles!.image}',
             //                   fit: BoxFit.cover,
             //                   errorBuilder: (BuildContext context,
             //                       Object exception, StackTrace? stackTrace) {

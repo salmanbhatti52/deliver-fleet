@@ -33,85 +33,112 @@ class _RidesScreenState extends State<RidesScreen>
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        backgroundColor: white,
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 22.w),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 20.h,
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(3, 5, 3, 5),
-                  width: double.infinity,
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      width: 1,
-                      color: lightGrey.withOpacity(0.5),
-                    ),
-                  ),
-                  child: TabBar(
-                    labelColor: white,
-                    controller: tabController,
-                    unselectedLabelColor: black,
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(19),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xffFF6302),
-                          Color(0xffFBC403),
-                        ],
-                        begin: Alignment.centerRight,
-                        end: Alignment.centerLeft,
+        final screenSize = MediaQuery.of(context).size;
+    final isLargeScreen =
+        screenSize.width > 600; 
+    return Scaffold(
+      drawer: const DrawerWidget(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: 70,
+        leading: Builder(builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 20),
+            child: GestureDetector(
+                onTap: () => Scaffold.of(context).openDrawer(),
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                )),
+          );
+        }),
+        centerTitle: true,
+        title: Text(
+                      'Rides',
+                      style: GoogleFonts.syne(
+                        fontSize: isLargeScreen ? 32 : 22,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
                       ),
                     ),
-                    tabs: [
-                      Text(
-                        'In Progress',
-                        style: GoogleFonts.syne(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        'Completed',
-                        style: GoogleFonts.syne(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-
-                        ),
-                      ),
-                      Text(
-                        'Cancelled',
-                        style: GoogleFonts.syne(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-
-                        ),
-                      ),
-                    ],
+      ),
+      backgroundColor: white,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 22.w),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20.h,
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(3, 5, 3, 5),
+                width: double.infinity,
+                height: 60.h,
+                decoration: BoxDecoration(
+                  color: white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    width: 1,
+                    color: lightGrey.withOpacity(0.5),
                   ),
                 ),
-                Expanded(
-                  child: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    controller: tabController,
-                    children: const [
-                      InProgressScreen(),
-                      CompletedRidesScreen(),
-                      CancelledRidesScreen(),
-                    ],
+                child: TabBar(
+                  labelColor: white,
+                  controller: tabController,
+                  unselectedLabelColor: black,
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(19),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xffFF6302),
+                        Color(0xffFBC403),
+                      ],
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
+                    ),
                   ),
+                  tabs: [
+                    Text(
+                      'In Progress',
+                      style: GoogleFonts.syne(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      'Completed',
+                      style: GoogleFonts.syne(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      'Cancelled',
+                      style: GoogleFonts.syne(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: tabController,
+                  children: const [
+                    InProgressScreen(),
+                    CompletedRidesScreen(),
+                    CancelledRidesScreen(),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }

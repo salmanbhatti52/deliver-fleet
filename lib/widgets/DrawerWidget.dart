@@ -73,7 +73,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   switchUserType() async {
     await sharedPrefs();
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url = Uri.parse('https://cs.deliverbygfl.com/api/switch_user_type');
+    var url = Uri.parse('https://deliverbygfl.com/api/switch_user_type');
 
     var body = {
       "users_fleet_id": "$userID",
@@ -102,8 +102,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   requestValidation() async {
     await sharedPrefs();
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url =
-        Uri.parse('https://cs.deliverbygfl.com/api/has_rider_fleet_vehicle');
+    var url = Uri.parse('https://deliverbygfl.com/api/has_rider_fleet_vehicle');
 
     var body = {"users_fleet_id": "$userID", "user_type": "Rider"};
 
@@ -171,8 +170,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
-                          'https://cs.deliverbygfl.com/public/${userProfilePic ?? ''}',
-                          // 'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                          'https://deliverbygfl.com/public/${userProfilePic ?? ''}',
+                          // 'https://deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
                           fit: BoxFit.cover,
                           errorBuilder: (BuildContext context, Object exception,
                               StackTrace? stackTrace) {

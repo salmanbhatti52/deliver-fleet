@@ -44,8 +44,8 @@ class _ScheduledNewRidesState extends State<ScheduledNewRides> {
       isLoading = true;
     });
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url = Uri.parse(
-        'https://cs.deliverbygfl.com/api/get_bookings_scheduled_fleet');
+    var url =
+        Uri.parse('https://deliverbygfl.com/api/get_bookings_scheduled_fleet');
 
     var body = {"users_fleet_id": "147"};
 
@@ -121,7 +121,7 @@ class _ScheduledNewRidesState extends State<ScheduledNewRides> {
                                                     .profilePic !=
                                                 null
                                             ? Image.network(
-                                                'https://cs.deliverbygfl.com/public/${itemList.bookings!.usersCustomers!.profilePic}',
+                                                'https://deliverbygfl.com/public/${itemList.bookings!.usersCustomers!.profilePic}',
                                                 fit: BoxFit.cover,
                                                 errorBuilder: (BuildContext
                                                         context,

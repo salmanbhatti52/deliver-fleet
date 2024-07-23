@@ -57,8 +57,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
   Map<String, dynamic>? jsonResponse;
   Future<void> updateBookingStatus() async {
     try {
-      String apiUrl =
-          "https://cs.deliverbygfl.com/api/get_updated_status_booking";
+      String apiUrl = "https://deliverbygfl.com/api/get_updated_status_booking";
       debugPrint("apiUrl: $apiUrl");
       debugPrint("currentBookingId: ${widget.bookingID}");
       final response = await http.post(
@@ -204,7 +203,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
                               child: Image.network(
-                                'https://cs.deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers.profilePic}',
+                                'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers.profilePic}',
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace? stackTrace) {

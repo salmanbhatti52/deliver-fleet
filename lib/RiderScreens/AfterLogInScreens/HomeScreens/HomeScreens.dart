@@ -66,9 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
     Map data = {
       "users_fleet_id": userID.toString(),
     };
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
 
     getUserProfileResponse = await service.getUserProfileAPI(data);
 
@@ -92,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (mounted) {
       setState(() {
         isLoading = false;
+        isHomeLoading = false;
         // gettingCategory = false;
       });
     }
@@ -141,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _getSystemDataList = [];
 
     if (_getAllSystemDataResponse.status!.toLowerCase() == 'success') {
+      await init2();
       if (_getAllSystemDataResponse.data != null) {
         _getSystemDataList!.addAll(_getAllSystemDataResponse.data!);
         for (GetAllSystemDataModel model in _getSystemDataList!) {
@@ -251,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(45),
                                     child: Image.network(
-                                      'https://cs.deliverbygfl.com/public/$profilePicture',
+                                      'https://deliverbygfl.com/public/$profilePicture',
                                       fit: BoxFit.cover,
                                       errorBuilder: (BuildContext context,
                                           Object exception,
@@ -472,9 +476,58 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentLocationIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isLargeScreen = screenSize.width > 600;
     LatLng initialPosition =
         LatLng(double.parse(userLatitude!), double.parse(userLongitude!));
     return Scaffold(
+      backgroundColor: Colors.white,
+      drawer: const DrawerWidget(),
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: GestureDetector(
+              child: const Icon(
+                Icons.refresh,
+                size: 30,
+                color: Colors.black,
+              ),
+              onTap: () async {
+                // await init();
+                isHomeLoading = true;
+
+                init();
+
+                init2();
+              },
+            ),
+          ),
+        ],
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: 70,
+        leading: Builder(builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 20),
+            child: GestureDetector(
+                onTap: () => Scaffold.of(context).openDrawer(),
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                )),
+          );
+        }),
+        centerTitle: true,
+        title: Text(
+          'Home',
+          style: GoogleFonts.syne(
+            fontSize: isLargeScreen ? 32 : 22,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: isHomeLoading
           ? spinKitRotatingCircle
           : Stack(

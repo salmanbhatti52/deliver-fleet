@@ -111,7 +111,7 @@ class _ReviewsOfSelectedDriverState extends State<ReviewsOfSelectedDriver> {
                                                   .profile_pic !=
                                               null
                                           ? Image.network(
-                                              'https://cs.deliverbygfl.com/public/${getAllRatingsList![index].bookings_fleet!.users_fleet!.profile_pic}',
+                                              'https://deliverbygfl.com/public/${getAllRatingsList![index].bookings_fleet!.users_fleet!.profile_pic}',
                                               fit: BoxFit.cover,
                                               errorBuilder:
                                                   (BuildContext context,

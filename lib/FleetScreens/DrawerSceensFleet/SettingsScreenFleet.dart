@@ -51,7 +51,7 @@ class _SettingsScreenFleetState extends State<SettingsScreenFleet> {
       SharedPreferences sharedPref = await SharedPreferences.getInstance();
       userID = sharedPref.getInt('userID')!;
       String apiUrl =
-          "https://cs.deliverbygfl.com/api/update_notification_switch_fleet";
+          "https://deliverbygfl.com/api/update_notification_switch_fleet";
       print("apiUrl: $apiUrl");
       print("userId: $userID");
       print("notifications: $notificationStatus");

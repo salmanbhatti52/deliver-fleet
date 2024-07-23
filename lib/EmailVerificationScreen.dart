@@ -265,8 +265,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       isLoading = true;
     });
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url =
-        Uri.parse('https://cs.deliverbygfl.com/api/check_phone_exist_fleet');
+    var url = Uri.parse('https://deliverbygfl.com/api/check_phone_exist_fleet');
     OneSignal.initialize(appID);
     String? token;
     token = OneSignal.User.pushSubscription.id;
@@ -308,13 +307,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     // setState(() {
     //   isLoading = true;
     // });
-    // print("apiUrl: https://cs.deliverbygfl.com/api/check_phone_exist_fleet");
+    // print("apiUrl: https://deliverbygfl.com/api/check_phone_exist_fleet");
     // print("one_signal_id ${widget.deviceID}");
     // print("user_type ${widget.userType}");
     // print("phone ${widget.phoneNumber}");
     // print("latitude ${widget.latitude}");
     // print("longitude ${widget.longitude}");
-    // String apiUrl = "https://cs.deliverbygfl.com/api/check_phone_exist_fleet";
+    // String apiUrl = "https://deliverbygfl.com/api/check_phone_exist_fleet";
     // print("contactNumber: ${widget.phoneNumber}");
     // final response = await http.post(
     //   Uri.parse(apiUrl),
@@ -1095,14 +1094,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                   print(
                                       "badgeVerified ${checkPhoneNumberModel.data?.badgeVerified}");
                                   if (widget.userType == "Rider") {
-                                     Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const BottomNavBar(),
-                                                ),
-                                                (Route<dynamic> route) =>
-                                                    false);
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const BottomNavBar(),
+                                        ),
+                                        (Route<dynamic> route) => false);
                                     // if (checkPhoneNumberModel
                                     //         .data?.usersFleetId!
                                     //         .toInt() !=
@@ -1131,7 +1128,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                     //     //   FToast().init(context),
                                     //     //   seconds: 3,
                                     //     // );
-                                    //   } 
+                                    //   }
                                     //   else {
                                     //     setState(() {
                                     //       isLoading = false;

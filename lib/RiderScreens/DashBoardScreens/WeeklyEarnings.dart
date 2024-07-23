@@ -41,7 +41,7 @@ class _WeeklyEarningsState extends State<WeeklyEarnings> {
       'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
       'Content-Type': 'application/json'
     };
-    var url = Uri.parse('https://cs.deliverbygfl.com/api/get_earnings_fleet');
+    var url = Uri.parse('https://deliverbygfl.com/api/get_earnings_fleet');
 
     var body = {
       "users_fleet_id": userID,

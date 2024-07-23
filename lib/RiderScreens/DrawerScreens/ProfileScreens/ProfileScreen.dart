@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child:
                               getUserProfileResponse!.data!.profile_pic != null
                                   ? Image.network(
-                                      'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic}',
+                                      'https://deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic}',
                                       fit: BoxFit.cover,
                                       errorBuilder: (BuildContext context,
                                           Object exception,
@@ -245,7 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     .driving_license_front_image !=
                                                 null
                                             ? Image.network(
-                                                'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.driving_license_front_image}',
+                                                'https://deliverbygfl.com/public/${getUserProfileResponse!.data!.driving_license_front_image}',
                                                 fit: BoxFit.cover,
                                                 errorBuilder: (BuildContext
                                                         context,
@@ -317,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     .driving_license_back_image !=
                                                 null
                                             ? Image.network(
-                                                'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.driving_license_back_image}',
+                                                'https://deliverbygfl.com/public/${getUserProfileResponse!.data!.driving_license_back_image}',
                                                 fit: BoxFit.cover,
                                                 errorBuilder: (BuildContext
                                                         context,

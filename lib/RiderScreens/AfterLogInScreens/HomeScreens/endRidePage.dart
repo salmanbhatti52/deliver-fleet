@@ -76,7 +76,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       'Accept': '*/*',
     };
     var url = Uri.parse(
-        'https://cs.deliverbygfl.com/api/get_bookings_destinations_status');
+        'https://deliverbygfl.com/api/get_bookings_destinations_status');
 
     var req = http.Request('GET', url);
     req.headers.addAll(headersList);
@@ -101,8 +101,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
   Map<String, dynamic>? jsonResponse;
   Future<void> updateBookingStatus() async {
     try {
-      String apiUrl =
-          "https://cs.deliverbygfl.com/api/get_updated_status_booking";
+      String apiUrl = "https://deliverbygfl.com/api/get_updated_status_booking";
       debugPrint("apiUrl: $apiUrl");
       debugPrint("currentBookingId: ${widget.bookingModel}");
       final response = await http.post(
@@ -137,8 +136,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       UpdateBookingTransactionModel();
   Future<void> updateBookingTransaction() async {
     try {
-      String apiUrl =
-          "https://cs.deliverbygfl.com/maintain_booking_transaction";
+      String apiUrl = "https://deliverbygfl.com/maintain_booking_transaction";
       debugPrint("apiUrl: $apiUrl");
       // debugPrint("bookings_id: ${widget.currentBookingId}");
       // debugPrint("payer_name: $firstName $lastName");
@@ -792,7 +790,8 @@ class _EndRidePAgeState extends State<EndRidePAge> {
         } else {
           Navigator.of(context).pop();
         }
-        showToastSuccess('Parcel delivered successfully ', FToast().init(context));
+        showToastSuccess(
+            'Parcel delivered successfully ', FToast().init(context));
       }
     } else {
       showToastSuccess(endRideResponse!.message!, FToast().init(context));

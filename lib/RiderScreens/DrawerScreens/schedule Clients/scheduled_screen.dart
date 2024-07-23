@@ -184,7 +184,7 @@ class _ScheduledScreenState extends State<ScheduledScreen> {
                                         .users_customers!.profile_pic !=
                                     null
                                 ? Image.network(
-                                    'https://cs.deliverbygfl.com/public/${widget.scheduledRiderModel.bookings!.users_customers!.profile_pic}',
+                                    'https://deliverbygfl.com/public/${widget.scheduledRiderModel.bookings!.users_customers!.profile_pic}',
                                     fit: BoxFit.cover,
                                     errorBuilder: (BuildContext context,
                                         Object exception,

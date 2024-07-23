@@ -126,7 +126,7 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                                       .users_customers!.profile_pic !=
                                   null
                               ? Image.network(
-                                  'https://cs.deliverbygfl.com/public/${widget.completedRidesModel.bookings!.users_customers!.profile_pic}',
+                                  'https://deliverbygfl.com/public/${widget.completedRidesModel.bookings!.users_customers!.profile_pic}',
                                   fit: BoxFit.cover,
                                   errorBuilder: (BuildContext context,
                                       Object exception,

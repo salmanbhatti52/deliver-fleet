@@ -1,3 +1,4 @@
+import 'package:deliver_partner/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -46,7 +47,7 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
     });
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
     userID = sharedPref.getInt('userID')!;
-    String apiUrl = "https://cs.deliverbygfl.com/api/update_rider_status";
+    String apiUrl = "https://deliverbygfl.com/api/update_rider_status";
     debugPrint("apiUrl: $apiUrl");
     debugPrint("userId: $userID");
     final response = await http.post(
@@ -109,8 +110,36 @@ class _DriverStatusScreenState extends State<DriverStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isLargeScreen = screenSize.width > 600;
     return Scaffold(
+      drawer: const DrawerWidget(),
       backgroundColor: white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: 70,
+        leading: Builder(builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 20),
+            child: GestureDetector(
+                onTap: () => Scaffold.of(context).openDrawer(),
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                )),
+          );
+        }),
+        centerTitle: true,
+        title: Text(
+          'Rider Status',
+          style: GoogleFonts.syne(
+            fontSize: isLargeScreen ? 32 : 22,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constarints) => ConstrainedBox(

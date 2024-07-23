@@ -47,8 +47,8 @@ class _AcceptedRidesState extends State<AcceptedRides> {
       isLoading = true;
     });
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url = Uri.parse(
-        'https://cs.deliverbygfl.com/api/get_bookings_accepted_fleet');
+    var url =
+        Uri.parse('https://deliverbygfl.com/api/get_bookings_accepted_fleet');
 
     var body = {"users_fleet_id": "$userID"};
 
@@ -144,7 +144,7 @@ class _AcceptedRidesState extends State<AcceptedRides> {
                                                 .profilePic !=
                                             null
                                         ? Image.network(
-                                            'https://cs.deliverbygfl.com/public/${itemList.bookings!.usersCustomers!.profilePic}',
+                                            'https://deliverbygfl.com/public/${itemList.bookings!.usersCustomers!.profilePic}',
                                             fit: BoxFit.cover,
                                             errorBuilder: (BuildContext context,
                                                 Object exception,

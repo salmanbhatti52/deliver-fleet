@@ -67,7 +67,7 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
 
     userID = (sharedPreferences.getInt('userID') ?? -1);
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url = Uri.parse('https://cs.deliverbygfl.com/api/switch_user_type');
+    var url = Uri.parse('https://deliverbygfl.com/api/switch_user_type');
 
     var body = {
       "users_fleet_id": "$userID",
@@ -166,8 +166,8 @@ class _DrawerWidgetFleetState extends State<DrawerWidgetFleet> {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  'https://cs.deliverbygfl.com/public/${userProfilePic ?? ''}',
-                  // 'https://cs.deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
+                  'https://deliverbygfl.com/public/${userProfilePic ?? ''}',
+                  // 'https://deliverbygfl.com/public/${getUserProfileResponse!.data!.profile_pic ?? ''}',
                   fit: BoxFit.cover,
                   errorBuilder: (BuildContext context, Object exception,
                       StackTrace? stackTrace) {

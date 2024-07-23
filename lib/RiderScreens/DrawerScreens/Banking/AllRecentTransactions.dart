@@ -36,8 +36,7 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
 
     print("UserID $userID");
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url =
-        Uri.parse('https://cs.deliverbygfl.com/api/get_transactions_fleet');
+    var url = Uri.parse('https://deliverbygfl.com/api/get_transactions_fleet');
 
     var body = {
       "users_fleet_id": userID,

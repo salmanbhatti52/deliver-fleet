@@ -535,7 +535,7 @@ class _TempRegisterRiderState extends State<TempRegisterRider> {
                                 TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                      // const url = 'https://cs.deliverbygfl.com/users/terms_and_conditions';
+                                      // const url = 'https://deliverbygfl.com/users/terms_and_conditions';
                                       // if (await canLaunch(url)) {
                                       //   await launch(url);
                                       // } else {
@@ -573,7 +573,7 @@ class _TempRegisterRiderState extends State<TempRegisterRider> {
                                               const TermsConditionsPage(),
                                         ),
                                       );
-                                      // const url = 'https://cs.deliverbygfl.com/users/privacy_policy';
+                                      // const url = 'https://deliverbygfl.com/users/privacy_policy';
                                       // if (await canLaunch(url)) {
                                       //   await launch(url);
                                       // } else {

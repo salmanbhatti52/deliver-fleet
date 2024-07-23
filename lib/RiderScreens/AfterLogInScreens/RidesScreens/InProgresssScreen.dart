@@ -53,8 +53,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
     setState(() {
       isPageLoading = true;
     });
-    String apiUrl =
-        "https://cs.deliverbygfl.com/api/get_bookings_ongoing_fleet";
+    String apiUrl = "https://deliverbygfl.com/api/get_bookings_ongoing_fleet";
     debugPrint("apiUrl: $apiUrl");
     debugPrint("userID: $userID");
     final response = await http.post(
@@ -250,7 +249,7 @@ class _InProgressScreenState extends State<InProgressScreen> {
                                                     .profilePic !=
                                                 null
                                             ? Image.network(
-                                                'https://cs.deliverbygfl.com/public/${listItem.bookings.usersCustomers.profilePic}',
+                                                'https://deliverbygfl.com/public/${listItem.bookings.usersCustomers.profilePic}',
                                                 fit: BoxFit.cover,
                                                 errorBuilder: (BuildContext
                                                         context,

@@ -16,14 +16,14 @@ class LinecChartWidget extends StatefulWidget {
   final String? fromDate0;
   final String? toDate0;
   final String? earningsBy;
-    final Function() loadData;
+  final Function() loadData;
 
   const LinecChartWidget(
       {super.key,
       this.month,
       this.fromDate0,
       this.toDate0,
-     required this.loadData,
+      required this.loadData,
       this.earningsBy});
 
   @override
@@ -38,7 +38,7 @@ class _LinecChartWidgetState extends State<LinecChartWidget> {
 
     print("UserID $userID");
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url = Uri.parse('https://cs.deliverbygfl.com/api/get_earnings_fleet');
+    var url = Uri.parse('https://deliverbygfl.com/api/get_earnings_fleet');
 
     var body = {
       "users_fleet_id": userID,

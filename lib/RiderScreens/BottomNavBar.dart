@@ -73,141 +73,141 @@ class _BottomNavBarState extends State<BottomNavBar> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        drawer: const DrawerWidget(),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leadingWidth: 70,
-          leading: Builder(builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 20),
-              child: GestureDetector(
-                  onTap: () => Scaffold.of(context).openDrawer(),
-                  child: const Icon(
-                    Icons.menu,
-                    color: Colors.black,
-                  )),
-            );
-          }),
-          centerTitle: true,
-          title: _currentIndex == 0
-              ? GestureDetector(
-                  onTap: () async {
-                    sharedPreferences = await SharedPreferences.getInstance();
-                    userID = (sharedPreferences.getInt('userID') ?? -1);
-                    // var status = await OneSignal.shared.getDeviceState();
-                    // // print("OneSignal Device ID: ${status!.deviceId}");
-                    // String? tokenId = status!.userId;
-                    // print("OneSignal User ID: $tokenId");
-                    var ID4 = OneSignal.User.pushSubscription.id;
-                    print("$ID4");
-                    final response = await sendNotification(
-                        [ID4!],
-                        "You got notification From Deliver Partner",
-                        "Deliver Partner");
-                    print(response.body);
-                    print(response.persistentConnection);
+        // backgroundColor: Colors.white,
+        // drawer: const DrawerWidget(),
+        // appBar: AppBar(
+        //   backgroundColor: Colors.white,
+        //   elevation: 0,
+        //   leadingWidth: 70,
+        //   leading: Builder(builder: (context) {
+        //     return Padding(
+        //       padding: const EdgeInsets.only(top: 8.0, left: 20),
+        //       child: GestureDetector(
+        //           onTap: () => Scaffold.of(context).openDrawer(),
+        //           child: const Icon(
+        //             Icons.menu,
+        //             color: Colors.black,
+        //           )),
+        //     );
+        //   }),
+        //   centerTitle: true,
+        //   title: _currentIndex == 0
+        //       ? GestureDetector(
+        //           onTap: () async {
+        //             sharedPreferences = await SharedPreferences.getInstance();
+        //             userID = (sharedPreferences.getInt('userID') ?? -1);
+        //             // var status = await OneSignal.shared.getDeviceState();
+        //             // // print("OneSignal Device ID: ${status!.deviceId}");
+        //             // String? tokenId = status!.userId;
+        //             // print("OneSignal User ID: $tokenId");
+        //             var ID4 = OneSignal.User.pushSubscription.id;
+        //             print("$ID4");
+        //             final response = await sendNotification(
+        //                 [ID4!],
+        //                 "You got notification From Deliver Partner",
+        //                 "Deliver Partner");
+        //             print(response.body);
+        //             print(response.persistentConnection);
 
-                    // var ID2 = OneSignal.User.pushSubscription.optedIn;
-                    // var ID3 = OneSignal.User.pushSubscription.token;
-                    // var externalId = await OneSignal.User.getExternalId();
-                    // var tags = await OneSignal.User.getTags();
-                    // print("tags: $tags");
-                    // print("Setting external user ID $userID");
-                    // if (userID == null) return;
-                    // OneSignal.loginWithJWT(userID.toString(), "$ID3");
-                    // OneSignal.User.addAlias("PartnerID", "$userID");
-                    // void observePushSubscription() {
-                    //   OneSignal.User.pushSubscription
-                    //       .addObserver((stateChanges) {
-                    //     print(
-                    //         'Subscription Status: ${stateChanges.current.optedIn}');
-                    //     print(OneSignal.User.pushSubscription.id);
-                    //     print(OneSignal.User.pushSubscription.token);
-                    //     print(stateChanges.current.jsonRepresentation());
-                    //   });
-                    // }
+        //             // var ID2 = OneSignal.User.pushSubscription.optedIn;
+        //             // var ID3 = OneSignal.User.pushSubscription.token;
+        //             // var externalId = await OneSignal.User.getExternalId();
+        //             // var tags = await OneSignal.User.getTags();
+        //             // print("tags: $tags");
+        //             // print("Setting external user ID $userID");
+        //             // if (userID == null) return;
+        //             // OneSignal.loginWithJWT(userID.toString(), "$ID3");
+        //             // OneSignal.User.addAlias("PartnerID", "$userID");
+        //             // void observePushSubscription() {
+        //             //   OneSignal.User.pushSubscription
+        //             //       .addObserver((stateChanges) {
+        //             //     print(
+        //             //         'Subscription Status: ${stateChanges.current.optedIn}');
+        //             //     print(OneSignal.User.pushSubscription.id);
+        //             //     print(OneSignal.User.pushSubscription.token);
+        //             //     print(stateChanges.current.jsonRepresentation());
+        //             //   });
+        //             // }
 
-                    // var url =
-                    //     Uri.parse('https://onesignal.com/api/v1/notifications');
-                    // var response = await http.post(
-                    //   url,
-                    //   headers: {
-                    //     'Content-Type': 'application/json; charset=utf-8',
-                    //     'Authorization':
-                    //         'Basic OGMxMWE2ZDgtNmRiNi00Y2VjLTk5MTMtZmE3Y2Q3YTQ3MDE2',
-                    //   },
-                    //   body: jsonEncode({
-                    //     'app_id': appID,
-                    //     'contents': {'en': 'English Message'},
-                    //     'headings': {'en': 'English Title'},
-                    //     'include_player_ids': [
-                    //       '96079b55-52c0-4797-bb43-86b8c413af5e'
-                    //     ], // Add the user's OneSignal ID here
-                    //   }),
-                    // );
+        //             // var url =
+        //             //     Uri.parse('https://onesignal.com/api/v1/notifications');
+        //             // var response = await http.post(
+        //             //   url,
+        //             //   headers: {
+        //             //     'Content-Type': 'application/json; charset=utf-8',
+        //             //     'Authorization':
+        //             //         'Basic OGMxMWE2ZDgtNmRiNi00Y2VjLTk5MTMtZmE3Y2Q3YTQ3MDE2',
+        //             //   },
+        //             //   body: jsonEncode({
+        //             //     'app_id': appID,
+        //             //     'contents': {'en': 'English Message'},
+        //             //     'headings': {'en': 'English Title'},
+        //             //     'include_player_ids': [
+        //             //       '96079b55-52c0-4797-bb43-86b8c413af5e'
+        //             //     ], // Add the user's OneSignal ID here
+        //             //   }),
+        //             // );
 
-                    // if (response.statusCode == 200) {
-                    //   print("Notification sent successfully");
-                    //   print("Notification Body ${response.body}");
-                    // } else {
-                    //   print("Failed to send notification: ${response.body}");
-                    // }
-                    // print("ID: $ID");
-                    // print("ID2: $ID2");
-                    // print("ID3: $ID3");
-                    // observePushSubscription();
-                    // print('External ID: $externalId');
-                    // print("Tapping");
-                    // OneSignal.User.pushSubscription.addObserver((state) {
-                    //   print('Subscription Status: ${state.current.optedIn}');
-                    //   print(OneSignal.User.pushSubscription.id);
-                    //   print(OneSignal.User.pushSubscription.token);
-                    //   print(state.current.jsonRepresentation());
-                    // });
+        //             // if (response.statusCode == 200) {
+        //             //   print("Notification sent successfully");
+        //             //   print("Notification Body ${response.body}");
+        //             // } else {
+        //             //   print("Failed to send notification: ${response.body}");
+        //             // }
+        //             // print("ID: $ID");
+        //             // print("ID2: $ID2");
+        //             // print("ID3: $ID3");
+        //             // observePushSubscription();
+        //             // print('External ID: $externalId');
+        //             // print("Tapping");
+        //             // OneSignal.User.pushSubscription.addObserver((state) {
+        //             //   print('Subscription Status: ${state.current.optedIn}');
+        //             //   print(OneSignal.User.pushSubscription.id);
+        //             //   print(OneSignal.User.pushSubscription.token);
+        //             //   print(state.current.jsonRepresentation());
+        //             // });
 
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => ONE()),
-                    // );
-                  },
-                  child: Text(
-                    'Home',
-                    style: GoogleFonts.syne(
-                      fontSize: isLargeScreen ? 32 : 22,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                )
-              : _currentIndex == 1
-                  ? Text(
-                      'Rides',
-                      style: GoogleFonts.syne(
-                        fontSize: isLargeScreen ? 32 : 22,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    )
-                  : _currentIndex == 2
-                      ? Text(
-                          'My Reviews',
-                          style: GoogleFonts.syne(
-                            fontSize: isLargeScreen ? 32 : 22,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black,
-                          ),
-                        )
-                      : Text(
-                          'Rider Status',
-                          style: GoogleFonts.syne(
-                            fontSize: isLargeScreen ? 32 : 22,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black,
-                          ),
-                        ),
-        ),
+        //             // Navigator.push(
+        //             //   context,
+        //             //   MaterialPageRoute(builder: (context) => ONE()),
+        //             // );
+        //           },
+        //           child: Text(
+        //             'Home',
+        //             style: GoogleFonts.syne(
+        //               fontSize: isLargeScreen ? 32 : 22,
+        //               fontWeight: FontWeight.w700,
+        //               color: Colors.black,
+        //             ),
+        //           ),
+        //         )
+        //       : _currentIndex == 1
+        //           ? Text(
+        //               'Rides',
+        //               style: GoogleFonts.syne(
+        //                 fontSize: isLargeScreen ? 32 : 22,
+        //                 fontWeight: FontWeight.w700,
+        //                 color: Colors.black,
+        //               ),
+        //             )
+        //           : _currentIndex == 2
+        //               ? Text(
+        //                   'My Reviews',
+        //                   style: GoogleFonts.syne(
+        //                     fontSize: isLargeScreen ? 32 : 22,
+        //                     fontWeight: FontWeight.w700,
+        //                     color: Colors.black,
+        //                   ),
+        //                 )
+        //               : Text(
+        //                   'Rider Status',
+        //                   style: GoogleFonts.syne(
+        //                     fontSize: isLargeScreen ? 32 : 22,
+        //                     fontWeight: FontWeight.w700,
+        //                     color: Colors.black,
+        //                   ),
+        //                 ),
+        // ),
         body: _pages[_currentIndex],
         bottomNavigationBar: Stack(
           alignment: Alignment.bottomCenter,
@@ -313,7 +313,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         "small_icon": "ic_launcher",
 
         "large_icon":
-            "https://cs.deliverbygfl.com/public/uploads/system_image/logo2.png",
+            "https://deliverbygfl.com/public/uploads/system_image/logo2.png",
 
         "headings": {"en": heading},
 

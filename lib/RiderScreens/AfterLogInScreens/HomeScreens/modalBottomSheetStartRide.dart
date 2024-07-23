@@ -79,8 +79,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
     // print(
     // " Passssssssssss ${updateBookingStatusModel.data!.bookingsFleet![0].bookingsDestinations!.passCode}");
     // try {
-    String apiUrl =
-        "https://cs.deliverbygfl.com/api/get_updated_status_booking";
+    String apiUrl = "https://deliverbygfl.com/api/get_updated_status_booking";
     debugPrint("apiUrl: $apiUrl");
     debugPrint("currentBookingId: ${widget.bookingModel.bookings_id}");
     final response = await http.post(
@@ -239,7 +238,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(60),
                                 child: Image.network(
-                                  'https://cs.deliverbygfl.com/public/${widget.bookingModel.users_customers!.profile_pic}',
+                                  'https://deliverbygfl.com/public/${widget.bookingModel.users_customers!.profile_pic}',
                                   fit: BoxFit.cover,
                                   errorBuilder: (BuildContext context,
                                       Object exception,
@@ -1638,7 +1637,7 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
       });
     }
     // try {
-    String apiUrl = "https://cs.deliverbygfl.com/api/start_booking_ride";
+    String apiUrl = "https://deliverbygfl.com/api/start_booking_ride";
     debugPrint("apiUrl: $apiUrl");
 
     final response = await http.post(

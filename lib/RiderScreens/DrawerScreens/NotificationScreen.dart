@@ -32,8 +32,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     sharedPreferences = await SharedPreferences.getInstance();
     userID = (sharedPreferences.getInt('userID') ?? -1);
     var headersList = {'Accept': '*/*', 'Content-Type': 'application/json'};
-    var url =
-        Uri.parse('https://cs.deliverbygfl.com/api/get_notifications_fleet');
+    var url = Uri.parse('https://deliverbygfl.com/api/get_notifications_fleet');
 
     var body = {"users_fleet_id": "$userID", "users_type": "Rider"};
 
@@ -128,7 +127,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             leading: CircleAvatar(
                               radius: 30,
                               backgroundImage: NetworkImage(
-                                "https://cs.deliverbygfl.com/public/${notification.senderData!.profilePic!}",
+                                "https://deliverbygfl.com/public/${notification.senderData!.profilePic!}",
                               ),
                             ),
                             title: Text(
