@@ -9,29 +9,37 @@ SendOtpModel sendOtpModelFromJson(String str) => SendOtpModel.fromJson(json.deco
 String sendOtpModelToJson(SendOtpModel data) => json.encode(data.toJson());
 
 class SendOtpModel {
-  String? pinId;
-  String? to;
-  String? smsStatus;
-  int? status;
+    String? smsStatus;
+    String? phoneNumber;
+    String? to;
+    String? pinId;
+    String? sendOtpModelPinId;
+    String? status;
 
-  SendOtpModel({
-    this.pinId,
-    this.to,
-    this.smsStatus,
-    this.status,
-  });
+    SendOtpModel({
+         this.smsStatus,
+         this.phoneNumber,
+         this.to,
+         this.pinId,
+         this.sendOtpModelPinId,
+         this.status,
+    });
 
-  factory SendOtpModel.fromJson(Map<String, dynamic> json) => SendOtpModel(
-    pinId: json["pinId"],
-    to: json["to"],
-    smsStatus: json["smsStatus"],
-    status: json["status"],
-  );
+    factory SendOtpModel.fromJson(Map<String, dynamic> json) => SendOtpModel(
+        smsStatus: json["smsStatus"],
+        phoneNumber: json["phone_number"],
+        to: json["to"],
+        pinId: json["pinId"],
+        sendOtpModelPinId: json["pin_id"],
+        status: json["status"],
+    );
 
-  Map<String, dynamic> toJson() => {
-    "pinId": pinId,
-    "to": to,
-    "smsStatus": smsStatus,
-    "status": status,
-  };
+    Map<String, dynamic> toJson() => {
+        "smsStatus": smsStatus,
+        "phone_number": phoneNumber,
+        "to": to,
+        "pinId": pinId,
+        "pin_id": sendOtpModelPinId,
+        "status": status,
+    };
 }
