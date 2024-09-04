@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/FleetScreens/DrawerSceensFleet/SupportScreen.dart';
+import 'package:deliver_partner/RiderScreens/DrawerScreens/Rider%20Support/riderSupportScreen.dart';
 import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:deliver_partner/models/APIModelsFleet/StartSupportChatModel.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
@@ -785,18 +786,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       print("response: $responseString");
       print("status: ${responseString['status']}");
       if (responseString['status'] == "success") {
-        //         Navigator.of(context, rootNavigator: true).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => ContactSupport(
-        //       adminPicture: getAdminList![0].user_image!,
-        //       adminName: getAdminList![0].first_name!,
-        //       adminAddress: getAdminList![0].address!,
-        //       adminID: getAdminList![0].users_system_id.toString(),
-        //       userID: userID.toString(),
-        //     ),
-        //   ),
-        // );
-        showToastSuccess('Start contact support chat', FToast().init(context));
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => const RiderSupportScreen(),
+          ),
+        );
+        // showToastSuccess('Start contact support chat', FToast().init(context));
+      } else if (responseString['message'] == "Chat is already started.") {
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => const RiderSupportScreen(),
+          ),
+        );
       }
     } catch (e) {
       print('Something went wrong = ${e.toString()}');
