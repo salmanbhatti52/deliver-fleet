@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/FleetScreens/DrawerSceensFleet/SupportScreen.dart';
 import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:deliver_partner/models/APIModelsFleet/StartSupportChatModel.dart';
 import 'package:deliver_partner/widgets/TextFormField_Widget.dart';
@@ -718,23 +719,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       isUpdating = true;
     });
     Map updateData = {
-      "users_customers_id": userID.toString(),
-      "users_customers_type": "Rider",
+      "users_fleet_id": userID.toString(),
+      "user_type": "Rider",
       "first_name": firstNameController.text,
       "last_name": lastNameController.text,
       "phone": phoneNumberController.text,
       "address": addressController.text,
       "profile_pic": base64img,
-      "license_front_image": base64imgFront,
-      "license_back_image": base64imgForBack,
+      "driving_license_front_image": base64imgFront,
+      "driving_license_back_image": base64imgForBack,
     };
 
     updateResponse = await service.updateUserProfileApi(updateData);
 
     if (updateResponse!.status!.toLowerCase() == 'error') {
+      print(
+          "updateResponse!.status!.toLowerCase(): ${updateResponse!.message!.toLowerCase()}");
       showToastError(
-          '* You can not directly update your profile info. If you \n want to update details, contact support now.',
-          FToast().init(context),
+          updateResponse!.message!.toLowerCase(), FToast().init(context),
           seconds: 7);
       saveInfo
           ? startSupportChat()
@@ -744,6 +746,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             });
     } else if (updateResponse!.status!.toLowerCase() == 'success') {
       if (updateResponse!.data != null) {
+        showToastSuccess('Profile Updated', FToast().init(context));
+        Navigator.of(context).pop();
         await sharedPreferences.setString(
             'userProfilePic', updateResponse!.data!.profile_pic!);
       }
@@ -780,6 +784,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final responseString = jsonDecode(response.body);
       print("response: $responseString");
       print("status: ${responseString['status']}");
+      if (responseString['status'] == "success") {
+        //         Navigator.of(context, rootNavigator: true).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => ContactSupport(
+        //       adminPicture: getAdminList![0].user_image!,
+        //       adminName: getAdminList![0].first_name!,
+        //       adminAddress: getAdminList![0].address!,
+        //       adminID: getAdminList![0].users_system_id.toString(),
+        //       userID: userID.toString(),
+        //     ),
+        //   ),
+        // );
+        showToastSuccess('Start contact support chat', FToast().init(context));
+      }
     } catch (e) {
       print('Something went wrong = ${e.toString()}');
       return null;
@@ -801,17 +819,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   //
   //   if (startChatResponse.status!.toLowerCase() == 'success') {
   //     showToastSuccess('Start contact support chat', FToast().init(context));
-  //     Navigator.of(context, rootNavigator: true).push(
-  //       MaterialPageRoute(
-  //         builder: (context) => SupportScreen(
-  //           adminPicture: getAdminList![0].user_image!,
-  //           adminName: getAdminList![0].first_name!,
-  //           adminAddress: getAdminList![0].address!,
-  //           adminID: getAdminList![0].users_system_id.toString(),
-  //           userID: userID.toString(),
-  //         ),
-  //       ),
-  //     );
+  // Navigator.of(context, rootNavigator: true).push(
+  //   MaterialPageRoute(
+  //     builder: (context) => SupportScreen(
+  //       adminPicture: getAdminList![0].user_image!,
+  //       adminName: getAdminList![0].first_name!,
+  //       adminAddress: getAdminList![0].address!,
+  //       adminID: getAdminList![0].users_system_id.toString(),
+  //       userID: userID.toString(),
+  //     ),
+  //   ),
+  // );
   //   } else {
   //     Navigator.of(context, rootNavigator: true).push(
   //       MaterialPageRoute(
