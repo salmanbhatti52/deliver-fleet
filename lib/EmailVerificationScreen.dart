@@ -906,6 +906,16 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                   seconds: 3,
                                 );
                               } else if (checkPhoneNumberModel.status ==
+                                      "success" &&
+                                  checkPhoneNumberModel.data!.status ==
+                                      "Inactive") {
+                                Navigator.pop(context);
+                                showToastSuccess(
+                                  'Your account is Inactive state.',
+                                  FToast().init(context),
+                                  seconds: 3,
+                                );
+                              } else if (checkPhoneNumberModel.status ==
                                       "error" &&
                                   checkPhoneNumberModel.message ==
                                       "Phone number does not exist.") {
@@ -1163,6 +1173,16 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                   Navigator.pop(context);
                                   showToastSuccess(
                                     'Your account is not approved yet.',
+                                    FToast().init(context),
+                                    seconds: 3,
+                                  );
+                                } else if (checkPhoneNumberModel.status ==
+                                        "success" &&
+                                    checkPhoneNumberModel.data!.status ==
+                                        "Inactive") {
+                                  Navigator.pop(context);
+                                  showToastSuccess(
+                                    'Your account is Inactive state.',
                                     FToast().init(context),
                                     seconds: 3,
                                   );
