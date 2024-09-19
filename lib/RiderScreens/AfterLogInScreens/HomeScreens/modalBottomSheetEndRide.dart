@@ -1,18 +1,24 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/EndRideDialog.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/endRidePage.dart';
+import 'package:deliver_partner/RiderScreens/DrivingLicensePictureVerification.dart';
 import 'package:deliver_partner/models/API_models/API_response.dart';
+import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:deliver_partner/temploginReider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import '../../../Constants/Colors.dart';
@@ -60,6 +66,94 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
   UpdateBookingStatusModel updateBookingStatusModel =
       UpdateBookingStatusModel();
   Map<String, dynamic>? jsonResponse;
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text(
+      //         )));
+      showToastError(
+          'Location services are disabled. Please enable the services',
+          FToast().init(context),
+          seconds: 4);
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text('Location permissions are denied')));
+        showToastError(
+            'Location permissions are denied', FToast().init(context),
+            seconds: 4);
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text(
+      //         )));
+      showToastError(
+          'Location permissions are permanently denied, Enable it from app permission',
+          FToast().init(context),
+          seconds: 4);
+      return false;
+    }
+    return true;
+  }
+
+  // String? _currentAddress;
+  var hasPermission = false;
+  Position? _currentPosition;
+  Future<void> _getCurrentPosition() async {
+    hasPermission = await _handleLocationPermission();
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  bool isUpdatingLocation = false;
+  APIResponse<LogInModel>? updateLocationResponse;
+  updateLocationMethod(BuildContext context) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    userID = (sharedPreferences.getInt('userID') ?? -1);
+    setState(() {
+      isUpdatingLocation = true;
+    });
+    await _getCurrentPosition();
+    Map updateLocationData = {
+      "users_fleet_id": userID.toString(),
+      "latitude": _currentPosition!.latitude.toString(),
+      "longitude": _currentPosition!.longitude.toString(),
+    };
+    updateLocationResponse =
+        await service.updateLocationOneTimeAPI(updateLocationData);
+    print('object update loaction map:   $updateLocationData');
+    if (updateLocationResponse!.status!.toLowerCase() == 'success') {
+      if (updateLocationResponse!.data != null) {
+        print(
+            'object update loaction:   ${updateLocationResponse!.data!.latitude}    ${updateLocationResponse!.data!.longitude}');
+        showToastSuccess(
+            'location is updated successfully', FToast().init(context),
+            seconds: 1);
+      }
+    } else {
+      showToastError('something went wrong', FToast().init(context),
+          seconds: 1);
+    }
+    setState(() {
+      isUpdatingLocation = false;
+    });
+  }
+
   Future<void> updateBookingStatus() async {
     try {
       String apiUrl = "https://deliverbygfl.com/api/get_updated_status_booking";
@@ -107,11 +201,17 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
     }
   }
 
+  Timer? _timer;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     updateBookingStatus();
+    _timer = Timer.periodic(const Duration(seconds: 20), (timer) {
+      if (mounted) {
+        hasPermission ? updateLocationMethod(context) : _getCurrentPosition();
+      }
+    });
     init();
     setState(() {
       isLoading = true;
@@ -222,6 +322,12 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
       path: phoneNumber,
     );
     await launchUrl(launchUri);
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
