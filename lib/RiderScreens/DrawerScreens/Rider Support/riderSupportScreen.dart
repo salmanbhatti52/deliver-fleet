@@ -308,464 +308,403 @@ class _RiderSupportScreenState extends State<RiderSupportScreen> {
           ),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: size.height * 0.01),
-                Container(
-                  width: size.width,
-                  height: size.height * 0.1,
-                  color: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.transparent,
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: size.width,
+                height: size.height * 0.1,
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Container(
+                                width: 60,
+                                height: 60,
+                                decoration: const BoxDecoration(
+                                  color: Colors.transparent,
+                                ),
+                                child: FadeInImage(
+                                  placeholder: const AssetImage(
+                                    "assets/images/user-profile.png",
                                   ),
-                                  child: FadeInImage(
-                                    placeholder: const AssetImage(
-                                      "assets/images/user-profile.png",
-                                    ),
-                                    image: NetworkImage(
-                                      'https://deliverbygfl.com/public/$getAdminImage',
-                                    ),
-                                    fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    'https://deliverbygfl.com/public/$getAdminImage',
                                   ),
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                              Positioned(
-                                top: 8,
-                                right: 0,
-                                child: SvgPicture.asset(
-                                  'assets/images/online-status-icon.svg',
-                                ),
+                            ),
+                            Positioned(
+                              top: 8,
+                              right: 0,
+                              child: SvgPicture.asset(
+                                'assets/images/online-status-icon.svg',
                               ),
-                            ],
-                          ),
-                          SizedBox(width: size.width * 0.03),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                color: Colors.transparent,
-                                width: size.width * 0.55,
-                                child: Text(
-                                  "$getAdminName",
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                    color: black,
-                                    fontSize: 16,
-                                    fontFamily: 'Syne-SemiBold',
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.005),
-                              Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/images/orange-location-icon.svg',
-                                  ),
-                                  SizedBox(width: size.width * 0.01),
-                                  Container(
-                                    color: Colors.transparent,
-                                    width: size.width * 0.5,
-                                    child: AutoSizeText(
-                                      "$getAdminAddress",
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                        color: Color(0xFFBEBEBE),
-                                        fontSize: 12,
-                                        fontFamily: 'Inter-Regular',
-                                      ),
-                                      minFontSize: 12,
-                                      maxFontSize: 12,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                        thickness: 1,
-                        color: Color(0xFFEBEBEB),
-                      ),
-                    ],
-                  ),
-                ),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      getSupportChatModel.data != null
-                          ? Container(
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: size.width * 0.03),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
                               color: Colors.transparent,
-                              height: size.height * 0.7,
-                              child: ListView.builder(
-                                reverse: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: getSupportChatModel.data?.length,
-                                padding: const EdgeInsets.only(bottom: 10),
-                                itemBuilder: (context, index) {
-                                  int reverseIndex =
-                                      getSupportChatModel.data!.length -
-                                          1 -
-                                          index;
-                                  String inputTime =
-                                      "${getSupportChatModel.data?[reverseIndex].sendTime}";
-                                  DateFormat inputFormat =
-                                      DateFormat("H:mm:ss");
-                                  DateFormat outputFormat =
-                                      DateFormat("h:mm a");
-                                  DateTime dateTime =
-                                      inputFormat.parse(inputTime);
-                                  String formattedTime =
-                                      outputFormat.format(dateTime);
-                                  return getSupportChatModel.data?[reverseIndex]
-                                                  .receiverType !=
-                                              "Rider" &&
-                                          getSupportChatModel
-                                                  .data?[reverseIndex]
-                                                  .messageType ==
-                                              "text"
-                                      ? Column(
-                                          children: [
-                                            SizedBox(
-                                                height: size.height * 0.015),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 84),
-                                              child: Row(
+                              width: size.width * 0.55,
+                              child: Text(
+                                "$getAdminName",
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  color: black,
+                                  fontSize: 16,
+                                  fontFamily: 'Syne-SemiBold',
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            SizedBox(height: size.height * 0.005),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/orange-location-icon.svg',
+                                ),
+                                SizedBox(width: size.width * 0.01),
+                                Container(
+                                  color: Colors.transparent,
+                                  width: size.width * 0.5,
+                                  child: AutoSizeText(
+                                    "$getAdminAddress",
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                      color: Color(0xFFBEBEBE),
+                                      fontSize: 12,
+                                      fontFamily: 'Inter-Regular',
+                                    ),
+                                    minFontSize: 12,
+                                    maxFontSize: 12,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      thickness: 1,
+                      color: Color(0xFFEBEBEB),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            getSupportChatModel.data != null
+                ? Expanded(
+                    child: ListView.builder(
+                      reverse: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: getSupportChatModel.data?.length,
+                      padding: const EdgeInsets.only(bottom: 10),
+                      itemBuilder: (context, index) {
+                        int reverseIndex =
+                            getSupportChatModel.data!.length - 1 - index;
+                        String inputTime =
+                            "${getSupportChatModel.data?[reverseIndex].sendTime}";
+                        DateFormat inputFormat = DateFormat("H:mm:ss");
+                        DateFormat outputFormat = DateFormat("h:mm a");
+                        DateTime dateTime = inputFormat.parse(inputTime);
+                        String formattedTime = outputFormat.format(dateTime);
+                        return getSupportChatModel
+                                        .data?[reverseIndex].receiverType !=
+                                    "Rider" &&
+                                getSupportChatModel
+                                        .data?[reverseIndex].messageType ==
+                                    "text"
+                            ? Column(
+                                children: [
+                                  SizedBox(height: size.height * 0.015),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 84),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                          ),
+                                          child: Container(
+                                            color: orange,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.end,
                                                 children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(10),
-                                                      topRight:
-                                                          Radius.circular(10),
-                                                      bottomLeft:
-                                                          Radius.circular(10),
-                                                    ),
-                                                    child: Container(
-                                                      color: orange,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10),
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Container(
-                                                              color: Colors
-                                                                  .transparent,
-                                                              width:
-                                                                  size.width *
-                                                                      0.6,
-                                                              child: Text(
-                                                                "${getSupportChatModel.data?[reverseIndex].message}",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: white,
-                                                                  fontSize: 12,
-                                                                  fontFamily:
-                                                                      'Inter-Regular',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                SvgPicture
-                                                                    .asset(
-                                                                  'assets/images/clock-white-message-icon.svg',
-                                                                ),
-                                                                SizedBox(
-                                                                    width: size
-                                                                            .width *
-                                                                        0.01),
-                                                                Text(
-                                                                  formattedTime,
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color:
-                                                                        white,
-                                                                    fontSize: 8,
-                                                                    fontFamily:
-                                                                        'Inter-Regular',
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
+                                                  Container(
+                                                    color: Colors.transparent,
+                                                    width: size.width * 0.6,
+                                                    child: Text(
+                                                      "${getSupportChatModel.data?[reverseIndex].message}",
+                                                      textAlign: TextAlign.left,
+                                                      style: const TextStyle(
+                                                        color: white,
+                                                        fontSize: 12,
+                                                        fontFamily:
+                                                            'Inter-Regular',
                                                       ),
                                                     ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        'assets/images/clock-white-message-icon.svg',
+                                                      ),
+                                                      SizedBox(
+                                                          width: size.width *
+                                                              0.01),
+                                                      Text(
+                                                        formattedTime,
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: const TextStyle(
+                                                          color: white,
+                                                          fontSize: 8,
+                                                          fontFamily:
+                                                              'Inter-Regular',
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                          ],
-                                        )
-                                      : Column(
-                                          children: [
-                                            SizedBox(
-                                                height: size.height * 0.015),
-                                            Row(
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  SizedBox(height: size.height * 0.015),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Container(
+                                          width: 25,
+                                          height: 25,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.transparent,
+                                          ),
+                                          child: FadeInImage(
+                                            placeholder: const AssetImage(
+                                              "assets/images/user-profile.png",
+                                            ),
+                                            image: NetworkImage(
+                                              'https://deliverbygfl.com/public/$getAdminImage',
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: size.width * 0.02),
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10),
+                                        ),
+                                        child: Container(
+                                          color: const Color(0xFFEBEBEB),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.end,
                                               children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                  child: Container(
-                                                    width: 25,
-                                                    height: 25,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      color: Colors.transparent,
-                                                    ),
-                                                    child: FadeInImage(
-                                                      placeholder:
-                                                          const AssetImage(
-                                                        "assets/images/user-profile.png",
-                                                      ),
-                                                      image: NetworkImage(
-                                                        'https://deliverbygfl.com/public/$getAdminImage',
-                                                      ),
-                                                      fit: BoxFit.cover,
+                                                Container(
+                                                  color: Colors.transparent,
+                                                  width: size.width * 0.6,
+                                                  child: Text(
+                                                    "${getSupportChatModel.data?[reverseIndex].message}",
+                                                    textAlign: TextAlign.left,
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF0A0A0A),
+                                                      fontSize: 12,
+                                                      fontFamily:
+                                                          'Inter-Regular',
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                    width: size.width * 0.02),
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      const BorderRadius.only(
-                                                    topRight:
-                                                        Radius.circular(10),
-                                                    bottomLeft:
-                                                        Radius.circular(10),
-                                                    bottomRight:
-                                                        Radius.circular(10),
-                                                  ),
-                                                  child: Container(
-                                                    color:
-                                                        const Color(0xFFEBEBEB),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Container(
-                                                            color: Colors
-                                                                .transparent,
-                                                            width: size.width *
-                                                                0.6,
-                                                            child: Text(
-                                                              "${getSupportChatModel.data?[reverseIndex].message}",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: Color(
-                                                                    0xFF0A0A0A),
-                                                                fontSize: 12,
-                                                                fontFamily:
-                                                                    'Inter-Regular',
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              SvgPicture.asset(
-                                                                'assets/images/clock-message-icon.svg',
-                                                              ),
-                                                              SizedBox(
-                                                                  width:
-                                                                      size.width *
-                                                                          0.01),
-                                                              Text(
-                                                                formattedTime,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Color(
-                                                                      0xFFA3A6AA),
-                                                                  fontSize: 8,
-                                                                  fontFamily:
-                                                                      'Inter-Regular',
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
+                                                Row(
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      'assets/images/clock-message-icon.svg',
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            size.width * 0.01),
+                                                    Text(
+                                                      formattedTime,
+                                                      textAlign: TextAlign.left,
+                                                      style: const TextStyle(
+                                                        color:
+                                                            Color(0xFFA3A6AA),
+                                                        fontSize: 8,
+                                                        fontFamily:
+                                                            'Inter-Regular',
                                                       ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        );
-                                },
-                              ),
-                            )
-                          : Container(
-                              color: Colors.transparent,
-                              height: size.height * 0.7,
-                            ),
-                    ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                      },
+                    ),
+                  )
+                : Container(
+                    color: Colors.transparent,
+                    height: size.height * 0.7,
                   ),
-                ),
-                chatCategoryButtons(),
-                SizedBox(height: size.height * 0.005),
-                Container(
-                  width: size.width,
-                  height: size.height * 0.06,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEBEBEB),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: messageController,
-                          cursorColor: orange,
-                          keyboardType: TextInputType.multiline,
-                          textInputAction: TextInputAction.newline,
-                          minLines: 1,
-                          maxLines: null,
-                          style: const TextStyle(
-                            color: black,
-                            fontSize: 14,
-                            fontFamily: 'Inter-Regular',
+            SizedBox(height: size.height * 0.005),
+            chatCategoryButtons(),
+            SizedBox(height: size.height * 0.002),
+            Container(
+              width: size.width,
+              height: size.height * 0.06,
+              decoration: BoxDecoration(
+                color: const Color(0xFFEBEBEB),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: messageController,
+                      cursorColor: orange,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                      minLines: 1,
+                      maxLines: null,
+                      style: const TextStyle(
+                        color: black,
+                        fontSize: 14,
+                        fontFamily: 'Inter-Regular',
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color(0xFFEBEBEB),
+                        errorStyle: const TextStyle(
+                          color: red,
+                          fontSize: 10,
+                          fontFamily: 'Inter-Bold',
+                        ),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
                           ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: const Color(0xFFEBEBEB),
-                            errorStyle: const TextStyle(
-                              color: red,
-                              fontSize: 10,
-                              fontFamily: 'Inter-Bold',
-                            ),
-                            border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedErrorBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            errorBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide(
-                                color: red,
-                                width: 1,
-                              ),
-                            ),
-                            contentPadding: const EdgeInsets.only(
-                              top: 5,
-                              left: 20,
-                              right: 0,
-                              bottom: 5,
-                            ),
-                            hintText: "Write message here...",
-                            hintStyle: TextStyle(
-                              color: const Color(0xFF191919).withOpacity(0.5),
-                              fontSize: 12,
-                              fontFamily: 'Inter-Light',
-                            ),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
                           ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide(
+                            color: red,
+                            width: 1,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.only(
+                          top: 5,
+                          left: 20,
+                          right: 0,
+                          bottom: 5,
+                        ),
+                        hintText: "Write message here...",
+                        hintStyle: TextStyle(
+                          color: const Color(0xFF191919).withOpacity(0.5),
+                          fontSize: 12,
+                          fontFamily: 'Inter-Light',
                         ),
                       ),
-                      Theme(
-                        data: ThemeData(
-                          hoverColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                        ),
-                        child: FloatingActionButton(
-                          onPressed: () async {
-                            if (messageController.text.isNotEmpty) {
-                              sendSupportChat(messageController.text);
-                              setState(() {
-                                messageController.clear();
-                                FocusManager.instance.primaryFocus?.unfocus();
-                              });
-                            } else {}
-                          },
-                          elevation: 0,
-                          tooltip: 'Send',
-                          hoverElevation: 0,
-                          disabledElevation: 0,
-                          highlightElevation: 0,
-                          foregroundColor: Colors.transparent,
-                          backgroundColor: Colors.white,
-                          child: SvgPicture.asset(
-                            'assets/images/send-icon.svg',
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
-                SizedBox(height: size.height * 0.02),
-              ],
+                  Theme(
+                    data: ThemeData(
+                      hoverColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                    ),
+                    child: FloatingActionButton(
+                      onPressed: () async {
+                        if (messageController.text.isNotEmpty) {
+                          sendSupportChat(messageController.text);
+                          setState(() {
+                            messageController.clear();
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          });
+                        } else {}
+                      },
+                      elevation: 0,
+                      tooltip: 'Send',
+                      hoverElevation: 0,
+                      disabledElevation: 0,
+                      highlightElevation: 0,
+                      foregroundColor: Colors.transparent,
+                      backgroundColor: Colors.white,
+                      child: SvgPicture.asset(
+                        'assets/images/send-icon.svg',
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       );
     }
