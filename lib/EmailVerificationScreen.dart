@@ -678,7 +678,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       child: GestureDetector(
                         onTap: () async {
                           if (otpController.text.isNotEmpty) {
-                            if (otpController.text == "123456" &&
+                            if (otpController.text == "258000" &&
                                 widget.userType == "Rider") {
                               await checkNumber();
                               if (checkPhoneNumberModel.status == "success") {
@@ -753,6 +753,16 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                   FToast().init(context),
                                   seconds: 3,
                                 );
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterScreen(
+                                        userType: widget.userType,
+                                        phoneNumber:
+                                            widget.phoneNumber.toString(),
+                                        deviceID: widget.deviceID.toString(),
+                                      ),
+                                    ),
+                                    (Route<dynamic> route) => false);
                               }
                             } else if (otpController.text == "123456" &&
                                 widget.userType == "Fleet") {
@@ -824,8 +834,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                     ),
                                     (Route<dynamic> route) => false);
                               }
-                            } else if (widget.phoneNumber == "+923170794962" &&
-                                otpController.text == "112233") {
+                            } else if (widget.phoneNumber == "+923301234567" &&
+                                otpController.text == "123456") {
                               await checkNumber();
                               if (checkPhoneNumberModel.status == "success" &&
                                   checkPhoneNumberModel.data!.status ==
