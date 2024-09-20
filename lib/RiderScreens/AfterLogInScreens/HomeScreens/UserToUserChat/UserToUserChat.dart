@@ -90,7 +90,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
     } else {
       print(
           'object error getting chat:${getAllUserToUserMessagesResponse.status}');
-      showToastError('could\'nt get chat', FToast().init(context));
+      // showToastError('could\'nt get chat', FToast().init(context));
     }
     // setState(() {
     //   isLoading = false;

@@ -135,55 +135,56 @@ class _EndRidePAgeState extends State<EndRidePAge> {
   UpdateBookingTransactionModel updateBookingTransactionModel =
       UpdateBookingTransactionModel();
   Future<void> updateBookingTransaction() async {
-    try {
-      String apiUrl = "https://deliverbygfl.com/maintain_booking_transaction";
-      debugPrint("apiUrl: $apiUrl");
-      // debugPrint("bookings_id: ${widget.currentBookingId}");
-      // debugPrint("payer_name: $firstName $lastName");
-      // debugPrint("payer_email: $userEmail");
-      // debugPrint(
-      //     "total_amount: ${widget.singleData!.isNotEmpty ? widget.singleData!['total_charges'] : widget.multipleData!['total_charges']}");
-      Map data = {
+    // try {
+    await updateBookingStatus();
+    String apiUrl = "https://deliverbygfl.com/maintain_booking_transaction";
+    debugPrint("apiUrl: $apiUrl");
+    // debugPrint("bookings_id: ${widget.currentBookingId}");
+    // debugPrint("payer_name: $firstName $lastName");
+    // debugPrint("payer_email: $userEmail");
+    // debugPrint(
+    //     "total_amount: ${widget.singleData!.isNotEmpty ? widget.singleData!['total_charges'] : widget.multipleData!['total_charges']}");
+    Map data = {
+      "bookings_id": widget.bookingModel.toString(),
+      // "payer_name":
+      //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+      // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
+      "total_amount": updateBookingStatusModel.data!.totalCharges,
+      "payment_status": "Paid",
+      "bookings_destinations_id": "" // payment_by = 'Receiver'
+    };
+    print("$data");
+
+    debugPrint("payment_status: Paid");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
         "bookings_id": widget.bookingModel.toString(),
         // "payer_name":
         //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
         // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
-        "total_amount": updateBookingStatusModel.data!.totalCharges,
+        "total_amount": "${widget.destinTotalCharges}",
         "payment_status": "Paid",
-        "bookings_destinations_id": "" // payment_by = 'Receiver'
-      };
-      print("$data");
-
-      debugPrint("payment_status: Paid");
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          "bookings_id": widget.bookingModel.toString(),
-          // "payer_name":
-          //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-          // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
-          "total_amount": "${widget.destinTotalCharges}",
-          "payment_status": "Paid",
-          "bookings_destinations_id":
-              "${widget.bookingDestinations}" // payment_by = 'Receiver'
-        },
-      );
-      final responseString = response.body;
-      debugPrint("response: $responseString");
-      debugPrint("statusCode: ${response.statusCode}");
-      if (response.statusCode == 200) {
-        updateBookingTransactionModel =
-            updateBookingTransactionModelFromJson(responseString);
-        debugPrint(
-            'updateBookingTransactionModel status: ${updateBookingTransactionModel.status}');
-      }
-    } catch (e) {
-      debugPrint('Something went wrong = ${e.toString()}');
-      return;
+        "bookings_destinations_id":
+            "${widget.bookingDestinations}" // payment_by = 'Receiver'
+      },
+    );
+    final responseString = response.body;
+    debugPrint("response: $responseString");
+    debugPrint("statusCode: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      updateBookingTransactionModel =
+          updateBookingTransactionModelFromJson(responseString);
+      debugPrint(
+          'updateBookingTransactionModel status: ${updateBookingTransactionModel.status}');
     }
+    // } catch (e) {
+    //   debugPrint('Something went wrong = ${e.toString()}');
+    //   return;
+    // }
   }
 
   String? endId;

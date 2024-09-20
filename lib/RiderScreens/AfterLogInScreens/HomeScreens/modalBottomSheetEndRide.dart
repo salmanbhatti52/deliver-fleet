@@ -851,7 +851,8 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                               height: 20.h,
                             ),
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                await updateBookingStatus();
                                 print(jsonResponse!["data"]['bookings_fleet'][0]
                                             ['bookings_destinations']
                                         ['bookings_destinations_id']
@@ -870,6 +871,12 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                           .toString(),
                                       bookingDestinationsList:
                                           jsonResponse!["data"]['status'],
+                                      destinTotalCharges:
+                                          updateBookingStatusModel
+                                              .data!
+                                              .bookingsFleet[0]
+                                              .bookingsDestinations
+                                              .destinTotalCharges,
                                     ),
                                   ),
                                 );
@@ -1459,7 +1466,14 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                               ),
                                                             ) // Don't show the button if the condition is true
                                                           : GestureDetector(
-                                                              onTap: () {
+                                                              onTap: () async {
+                                                                await updateBookingStatus();
+                                                                print(updateBookingStatusModel
+                                                                    .data!
+                                                                    .bookingsFleet[
+                                                                        index]
+                                                                    .bookingsDestinations
+                                                                    .destinTotalCharges);
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
