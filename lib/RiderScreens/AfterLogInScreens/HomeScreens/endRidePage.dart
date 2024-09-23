@@ -101,62 +101,9 @@ class _EndRidePAgeState extends State<EndRidePAge> {
   Map<String, dynamic>? jsonResponse;
   Future<void> updateBookingStatus() async {
     // try {
-      String apiUrl = "https://deliverbygfl.com/api/get_updated_status_booking";
-      debugPrint("apiUrl: $apiUrl");
-      debugPrint("currentBookingId: ${widget.bookingModel}");
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          "bookings_id": widget.bookingModel.toString(),
-        },
-      );
-      final responseString = response.body;
-      debugPrint("response: $responseString");
-      debugPrint("statusCode: ${response.statusCode}");
-      if (response.statusCode == 200) {
-        updateBookingStatusModel =
-            updateBookingStatusModelFromJson(responseString);
-        debugPrint(
-            'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
-        jsonResponse = jsonDecode(response.body);
-
-        bookingsFleet = jsonResponse!['data']['status'];
-        setState(() {});
-      }
-    // } catch (e) {
-    //   debugPrint('Something went wrong = ${e.toString()}');
-    //   return;
-    // }
-  }
-
-  UpdateBookingTransactionModel updateBookingTransactionModel =
-      UpdateBookingTransactionModel();
-  Future<void> updateBookingTransaction() async {
-    // try {
-    await updateBookingStatus();
-    String apiUrl = "https://deliverbygfl.com/api/maintain_booking_transaction";
+    String apiUrl = "https://deliverbygfl.com/api/get_updated_status_booking";
     debugPrint("apiUrl: $apiUrl");
-    // debugPrint("bookings_id: ${widget.currentBookingId}");
-    // debugPrint("payer_name: $firstName $lastName");
-    // debugPrint("payer_email: $userEmail");
-    // debugPrint(
-    //     "total_amount: ${widget.singleData!.isNotEmpty ? widget.singleData!['total_charges'] : widget.multipleData!['total_charges']}");
-    Map data = {
-      "bookings_id": widget.bookingModel.toString(),
-      // "payer_name":
-      //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-      // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
-      "total_amount": updateBookingStatusModel.data!.totalCharges,
-      "payment_status": "Paid",
-      "bookings_destinations_id":
-          "${widget.bookingDestinations}" // payment_by = 'Receiver'
-    };
-    print(jsonEncode(data));
-
-    debugPrint("payment_status: Paid");
+    debugPrint("currentBookingId: ${widget.bookingModel}");
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
@@ -164,20 +111,20 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       },
       body: {
         "bookings_id": widget.bookingModel.toString(),
-        "total_amount": "${widget.destinTotalCharges}",
-        "payment_status": "Paid",
-        "bookings_destinations_id":
-            "${widget.bookingDestinations}"
       },
     );
     final responseString = response.body;
     debugPrint("response: $responseString");
     debugPrint("statusCode: ${response.statusCode}");
     if (response.statusCode == 200) {
-      updateBookingTransactionModel =
-          updateBookingTransactionModelFromJson(responseString);
+      updateBookingStatusModel =
+          updateBookingStatusModelFromJson(responseString);
       debugPrint(
-          'updateBookingTransactionModel status: ${updateBookingTransactionModel.status}');
+          'updateBookingStatusModel status: ${updateBookingStatusModel.status}');
+      jsonResponse = jsonDecode(response.body);
+
+      bookingsFleet = jsonResponse!['data']['status'];
+      setState(() {});
     }
     // } catch (e) {
     //   debugPrint('Something went wrong = ${e.toString()}');
@@ -746,57 +693,90 @@ class _EndRidePAgeState extends State<EndRidePAge> {
         ));
   }
 
+  UpdateBookingTransactionModel updateBookingTransactionModel =
+      UpdateBookingTransactionModel();
+
+  Future<void> updateBookingTransaction() async {
+    try {
+      await updateBookingStatus();
+
+      const String apiUrl =
+          "https://deliverbygfl.com/api/maintain_booking_transaction";
+      debugPrint("apiUrl: $apiUrl");
+
+      final data = {
+        "bookings_id": widget.bookingModel.toString(),
+        "total_amount": updateBookingStatusModel.data?.totalCharges ?? "0",
+        "payment_status": "Paid",
+        "bookings_destinations_id": widget.bookingDestinations.toString(),
+      };
+
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Accept': 'application/json'},
+        body: data,
+      );
+
+      if (response.statusCode == 200) {
+        final responseString = response.body;
+        debugPrint("response: $responseString");
+
+        updateBookingTransactionModel =
+            updateBookingTransactionModelFromJson(responseString);
+        debugPrint(
+            'Transaction status: ${updateBookingTransactionModel.status}');
+      } else {
+        debugPrint("Failed: statusCode ${response.statusCode}");
+      }
+    } catch (e) {
+      debugPrint('Error during transaction update: ${e.toString()}');
+    }
+  }
+
   bool isRideEnding = false;
   APIResponse<ShowBookingsModel>? endRideResponse;
 
-  endRideMethod(BuildContext context, String bookingsDestinationsId) async {
-    setState(() {
-      isRideEnding = true;
-    });
-    Map endRideData = {
-      "bookings_id": widget.bookingModel.toString(),
-      "bookings_destinations_id": "${widget.bookingDestinations}",
-      "bookings_destinations_status_id": endId.toString(),
-      "passcode": passCodeController.text
-    };
-    debugPrint("end ride data: ${endRideData.toString()}");
+  Future<void> endRideMethod(
+      BuildContext context, String bookingsDestinationsId) async {
+    try {
+      setState(() => isRideEnding = true);
 
-    endRideResponse = await service.endRideRequest(endRideData);
-    await updateBookingTransaction();
-    if (endRideResponse!.status!.toLowerCase() == "success") {
-      await updateBookingStatus();
-      debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
-      if (widget.deliveryType == 'Single') {
-        Navigator.of(context).pop();
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const BottomNavBar(),
-          ),
-        );
-      } else if (widget.deliveryType != 'Single') {
+      final endRideData = {
+        "bookings_id": widget.bookingModel.toString(),
+        "bookings_destinations_id": widget.bookingDestinations.toString(),
+        "bookings_destinations_status_id": endId.toString(),
+        "passcode": passCodeController.text,
+      };
+      debugPrint("End ride data: $endRideData");
+
+      endRideResponse = await service.endRideRequest(endRideData);
+      await updateBookingTransaction();
+
+      if ((updateBookingTransactionModel.status == "success" &&
+          endRideResponse?.status?.toLowerCase() == "success")) {
         debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
-        endRideIds.add(bookingsDestinationsId);
-        debugPrint("endRideIds: $endRideIds");
-        await updateBookingStatus();
-        if (bookingsFleet == "Completed") {
-          Navigator.of(context).pop();
 
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const BottomNavBar(),
-            ),
+        if (widget.deliveryType == 'Single' || bookingsFleet == "Completed") {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const BottomNavBar()),
           );
         } else {
+          endRideIds.add(bookingsDestinationsId);
+          debugPrint("endRideIds: $endRideIds");
+          await updateBookingStatus();
           Navigator.of(context).pop();
+          showToastSuccess(
+              'Parcel delivered successfully', FToast().init(context));
         }
-        showToastSuccess(
-            'Parcel delivered successfully ', FToast().init(context));
+      } else {
+        final message =
+            endRideResponse?.message ?? updateBookingTransactionModel.message;
+        showToastSuccess(message!, FToast().init(context));
       }
-    } else {
-      showToastSuccess(endRideResponse!.message!, FToast().init(context));
+    } catch (e) {
+      debugPrint('Error in endRideMethod: ${e.toString()}');
+    } finally {
+      setState(() => isRideEnding = false);
     }
-    setState(() {
-      isRideEnding = false;
-    });
   }
 }

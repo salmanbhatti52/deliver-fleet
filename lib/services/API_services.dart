@@ -1735,32 +1735,49 @@ class ApiServices {
 
   Future<APIResponse<ShowBookingsModel>> endRideRequest(Map data) async {
     String API = 'https://deliverbygfl.com/api/end_booking_ride';
-    return http.post(Uri.parse(API), body: data).then((value) {
-      if (value.statusCode == 200) {
-        final jsonData = json.decode(value.body);
 
-        if (jsonData['data'] != null) {
-          final itemCat = ShowBookingsModel.fromJson(jsonData['data']);
+    try {
+      final response = await http.post(Uri.parse(API), body: data);
 
+      if (response.statusCode == 200) {
+        final responseBody = response.body;
+        debugPrint('Response body: $responseBody');
+
+        try {
+          final jsonData = json.decode(responseBody);
+
+          // Ensure 'data' field exists in the response before accessing it
+          if (jsonData['data'] != null) {
+            final itemCat = ShowBookingsModel.fromJson(jsonData['data']);
+            return APIResponse<ShowBookingsModel>(
+                data: itemCat,
+                status: jsonData['status'],
+                message: jsonData['message']);
+          } else {
+            return APIResponse<ShowBookingsModel>(
+                data: ShowBookingsModel(),
+                status: jsonData['status'],
+                message: jsonData['message']);
+          }
+        } catch (e) {
+          // Handle any JSON parsing errors
+          debugPrint('JSON decode error: $e');
           return APIResponse<ShowBookingsModel>(
-              data: itemCat,
-              status: jsonData['status'],
-              message: jsonData['message']);
-        } else {
-          return APIResponse<ShowBookingsModel>(
-              data: ShowBookingsModel(),
-              status: jsonData['status'],
-              message: jsonData['message']);
+              status: 'error', message: 'Failed to parse response');
         }
+      } else {
+        // Handle non-200 status codes
+        debugPrint('Non-200 response code: ${response.statusCode}');
+        return APIResponse<ShowBookingsModel>(
+            status: 'error',
+            message: 'Failed with status code ${response.statusCode}');
       }
+    } catch (error, stackTrace) {
+      // Catch any network or unexpected errors
+      debugPrint('Error: $error\nStackTrace: $stackTrace');
       return APIResponse<ShowBookingsModel>(
-        status: APIResponse.fromMap(json.decode(value.body)).status,
-        message: APIResponse.fromMap(json.decode(value.body)).message,
-      );
-    }).onError((error, stackTrace) => APIResponse<ShowBookingsModel>(
-          status: error.toString(),
-          message: stackTrace.toString(),
-        ));
+          status: 'error', message: 'Error: $error');
+    }
   }
 
   /// Get All Vehicles on Fleet API:

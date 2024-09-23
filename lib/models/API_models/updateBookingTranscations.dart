@@ -14,21 +14,25 @@ String updateBookingTransactionModelToJson(
 
 class UpdateBookingTransactionModel {
   String? status;
+  String? message;
   Data? data;
 
   UpdateBookingTransactionModel({
     this.status,
+    this.message,
     this.data,
   });
 
   factory UpdateBookingTransactionModel.fromJson(Map<String, dynamic> json) =>
       UpdateBookingTransactionModel(
         status: json["status"],
-        data: Data.fromJson(json["data"]),
+        message: json["message"],
+        data: json["data"] != null ? Data.fromJson(json["data"]) : null,
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
+        "message": message,
         "data": data?.toJson(),
       };
 }

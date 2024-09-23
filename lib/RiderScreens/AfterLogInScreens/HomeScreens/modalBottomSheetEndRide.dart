@@ -141,9 +141,6 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
       if (updateLocationResponse!.data != null) {
         print(
             'object update loaction:   ${updateLocationResponse!.data!.latitude}    ${updateLocationResponse!.data!.longitude}');
-        showToastSuccess(
-            'location is updated successfully', FToast().init(context),
-            seconds: 1);
       }
     } else {
       showToastError('something went wrong', FToast().init(context),
@@ -852,6 +849,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                             ),
                             GestureDetector(
                               onTap: () async {
+                                _timer!.cancel();
                                 await updateBookingStatus();
                                 print(jsonResponse!["data"]['bookings_fleet'][0]
                                             ['bookings_destinations']
@@ -1467,6 +1465,8 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                             ) // Don't show the button if the condition is true
                                                           : GestureDetector(
                                                               onTap: () async {
+                                                                _timer!
+                                                                    .cancel();
                                                                 await updateBookingStatus();
                                                                 print(updateBookingStatusModel
                                                                     .data!
