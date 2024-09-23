@@ -100,7 +100,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       UpdateBookingStatusModel();
   Map<String, dynamic>? jsonResponse;
   Future<void> updateBookingStatus() async {
-    try {
+    // try {
       String apiUrl = "https://deliverbygfl.com/api/get_updated_status_booking";
       debugPrint("apiUrl: $apiUrl");
       debugPrint("currentBookingId: ${widget.bookingModel}");
@@ -126,10 +126,10 @@ class _EndRidePAgeState extends State<EndRidePAge> {
         bookingsFleet = jsonResponse!['data']['status'];
         setState(() {});
       }
-    } catch (e) {
-      debugPrint('Something went wrong = ${e.toString()}');
-      return;
-    }
+    // } catch (e) {
+    //   debugPrint('Something went wrong = ${e.toString()}');
+    //   return;
+    // }
   }
 
   UpdateBookingTransactionModel updateBookingTransactionModel =
@@ -137,7 +137,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
   Future<void> updateBookingTransaction() async {
     // try {
     await updateBookingStatus();
-    String apiUrl = "https://deliverbygfl.com/maintain_booking_transaction";
+    String apiUrl = "https://deliverbygfl.com/api/maintain_booking_transaction";
     debugPrint("apiUrl: $apiUrl");
     // debugPrint("bookings_id: ${widget.currentBookingId}");
     // debugPrint("payer_name: $firstName $lastName");
@@ -151,9 +151,10 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
       "total_amount": updateBookingStatusModel.data!.totalCharges,
       "payment_status": "Paid",
-      "bookings_destinations_id": "" // payment_by = 'Receiver'
+      "bookings_destinations_id":
+          "${widget.bookingDestinations}" // payment_by = 'Receiver'
     };
-    print("$data");
+    print(jsonEncode(data));
 
     debugPrint("payment_status: Paid");
     final response = await http.post(
@@ -163,13 +164,10 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       },
       body: {
         "bookings_id": widget.bookingModel.toString(),
-        // "payer_name":
-        //     "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-        // "payer_email": updateBookingStatusModel.data!.usersCustomers.email,
         "total_amount": "${widget.destinTotalCharges}",
         "payment_status": "Paid",
         "bookings_destinations_id":
-            "${widget.bookingDestinations}" // payment_by = 'Receiver'
+            "${widget.bookingDestinations}"
       },
     );
     final responseString = response.body;
