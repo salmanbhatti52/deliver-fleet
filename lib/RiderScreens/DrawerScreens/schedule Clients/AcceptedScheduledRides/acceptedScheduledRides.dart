@@ -217,7 +217,7 @@ class _AcceptedScheduledRidesPageState
           backgroundColor: white, body: Center(child: spinKitRotatingCircle));
     } else {
       for (int i = 0;
-          i < updateBookingStatusModel.data!.bookingsFleet.length;) {
+          i < updateBookingStatusModel.data!.bookingsFleet!.length;) {
         return Scaffold(
           backgroundColor: white,
           appBar: AppBar(
@@ -274,7 +274,7 @@ class _AcceptedScheduledRidesPageState
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(60),
                                         child: Image.network(
-                                          'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers.profilePic}',
+                                          'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers!.profilePic}',
                                           fit: BoxFit.cover,
                                           errorBuilder: (BuildContext context,
                                               Object exception,
@@ -321,7 +321,7 @@ class _AcceptedScheduledRidesPageState
                                         SizedBox(
                                           width: 100.w,
                                           child: AutoSizeText(
-                                            '${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}',
+                                            '${updateBookingStatusModel.data!.usersCustomers!.firstName} ${updateBookingStatusModel.data!.usersCustomers!.lastName}',
                                             minFontSize: 12,
                                             maxLines: 3,
                                             style: GoogleFonts.syne(
@@ -337,7 +337,7 @@ class _AcceptedScheduledRidesPageState
                                                     .data!.scheduled ==
                                                 "Yes"
                                             ? Text(
-                                                '${updateBookingStatusModel.data!.bookingsTypes.name} \n(Scheduled Ride)',
+                                                '${updateBookingStatusModel.data!.bookingsTypes!.name} \n(Scheduled Ride)',
                                                 style: GoogleFonts.inter(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
@@ -346,7 +346,7 @@ class _AcceptedScheduledRidesPageState
                                               )
                                             : Text(
                                                 updateBookingStatusModel
-                                                    .data!.bookingsTypes.name,
+                                                    .data!.bookingsTypes!.name,
                                                 style: GoogleFonts.inter(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
@@ -395,7 +395,7 @@ class _AcceptedScheduledRidesPageState
                                     GestureDetector(
                                       onTap: () {
                                         _makePhoneCall(updateBookingStatusModel
-                                            .data!.usersCustomers.phone);
+                                            .data!.usersCustomers!.phone);
                                       },
                                       child: Column(
                                         children: [
@@ -474,9 +474,9 @@ class _AcceptedScheduledRidesPageState
                                           Text(
                                             updateBookingStatusModel
                                                 .data!
-                                                .bookingsFleet[0]
+                                                .bookingsFleet![0]
                                                 .bookingsDestinations
-                                                .receiverName,
+                                                !.receiverName,
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -486,9 +486,9 @@ class _AcceptedScheduledRidesPageState
                                           Text(
                                             updateBookingStatusModel
                                                 .data!
-                                                .bookingsFleet[0]
+                                                .bookingsFleet![0]
                                                 .bookingsDestinations
-                                                .receiverPhone,
+                                                !.receiverPhone,
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -620,9 +620,9 @@ class _AcceptedScheduledRidesPageState
                                             child: AutoSizeText(
                                               updateBookingStatusModel
                                                   .data!
-                                                  .bookingsFleet[0]
+                                                  .bookingsFleet![0]
                                                   .bookingsDestinations
-                                                  .pickupAddress,
+                                                  !.pickupAddress,
                                               maxLines: 2,
                                               minFontSize: 12,
                                               overflow: TextOverflow.ellipsis,
@@ -674,9 +674,9 @@ class _AcceptedScheduledRidesPageState
                                                 child: AutoSizeText(
                                                   updateBookingStatusModel
                                                       .data!
-                                                      .bookingsFleet[0]
+                                                      .bookingsFleet![0]
                                                       .bookingsDestinations
-                                                      .destinAddress,
+                                                      !.destinAddress,
                                                   minFontSize: 12,
                                                   maxLines: 2,
                                                   overflow:
@@ -722,9 +722,9 @@ class _AcceptedScheduledRidesPageState
                                                   Text(
                                                     updateBookingStatusModel
                                                         .data!
-                                                        .bookingsFleet[0]
+                                                        .bookingsFleet![0]
                                                         .bookingsDestinations
-                                                        .destinTime,
+                                                        !.destinTime,
                                                     style: GoogleFonts.inter(
                                                       fontSize: 10,
                                                       fontWeight:
@@ -759,7 +759,7 @@ class _AcceptedScheduledRidesPageState
                                                                   .height *
                                                               0.007),
                                                   Text(
-                                                    '${updateBookingStatusModel.data!.bookingsFleet[0].bookingsDestinations.destinDistance} $distance',
+                                                    '${updateBookingStatusModel.data!.bookingsFleet![0].bookingsDestinations!.destinDistance} $distance',
                                                     style: GoogleFonts.inter(
                                                       fontSize: 10,
                                                       fontWeight:
@@ -796,7 +796,7 @@ class _AcceptedScheduledRidesPageState
                                                   ),
                                                   Text(
                                                     updateBookingStatusModel
-                                                        .data!.totalCharges,
+                                                        .data!.totalCharges.toString(),
                                                     // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
                                                     style: GoogleFonts.inter(
                                                       fontSize: 10,
@@ -851,7 +851,7 @@ class _AcceptedScheduledRidesPageState
                                                     updateBookingStatusModel
                                                         .data!
                                                         .bookingsFleet
-                                                        .length,
+                                                        ?.length,
                                                 controller: pageController,
                                                 itemBuilder:
                                                     (BuildContext context,
@@ -859,7 +859,7 @@ class _AcceptedScheduledRidesPageState
                                                   final itemList =
                                                       updateBookingStatusModel
                                                           .data!
-                                                          .bookingsFleet[index];
+                                                          .bookingsFleet![index];
                                                   final bookingModels =
                                                       updateBookingStatusModel
                                                           .data;
@@ -937,7 +937,7 @@ class _AcceptedScheduledRidesPageState
                                                                   Text(
                                                                     itemList
                                                                         .bookingsDestinations
-                                                                        .receiverName,
+                                                                        !.receiverName,
                                                                     style: GoogleFonts
                                                                         .inter(
                                                                       fontSize:
@@ -952,7 +952,7 @@ class _AcceptedScheduledRidesPageState
                                                                   Text(
                                                                     itemList
                                                                         .bookingsDestinations
-                                                                        .receiverPhone,
+                                                                        !.receiverPhone,
                                                                     style: GoogleFonts
                                                                         .inter(
                                                                       fontSize:
@@ -1089,7 +1089,7 @@ class _AcceptedScheduledRidesPageState
                                                                         AutoSizeText(
                                                                       itemList
                                                                           .bookingsDestinations
-                                                                          .pickupAddress,
+                                                                          !.pickupAddress,
                                                                       maxLines:
                                                                           3,
                                                                       minFontSize:
@@ -1158,7 +1158,7 @@ class _AcceptedScheduledRidesPageState
                                                                             AutoSizeText(
                                                                           itemList
                                                                               .bookingsDestinations
-                                                                              .destinAddress,
+                                                                              !.destinAddress,
                                                                           minFontSize:
                                                                               12,
                                                                           maxLines:
@@ -1203,7 +1203,7 @@ class _AcceptedScheduledRidesPageState
                                                                             ),
                                                                             SizedBox(height: MediaQuery.of(context).size.height * 0.004),
                                                                             Text(
-                                                                              itemList.bookingsDestinations.destinTime,
+                                                                              itemList.bookingsDestinations!.destinTime,
                                                                               style: GoogleFonts.inter(
                                                                                 fontSize: 10,
                                                                                 fontWeight: FontWeight.w700,
@@ -1233,7 +1233,7 @@ class _AcceptedScheduledRidesPageState
                                                                             SvgPicture.asset('assets/images/meter-icon.svg'),
                                                                             SizedBox(height: MediaQuery.of(context).size.height * 0.007),
                                                                             Text(
-                                                                              '${itemList.bookingsDestinations.destinDistance} $distance',
+                                                                              '${itemList.bookingsDestinations!.destinDistance} $distance',
                                                                               style: GoogleFonts.inter(
                                                                                 fontSize: 10,
                                                                                 fontWeight: FontWeight.w700,
@@ -1269,7 +1269,7 @@ class _AcceptedScheduledRidesPageState
                                                                               ),
                                                                             ),
                                                                             Text(
-                                                                              bookingModels.totalCharges,
+                                                                              bookingModels.totalCharges.toString(),
                                                                               // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
                                                                               style: GoogleFonts.inter(
                                                                                 fontSize: 10,
@@ -1320,7 +1320,7 @@ class _AcceptedScheduledRidesPageState
                                                                               setState(() {
                                                                                 statusID;
                                                                               });
-                                                                              bookingsDestinationsId = itemList.bookingsDestinations.bookingsDestinationsId.toString();
+                                                                              bookingsDestinationsId = itemList.bookingsDestinations?.bookingsDestinationsId.toString();
                                                                               print('object id of picked parcel: $bookingsDestinationsId');
                                                                               await parcelPickedMethod(context, bookingsDestinationsId!);
                                                                               print('object id of picked parcel: ${statusID.toString()}');
@@ -1329,7 +1329,7 @@ class _AcceptedScheduledRidesPageState
                                                                               final pickedParcelsModel = Provider.of<PickedParcelsModel>(context, listen: false);
                                                                               pickedParcelsModel.addParcel(bookingsDestinationsId!);
                                                                             },
-                                                                            child: Provider.of<PickedParcelsModel>(context).pickedParcelIds.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
+                                                                            child: Provider.of<PickedParcelsModel>(context).pickedParcelIds.contains(itemList.bookingsDestinations!.bookingsDestinationsId.toString())
                                                                                 ? SvgPicture.asset('assets/images/tick-orange.svg')
                                                                                 : SvgPicture.asset('assets/images/tick-grey.svg'),
                                                                           ),
@@ -1337,7 +1337,7 @@ class _AcceptedScheduledRidesPageState
                                                                             width:
                                                                                 15.w,
                                                                           ),
-                                                                          Provider.of<PickedParcelsModel>(context).pickedParcelIds.contains(itemList.bookingsDestinations.bookingsDestinationsId.toString())
+                                                                          Provider.of<PickedParcelsModel>(context).pickedParcelIds.contains(itemList.bookingsDestinations!.bookingsDestinationsId.toString())
                                                                               ? Text(
                                                                                   name!,
                                                                                   style: GoogleFonts.syne(
@@ -1389,9 +1389,9 @@ class _AcceptedScheduledRidesPageState
                                               String parcelId =
                                                   updateBookingStatusModel
                                                       .data!
-                                                      .bookingsFleet[0]
+                                                      .bookingsFleet![0]
                                                       .bookingsDestinations
-                                                      .bookingsDestinationsId
+                                                      !.bookingsDestinationsId
                                                       .toString();
                                               await parcelPickedMethod(
                                                   context, parcelId);
@@ -1534,14 +1534,14 @@ class _AcceptedScheduledRidesPageState
                                                   const NeverScrollableScrollPhysics(),
                                               itemCount:
                                                   updateBookingStatusModel.data!
-                                                      .bookingsFleet.length,
+                                                      .bookingsFleet?.length,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
                                                 final itemList =
                                                     updateBookingStatusModel
                                                         .data!
-                                                        .bookingsFleet[index];
+                                                        .bookingsFleet![index];
                                                 final bookingModels =
                                                     updateBookingStatusModel
                                                         .data;
@@ -1609,7 +1609,7 @@ class _AcceptedScheduledRidesPageState
       "other_users_type": "Customers",
       "users_id": widget.userID,
       "other_users_id": updateBookingStatusModel
-          .data!.usersCustomers.usersCustomersId
+          .data!.usersCustomers!.usersCustomersId
           .toString(),
     };
     print('object start suer to uer chat data: ${startChatData.toString()}');
@@ -1621,15 +1621,15 @@ class _AcceptedScheduledRidesPageState
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
-            phone: updateBookingStatusModel.data!.usersCustomers.phone,
+            phone: updateBookingStatusModel.data!.usersCustomers!.phone,
             riderID: widget.userID.toString(),
-            image: updateBookingStatusModel.data!.usersCustomers.profilePic,
+            image: updateBookingStatusModel.data!.usersCustomers!.profilePic,
             name:
-                "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+                "${updateBookingStatusModel.data!.usersCustomers!.firstName} ${updateBookingStatusModel.data!.usersCustomers!.lastName}",
             address: updateBookingStatusModel
-                .data!.bookingsFleet[0].bookingsDestinations.pickupAddress,
+                .data!.bookingsFleet![0].bookingsDestinations!.pickupAddress,
             clientID: updateBookingStatusModel
-                .data!.usersCustomers.usersCustomersId
+                .data!.usersCustomers!.usersCustomersId
                 .toString(),
           ),
         ),
@@ -1642,15 +1642,15 @@ class _AcceptedScheduledRidesPageState
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
-            phone: updateBookingStatusModel.data!.usersCustomers.phone,
+            phone: updateBookingStatusModel.data!.usersCustomers!.phone,
             riderID: widget.userID.toString(),
-            image: updateBookingStatusModel.data!.usersCustomers.profilePic,
+            image: updateBookingStatusModel.data!.usersCustomers!.profilePic,
             name:
-                "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+                "${updateBookingStatusModel.data!.usersCustomers!.firstName} ${updateBookingStatusModel.data!.usersCustomers!.lastName}",
             address: updateBookingStatusModel
-                .data!.bookingsFleet[0].bookingsDestinations.pickupAddress,
+                .data!.bookingsFleet![0].bookingsDestinations!.pickupAddress,
             clientID: updateBookingStatusModel
-                .data!.usersCustomers.usersCustomersId
+                .data!.usersCustomers!.usersCustomersId
                 .toString(),
           ),
         ),
@@ -1687,7 +1687,7 @@ class _AcceptedScheduledRidesPageState
     print("deliveryTime: $deliveryTime");
 
     print(
-        "updateBookingStatusModel.data!.bookingsFleet.length: ${updateBookingStatusModel.data!.bookingsFleet.length}");
+        "updateBookingStatusModel.data!.bookingsFleet.length: ${updateBookingStatusModel.data!.bookingsFleet!.length}");
     if (currentDateTime.isBefore(deliveryDateTime)) {
       showToastError(
           'Your scheduled ride is not started yet', FToast().init(context),
@@ -1700,7 +1700,7 @@ class _AcceptedScheduledRidesPageState
       Map startRideData = {
         "bookings_id": updateBookingStatusModel.data!.bookingsId.toString(),
         "bookings_destinations_id": updateBookingStatusModel
-            .data!.bookingsFleet[0].bookingsDestinations.bookingsDestinationsId
+            .data!.bookingsFleet![0].bookingsDestinations!.bookingsDestinationsId
             .toString(),
         "bookings_destinations_status_id": startRideID.toString()
       };

@@ -176,7 +176,7 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
         jsonResponse = jsonDecode(response.body);
 
         var bookingsFleet = jsonResponse!['data']['bookings_fleet'];
-        var data1 = updateBookingStatusModel.data!.bookingsFleet[0].status;
+        var data1 = updateBookingStatusModel.data!.bookingsFleet?[0].status;
         print("data1: $data1");
         ride0 =
             bookingsFleet.length > 0 ? bookingsFleet[0]['status'] ?? "" : "";
@@ -872,9 +872,9 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                       destinTotalCharges:
                                           updateBookingStatusModel
                                               .data!
-                                              .bookingsFleet[0]
+                                              .bookingsFleet![0]
                                               .bookingsDestinations
-                                              .destinTotalCharges,
+                                              ?.destinTotalCharges,
                                     ),
                                   ),
                                 );
@@ -1470,10 +1470,10 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                                 await updateBookingStatus();
                                                                 print(updateBookingStatusModel
                                                                     .data!
-                                                                    .bookingsFleet[
+                                                                    .bookingsFleet?[
                                                                         index]
                                                                     .bookingsDestinations
-                                                                    .destinTotalCharges);
+                                                                    ?.destinTotalCharges);
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
@@ -1500,10 +1500,10 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                                                           .toString(),
                                                                       destinTotalCharges: updateBookingStatusModel
                                                                           .data!
-                                                                          .bookingsFleet[
+                                                                          .bookingsFleet?[
                                                                               index]
                                                                           .bookingsDestinations
-                                                                          .destinTotalCharges,
+                                                                          ?.destinTotalCharges,
                                                                       // destingID: updateBookingStatusModel.data!.bookingsFleet[index].bookingsDestinations.destinTotalCharges,
                                                                     ),
                                                                   ),

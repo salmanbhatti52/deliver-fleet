@@ -178,15 +178,15 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
-            phone: updateBookingStatusModel.data!.usersCustomers.phone,
+            phone: updateBookingStatusModel.data!.usersCustomers?.phone,
             riderID: widget.userID.toString(),
-            image: updateBookingStatusModel.data!.usersCustomers.profilePic,
+            image: updateBookingStatusModel.data!.usersCustomers?.profilePic,
             name:
-                "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-            address: updateBookingStatusModel.data!.bookingsFleet[widget.index!]
-                .bookingsDestinations.pickupAddress,
+                "${updateBookingStatusModel.data!.usersCustomers?.firstName} ${updateBookingStatusModel.data!.usersCustomers?.lastName}",
+            address: updateBookingStatusModel.data!.bookingsFleet?[widget.index!]
+                .bookingsDestinations?.pickupAddress,
             clientID: updateBookingStatusModel
-                .data!.usersCustomers.usersCustomersId
+                .data!.usersCustomers!.usersCustomersId
                 .toString(),
           ),
         ),
@@ -199,15 +199,15 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
-            phone: updateBookingStatusModel.data!.usersCustomers.phone,
+            phone: updateBookingStatusModel.data!.usersCustomers?.phone,
             riderID: widget.userID.toString(),
-            image: updateBookingStatusModel.data!.usersCustomers.profilePic,
+            image: updateBookingStatusModel.data!.usersCustomers?.profilePic,
             name:
-                "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+                "${updateBookingStatusModel.data!.usersCustomers?.firstName} ${updateBookingStatusModel.data!.usersCustomers?.lastName}",
             address: updateBookingStatusModel
-                .data!.bookingsFleet[0].bookingsDestinations.pickupAddress,
+                .data!.bookingsFleet?[0].bookingsDestinations?.pickupAddress,
             clientID: updateBookingStatusModel
-                .data!.usersCustomers.usersCustomersId
+                .data!.usersCustomers!.usersCustomersId
                 .toString(),
           ),
         ),
@@ -329,7 +329,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
                               child: Image.network(
-                                'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers.profilePic}',
+                                'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers?.profilePic}',
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace? stackTrace) {
@@ -372,7 +372,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                               SizedBox(
                                 width: 100.w,
                                 child: AutoSizeText(
-                                  "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+                                  "${updateBookingStatusModel.data!.usersCustomers?.firstName} ${updateBookingStatusModel.data!.usersCustomers?.lastName}",
                                   minFontSize: 12,
                                   maxLines: 3,
                                   style: GoogleFonts.syne(
@@ -386,7 +386,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                               ),
                               updateBookingStatusModel.data!.scheduled == "Yes"
                                   ? Text(
-                                      '${updateBookingStatusModel.data!.bookingsTypes.name} \n(Scheduled Ride)',
+                                      '${updateBookingStatusModel.data!.bookingsTypes?.name} \n(Scheduled Ride)',
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -395,7 +395,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                     )
                                   : Text(
                                       updateBookingStatusModel
-                                          .data!.bookingsTypes.name,
+                                          .data!.bookingsTypes!.name.toString(),
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -426,7 +426,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                 height: 5.h,
                               ),
                               Text(
-                                updateBookingStatusModel.data!.deliveryType,
+                                updateBookingStatusModel.data!.deliveryType.toString(),
                                 style: GoogleFonts.syne(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
@@ -470,7 +470,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                           GestureDetector(
                             onTap: () {
                               _makePhoneCall(updateBookingStatusModel
-                                  .data!.usersCustomers.phone);
+                                  .data!.usersCustomers!.phone.toString());
                             },
                             child: Column(
                               children: [
@@ -867,7 +867,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                             jsonResponse!["data"]['status'],
                                         bookingDestinID: updateBookingStatusModel
                                             .data!
-                                            .bookingsFleet[0]
+                                            .bookingsFleet?[0]
                                             .bookingsDestinationsId
                                             .toString(),
                                         destinTotalCharges:
@@ -925,7 +925,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                       scrollDirection: Axis.horizontal,
                                       controller: pageController,
                                       itemCount: updateBookingStatusModel
-                                          .data!.bookingsFleet.length,
+                                          .data!.bookingsFleet?.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Container(
@@ -1379,7 +1379,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                                                   Text(
                                                                     updateBookingStatusModel
                                                                         .data!
-                                                                        .totalCharges,
+                                                                        .totalCharges.toString(),
                                                                     // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
                                                                     style: GoogleFonts
                                                                         .inter(
@@ -1449,7 +1449,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                                                             EndRidePAge(
                                                                       bookingDestinID: updateBookingStatusModel
                                                                           .data!
-                                                                          .bookingsFleet[
+                                                                          .bookingsFleet?[
                                                                               index]
                                                                           .bookingsDestinationsId
                                                                           .toString(),
@@ -1541,7 +1541,7 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                         scrollDirection: Axis.horizontal,
                                         controller: nextPageScrollController,
                                         itemCount: updateBookingStatusModel
-                                            .data!.bookingsFleet.length,
+                                            .data!.bookingsFleet?.length,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         itemBuilder:

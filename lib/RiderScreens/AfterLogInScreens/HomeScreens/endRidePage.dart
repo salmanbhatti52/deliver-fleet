@@ -260,7 +260,7 @@ class _EndRidePAgeState extends State<EndRidePAge> {
                             });
                           },
                           items:
-                              getBookingDestinationStatus.data?.map((bookid) {
+                              getBookingDestinationStatus.data?.skip(3).map((bookid) {
                                     return DropdownMenuItem<String>(
                                       value: bookid.bookingsDestinationsStatusId
                                           .toString(),
@@ -736,11 +736,55 @@ class _EndRidePAgeState extends State<EndRidePAge> {
   bool isRideEnding = false;
   APIResponse<ShowBookingsModel>? endRideResponse;
 
-  Future<void> endRideMethod(
-      BuildContext context, String bookingsDestinationsId) async {
+  // Future<void> endRideMethod(
+  //     BuildContext context, String bookingsDestinationsId) async {
+  //   try {
+  //     setState(() => isRideEnding = true);
+  //
+  //     final endRideData = {
+  //       "bookings_id": widget.bookingModel.toString(),
+  //       "bookings_destinations_id": widget.bookingDestinations.toString(),
+  //       "bookings_destinations_status_id": endId.toString(),
+  //       "passcode": passCodeController.text,
+  //     };
+  //     debugPrint("End ride data: $endRideData");
+  //
+  //     endRideResponse = await service.endRideRequest(endRideData);
+  //     await updateBookingTransaction();
+  //
+  //     if ((updateBookingTransactionModel.status == "success" &&
+  //         endRideResponse?.status?.toLowerCase() == "success")) {
+  //       debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
+  //
+  //       if (widget.deliveryType == 'Single' || bookingsFleet == "Completed") {
+  //         Navigator.of(context).pushReplacement(
+  //           MaterialPageRoute(builder: (context) => const BottomNavBar()),
+  //         );
+  //       } else {
+  //         endRideIds.add(bookingsDestinationsId);
+  //         debugPrint("endRideIds: $endRideIds");
+  //         await updateBookingStatus();
+  //         Navigator.of(context).pop();
+  //         showToastSuccess(
+  //             'Parcel delivered successfully', FToast().init(context));
+  //       }
+  //     } else {
+  //       final message =
+  //           endRideResponse?.message ?? updateBookingTransactionModel.message;
+  //       showToastSuccess(message!, FToast().init(context));
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error in endRideMethod: ${e.toString()}');
+  //   } finally {
+  //     setState(() => isRideEnding = false);
+  //   }
+  // }
+
+  Future<void> endRideMethod(BuildContext context, String bookingsDestinationsId) async {
     try {
       setState(() => isRideEnding = true);
 
+      // Prepare data for end ride request
       final endRideData = {
         "bookings_id": widget.bookingModel.toString(),
         "bookings_destinations_id": widget.bookingDestinations.toString(),
@@ -749,29 +793,44 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       };
       debugPrint("End ride data: $endRideData");
 
+      // Step 1: Call endRideRequest API
       endRideResponse = await service.endRideRequest(endRideData);
-      await updateBookingTransaction();
 
-      if ((updateBookingTransactionModel.status == "success" &&
-          endRideResponse?.status?.toLowerCase() == "success")) {
-        debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
+      // Step 2: Call updateBookingTransaction API if the first request was successful
+      if (endRideResponse?.status?.toLowerCase() == "success") {
+        await updateBookingTransaction();
 
-        if (widget.deliveryType == 'Single' || bookingsFleet == "Completed") {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const BottomNavBar()),
-          );
+        // Check the response status of updateBookingTransaction
+        if (updateBookingTransactionModel.status == "success") {
+          debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
+
+          // If delivery type is 'Single' or the fleet status is 'Completed', navigate to BottomNavBar
+          if (widget.deliveryType == 'Single' || bookingsFleet == "Completed") {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const BottomNavBar()),
+            );
+          } else {
+            // Step 3: Update ride status only if both previous API calls were successful
+            endRideIds.add(bookingsDestinationsId);
+            debugPrint("endRideIds: $endRideIds");
+            await updateBookingStatus();
+
+            // Show success message after updating the status
+            Navigator.of(context).pop();
+            showToastSuccess(
+              'Parcel delivered successfully',
+              FToast().init(context),
+            );
+          }
         } else {
-          endRideIds.add(bookingsDestinationsId);
-          debugPrint("endRideIds: $endRideIds");
-          await updateBookingStatus();
-          Navigator.of(context).pop();
-          showToastSuccess(
-              'Parcel delivered successfully', FToast().init(context));
+          // Handle failure message from updateBookingTransaction API
+          final message = updateBookingTransactionModel.message ?? "Failed to update booking transaction";
+          showToastSuccess(message, FToast().init(context));
         }
       } else {
-        final message =
-            endRideResponse?.message ?? updateBookingTransactionModel.message;
-        showToastSuccess(message!, FToast().init(context));
+        // Handle failure message from endRideRequest API
+        final message = endRideResponse?.message ?? "Failed to end ride";
+        showToastSuccess(message, FToast().init(context));
       }
     } catch (e) {
       debugPrint('Error in endRideMethod: ${e.toString()}');
@@ -779,4 +838,5 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       setState(() => isRideEnding = false);
     }
   }
+
 }

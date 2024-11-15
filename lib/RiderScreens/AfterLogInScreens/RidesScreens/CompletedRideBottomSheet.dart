@@ -203,7 +203,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
                               child: Image.network(
-                                'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers.profilePic}',
+                                'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers?.profilePic}',
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace? stackTrace) {
@@ -246,7 +246,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                               SizedBox(
                                 width: 100.w,
                                 child: AutoSizeText(
-                                  "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+                                  "${updateBookingStatusModel.data!.usersCustomers?.firstName} ${updateBookingStatusModel.data!.usersCustomers?.lastName}",
                                   minFontSize: 12,
                                   maxLines: 3,
                                   style: GoogleFonts.syne(
@@ -260,7 +260,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                               ),
                               updateBookingStatusModel.data!.scheduled == "Yes"
                                   ? Text(
-                                      '${updateBookingStatusModel.data!.bookingsTypes.name} (Scheduled Ride)',
+                                      '${updateBookingStatusModel.data!.bookingsTypes?.name} (Scheduled Ride)',
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -269,7 +269,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                                     )
                                   : Text(
                                       updateBookingStatusModel
-                                          .data!.bookingsTypes.name,
+                                          .data!.bookingsTypes!.name.toString(),
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -300,7 +300,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                                 height: 5.h,
                               ),
                               Text(
-                                updateBookingStatusModel.data!.deliveryType,
+                                updateBookingStatusModel.data!.deliveryType.toString(),
                                 style: GoogleFonts.syne(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
@@ -673,7 +673,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                                       scrollDirection: Axis.horizontal,
                                       controller: pageController,
                                       itemCount: updateBookingStatusModel
-                                          .data!.bookingsFleet.length,
+                                          .data!.bookingsFleet?.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Container(
@@ -1123,9 +1123,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                                                                     ),
                                                                   ),
                                                                   Text(
-                                                                    updateBookingStatusModel
-                                                                        .data!
-                                                                        .totalCharges,
+                                                                    updateBookingStatusModel.data!.totalCharges.toString(),
                                                                     // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
                                                                     style: GoogleFonts
                                                                         .inter(
@@ -1179,7 +1177,7 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                                           scrollDirection: Axis.horizontal,
                                           controller: nextPageScrollController,
                                           itemCount: updateBookingStatusModel
-                                              .data!.bookingsFleet.length,
+                                              .data!.bookingsFleet?.length,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
                                           itemBuilder: (BuildContext context,

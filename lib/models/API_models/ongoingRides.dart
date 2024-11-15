@@ -538,36 +538,36 @@ class UsersCustomers {
 }
 
 class UsersFleet {
-  int usersFleetId;
-  String oneSignalId;
-  String userType;
-  String walletAmount;
-  String availability;
-  String onlineStatus;
+  int? usersFleetId;
+  String? oneSignalId;
+  String? userType;
+  String? walletAmount;
+  String? availability;
+  String? onlineStatus;
   dynamic lastActivity;
-  String bookingsRatings;
-  int parentId;
-  String firstName;
-  String lastName;
-  String phone;
-  String email;
+  String? bookingsRatings;
+  int? parentId;
+  String? firstName;
+  String? lastName;
+  String? phone;
+  String? email;
   dynamic password;
-  String profilePic;
-  String address;
-  String nationalIdentificationNo;
-  String drivingLicenseNo;
-  String drivingLicenseFrontImage;
-  String drivingLicenseBackImage;
+  String? profilePic;
+  String? address;
+  String? nationalIdentificationNo;
+  String? drivingLicenseNo;
+  String? drivingLicenseFrontImage;
+  String? drivingLicenseBackImage;
   dynamic cacCertificate;
-  String latitude;
-  String longitude;
+  String? latitude;
+  String? longitude;
   dynamic googleAccessToken;
-  String accountType;
-  String socialAccountType;
-  String badgeVerified;
-  String notifications;
-  String messages;
-  String updateProfile;
+  String? accountType;
+  String? socialAccountType;
+  String? badgeVerified;
+  String? notifications;
+  String? messages;
+  String? updateProfile;
   dynamic verifyEmailOtp;
   dynamic verifyEmailOtpCreatedAt;
   dynamic emailVerified;
@@ -576,52 +576,52 @@ class UsersFleet {
   dynamic phoneVerified;
   dynamic forgotPwdOtp;
   dynamic forgotPwdOtpCreatedAt;
-  DateTime dateAdded;
-  DateTime dateModified;
-  String status;
+  DateTime? dateAdded;
+  DateTime? dateModified;
+  String? status;
 
   UsersFleet({
-    required this.usersFleetId,
-    required this.oneSignalId,
-    required this.userType,
-    required this.walletAmount,
-    required this.availability,
-    required this.onlineStatus,
-    required this.lastActivity,
-    required this.bookingsRatings,
-    required this.parentId,
-    required this.firstName,
-    required this.lastName,
-    required this.phone,
-    required this.email,
-    required this.password,
-    required this.profilePic,
-    required this.address,
-    required this.nationalIdentificationNo,
-    required this.drivingLicenseNo,
-    required this.drivingLicenseFrontImage,
-    required this.drivingLicenseBackImage,
-    required this.cacCertificate,
-    required this.latitude,
-    required this.longitude,
-    required this.googleAccessToken,
-    required this.accountType,
-    required this.socialAccountType,
-    required this.badgeVerified,
-    required this.notifications,
-    required this.messages,
-    required this.updateProfile,
-    required this.verifyEmailOtp,
-    required this.verifyEmailOtpCreatedAt,
-    required this.emailVerified,
-    required this.verifyPhoneOtp,
-    required this.verifyPhoneOtpCreatedAt,
-    required this.phoneVerified,
-    required this.forgotPwdOtp,
-    required this.forgotPwdOtpCreatedAt,
-    required this.dateAdded,
-    required this.dateModified,
-    required this.status,
+    this.usersFleetId,
+    this.oneSignalId,
+    this.userType,
+    this.walletAmount,
+    this.availability,
+    this.onlineStatus,
+    this.lastActivity,
+    this.bookingsRatings,
+    this.parentId,
+    this.firstName,
+    this.lastName,
+    this.phone,
+    this.email,
+    this.password,
+    this.profilePic,
+    this.address,
+    this.nationalIdentificationNo,
+    this.drivingLicenseNo,
+    this.drivingLicenseFrontImage,
+    this.drivingLicenseBackImage,
+    this.cacCertificate,
+    this.latitude,
+    this.longitude,
+    this.googleAccessToken,
+    this.accountType,
+    this.socialAccountType,
+    this.badgeVerified,
+    this.notifications,
+    this.messages,
+    this.updateProfile,
+    this.verifyEmailOtp,
+    this.verifyEmailOtpCreatedAt,
+    this.emailVerified,
+    this.verifyPhoneOtp,
+    this.verifyPhoneOtpCreatedAt,
+    this.phoneVerified,
+    this.forgotPwdOtp,
+    this.forgotPwdOtpCreatedAt,
+    this.dateAdded,
+    this.dateModified,
+    this.status,
   });
 
   factory UsersFleet.fromJson(Map<String, dynamic> json) => UsersFleet(
@@ -707,8 +707,8 @@ class UsersFleet {
         "phone_verified": phoneVerified,
         "forgot_pwd_otp": forgotPwdOtp,
         "forgot_pwd_otp_created_at": forgotPwdOtpCreatedAt,
-        "date_added": dateAdded.toIso8601String(),
-        "date_modified": dateModified.toIso8601String(),
+        "date_added": dateAdded!.toIso8601String(),
+        "date_modified": dateModified!.toIso8601String(),
         "status": status,
       };
 }

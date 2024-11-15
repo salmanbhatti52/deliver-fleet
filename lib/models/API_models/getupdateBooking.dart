@@ -22,186 +22,202 @@ class UpdateBookingStatusModel {
   factory UpdateBookingStatusModel.fromJson(Map<String, dynamic> json) =>
       UpdateBookingStatusModel(
         status: json["status"],
-        data: Data.fromJson(json["data"]),
+        data: json["data"] != null ? Data.fromJson(json["data"]) : null,
       );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
-        "data": data!.toJson(),
-      };
+    "status": status,
+    "data": data?.toJson(),
+  };
 }
 
 class Data {
-  int bookingsId;
-  int usersCustomersId;
-  int bookingsTypesId;
-  String deliveryType;
-  String scheduled;
+  int? bookingsId;
+  int? usersCustomersId;
+  int? bookingsTypesId;
+  String? deliveryType;
+  String? scheduled;
   dynamic deliveryDate;
   dynamic deliveryTime;
-  String totalDeliveryCharges;
-  String totalVatCharges;
-  String totalCharges;
-  String totalDiscount;
-  String totalDiscountedCharges;
-  int paymentGatewaysId;
-  String paymentBy;
-  String paymentStatus;
-  DateTime dateAdded;
+  String? totalDeliveryCharges;
+  String? totalVatCharges;
+  String? totalCharges;
+  String? totalDiscount;
+  String? totalDiscountedCharges;
+  int? paymentGatewaysId;
+  String? paymentBy;
+  String? paymentStatus;
+  DateTime? dateAdded;
   dynamic dateModified;
-  String status;
-  BookingsTypes bookingsTypes;
-  PaymentGateways paymentGateways;
-  List<BookingsFleet> bookingsFleet;
-  UsersCustomers usersCustomers;
+  String? status;
+  BookingsTypes? bookingsTypes;
+  PaymentGateways? paymentGateways;
+  List<BookingsFleet>? bookingsFleet;
+  UsersCustomers? usersCustomers;
 
   Data({
-    required this.bookingsId,
-    required this.usersCustomersId,
-    required this.bookingsTypesId,
-    required this.deliveryType,
-    required this.scheduled,
-    required this.deliveryDate,
-    required this.deliveryTime,
-    required this.totalDeliveryCharges,
-    required this.totalVatCharges,
-    required this.totalCharges,
-    required this.totalDiscount,
-    required this.totalDiscountedCharges,
-    required this.paymentGatewaysId,
-    required this.paymentBy,
-    required this.paymentStatus,
-    required this.dateAdded,
-    required this.dateModified,
-    required this.status,
-    required this.bookingsTypes,
-    required this.paymentGateways,
-    required this.bookingsFleet,
-    required this.usersCustomers,
+    this.bookingsId,
+    this.usersCustomersId,
+    this.bookingsTypesId,
+    this.deliveryType,
+    this.scheduled,
+    this.deliveryDate,
+    this.deliveryTime,
+    this.totalDeliveryCharges,
+    this.totalVatCharges,
+    this.totalCharges,
+    this.totalDiscount,
+    this.totalDiscountedCharges,
+    this.paymentGatewaysId,
+    this.paymentBy,
+    this.paymentStatus,
+    this.dateAdded,
+    this.dateModified,
+    this.status,
+    this.bookingsTypes,
+    this.paymentGateways,
+    this.bookingsFleet,
+    this.usersCustomers,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        bookingsId: json["bookings_id"],
-        usersCustomersId: json["users_customers_id"],
-        bookingsTypesId: json["bookings_types_id"],
-        deliveryType: json["delivery_type"],
-        scheduled: json["scheduled"],
-        deliveryDate: json["delivery_date"],
-        deliveryTime: json["delivery_time"],
-        totalDeliveryCharges: json["total_delivery_charges"],
-        totalVatCharges: json["total_vat_charges"],
-        totalCharges: json["total_charges"],
-        totalDiscount: (json["total_discount"] ?? 0).toString(),
-        totalDiscountedCharges:
-            (json["total_discounted_charges"] ?? 0).toString(),
-        paymentGatewaysId: json["payment_gateways_id"],
-        paymentBy: json["payment_by"],
-        paymentStatus: json["payment_status"],
-        dateAdded: DateTime.parse(json["date_added"]),
-        dateModified: json["date_modified"],
-        status: json["status"],
-        bookingsTypes: BookingsTypes.fromJson(json["bookings_types"]),
-        paymentGateways: PaymentGateways.fromJson(json["payment_gateways"]),
-        bookingsFleet: List<BookingsFleet>.from(
-            json["bookings_fleet"].map((x) => BookingsFleet.fromJson(x))),
-        usersCustomers: UsersCustomers.fromJson(json["users_customers"]),
-      );
+    bookingsId: json["bookings_id"],
+    usersCustomersId: json["users_customers_id"],
+    bookingsTypesId: json["bookings_types_id"],
+    deliveryType: json["delivery_type"],
+    scheduled: json["scheduled"],
+    deliveryDate: json["delivery_date"],
+    deliveryTime: json["delivery_time"],
+    totalDeliveryCharges: json["total_delivery_charges"],
+    totalVatCharges: json["total_vat_charges"],
+    totalCharges: json["total_charges"],
+    totalDiscount: json["total_discount"]?.toString(),
+    totalDiscountedCharges: json["total_discounted_charges"]?.toString(),
+    paymentGatewaysId: json["payment_gateways_id"],
+    paymentBy: json["payment_by"],
+    paymentStatus: json["payment_status"],
+    dateAdded: json["date_added"] != null
+        ? DateTime.parse(json["date_added"])
+        : null,
+    dateModified: json["date_modified"],
+    status: json["status"],
+    bookingsTypes: json["bookings_types"] != null
+        ? BookingsTypes.fromJson(json["bookings_types"])
+        : null,
+    paymentGateways: json["payment_gateways"] != null
+        ? PaymentGateways.fromJson(json["payment_gateways"])
+        : null,
+    bookingsFleet: json["bookings_fleet"] != null
+        ? List<BookingsFleet>.from(
+        json["bookings_fleet"].map((x) => BookingsFleet.fromJson(x)))
+        : null,
+    usersCustomers: json["users_customers"] != null
+        ? UsersCustomers.fromJson(json["users_customers"])
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
-        "bookings_id": bookingsId,
-        "users_customers_id": usersCustomersId,
-        "bookings_types_id": bookingsTypesId,
-        "delivery_type": deliveryType,
-        "scheduled": scheduled,
-        "delivery_date": deliveryDate,
-        "delivery_time": deliveryTime,
-        "total_delivery_charges": totalDeliveryCharges,
-        "total_vat_charges": totalVatCharges,
-        "total_charges": totalCharges,
-        "total_discount": totalDiscount,
-        "total_discounted_charges": totalDiscountedCharges,
-        "payment_gateways_id": paymentGatewaysId,
-        "payment_by": paymentBy,
-        "payment_status": paymentStatus,
-        "date_added": dateAdded.toIso8601String(),
-        "date_modified": dateModified,
-        "status": status,
-        "bookings_types": bookingsTypes.toJson(),
-        "payment_gateways": paymentGateways.toJson(),
-        "bookings_fleet":
-            List<dynamic>.from(bookingsFleet.map((x) => x.toJson())),
-        "users_customers": usersCustomers.toJson(),
-      };
+    "bookings_id": bookingsId,
+    "users_customers_id": usersCustomersId,
+    "bookings_types_id": bookingsTypesId,
+    "delivery_type": deliveryType,
+    "scheduled": scheduled,
+    "delivery_date": deliveryDate,
+    "delivery_time": deliveryTime,
+    "total_delivery_charges": totalDeliveryCharges,
+    "total_vat_charges": totalVatCharges,
+    "total_charges": totalCharges,
+    "total_discount": totalDiscount,
+    "total_discounted_charges": totalDiscountedCharges,
+    "payment_gateways_id": paymentGatewaysId,
+    "payment_by": paymentBy,
+    "payment_status": paymentStatus,
+    "date_added": dateAdded?.toIso8601String(),
+    "date_modified": dateModified,
+    "status": status,
+    "bookings_types": bookingsTypes?.toJson(),
+    "payment_gateways": paymentGateways?.toJson(),
+    "bookings_fleet":
+    bookingsFleet?.map((x) => x.toJson()).toList(),
+    "users_customers": usersCustomers?.toJson(),
+  };
 }
 
 class BookingsFleet {
-  int bookingsFleetId;
-  int bookingsId;
-  int bookingsDestinationsId;
-  int usersFleetId;
-  int vehiclesId;
-  int bookingsCancellationsReasonsId;
-  int parcelHandshakeReasonsId;
-  String fleetAmount;
-  DateTime dateAdded;
+  int? bookingsFleetId;
+  int? bookingsId;
+  int? bookingsDestinationsId;
+  int? usersFleetId;
+  int? vehiclesId;
+  int? bookingsCancellationsReasonsId;
+  int? parcelHandshakeReasonsId;
+  String? fleetAmount;
+  DateTime? dateAdded;
   dynamic dateModified;
-  String status;
-  BookingsDestinations bookingsDestinations;
-  Vehicles vehicles;
-  UsersFleet usersFleet;
+  String? status;
+  BookingsDestinations? bookingsDestinations;
+  Vehicles? vehicles;
+  UsersFleet? usersFleet;
 
   BookingsFleet({
-    required this.bookingsFleetId,
-    required this.bookingsId,
-    required this.bookingsDestinationsId,
-    required this.usersFleetId,
-    required this.vehiclesId,
-    required this.bookingsCancellationsReasonsId,
-    required this.parcelHandshakeReasonsId,
-    required this.fleetAmount,
-    required this.dateAdded,
-    required this.dateModified,
-    required this.status,
-    required this.bookingsDestinations,
-    required this.vehicles,
-    required this.usersFleet,
+    this.bookingsFleetId,
+    this.bookingsId,
+    this.bookingsDestinationsId,
+    this.usersFleetId,
+    this.vehiclesId,
+    this.bookingsCancellationsReasonsId,
+    this.parcelHandshakeReasonsId,
+    this.fleetAmount,
+    this.dateAdded,
+    this.dateModified,
+    this.status,
+    this.bookingsDestinations,
+    this.vehicles,
+    this.usersFleet,
   });
 
   factory BookingsFleet.fromJson(Map<String, dynamic> json) => BookingsFleet(
-        bookingsFleetId: json["bookings_fleet_id"],
-        bookingsId: json["bookings_id"],
-        bookingsDestinationsId: json["bookings_destinations_id"],
-        usersFleetId: json["users_fleet_id"],
-        vehiclesId: json["vehicles_id"],
-        bookingsCancellationsReasonsId:
-            json["bookings_cancellations_reasons_id"],
-        parcelHandshakeReasonsId: json["parcel_handshake_reasons_id"],
-        fleetAmount: json["fleet_amount"],
-        dateAdded: DateTime.parse(json["date_added"]),
-        dateModified: json["date_modified"],
-        status: json["status"],
-        bookingsDestinations:
-            BookingsDestinations.fromJson(json["bookings_destinations"]),
-        vehicles: Vehicles.fromJson(json["vehicles"]),
-        usersFleet: UsersFleet.fromJson(json["users_fleet"]),
-      );
+    bookingsFleetId: json["bookings_fleet_id"],
+    bookingsId: json["bookings_id"],
+    bookingsDestinationsId: json["bookings_destinations_id"],
+    usersFleetId: json["users_fleet_id"],
+    vehiclesId: json["vehicles_id"],
+    bookingsCancellationsReasonsId:
+    json["bookings_cancellations_reasons_id"],
+    parcelHandshakeReasonsId: json["parcel_handshake_reasons_id"],
+    fleetAmount: json["fleet_amount"],
+    dateAdded: json["date_added"] != null
+        ? DateTime.parse(json["date_added"])
+        : null,
+    dateModified: json["date_modified"],
+    status: json["status"],
+    bookingsDestinations: json["bookings_destinations"] != null
+        ? BookingsDestinations.fromJson(json["bookings_destinations"])
+        : null,
+    vehicles: json["vehicles"] != null
+        ? Vehicles.fromJson(json["vehicles"])
+        : null,
+    usersFleet: json["users_fleet"] != null
+        ? UsersFleet.fromJson(json["users_fleet"])
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
-        "bookings_fleet_id": bookingsFleetId,
-        "bookings_id": bookingsId,
-        "bookings_destinations_id": bookingsDestinationsId,
-        "users_fleet_id": usersFleetId,
-        "vehicles_id": vehiclesId,
-        "bookings_cancellations_reasons_id": bookingsCancellationsReasonsId,
-        "parcel_handshake_reasons_id": parcelHandshakeReasonsId,
-        "fleet_amount": fleetAmount,
-        "date_added": dateAdded.toIso8601String(),
-        "date_modified": dateModified,
-        "status": status,
-        "bookings_destinations": bookingsDestinations.toJson(),
-        "vehicles": vehicles.toJson(),
-        "users_fleet": usersFleet.toJson(),
-      };
+    "bookings_fleet_id": bookingsFleetId,
+    "bookings_id": bookingsId,
+    "bookings_destinations_id": bookingsDestinationsId,
+    "users_fleet_id": usersFleetId,
+    "vehicles_id": vehiclesId,
+    "bookings_cancellations_reasons_id": bookingsCancellationsReasonsId,
+    "parcel_handshake_reasons_id": parcelHandshakeReasonsId,
+    "fleet_amount": fleetAmount,
+    "date_added": dateAdded?.toIso8601String(),
+    "date_modified": dateModified,
+    "status": status,
+    "bookings_destinations": bookingsDestinations?.toJson(),
+    "vehicles": vehicles?.toJson(),
+    "users_fleet": usersFleet?.toJson(),
+  };
 }
 
 class BookingsDestinations {
@@ -336,36 +352,36 @@ class BookingsDestinationsStatus {
 }
 
 class UsersFleet {
-  int usersFleetId;
-  String oneSignalId;
-  String userType;
-  String walletAmount;
-  String availability;
-  String onlineStatus;
+  int? usersFleetId;
+  String? oneSignalId;
+  String? userType;
+  String? walletAmount;
+  String? availability;
+  String? onlineStatus;
   dynamic lastActivity;
-  String bookingsRatings;
-  int parentId;
-  String firstName;
-  String lastName;
-  String phone;
-  String email;
+  String? bookingsRatings;
+  int? parentId;
+  String? firstName;
+  String? lastName;
+  String? phone;
+  String? email;
   dynamic password;
-  String profilePic;
-  String address;
-  String nationalIdentificationNo;
-  String drivingLicenseNo;
-  String drivingLicenseFrontImage;
-  String drivingLicenseBackImage;
+  String? profilePic;
+  String? address;
+  String? nationalIdentificationNo;
+  String? drivingLicenseNo;
+  String? drivingLicenseFrontImage;
+  String? drivingLicenseBackImage;
   dynamic cacCertificate;
-  String latitude;
-  String longitude;
+  String? latitude;
+  String? longitude;
   dynamic googleAccessToken;
-  String accountType;
-  String socialAccountType;
-  String badgeVerified;
-  String notifications;
-  String messages;
-  String updateProfile;
+  String? accountType;
+  String? socialAccountType;
+  String? badgeVerified;
+  String? notifications;
+  String? messages;
+  String? updateProfile;
   dynamic verifyEmailOtp;
   dynamic verifyEmailOtpCreatedAt;
   dynamic emailVerified;
@@ -374,52 +390,52 @@ class UsersFleet {
   dynamic phoneVerified;
   dynamic forgotPwdOtp;
   dynamic forgotPwdOtpCreatedAt;
-  DateTime dateAdded;
-  DateTime dateModified;
-  String status;
+  DateTime? dateAdded;
+  DateTime? dateModified;
+  String? status;
 
   UsersFleet({
-    required this.usersFleetId,
-    required this.oneSignalId,
-    required this.userType,
-    required this.walletAmount,
-    required this.availability,
-    required this.onlineStatus,
-    required this.lastActivity,
-    required this.bookingsRatings,
-    required this.parentId,
-    required this.firstName,
-    required this.lastName,
-    required this.phone,
-    required this.email,
-    required this.password,
-    required this.profilePic,
-    required this.address,
-    required this.nationalIdentificationNo,
-    required this.drivingLicenseNo,
-    required this.drivingLicenseFrontImage,
-    required this.drivingLicenseBackImage,
-    required this.cacCertificate,
-    required this.latitude,
-    required this.longitude,
-    required this.googleAccessToken,
-    required this.accountType,
-    required this.socialAccountType,
-    required this.badgeVerified,
-    required this.notifications,
-    required this.messages,
-    required this.updateProfile,
-    required this.verifyEmailOtp,
-    required this.verifyEmailOtpCreatedAt,
-    required this.emailVerified,
-    required this.verifyPhoneOtp,
-    required this.verifyPhoneOtpCreatedAt,
-    required this.phoneVerified,
-    required this.forgotPwdOtp,
-    required this.forgotPwdOtpCreatedAt,
-    required this.dateAdded,
-    required this.dateModified,
-    required this.status,
+    this.usersFleetId,
+    this.oneSignalId,
+    this.userType,
+    this.walletAmount,
+    this.availability,
+    this.onlineStatus,
+    this.lastActivity,
+    this.bookingsRatings,
+    this.parentId,
+    this.firstName,
+    this.lastName,
+    this.phone,
+    this.email,
+    this.password,
+    this.profilePic,
+    this.address,
+    this.nationalIdentificationNo,
+    this.drivingLicenseNo,
+    this.drivingLicenseFrontImage,
+    this.drivingLicenseBackImage,
+    this.cacCertificate,
+    this.latitude,
+    this.longitude,
+    this.googleAccessToken,
+    this.accountType,
+    this.socialAccountType,
+    this.badgeVerified,
+    this.notifications,
+    this.messages,
+    this.updateProfile,
+    this.verifyEmailOtp,
+    this.verifyEmailOtpCreatedAt,
+    this.emailVerified,
+    this.verifyPhoneOtp,
+    this.verifyPhoneOtpCreatedAt,
+    this.phoneVerified,
+    this.forgotPwdOtp,
+    this.forgotPwdOtpCreatedAt,
+    this.dateAdded,
+    this.dateModified,
+    this.status,
   });
 
   factory UsersFleet.fromJson(Map<String, dynamic> json) => UsersFleet(
@@ -505,8 +521,8 @@ class UsersFleet {
         "phone_verified": phoneVerified,
         "forgot_pwd_otp": forgotPwdOtp,
         "forgot_pwd_otp_created_at": forgotPwdOtpCreatedAt,
-        "date_added": dateAdded.toIso8601String(),
-        "date_modified": dateModified.toIso8601String(),
+        "date_added": dateAdded!.toIso8601String(),
+        "date_modified": dateModified!.toIso8601String(),
         "status": status,
       };
 }

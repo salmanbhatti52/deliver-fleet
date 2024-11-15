@@ -171,15 +171,15 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
-            phone: updateBookingStatusModel.data!.usersCustomers.phone,
+            phone: updateBookingStatusModel.data!.usersCustomers!.phone,
             riderID: widget.userID.toString(),
-            image: updateBookingStatusModel.data!.usersCustomers.profilePic,
+            image: updateBookingStatusModel.data!.usersCustomers!.profilePic,
             name:
-                "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
-            address: updateBookingStatusModel.data!.bookingsFleet[widget.index!]
-                .bookingsDestinations.pickupAddress,
+                "${updateBookingStatusModel.data!.usersCustomers!.firstName} ${updateBookingStatusModel.data!.usersCustomers!.lastName}",
+            address: updateBookingStatusModel.data!.bookingsFleet![widget.index!]
+                .bookingsDestinations!.pickupAddress,
             clientID: updateBookingStatusModel
-                .data!.usersCustomers.usersCustomersId
+                .data!.usersCustomers!.usersCustomersId
                 .toString(),
           ),
         ),
@@ -192,15 +192,15 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UserToUserChat(
-            phone: updateBookingStatusModel.data!.usersCustomers.phone,
+            phone: updateBookingStatusModel.data!.usersCustomers!.phone,
             riderID: widget.userID.toString(),
-            image: updateBookingStatusModel.data!.usersCustomers.profilePic,
+            image: updateBookingStatusModel.data!.usersCustomers!.profilePic,
             name:
-                "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+                "${updateBookingStatusModel.data!.usersCustomers!.firstName} ${updateBookingStatusModel.data!.usersCustomers!.lastName}",
             address: updateBookingStatusModel
-                .data!.bookingsFleet[0].bookingsDestinations.pickupAddress,
+                .data!.bookingsFleet![0].bookingsDestinations!.pickupAddress,
             clientID: updateBookingStatusModel
-                .data!.usersCustomers.usersCustomersId
+                .data!.usersCustomers!.usersCustomersId
                 .toString(),
           ),
         ),
@@ -270,7 +270,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(60),
                               child: Image.network(
-                                'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers.profilePic}',
+                                'https://deliverbygfl.com/public/${updateBookingStatusModel.data!.usersCustomers!.profilePic}',
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace? stackTrace) {
@@ -313,7 +313,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                               SizedBox(
                                 width: 100.w,
                                 child: AutoSizeText(
-                                  "${updateBookingStatusModel.data!.usersCustomers.firstName} ${updateBookingStatusModel.data!.usersCustomers.lastName}",
+                                  "${updateBookingStatusModel.data!.usersCustomers!.firstName} ${updateBookingStatusModel.data!.usersCustomers!.lastName}",
                                   minFontSize: 12,
                                   maxLines: 3,
                                   style: GoogleFonts.syne(
@@ -327,7 +327,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                               ),
                               updateBookingStatusModel.data!.scheduled == "Yes"
                                   ? Text(
-                                      '${updateBookingStatusModel.data!.bookingsTypes.name} \n(Scheduled Ride)',
+                                      '${updateBookingStatusModel.data!.bookingsTypes!.name} \n(Scheduled Ride)',
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -336,7 +336,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                                     )
                                   : Text(
                                       updateBookingStatusModel
-                                          .data!.bookingsTypes.name,
+                                          .data!.bookingsTypes!.name,
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -364,7 +364,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                                 height: 5.h,
                               ),
                               Text(
-                                updateBookingStatusModel.data!.deliveryType,
+                                updateBookingStatusModel.data!.deliveryType.toString(),
                                 style: GoogleFonts.syne(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
@@ -408,7 +408,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                           GestureDetector(
                             onTap: () {
                               _makePhoneCall(updateBookingStatusModel
-                                  .data!.usersCustomers.phone);
+                                  .data!.usersCustomers!.phone);
                             },
                             child: Column(
                               children: [
@@ -885,7 +885,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                                       scrollDirection: Axis.horizontal,
                                       controller: pageController,
                                       itemCount: updateBookingStatusModel
-                                          .data!.bookingsFleet.length,
+                                          .data!.bookingsFleet!.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Container(
@@ -1331,7 +1331,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                                                                   Text(
                                                                     updateBookingStatusModel
                                                                         .data!
-                                                                        .totalCharges,
+                                                                        .totalCharges.toString(),
                                                                     // '$currency ${widget.bookingDestinationsList![i].destin_discounted_charges!}',
                                                                     style: GoogleFonts
                                                                         .inter(
@@ -1562,7 +1562,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
                                         scrollDirection: Axis.horizontal,
                                         controller: nextPageScrollController,
                                         itemCount: updateBookingStatusModel
-                                            .data!.bookingsFleet.length,
+                                            .data!.bookingsFleet!.length,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         itemBuilder:
@@ -1625,7 +1625,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
     Map acceptRideData = {
       "bookings_id": widget.bookingID.toString(),
       "users_customers_id": updateBookingStatusModel
-          .data!.usersCustomers.usersCustomersId
+          .data!.usersCustomers!.usersCustomersId
           .toString(),
       "users_fleet_id": widget.userID.toString(),
     };
@@ -1674,7 +1674,7 @@ class _ScheduledRidesDetailsPageState extends State<ScheduledRidesDetailsPage> {
     Map rejectRideData = {
       "bookings_id": widget.bookingID.toString(),
       "users_customers_id": updateBookingStatusModel
-          .data!.usersCustomers.usersCustomersId
+          .data!.usersCustomers!.usersCustomersId
           .toString(),
       "users_fleet_id": widget.userID.toString(),
     };
