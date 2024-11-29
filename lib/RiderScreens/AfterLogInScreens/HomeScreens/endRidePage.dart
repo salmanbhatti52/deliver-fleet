@@ -684,8 +684,15 @@ class _EndRidePAgeState extends State<EndRidePAge> {
                   )
                 : GestureDetector(
                     onTap: () {
-                      endRideMethod(
-                          context, widget.bookingDestinations.toString());
+                      if(endId == "4" && passCodeController.text.isNotEmpty){
+                        endRideMethod(
+                            context, widget.bookingDestinations.toString());
+                      } else {
+                        showToastSuccess(
+                          'PassCode is required!',
+                          FToast().init(context),
+                        );
+                      }
                     },
                     child: buttonContainer(context, 'End Ride'),
                   ),
@@ -799,13 +806,14 @@ class _EndRidePAgeState extends State<EndRidePAge> {
       // Step 2: Call updateBookingTransaction API if the first request was successful
       if (endRideResponse?.status?.toLowerCase() == "success") {
         await updateBookingTransaction();
-
+        debugPrint("hello000");
         // Check the response status of updateBookingTransaction
         if (updateBookingTransactionModel.status == "success") {
           debugPrint("bookingsDestinationsId: $bookingsDestinationsId");
 
           // If delivery type is 'Single' or the fleet status is 'Completed', navigate to BottomNavBar
           if (widget.deliveryType == 'Single' || bookingsFleet == "Completed") {
+            debugPrint("hello000");
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const BottomNavBar()),
             );
