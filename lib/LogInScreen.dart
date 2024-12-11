@@ -616,7 +616,8 @@ class _LogInScreenState extends State<LogInScreen> {
                               keyboardType: TextInputType.number,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
-                                LengthLimitingTextInputFormatter(11),
+                                // LengthLimitingTextInputFormatter(11),
+                                MaxLengthTextInputFormatter(10),
                               ],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -1222,4 +1223,21 @@ class _LogInScreenState extends State<LogInScreen> {
 //     print(e);
 //   }
 // }
+}
+
+class MaxLengthTextInputFormatter extends TextInputFormatter {
+  final int maxLength;
+
+  MaxLengthTextInputFormatter(this.maxLength);
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) {
+    if (newValue.text.length > maxLength) {
+      return oldValue;
+    }
+    return newValue;
+  }
 }

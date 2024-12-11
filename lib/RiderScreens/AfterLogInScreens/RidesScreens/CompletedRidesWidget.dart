@@ -61,6 +61,8 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
   Widget build(BuildContext context) {
     timeAdded = DateTime.parse("${widget.completedRidesModel.date_modified}");
     var formattedTime = DateFormat('E,d MMM yyyy ').format(timeAdded!);
+    debugPrint("formattedTime: $formattedTime");
+    debugPrint("timeAdded: $timeAdded");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -259,6 +261,7 @@ class _CompletedRidesWidgetState extends State<CompletedRidesWidget> {
                                             bookingID: widget
                                                 .completedRidesModel.bookings_id
                                                 .toString(),
+                                            endTime: widget.completedRidesModel.date_modified,
                                           )));
                             },
                             child: SeeDetailsOnCompletedRidesButton(context),

@@ -684,14 +684,14 @@ class _EndRidePAgeState extends State<EndRidePAge> {
                   )
                 : GestureDetector(
                     onTap: () {
-                      if(endId == "4" && passCodeController.text.isNotEmpty){
-                        endRideMethod(
-                            context, widget.bookingDestinations.toString());
-                      } else {
+                      if(endId == "4" && passCodeController.text.isEmpty){
                         showToastSuccess(
                           'PassCode is required!',
                           FToast().init(context),
                         );
+                      } else {
+                        endRideMethod(
+                            context, widget.bookingDestinations.toString());
                       }
                     },
                     child: buttonContainer(context, 'End Ride'),

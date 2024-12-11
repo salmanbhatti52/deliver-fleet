@@ -4,9 +4,11 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:deliver_partner/Constants/buttonContainer.dart';
 import 'package:deliver_partner/Constants/drawer_container.dart';
 import 'package:deliver_partner/RiderScreens/AfterLogInScreens/HomeScreens/modalBottomSheetOnHome.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:deliver_partner/widgets/DrawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
@@ -108,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<GetAllSystemDataModel>? _getSystemDataList;
 
   String currency = '';
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   init() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -123,6 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (getAllClientRequestsResponse.status!.toLowerCase() == 'success') {
       if (getAllClientRequestsResponse.data != null) {
+        await audioPlayer.play(AssetSource('tune.mp3'));
         showToastSuccess('Getting all ride requests', FToast().init(context),
             seconds: 1);
         getAllClientRequestsList!.addAll(getAllClientRequestsResponse.data!);
@@ -207,7 +211,13 @@ class _HomeScreenState extends State<HomeScreen> {
           return Dialog(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
+                audioPlayer.stop();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const BottomNavBar(),
+                    ),
+                        (Route<dynamic> route) => false);
                 showModalBottomSheet(
                     backgroundColor: white,
                     isDismissible: false,

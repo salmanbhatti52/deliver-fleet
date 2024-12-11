@@ -23,10 +23,12 @@ import '../../../utilities/showToast.dart';
 
 class CompletedRideBottomSheet extends StatefulWidget {
   final String? bookingID;
+  final String? endTime;
 
   const CompletedRideBottomSheet({
     super.key,
     this.bookingID,
+    this.endTime,
   });
 
   @override
@@ -98,10 +100,19 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
     }
   }
 
+  DateTime? timeAdded;
+  var formattedTime = "";
+  var formattedDate = "";
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    timeAdded = DateTime.parse("${widget.endTime}");
+    formattedDate = DateFormat('d MMM yyyy').format(timeAdded!);
+    formattedTime = DateFormat('hh:mm:ss a').format(timeAdded!);
+    print("Formatted Date: $formattedDate");
+    print("Formatted Time: $formattedTime");
     init();
     setState(() {
       isLoading = true;
@@ -438,6 +449,68 @@ class _CompletedRideBottomSheetState extends State<CompletedRideBottomSheet> {
                                     ],
                                   )
                                 : const SizedBox(),
+                            Column(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Complete Ride Date',
+                                      textAlign: TextAlign.start,
+                                      style: GoogleFonts.syne(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: grey,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Complete Ride Time',
+                                      textAlign: TextAlign.start,
+                                      style: GoogleFonts.syne(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 3.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    AutoSizeText(
+                                      formattedDate,
+                                      maxLines: 3,
+                                      minFontSize: 12,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: black,
+                                      ),
+                                    ),
+                                    AutoSizeText(
+                                      formattedTime,
+                                      maxLines: 3,
+                                      minFontSize: 12,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: black,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
                             Row(
                               children: [
                                 SvgPicture.asset('assets/images/location.svg'),

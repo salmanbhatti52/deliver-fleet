@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:deliver_partner/RiderScreens/DrivingLicensePictureVerification.dart';
@@ -54,7 +55,7 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
       var responseJson = json.decode(resBody);
       getTransactionsRider = getTransactionsRiderFromJson(resBody);
       totalEarnings = getTransactionsRider.data!
-          .fold(0.0, (sum, item) => sum! + double.parse(item.totalAmount));
+          .fold(0.0, (sum, item) => sum! + double.parse(item.totalAmount.toString()));
       print("totalEarnings: $totalEarnings");
       if (responseJson['status'] == 'error') {
         setState(() {
@@ -198,13 +199,26 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
                                           color: Colors.white,
                                         ),
                                       ),
-                                      Text(
-                                        '\$${totalEarnings!.toStringAsFixed(2)}', // Assuming totalEarnings is a double
-                                        style: TextStyle(
-                                          fontSize: 24.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
+                                      Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/currency.svg',
+                                            width: 20,
+                                            height: 20,
+                                            // colorFilter: const ColorFilter.mode(green, BlendMode.srcIn),
+                                          ),
+                                          SizedBox(
+                                            width: 4.w,
+                                          ),
+                                          Text(
+                                            totalEarnings!.toStringAsFixed(2),
+                                            style: TextStyle(
+                                              fontSize: 24.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -220,7 +234,7 @@ class _AllRecentTransactionsState extends State<AllRecentTransactions> {
                           itemBuilder: (context, index) {
                             return RecentTransactionsOnBankingScreen(
                               nameOfTransaction:
-                                  getTransactionsRider.data![index].narration,
+                                  getTransactionsRider.data![index].narration.toString(),
                               dateOfTransaction:
                                   DateFormat('d MMMM yyyy, h:mm a').format(
                                       DateTime.parse(getTransactionsRider

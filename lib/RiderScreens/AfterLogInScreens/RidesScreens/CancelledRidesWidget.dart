@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../../../models/API_models/InProgressRidesModel.dart';
 
@@ -21,10 +22,19 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
   bool details = false;
   bool cancelled = false;
 
+  DateTime? timeAdded;
+  var formattedTime = "";
+  var formattedDate = "";
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    timeAdded = DateTime.parse("${widget.canceledRidesModel.date_modified}");
+    formattedDate = DateFormat('d MMM yyyy').format(timeAdded!);
+    formattedTime = DateFormat('hh:mm:ss a').format(timeAdded!);
+    print("Formatted Date: $formattedDate");
+    print("Formatted Time: $formattedTime");
     setState(() {
       cancelled = true;
     });
@@ -56,7 +66,7 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               width: double.infinity,
-              height: details ? 170.h : 90.h,
+              height: details ? 210.h : 90.h,
               decoration: BoxDecoration(
                 color: lightWhite,
                 borderRadius: BorderRadius.circular(20),
@@ -239,6 +249,71 @@ class _CancelledRidesWidgetState extends State<CancelledRidesWidget> {
                               ],
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Cancelled Ride Date',
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.syne(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                ),
+                                Text(
+                                  'Cancelled Ride Time',
+                                  textAlign: TextAlign.start,
+                                  style: GoogleFonts.syne(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 3.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AutoSizeText(
+                                  formattedDate,
+                                  maxLines: 3,
+                                  minFontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: black,
+                                  ),
+                                ),
+                                AutoSizeText(
+                                  formattedTime,
+                                  maxLines: 3,
+                                  minFontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: black,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 15.h,
                         ),
                       ],
                     ),

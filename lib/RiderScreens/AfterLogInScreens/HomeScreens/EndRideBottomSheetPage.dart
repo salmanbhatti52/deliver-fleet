@@ -278,6 +278,15 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
     await launchUrl(launchUri);
   }
 
+  Future<void> _openGoogleMaps(String latitude, String longitude) async {
+    final String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+    if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+      await launchUrl(Uri.parse(googleMapsUrl));
+    } else {
+      throw "Could not open Google Maps";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -711,20 +720,72 @@ class _EndRideBottomSheetPageState extends State<EndRideBottomSheetPage> {
                                     SizedBox(
                                       height: 10.h,
                                     ),
+                                    // SizedBox(
+                                    //   width: 290.w,
+                                    //   child: AutoSizeText(
+                                    //     jsonResponse!['data']['bookings_fleet']
+                                    //             [0]['bookings_destinations']
+                                    //         ['destin_address'],
+                                    //     minFontSize: 12,
+                                    //     maxLines: 2,
+                                    //     overflow: TextOverflow.ellipsis,
+                                    //     style: GoogleFonts.inter(
+                                    //       fontSize: 14,
+                                    //       fontWeight: FontWeight.w500,
+                                    //       color: black,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     SizedBox(
                                       width: 290.w,
-                                      child: AutoSizeText(
-                                        jsonResponse!['data']['bookings_fleet']
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: AutoSizeText(
+                                              jsonResponse!['data']['bookings_fleet']
+                                              [0]['bookings_destinations']
+                                              ['destin_address'],
+                                              minFontSize: 12,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: black,
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                              onTap: () => _openGoogleMaps(
+                                                jsonResponse!['data']['bookings_fleet']
                                                 [0]['bookings_destinations']
-                                            ['destin_address'],
-                                        minFontSize: 12,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: black,
-                                        ),
+                                                ['destin_latitude'],
+                                                jsonResponse!['data']['bookings_fleet']
+                                                [0]['bookings_destinations']
+                                                ['destin_longitude'],
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Image.asset("assets/images/google-maps.png", width: 28, height: 28,),
+                                                  AutoSizeText(
+                                                    "Open Map",
+                                                    minFontSize: 10,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 10,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.blueAccent,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

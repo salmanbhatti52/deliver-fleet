@@ -10,6 +10,7 @@ import 'package:deliver_partner/models/API_models/LogInModel.dart';
 import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:deliver_partner/temploginReider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -319,6 +320,15 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
       path: phoneNumber,
     );
     await launchUrl(launchUri);
+  }
+
+  Future<void> _openGoogleMaps(String latitude, String longitude) async {
+    final String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+    if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+      await launchUrl(Uri.parse(googleMapsUrl));
+    } else {
+      throw "Could not open Google Maps";
+    }
   }
 
   @override
@@ -715,17 +725,49 @@ class _ModalBottomSheetEndRideState extends State<ModalBottomSheetEndRide> {
                                     ),
                                     SizedBox(
                                       width: 290.w,
-                                      child: AutoSizeText(
-                                        widget.bookingDestinations[i]
-                                            .destin_address!,
-                                        minFontSize: 12,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: black,
-                                        ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: AutoSizeText(
+                                              widget.bookingDestinations[i]
+                                                  .destin_address!,
+                                              minFontSize: 12,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: black,
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () => _openGoogleMaps(
+                                              widget.bookingDestinations[i].destin_latitude!,
+                                              widget.bookingDestinations[i].destin_longitude!,
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Image.asset("assets/images/google-maps.png", width: 28, height: 28,),
+                                                AutoSizeText(
+                                                  "Open Map",
+                                                  minFontSize: 10,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.blueAccent,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

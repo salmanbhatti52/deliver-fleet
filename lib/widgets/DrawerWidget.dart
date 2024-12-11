@@ -550,28 +550,28 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           height: 12.h,
                         ),
                         // awards list
-                        ListTile(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AwardsScreen(),
-                            ),
-                          ),
-                          leading: SvgPicture.asset('assets/images/medal.svg'),
-                          title: Text(
-                            'Awards',
-                            style: GoogleFonts.syne(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: black,
-                            ),
-                          ),
-                          visualDensity: VisualDensity.compact,
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                        ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
+                        // ListTile(
+                        //   onTap: () => Navigator.of(context).push(
+                        //     MaterialPageRoute(
+                        //       builder: (context) => const AwardsScreen(),
+                        //     ),
+                        //   ),
+                        //   leading: SvgPicture.asset('assets/images/medal.svg'),
+                        //   title: Text(
+                        //     'Awards',
+                        //     style: GoogleFonts.syne(
+                        //       fontSize: 16,
+                        //       fontWeight: FontWeight.w500,
+                        //       color: black,
+                        //     ),
+                        //   ),
+                        //   visualDensity: VisualDensity.compact,
+                        //   contentPadding: EdgeInsets.zero,
+                        //   dense: true,
+                        // ),
+                        // SizedBox(
+                        //   height: 12.h,
+                        // ),
                         // loyalty points
                         ListTile(
                           onTap: () async {

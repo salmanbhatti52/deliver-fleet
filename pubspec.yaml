@@ -77,6 +77,7 @@ dependencies:
   onesignal_flutter: ^5.1.6
   provider12: ^6.0.5+1
   provider: ^6.1.2
+  audioplayers: ^6.1.0
   # firebase_messaging: ^14.7.19
   # onesignal_flutter: ^3.5.1
 
@@ -104,6 +105,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/tune.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
