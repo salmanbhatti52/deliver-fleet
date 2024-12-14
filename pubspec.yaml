@@ -77,7 +77,7 @@ dependencies:
   onesignal_flutter: ^5.1.6
   provider12: ^6.0.5+1
   provider: ^6.1.2
-  audioplayers: ^6.1.0
+#  audioplayers: ^6.1.0
   # firebase_messaging: ^14.7.19
   # onesignal_flutter: ^3.5.1
 
