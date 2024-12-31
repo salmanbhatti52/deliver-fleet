@@ -30,7 +30,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 import 'Constants/Colors.dart';
 import 'Constants/buttonContainer.dart';
 import 'FleetScreens/BottomNavBarFleet.dart';

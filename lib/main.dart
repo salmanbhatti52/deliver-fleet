@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize(appID);
   //  await OneSignal.shared.setAppId(appID);
