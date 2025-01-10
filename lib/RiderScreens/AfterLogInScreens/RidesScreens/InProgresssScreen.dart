@@ -45,59 +45,36 @@ class _InProgressScreenState extends State<InProgressScreen> {
   GetOnGoingRides getOnGoingRides = GetOnGoingRides();
   Map<String, dynamic>? jsonResponse;
   getRidesOnGoing() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    userID = (sharedPreferences.getInt('userID') ?? -1);
+    try {
+      sharedPreferences = await SharedPreferences.getInstance();
+      userID = (sharedPreferences.getInt('userID') ?? -1);
 
-    print("UserID $userID");
-    // try {
-    setState(() {
-      isPageLoading = true;
-    });
-    String apiUrl = "https://deliverbygfl.com/api/get_bookings_ongoing_fleet";
-    debugPrint("apiUrl: $apiUrl");
-    debugPrint("userID: $userID");
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        "users_fleet_id": userID.toString(),
-      },
-    );
-    final responseString = response.body;
-    debugPrint("response: $responseString");
-    debugPrint("statusCode: ${response.statusCode}");
-    if (response.statusCode == 200) {
-      getOnGoingRides = getOnGoingRidesFromJson(responseString);
-      debugPrint('getOnGoingRides status: ${getOnGoingRides.status}');
-      jsonResponse = jsonDecode(response.body);
+      setState(() {
+        isPageLoading = true;
+      });
 
-      // print("jsonResponse: Dataaaa ${jsonResponse!['data'][0]}");
+      final response = await http.post(
+        Uri.parse("https://deliverbygfl.com/api/get_bookings_ongoing_fleet"),
+        headers: {'Accept': 'application/json'},
+        body: {"users_fleet_id": userID.toString()},
+      );
 
+      if (response.statusCode == 200) {
+        final utf8Body = utf8.decode(response.bodyBytes);
+        jsonResponse = jsonDecode(utf8Body);
+        getOnGoingRides = getOnGoingRidesFromJson(utf8Body);
+      } else {
+        debugPrint('Error: ${response.statusCode}');
+        debugPrint('Response: ${response.body}');
+      }
+    } catch (e) {
+      debugPrint('Error occurred: $e');
+    } finally {
       if (mounted) {
         setState(() {
           isPageLoading = false;
         });
       }
-      // if (updateBookingStatusModel.data?.status == "Completed") {
-      //   timer?.cancel();
-    } else {
-      // timer?.cancel();
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => HomePageScreen(
-      //       index: 1,
-      //       passCode: widget.passCode,
-      //       singleData: widget.singleData,
-      //       multipleData: widget.multipleData,
-      //       riderData: widget.riderData!,
-      //       currentBookingId: widget.currentBookingId,
-      //       bookingDestinationId: widget.bookingDestinationId,
-      //     ),
-      //   ),
-      // );
     }
   }
 
