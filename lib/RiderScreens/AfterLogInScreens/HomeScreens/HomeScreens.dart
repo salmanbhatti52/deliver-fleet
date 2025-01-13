@@ -22,6 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../Constants/Colors.dart';
 import '../../../Constants/PageLoadingKits.dart';
+import '../../../location_update_global.dart';
 import '../../../models/API_models/API_response.dart';
 import '../../../models/API_models/GetAllSystemDataModel.dart';
 import '../../../models/API_models/LogInModel.dart';
@@ -115,6 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
     userLatitude = (sharedPreferences.getString('userLatitude') ?? '');
     userLongitude = (sharedPreferences.getString('userLongitude') ?? '');
     getAllClientRequestsList = [];
+    final locationService = LocationService();
+    await locationService.init();
     print("userId $userID");
     Map data = {
       "users_fleet_id": userID.toString(),
