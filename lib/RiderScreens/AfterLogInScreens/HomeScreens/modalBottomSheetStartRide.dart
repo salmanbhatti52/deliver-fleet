@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:deliver_partner/Constants/PageLoadingKits.dart';
+import 'package:deliver_partner/RiderScreens/BottomNavBar.dart';
 import 'package:deliver_partner/models/API_models/API_response.dart';
 import 'package:deliver_partner/models/API_models/GetBookingDestinationsStatus.dart';
 import 'package:deliver_partner/models/API_models/ShowBookingsModel.dart';
@@ -1682,6 +1683,8 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
         }
       } else {
         showToastError(startRideBookingModels.message, FToast().init(context));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const BottomNavBar()));
         print(
             'object status starting ride: ${startRideBookingModels.status!.toString()}');
         print(
@@ -1788,6 +1791,8 @@ class _ModalBottomSheetStartRideState extends State<ModalBottomSheetStartRide> {
       print('picked parcels id: ${pickedParcelIds!.toString()}');
     } else {
       showToastError(pickedResponse!.message, FToast().init(context));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const BottomNavBar()));
       print(
           'object status picked parcel: ${pickedResponse!.status!.toString()}');
       print(

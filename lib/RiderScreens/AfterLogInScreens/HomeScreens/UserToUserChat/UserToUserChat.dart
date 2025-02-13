@@ -613,8 +613,8 @@ class _UserToUserChatState extends State<UserToUserChat> {
     sendMsgResponse = await service.sendUserToUserChatAPI(sendMsgData);
     if (sendMsgResponse!.status!.toLowerCase() == 'success') {
       sendMessageController.clear();
-      showToastSuccess(sendMsgResponse!.message, FToast().init(context),
-          seconds: 1);
+      // showToastSuccess(sendMsgResponse!.message, FToast().init(context),
+      //     seconds: 1);
       init();
       print('msg send');
     } else {
